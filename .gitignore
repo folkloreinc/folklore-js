@@ -1,0 +1,6 @@
+node_modules
+*.log
+.tmp
+.sass-cache
+/coverage
+/out*
