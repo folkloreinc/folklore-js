@@ -51,9 +51,9 @@ const checkTriggers = element => (
 
 const scrollListener = (e) => {
     const element = e.currentTarget;
-    resetTriggers(this);
-    if (this.__resizeRAF__) cancelFrame(this.__resizeRAF__);
-    this.__resizeRAF__ = requestFrame(() => {
+    resetTriggers(element);
+    if (element.__resizeRAF__) cancelFrame(element.__resizeRAF__);
+    element.__resizeRAF__ = requestFrame(() => {
         if (checkTriggers(element)) {
             element.__resizeLast__.width = element.offsetWidth;
             element.__resizeLast__.height = element.offsetHeight;
