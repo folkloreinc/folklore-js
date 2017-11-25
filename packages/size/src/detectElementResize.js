@@ -50,7 +50,7 @@ const checkTriggers = element => (
 );
 
 const scrollListener = (e) => {
-    const element = this;
+    const element = e.currentTarget;
     resetTriggers(this);
     if (this.__resizeRAF__) cancelFrame(this.__resizeRAF__);
     this.__resizeRAF__ = requestFrame(() => {
