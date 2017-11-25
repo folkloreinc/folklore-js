@@ -7,6 +7,10 @@ import {
     getElementInnerHeight,
     getElementInnerSize,
 } from './getElementInnerSize';
+import {
+    addResizeListener,
+    removeResizeListener,
+} from './detectElementResize';
 
 export {
     getSizeInPixel,
@@ -16,4 +20,6 @@ export {
     getElementInnerWidth,
     getElementInnerHeight,
     getElementInnerSize,
+    addResizeListener,
+    removeResizeListener,
 };
