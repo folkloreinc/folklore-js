@@ -39,6 +39,10 @@ class Socket extends EventEmitter {
         debug(`Message received: ${JSON.stringify(message)}`);
 
         this.emit('message', message);
+
+        if (typeof message.event !== 'undefined') {
+            this.emit(message.event, message.data || message);
+        }
     }
 
     getChannelWithoutNamespace(name) {
@@ -66,7 +70,7 @@ class Socket extends EventEmitter {
 
         debug('Setting channels:');
         channels.forEach((channel) => {
-            debug(`- ${channel}`);
+            debug(`    - ${channel}`);
         });
 
         const { shouldStart, started } = this;
