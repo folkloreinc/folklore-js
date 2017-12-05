@@ -291,19 +291,30 @@ class PanContainer extends EventEmitter {
         if (time === this.panTimeline.time()) {
             return null;
         }
-        if (this.panTween !== null) {
-            this.panTween.kill();
-            this.panTween = null;
-        }
-        if (this.endTween !== null) {
-            this.endTween.kill();
-            this.endTween = null;
-        }
+        this.clearPanTween();
+        this.clearEndTween();
+
         this.panTween = this.panTimeline.tweenTo(time, {
             ease,
         });
         this.panTween.eventCallback('onUpdate', this.onUpdate);
         return this.panTween;
+    }
+
+    clearPanTween() {
+        if (this.panTween === null) {
+            return;
+        }
+        this.panTween.kill();
+        this.panTween = null;
+    }
+
+    clearEndTween() {
+        if (this.endTween === null) {
+            return;
+        }
+        this.endTween.kill();
+        this.endTween = null;
     }
 
     endPan() {
