@@ -1,6 +1,6 @@
 {
     "name": "@folklore/pixi",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Pixi.js utilities",
     "keywords": [
         "javascript",
@@ -51,9 +51,9 @@
         "start": "npm run storybook"
     },
     "dependencies": {
-        "babel-runtime": "^6.26.0",
         "@folklore/size": "^0.1.0",
-        "@folklore/user-media": "^0.1.0",
+        "@folklore/user-media": "^0.1.1",
+        "babel-runtime": "^6.26.0",
         "es6-promise": "^4.1.1",
         "gsap": "^1.20.3",
         "lodash": "^4.17.4",
