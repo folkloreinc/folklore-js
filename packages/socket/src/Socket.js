@@ -181,6 +181,15 @@ class Socket extends EventEmitter {
         });
     }
 
+    send(data, callback = null) {
+        if (!this.started) {
+            debug('Abort sending data: Not started');
+            return;
+        }
+        debug('Sending', data);
+        this.pubnub.publish(data, typeof callback === 'function' ? callback : () => {});
+    }
+
     isStarted() {
         return this.shouldStart || this.started;
     }
