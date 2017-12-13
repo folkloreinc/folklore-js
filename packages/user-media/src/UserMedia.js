@@ -157,6 +157,10 @@ class UserMedia extends EventEmitter {
         return this.recorder.resume();
     }
 
+    getStream() {
+        return this.stream;
+    }
+
     getStreamUrl() {
         if (this.streamUrl === null) {
             const URL = window.URL || window.webkitURL;
