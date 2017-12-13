@@ -10,6 +10,7 @@ class UserMedia extends EventEmitter {
 
         this.options = {
             type: 'video',
+            mimeType: null,
             recorder: true,
             recordFilename: `file-${(new Date()).getTime()}`,
             ...opts,
