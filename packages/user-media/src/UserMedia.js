@@ -1,8 +1,11 @@
 import EventEmitter from 'wolfy87-eventemitter';
 import { Promise } from 'es6-promise';
 import MediaStreamRecorder from 'msr';
+import createDebug from 'debug';
 
 import dataUriToBlob from './dataUriToBlob';
+
+const debug = createDebug('folklore:user-media');
 
 class UserMedia extends EventEmitter {
     constructor(opts) {
@@ -36,6 +39,7 @@ class UserMedia extends EventEmitter {
     }
 
     onUserMediaSuccess(stream) {
+        debug('User media started');
         const { recorder } = this.options;
         this.started = true;
         this.stream = stream;
@@ -46,18 +50,22 @@ class UserMedia extends EventEmitter {
     }
 
     onUserMediaError(err) {
+        debug(`User media error: ${err}`);
         this.emit('error', err);
     }
 
     onUserMediaStop() {
+        debug('User media stopped');
         this.emit('stop');
     }
 
     onRecorderStart() {
+        debug('Recorder started');
         this.emit('record:start');
     }
 
     onRecorderStop() {
+        debug('Recorder stopped');
         this.emit('record:stop');
     }
 
@@ -68,6 +76,7 @@ class UserMedia extends EventEmitter {
     }
 
     onSnapshotVideoCanPlay() {
+        debug('Snapshot taken.');
         const { videoWidth, videoHeight } = this.snapshotVideo;
         this.snapshotCanvas.width = videoWidth;
         this.snapshotCanvas.height = videoHeight;
@@ -91,6 +100,7 @@ class UserMedia extends EventEmitter {
         if (this.started) {
             return Promise.resolve();
         }
+        debug('Starting user media...');
         const { type } = this.options;
         return new Promise((resolve, reject) => {
             navigator.getUserMedia({
@@ -110,6 +120,7 @@ class UserMedia extends EventEmitter {
         if (!this.started) {
             return Promise.resolve();
         }
+        debug('Stopping user media...');
         this.started = false;
         return Promise.resolve()
             .then(() => this.stopRecord())
@@ -118,6 +129,7 @@ class UserMedia extends EventEmitter {
     }
 
     snapshot() {
+        debug('Taking a snapshot...');
         this.snapshotVideo = document.createElement('video');
         this.snapshotVideo.addEventListener('canplay', this.onSnapshotVideoCanPlay);
         this.snapshotVideo.preload = 'auto';
@@ -210,6 +222,7 @@ class UserMedia extends EventEmitter {
     }
 
     destroy() {
+        debug('Destroying...');
         this.stop();
         this.destroyRecorder();
     }
