@@ -52,7 +52,6 @@
     },
     "dependencies": {
         "@folklore/size": "^0.1.0",
-        "@folklore/user-media": "^0.1.4",
         "babel-runtime": "^6.26.0",
         "es6-promise": "^4.1.1",
         "gsap": "^1.20.3",
