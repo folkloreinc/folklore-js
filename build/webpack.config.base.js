@@ -157,6 +157,9 @@ module.exports = (env) => {
                 path.join(process.env.PWD, './node_modules'),
                 path.join(process.env.PWD, './web_modules'),
                 path.join(process.env.PWD, './bower_components'),
+                path.join(__dirname, '../node_modules'),
+                path.join(__dirname, '../web_modules'),
+                path.join(__dirname, '../bower_components'),
             ],
         },
 

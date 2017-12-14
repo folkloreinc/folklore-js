@@ -58,7 +58,7 @@
         "lodash": "^4.17.4",
         "prop-types": "^15.6.0",
         "pubnub": "^4.18.0",
-        "wolfy87-eventemitter": "^5.2.3"
+        "wolfy87-eventemitter": "^5.2.4"
     },
     "devDependencies": {
         "react": ">=15.0.0 || ^16.0.0",
