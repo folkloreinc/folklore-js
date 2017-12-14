@@ -1,9 +1,14 @@
 import { Container, Texture, Sprite } from 'pixi.js';
-import { Promise } from 'es6-promise';
 import { getSizeFromString } from '@folklore/size';
-import UserMedia from '@folklore/user-media';
 
-class Camera extends Container {
+const videoIsPlaying = video => (
+    video.currentTime > 0 &&
+    !video.paused &&
+    !video.ended &&
+    video.readyState > 2
+);
+
+class Video extends Container {
     constructor(opts) {
         super();
 
@@ -11,37 +16,22 @@ class Camera extends Container {
             width: window.innerWidth,
             height: window.innerHeight,
             size: 'cover',
-            type: 'video',
-            userMedia: null,
             ...opts,
         };
 
-        this.onUserMediaStarted = this.onUserMediaStarted.bind(this);
-        this.onUserMediaError = this.onUserMediaError.bind(this);
         this.onVideoLoadedMetadata = this.onVideoLoadedMetadata.bind(this);
+        this.onVideoPlay = this.onVideoPlay.bind(this);
+        this.onVideoPause = this.onVideoPause.bind(this);
+        this.onVideoEnded = this.onVideoEnded.bind(this);
         this.onTextureLoaded = this.onTextureLoaded.bind(this);
 
-        this.started = false;
-        this.cameraWidth = this.options.width;
-        this.cameraHeight = this.options.height;
+        this.loaded = false;
+        this.playing = false;
+        this.containerWidth = this.options.width;
+        this.containerHeight = this.options.height;
         this.video = null;
         this.texture = null;
         this.sprite = null;
-
-        this.userMedia = this.options.userMedia || new UserMedia({
-            type: this.options.type,
-        });
-        this.userMedia.on('started', this.onUserMediaStarted);
-        this.userMedia.on('error', this.onUserMediaError);
-    }
-
-    onUserMediaStarted() {
-        this.init();
-    }
-
-    onUserMediaError(err) {
-        this.started = false;
-        console.error(err);
     }
 
     onVideoLoadedMetadata() {
@@ -49,73 +39,81 @@ class Camera extends Container {
         this.udpateSize();
     }
 
+    onVideoPlay() {
+        this.playing = true;
+    }
+
+    onVideoPause() {
+        this.playing = false;
+    }
+
+    onVideoEnded() {
+        this.playing = false;
+    }
+
     onTextureLoaded() {
+        this.loaded = true;
         this.udpateSize();
     }
 
-    init() {
-        const url = this.userMedia.getStreamUrl();
-        this.video = this.createVideo(url);
+    setVideoUrl(url) {
+        const video = url !== null ? this.createVideo(url) : null;
+        this.setVideo(video);
+    }
+
+    setVideo(video) {
+        if (video === null) {
+            this.destroy();
+        } else {
+            this.init(video);
+        }
+    }
+
+    init(video) {
+        this.destroy();
+        this.video = this.initVideo(video);
         this.sprite = this.createSprite(this.video);
         this.texture = this.sprite.texture;
         this.addChild(this.sprite);
         this.udpateSize();
-    }
 
-    start() {
-        if (this.started) {
-            return Promise.resolve();
+        if (videoIsPlaying(this.video)) {
+            this.playing = true;
         }
-        this.started = true;
-        return this.userMedia.start();
-    }
-
-    stop() {
-        if (!this.started) {
-            return;
-        }
-        this.started = false;
-        this.destroySprite();
-        this.destroyVideo();
-        this.userMedia.stop();
     }
 
     resize(width, height) {
-        this.cameraWidth = width;
-        this.cameraHeight = height;
+        this.containerWidth = width;
+        this.containerHeight = height;
         this.udpateSize();
     }
 
     update() {
-        if (
-            !this.started ||
-            this.texture === null ||
-            !this.texture.baseTexture.hasLoaded
-        ) {
+        if (!this.playing || !this.loaded) {
             return;
         }
         this.texture.update();
     }
 
     destroy() {
-        this.stop();
-
-        this.userMedia.destroy();
-
         this.destroySprite();
 
         this.destroyVideo();
     }
 
-    getUserMedia() {
-        return this.userMedia;
-    }
-
+    // eslint-disable-next-line class-methods-use-this
     createVideo(url) {
         const video = document.createElement('video');
         video.src = url;
         video.autoplay = false;
+        return video;
+    }
+
+    initVideo(video) {
         video.addEventListener('loadedmetadata', this.onVideoLoadedMetadata);
+        video.addEventListener('play', this.onVideoPlay);
+        video.addEventListener('paused', this.onVideoPause);
+        video.addEventListener('ended', this.onVideoEnded);
         video.load();
         return video;
     }
@@ -124,9 +122,13 @@ class Camera extends Container {
         if (this.video === null) {
             return;
         }
+        if (this.playing) {
+            this.video.pause();
+        }
         this.video.removeEventListener('loadedmetadata', this.onVideoLoadedMetadata);
-        this.video.pause();
-        this.video.src = null;
+        this.video.removeEventListener('play', this.onVideoPlay);
+        this.video.removeEventListener('paused', this.onVideoPause);
+        this.video.removeEventListener('ended', this.onVideoEnded);
         this.video = null;
     }
 
@@ -135,6 +137,9 @@ class Camera extends Container {
         texture.baseTexture.autoPlay = true;
         texture.baseTexture.autoUpdate = false;
         texture.baseTexture.on('loaded', this.onTextureLoaded);
+        if (texture.baseTexture.hasLoaded) {
+            this.onTextureLoaded();
+        }
         return new Sprite(texture);
     }
 
@@ -165,15 +170,15 @@ class Camera extends Container {
             size,
             this.texture.baseTexture.width,
             this.texture.baseTexture.height,
-            this.cameraWidth,
-            this.cameraHeight,
+            this.containerWidth,
+            this.containerHeight,
         );
         this.sprite.scale.set(scale, scale);
         this.sprite.position.set(
-            Math.round((this.cameraWidth - width) / 2),
-            Math.round((this.cameraHeight - height) / 2),
+            Math.round((this.containerWidth - width) / 2),
+            Math.round((this.containerHeight - height) / 2),
         );
     }
 }
 
-export default Camera;
+export default Video;

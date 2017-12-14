@@ -17,8 +17,10 @@ class UserMedia extends EventEmitter {
         };
 
         this.onUserMediaSuccess = this.onUserMediaSuccess.bind(this);
+        this.onUserMediaStop = this.onUserMediaStop.bind(this);
         this.onUserMediaError = this.onUserMediaError.bind(this);
         this.onRecorderDataAvailable = this.onRecorderDataAvailable.bind(this);
+        this.onRecorderStart = this.onRecorderStart.bind(this);
         this.onRecorderStop = this.onRecorderStop.bind(this);
         this.onSnapshotVideoCanPlay = this.onSnapshotVideoCanPlay.bind(this);
 
@@ -40,15 +42,23 @@ class UserMedia extends EventEmitter {
         if (recorder) {
             this.recorder = this.createRecorder(stream);
         }
-        this.emit('started', stream);
+        this.emit('start', stream);
     }
 
     onUserMediaError(err) {
         this.emit('error', err);
     }
 
-    onRecorderStop() {
+    onUserMediaStop() {
         this.emit('stop');
+    }
+
+    onRecorderStart() {
+        this.emit('record:start');
+    }
+
+    onRecorderStop() {
+        this.emit('record:stop');
     }
 
     onRecorderDataAvailable(blob) {
@@ -102,8 +112,9 @@ class UserMedia extends EventEmitter {
         }
         this.started = false;
         return Promise.resolve()
+            .then(() => this.stopRecord())
             .then(() => this.stopStream())
-            .then(() => this.stopRecord());
+            .then(() => this.onUserMediaStop());
     }
 
     snapshot() {
@@ -122,7 +133,8 @@ class UserMedia extends EventEmitter {
         this.recordingPaused = false;
         this.recordedBlobs = [];
         this.recordedFile = null;
-        return this.recorder.start(duration);
+        return this.recorder.start(duration)
+            .then(() => this.onRecorderStart());
     }
 
     stopRecord() {
@@ -199,11 +211,7 @@ class UserMedia extends EventEmitter {
 
     destroy() {
         this.stop();
-
-        if (this.recorder !== null) {
-            this.recorder.stop();
-            this.recorder = null;
-        }
+        this.destroyRecorder();
     }
 
     createRecorder(stream) {
@@ -220,6 +228,13 @@ class UserMedia extends EventEmitter {
         return new File(blob, filename, {
             type: this.getMimeType(),
         });
+    }
+
+    destroyRecorder() {
+        if (this.recorder) {
+            this.recorder.stop();
+            this.recorder = null;
+        }
     }
 
     stopStream() {

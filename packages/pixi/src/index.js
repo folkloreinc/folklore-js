@@ -1,7 +1,7 @@
-import Camera from './Camera';
+import Video from './Video';
 import Movieclip from './Movieclip';
 
 export {
-    Camera,
+    Video,
     Movieclip,
 };
