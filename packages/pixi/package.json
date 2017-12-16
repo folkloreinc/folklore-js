@@ -1,6 +1,6 @@
 {
     "name": "@folklore/pixi",
-    "version": "0.1.8",
+    "version": "0.1.9",
     "description": "Pixi.js utilities",
     "keywords": [
         "javascript",
