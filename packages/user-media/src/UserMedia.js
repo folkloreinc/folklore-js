@@ -93,7 +93,7 @@ class UserMedia extends EventEmitter {
         this.snapshotVideo.removeEventListener('canplay', this.onSnapshotVideoCanPlay);
         this.snapshotVideo.src = null;
         this.snapshotVideo = null;
-        this.emit('data', file, blob);
+        this.emit('file', file, blob);
     }
 
     start() {
@@ -130,11 +130,16 @@ class UserMedia extends EventEmitter {
 
     snapshot() {
         debug('Taking a snapshot...');
-        this.snapshotVideo = document.createElement('video');
-        this.snapshotVideo.addEventListener('canplay', this.onSnapshotVideoCanPlay);
-        this.snapshotVideo.preload = 'auto';
-        this.snapshotVideo.autoplay = true;
-        this.snapshotVideo.src = this.getStreamUrl();
+        return new Promise((resolve) => {
+            this.once('file', (file) => {
+                resolve(file);
+            });
+            this.snapshotVideo = document.createElement('video');
+            this.snapshotVideo.addEventListener('canplay', this.onSnapshotVideoCanPlay);
+            this.snapshotVideo.preload = 'auto';
+            this.snapshotVideo.autoplay = true;
+            this.snapshotVideo.src = this.getStreamUrl();
+        });
     }
 
     record(duration) {
@@ -145,8 +150,11 @@ class UserMedia extends EventEmitter {
         this.recordingPaused = false;
         this.recordedBlobs = [];
         this.recordedFile = null;
-        return this.recorder.start(duration)
-            .then(() => this.onRecorderStart());
+        return new Promise((resolve) => {
+            this.recorder.start(duration);
+            this.onRecorderStart();
+            resolve();
+        });
     }
 
     stopRecord() {
