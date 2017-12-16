@@ -91,18 +91,12 @@ const getElementInnerSize = (element, style) => {
     };
 };
 
-const getElementInnerWidth = (width, style) => (
-    getElementInnerSize({
-        width,
-        height: 0,
-    }, style).width
+const getElementInnerWidth = (element, style) => (
+    getElementInnerSize(element, style).width
 );
 
-const getElementInnerHeight = (height, style) => (
-    getElementInnerSize({
-        height,
-        width: 0,
-    }, style).height
+const getElementInnerHeight = (element, style) => (
+    getElementInnerSize(element, style).height
 );
 
 export {
