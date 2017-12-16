@@ -16,6 +16,10 @@ class Video extends Container {
             width: window.innerWidth,
             height: window.innerHeight,
             size: 'cover',
+            muted: true,
+            autoplay: false,
+            volume: 1,
+            playsInline: true,
             ...opts,
         };
 
@@ -30,6 +34,7 @@ class Video extends Container {
         this.containerWidth = this.options.width;
         this.containerHeight = this.options.height;
         this.video = null;
+        this.videoOwner = false;
         this.texture = null;
         this.sprite = null;
     }
@@ -58,15 +63,20 @@ class Video extends Container {
 
     setVideoUrl(url) {
         const video = url !== null ? this.createVideo(url) : null;
-        this.setVideo(video);
+        this.setVideo(video, true);
     }
 
-    setVideo(video) {
+    setVideo(video, owner) {
         if (video === null) {
             this.destroy();
         } else {
+            this.videoOwner = owner || false;
             this.init(video);
         }
+    }
+
+    getVideo() {
+        return this.video;
     }
 
     init(video) {
@@ -101,11 +111,19 @@ class Video extends Container {
         this.destroyVideo();
     }
 
-    // eslint-disable-next-line class-methods-use-this
     createVideo(url) {
+        const {
+            volume,
+            muted,
+            autoplay,
+            playsInline,
+        } = this.options;
         const video = document.createElement('video');
         video.src = url;
-        video.autoplay = false;
+        video.autoplay = autoplay;
+        video.muted = muted;
+        video.volume = volume;
+        video.playsInline = playsInline;
         return video;
     }
 
@@ -122,7 +140,7 @@ class Video extends Container {
         if (this.video === null) {
             return;
         }
-        if (this.playing) {
+        if (this.playing && this.videoOwner) {
             this.video.pause();
         }
         this.video.removeEventListener('loadedmetadata', this.onVideoLoadedMetadata);
