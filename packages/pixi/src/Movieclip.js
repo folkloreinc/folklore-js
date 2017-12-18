@@ -19,8 +19,9 @@ class Movieclip extends Container {
         this.onTexturesLoaded = this.onTexturesLoaded.bind(this);
         this.onTweenUpdate = this.onTweenUpdate.bind(this);
 
-        this.spritesheets = !isArray(this.option.spritesheets) ?
-            [this.option.spritesheets] : this.option.spritesheets;
+        const { spritesheets } = this.options;
+
+        this.spritesheets = !isArray(spritesheets) ? [spritesheets] : spritesheets;
         this.textures = null;
         this.loader = new loaders.Loader();
         this.sprite = null;
