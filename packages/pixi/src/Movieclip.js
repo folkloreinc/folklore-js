@@ -1,4 +1,4 @@
-import { Container, loaders, extras } from 'pixi.js';
+import { Container, Texture, loaders, extras } from 'pixi.js';
 import { TweenMax, Linear } from 'gsap';
 import isArray from 'lodash/isArray';
 
@@ -9,7 +9,7 @@ class Movieclip extends Container {
         this.options = {
             spritesheets: [],
             frameRate: 16,
-            paused: true,
+            paused: false,
             repeat: -1,
             easing: Linear.easeNone,
             duration: null,
@@ -33,6 +33,9 @@ class Movieclip extends Container {
     }
 
     onTweenUpdate() {
+        if (this.sprite === null) {
+            return;
+        }
         const { totalFrames } = this.sprite;
         this.sprite.gotoAndStop(Math.round(this.progress * totalFrames));
     }
@@ -40,7 +43,7 @@ class Movieclip extends Container {
     onTexturesLoaded(loader, resources) {
         this.loaded = true;
         this.textures = this.spritesheets.reduce((textures, spritesheet) => (
-            textures.concat(resources[spritesheet].textures)
+            textures.concat(Object.values(resources[spritesheet].textures))
         ), []);
 
         this.sprite = this.createSprite(this.textures);
@@ -82,6 +85,20 @@ class Movieclip extends Container {
         });
     }
 
+    getSize() {
+        if (this.textures === null) {
+            return {
+                width: 0,
+                heigth: 0,
+            };
+        }
+        const { width, height } = this.textures[0];
+        return {
+            width,
+            height,
+        };
+    }
+
     play() {
         this.tween.paused(false);
     }
@@ -99,6 +116,12 @@ class Movieclip extends Container {
         if (this.sprite !== null) {
             this.sprite.destroy();
             this.sprite = null;
+        }
+
+        if (this.spritesheets !== null) {
+            this.spritesheets.forEach((spritesheet) => {
+                Texture.removeFromCache(`${spritesheet}_image`);
+            });
         }
 
         if (this.textures !== null) {
