@@ -116,6 +116,10 @@ class Movieclip extends Container {
         };
     }
 
+    getTween() {
+        return this.tween;
+    }
+
     play() {
         this.tween.paused(false);
     }
