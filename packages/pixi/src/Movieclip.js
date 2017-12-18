@@ -45,6 +45,8 @@ class Movieclip extends Container {
         this.sprite = this.createSprite(this.textures);
         this.tween = this.createTween(this.sprite.totalFrames);
         this.addChild(this.sprite);
+
+        this.emit('loaded');
     }
 
     loadSpritesheets() {
