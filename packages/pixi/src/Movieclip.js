@@ -1,6 +1,7 @@
 import { Container, Texture, loaders, extras } from 'pixi.js';
 import { TweenMax, Linear } from 'gsap';
 import isArray from 'lodash/isArray';
+import sortBy from 'lodash/sortBy';
 
 class Movieclip extends Container {
     constructor(opts) {
@@ -13,6 +14,8 @@ class Movieclip extends Container {
             repeat: -1,
             easing: Linear.easeNone,
             duration: null,
+            getTexturesFromResources: null,
+            sortTexturesBy: null,
             ...opts,
         };
 
@@ -41,16 +44,30 @@ class Movieclip extends Container {
     }
 
     onTexturesLoaded(loader, resources) {
+        const { sortTexturesBy } = this.options;
+
         this.loaded = true;
-        this.textures = this.spritesheets.reduce((textures, spritesheet) => (
-            textures.concat(Object.values(resources[spritesheet].textures))
-        ), []);
+
+        this.textures = this.getTexturesFromResources(this.spritesheets, resources);
+        if (sortTexturesBy !== null) {
+            this.textures = sortBy(this.textures, sortTexturesBy);
+        }
 
         this.sprite = this.createSprite(this.textures);
         this.tween = this.createTween(this.sprite.totalFrames);
         this.addChild(this.sprite);
 
         this.emit('loaded');
+    }
+
+    getTexturesFromResources(spritesheets, resources) {
+        const { getTexturesFromResources } = this.options;
+        if (getTexturesFromResources !== null) {
+            return getTexturesFromResources(spritesheets, resources);
+        }
+        return this.spritesheets.reduce((textures, spritesheet) => (
+            textures.concat(Object.values(resources[spritesheet].textures))
+        ), []);
     }
 
     loadSpritesheets() {
