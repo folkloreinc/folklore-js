@@ -1,5 +1,6 @@
 import { Container, Graphics } from 'pixi.js';
 import Color from 'color';
+import { getSizeFromString, getPositionFromString } from '@folklore/size';
 
 class Audio extends Container {
     constructor(opts) {
@@ -15,6 +16,8 @@ class Audio extends Container {
             barMargin: 1,
             barColor: 0xCCCCCC,
             barMinHeight: 10,
+            size: 'cover',
+            position: 'center',
             activeWidthRatio: 0.7,
             ...opts,
         };
@@ -23,8 +26,8 @@ class Audio extends Container {
         this.onTextureLoaded = this.onTextureLoaded.bind(this);
 
         this.started = false;
-        this.cameraWidth = this.options.width;
-        this.cameraHeight = this.options.height;
+        this.maxWidth = this.options.width;
+        this.maxHeight = this.options.height;
         this.audioContext = null;
         this.audio = null;
         this.analyser = null;
@@ -102,8 +105,8 @@ class Audio extends Container {
     }
 
     resize(width, height) {
-        this.cameraWidth = width;
-        this.cameraHeight = height;
+        this.maxWidth = width;
+        this.maxHeight = height;
         this.updateSize();
     }
 
@@ -125,10 +128,10 @@ class Audio extends Container {
             if (i < activeCount) {
                 volume = i === activeCount - 1 ? this.volume : this.bars[i + 1].volume;
             }
-            const barHeight = Math.max((volume / 256) * this.cameraHeight, barMinHeight);
+            const barHeight = Math.max((volume / 256) * this.maxHeight, barMinHeight);
             bar.volume = volume;
             bar.scale.y = barHeight;
-            bar.position.y = (this.cameraHeight / 2) - (barHeight / 2);
+            bar.position.y = (this.maxHeight / 2) - (barHeight / 2);
         }
     }
 
@@ -165,14 +168,23 @@ class Audio extends Container {
 
     createBars(container, bars) {
         const {
+            size,
             barWidth,
             barMargin,
             barMinHeight,
         } = this.options;
 
+        const { width, height } = getSizeFromString(
+            size,
+            this.maxWidth,
+            this.maxHeight,
+            this.maxWidth,
+            this.maxHeight,
+        );
+
         const currentBars = bars || [];
         const barTotalWidth = barWidth + barMargin;
-        const barsCount = Math.ceil(this.cameraWidth / barTotalWidth);
+        const barsCount = Math.ceil(width / barTotalWidth);
         const currentBarsCount = currentBars.length;
         const maxCount = Math.max(currentBarsCount, barsCount);
         const maxIndex = barsCount - 1;
@@ -187,7 +199,7 @@ class Audio extends Container {
                 newBars.push(bar);
                 if (!barExists) {
                     bar.scale.y = barMinHeight;
-                    bar.position.y = (this.cameraHeight / 2) - (barMinHeight / 2);
+                    bar.position.y = (height / 2) - (barMinHeight / 2);
                     container.addChild(bar);
                 }
             }
@@ -243,13 +255,31 @@ class Audio extends Container {
         if (this.barsContainer === null) {
             return;
         }
-        const { barMinHeight } = this.options;
+        const { barMinHeight, size, position } = this.options;
         this.bars = this.createBars(this.barsContainer, this.bars);
+
+        const { width, height } = getSizeFromString(
+            size,
+            this.maxWidth,
+            this.maxHeight,
+            this.maxWidth,
+            this.maxHeight,
+        );
+
+        const { x, y } = getPositionFromString(
+            position,
+            width,
+            height,
+            this.maxWidth,
+            this.maxHeight,
+        );
+
+        this.barsContainer.position.set(x, y);
 
         const currentBarsCount = this.bars.length;
         for (let i = 0; i < currentBarsCount; i += 1) {
             const bar = this.bars[i];
-            bar.scale.y = Math.max((bar.volume / 256) * this.cameraHeight, barMinHeight);
+            bar.scale.y = Math.max((bar.volume / 256) * height, barMinHeight);
         }
     }
 }
