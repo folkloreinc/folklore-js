@@ -41,7 +41,7 @@ class Video extends Container {
 
     onVideoLoadedMetadata() {
         this.texture.update();
-        this.udpateSize();
+        this.updateSize();
     }
 
     onVideoPlay() {
@@ -58,7 +58,7 @@ class Video extends Container {
 
     onTextureLoaded() {
         this.loaded = true;
-        this.udpateSize();
+        this.updateSize();
     }
 
     setVideoUrl(url) {
@@ -85,7 +85,7 @@ class Video extends Container {
         this.sprite = this.createSprite(this.video);
         this.texture = this.sprite.texture;
         this.addChild(this.sprite);
-        this.udpateSize();
+        this.updateSize();
 
         if (videoIsPlaying(this.video)) {
             this.playing = true;
@@ -95,7 +95,7 @@ class Video extends Container {
     resize(width, height) {
         this.containerWidth = width;
         this.containerHeight = height;
-        this.udpateSize();
+        this.updateSize();
     }
 
     update() {
@@ -174,7 +174,7 @@ class Video extends Container {
         }
     }
 
-    udpateSize() {
+    updateSize() {
         const { size } = this.options;
         if (
             this.sprite === null ||

@@ -48,7 +48,7 @@ class Audio extends Container {
     }
 
     onTextureLoaded() {
-        this.udpateSize();
+        this.updateSize();
     }
 
     setAudioStream(stream) {
@@ -98,13 +98,13 @@ class Audio extends Container {
         this.bars = this.createBars(this.barsContainer);
         this.addChild(this.barsContainer);
 
-        this.udpateSize();
+        this.updateSize();
     }
 
     resize(width, height) {
         this.cameraWidth = width;
         this.cameraHeight = height;
-        this.udpateSize();
+        this.updateSize();
     }
 
     update() {
@@ -239,7 +239,10 @@ class Audio extends Container {
         }
     }
 
-    udpateSize() {
+    updateSize() {
+        if (this.barsContainer === null) {
+            return;
+        }
         const { barMinHeight } = this.options;
         this.bars = this.createBars(this.barsContainer, this.bars);
 
