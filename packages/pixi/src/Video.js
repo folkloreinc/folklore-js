@@ -106,8 +106,8 @@ class Video extends Container {
     }
 
     destroy() {
+        this.loaded = false;
         this.destroySprite();
-
         this.destroyVideo();
     }
 
