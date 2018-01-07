@@ -21,12 +21,13 @@ class UrlGenerator {
             str.replace(paramFormat.replace(/\{\s*key\s*\}/gi, k), v)
         ), route);
 
-        if (withHost) {
-            return url;
+        const host = typeof window !== 'undefined' ? `${window.location.protocol}//${window.location.host}` : '';
+        const hostPattern = host !== null ? `^${host}` : '^$';
+        if (typeof withHost !== 'undefined' && withHost === true) {
+            return !url.match(hostPattern) ? `${host}${url}` : url;
         }
 
-        const host = typeof window !== 'undefined' ? `^${window.location.protocol}//${window.location.host}` : '^$';
-        const urlWithoutHost = url.replace(new RegExp(host, 'i'), '');
+        const urlWithoutHost = url.replace(new RegExp(hostPattern, 'i'), '');
         return urlWithoutHost === '' ? '/' : urlWithoutHost;
     }
 }
