@@ -83,6 +83,7 @@ class PixelsContainer extends Container {
         this.colorsCanvas = [];
         this.colorsTextures = [];
         this.imageData = null;
+        this.savedImagesData = {};
         this.drawCanvas = document.createElement('canvas');
         this.drawContext = this.drawCanvas.getContext('2d');
 
@@ -325,6 +326,33 @@ class PixelsContainer extends Container {
         } else {
             this.imageData = null;
         }
+    }
+
+    saveImageData(name) {
+        const imageName = name || 'default';
+        const { width, height } = this.getCanvasSize();
+        const imageData = this.drawContext.getImageData(0, 0, width, height);
+        this.savedImagesData[imageName] = imageData;
+    }
+
+    restoreSavedImageData(name) {
+        const imageName = name || 'default';
+        const { width, height } = this.getCanvasSize();
+        const imageData = this.savedImagesData[imageName] || null;
+        if (imageData !== null) {
+            this.drawContext.putImageData(imageData, width, height);
+        }
+        this.clearSavedImageData(name);
+    }
+
+    clearSavedImageData(name) {
+        const imageName = name || 'default';
+        this.savedImagesData = Object.keys(this.savedImagesData).reduce((images, key) => (
+            key !== imageName ? {
+                ...images,
+                [key]: this.savedImagesData[key],
+            } : images
+        ), {});
     }
 
     createDebugContainer() {
