@@ -94,12 +94,6 @@ class PixelsContainer extends Container {
         if (colors !== null) {
             this.setColors(colors);
         }
-
-        this.draw();
-
-        this.updateImageData();
-
-        this.updatePixels();
     }
 
     destroy() {
