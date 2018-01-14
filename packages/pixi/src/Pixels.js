@@ -126,6 +126,7 @@ class PixelsContainer extends Container {
     }
 
     update() {
+        this.updateImageData();
         this.updatePixels();
     }
 
@@ -203,7 +204,7 @@ class PixelsContainer extends Container {
         for (let row = 0; row < rows; row += (1 * scaleY)) {
             for (let col = 0; col < cols; col += (1 * scaleX)) {
                 const pixelIndex = (row * cols) + col;
-                const imageDataIndex = (row * (cols * 4)) + (col * 4);
+                const imageDataIndex = pixelIndex * 4;
                 const pixelColor = [
                     this.imageData[imageDataIndex + 0],
                     this.imageData[imageDataIndex + 1],
