@@ -1,4 +1,4 @@
-import { Container, Texture, Sprite } from 'pixi.js';
+import { Container, Texture, Sprite, Point } from 'pixi.js';
 import Color from 'color';
 import get from 'lodash/get';
 
@@ -44,10 +44,14 @@ class PixelsContainer extends Container {
                 '#FFCC00',
                 '#FFEE00',
             ],
-            minAlpha: 0.2,
-            keepAlpha: false,
+            enableAlpha: false,
+            minPixelAlpha: 0.2,
+            hideTransparentPixels: true,
+            deadPixelProbability: 0,
+            colorOffsetProbability: 0.5,
+            maxColorOffset: 4,
             draw: null,
-            debug: true,
+            debug: false,
             debugContainer: null,
             debugContainerStyles: {
                 position: 'fixed',
@@ -70,7 +74,8 @@ class PixelsContainer extends Container {
             debug,
         } = this.options;
 
-        this.expand = this.expand.bind(this);
+        this.expandRadius = this.expandRadius.bind(this);
+        this.glitch = this.glitch.bind(this);
 
         this.maxWidth = width;
         this.maxHeight = height;
@@ -87,7 +92,7 @@ class PixelsContainer extends Container {
         this.drawCanvas = document.createElement('canvas');
         this.drawContext = this.drawCanvas.getContext('2d');
 
-        this.debugContainer = debug !== null ? this.createDebugContainer() : null;
+        this.debugContainer = debug ? this.createDebugContainer() : null;
 
         this.updateCanvasSize();
 
@@ -189,46 +194,73 @@ class PixelsContainer extends Container {
         }
 
         const { pixelWidth, pixelHeight } = this;
-        const { minAlpha, keepAlpha } = this.options;
+
         const canvasSize = this.getCanvasSize();
         const rows = canvasSize.height;
         const cols = canvasSize.width;
-        const maxPixelIndex = ((rows - 1) * cols) + (cols - 1);
         const scaleX = pixelWidth > pixelHeight ? (pixelWidth / pixelHeight) : 1;
         const scaleY = pixelHeight > pixelWidth ? (pixelHeight / pixelWidth) : 1;
         for (let row = 0; row < rows; row += (1 * scaleY)) {
             for (let col = 0; col < cols; col += (1 * scaleX)) {
-                const pixelIndex = (row * cols) + col;
-                const imageDataIndex = pixelIndex * 4;
-                const pixelColor = [
-                    this.imageData[imageDataIndex + 0],
-                    this.imageData[imageDataIndex + 1],
-                    this.imageData[imageDataIndex + 2],
-                    this.imageData[imageDataIndex + 3],
-                ];
-                const colorIndex = this.getClosestColorIndex(pixelColor);
-
-                let pixel = this.pixels[pixelIndex] || null;
-                if (pixel === null) {
-                    pixel = this.createPixelSprite(colorIndex);
-                    this.addChild(pixel);
-                    this.pixels[pixelIndex] = pixel;
-                } else if (pixel.colorIndex !== colorIndex) {
-                    pixel.texture = this.colorsTextures[colorIndex];
-                    pixel.colorIndex = colorIndex;
-                }
-
+                const pixel = this.updatePixel(row, col, rows, cols);
                 pixel.position.set((col * pixelWidth) / scaleX, (row * pixelHeight) / scaleY);
-
-                const alpha = pixelColor[3] / 255;
-                const replacedAlpha = alpha < minAlpha ? 0 : 1;
-                pixel.alpha = !keepAlpha ? replacedAlpha : alpha;
-
-                if (pixelIndex > maxPixelIndex) {
-                    pixel.visible = false;
-                }
             }
         }
+    }
+
+    updatePixel(row, col, rows, cols) {
+        const { enableAlpha, minPixelAlpha, hideTransparentPixels } = this.options;
+        const maxPixelIndex = ((rows - 1) * cols) + (cols - 1);
+        const pixelIndex = (row * cols) + col;
+        const imageDataIndex = pixelIndex * 4;
+        const pixelColor = [
+            this.imageData[imageDataIndex + 0],
+            this.imageData[imageDataIndex + 1],
+            this.imageData[imageDataIndex + 2],
+            this.imageData[imageDataIndex + 3],
+        ];
+        const pixelAlpha = pixelColor[3] / 255;
+        const colorIndex = this.getClosestColorIndex(pixelColor);
+
+        // Create or update pixel sprite
+        let pixel = this.pixels[pixelIndex] || null;
+        if (pixel === null) {
+            pixel = this.createPixelSprite(pixelIndex, colorIndex, pixelColor);
+            this.addChild(pixel);
+            this.pixels[pixelIndex] = pixel;
+        } else if (pixel.pixelColorIndex !== colorIndex) {
+            this.updatePixelSprite(pixel, colorIndex, pixelColor);
+        }
+
+        pixel.pixelPosition.set(col, row);
+
+        // Hide transparent pixel
+        const isTransparent = (
+            (hideTransparentPixels && pixelAlpha < minPixelAlpha) ||
+            pixel.pixelDead
+        );
+        const visibleAlpha = enableAlpha ? pixelAlpha : 1;
+        if (isTransparent && !pixel.pixelTransparent) {
+            pixel.pixelTransparent = true;
+            pixel.alpha = 0;
+        } else if (!isTransparent && pixel.pixelTransparent) {
+            pixel.alpha = visibleAlpha;
+            pixel.pixelTransparent = false;
+        }
+
+        // Disable visible
+        const isUnused = (
+            pixelIndex > maxPixelIndex
+        );
+        if (isUnused) {
+            pixel.pixelUnused = true;
+            pixel.visible = false;
+        } else if (!isUnused && pixel.pixelUnused) {
+            pixel.visible = true;
+            pixel.pixelUnused = false;
+        }
+
+        return pixel;
     }
 
     resetPixels() {
@@ -239,12 +271,47 @@ class PixelsContainer extends Container {
         this.pixels = [];
     }
 
-    createPixelSprite(colorIndex) {
-        const texture = this.colorsTextures[colorIndex] || null;
+    createPixelSprite(pixelIndex, colorIndex, color) {
+        const {
+            enableAlpha,
+            deadPixelProbability,
+            colorOffsetProbability,
+            maxColorOffset,
+        } = this.options;
+        const colorOffset = Math.random() < colorOffsetProbability ?
+            Math.round(-(maxColorOffset / 2) + (Math.random() * maxColorOffset)) : 0;
+        const maxColorsIndex = this.colorsTextures.length - 1;
+        const realColorIndex = Math.max(Math.min(colorIndex + colorOffset, maxColorsIndex), 0);
+        const texture = this.colorsTextures[realColorIndex] || null;
+        const pixelAlpha = color[3] / 255;
         const sprite = new Sprite(texture);
-        sprite.colorIndex = colorIndex;
+        sprite.alpha = enableAlpha ? pixelAlpha : 1;
+        sprite.pixelPosition = new Point();
+        sprite.pixelIndex = pixelIndex;
+        sprite.pixelColorIndex = colorIndex;
+        sprite.pixelColorOffset = colorOffset;
+        sprite.pixelUnused = false;
+        sprite.pixelDead = Math.random() < deadPixelProbability;
+        sprite.pixelTransparent = false;
         return sprite;
     }
+
+    /* eslint-disable no-param-reassign */
+    updatePixelSprite(sprite, colorIndex, color) {
+        const { enableAlpha } = this.options;
+        const pixelAlpha = color[3] / 255;
+        const maxColorsIndex = this.colorsTextures.length - 1;
+        const realColorIndex = Math.max(
+            Math.min(colorIndex + sprite.pixelColorOffset, maxColorsIndex),
+            0,
+        );
+        sprite.texture = this.colorsTextures[realColorIndex];
+        sprite.alpha = enableAlpha ? pixelAlpha : 1;
+        sprite.pixelColorIndex = colorIndex;
+        sprite.pixelTransparent = false;
+        return sprite;
+    }
+    /* eslint-enable no-param-reassign */
 
     getClosestColorIndex(pixelColor) {
         let minDistance = Infinity;
@@ -277,18 +344,22 @@ class PixelsContainer extends Container {
 
         /* eslint-disable no-param-reassign */
         const [firstTexture] = this.colorsTextures;
+        const maxColorsIndex = this.colorsTextures.length - 1;
         this.pixels.forEach((pixel) => {
             const colorIndex = this.colorsTextures.indexOf(pixel.texture);
             if (colorIndex === -1) {
-                const newTexture = get(this.colorsTextures, pixel.colorIndex, null);
+                const realColorIndex = (
+                    pixel.colorIndex + pixel.pixelColorOffset + maxColorsIndex
+                ) % maxColorsIndex;
+                const newTexture = get(this.colorsTextures, realColorIndex, null);
                 if (newTexture !== null) {
                     pixel.texture = newTexture;
                 } else {
                     pixel.texture = firstTexture;
-                    pixel.colorIndex = 0;
+                    pixel.pixelColorIndex = 0;
                 }
             } else {
-                pixel.colorIndex = colorIndex;
+                pixel.pixelColorIndex = colorIndex;
             }
         });
         /* eslint-enable no-param-reassign */
