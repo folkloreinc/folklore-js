@@ -20,7 +20,7 @@ const colorDistance = (v1, v2) => {
     return Math.sqrt(d);
 };
 
-class PixelsContainer extends Container {
+class Pixels extends Container {
     constructor(opts) {
         super();
 
@@ -445,4 +445,4 @@ class PixelsContainer extends Container {
     }
 }
 
-export default PixelsContainer;
+export default Pixels;
