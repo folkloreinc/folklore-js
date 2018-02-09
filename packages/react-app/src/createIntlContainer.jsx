@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { IntlProvider, injectIntl, addLocaleData } from 'react-intl';
 import invariant from 'invariant';
 import hoistStatics from 'hoist-non-react-statics';
+import get from 'lodash/get';
 import en from 'react-intl/locale-data/en';
 import fr from 'react-intl/locale-data/fr';
 import es from 'react-intl/locale-data/es';
@@ -13,8 +14,10 @@ function getDisplayName(WrappedComponent) {
 }
 
 export default function createIntlContainer(localeSelector, messagesSelector, opts) {
-    const selectLocale = localeSelector || (props => props.locale);
-    const selectMessages = messagesSelector || (props => props.messages);
+    const defaultSelectLocale = props => props.locale;
+    const defaultSelectMessages = props => get(props.messages, props.locale, props.messages);
+    const selectLocale = localeSelector || defaultSelectLocale;
+    const selectMessages = messagesSelector || defaultSelectMessages;
     const options = {
         withRef: false,
         ...opts,

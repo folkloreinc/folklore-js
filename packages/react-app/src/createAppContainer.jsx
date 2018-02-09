@@ -79,26 +79,26 @@ export default function createAppContainer(opts) {
         Container.displayName = `AppContainer(${getDisplayName(WrappedComponent)})`;
         Container.WrappedComponent = WrappedComponent;
         const AppContainer = hoistStatics(Container, WrappedComponent);
-        const WithRouterContainer = createRouterContainer(
+        const RouterContainer = createRouterContainer(
             createRouterHistory,
             { withRef },
         )(AppContainer);
-        const WithStoreContainer = createStoreContainer(
+        const IntlContainer = createIntlContainer(
+            getIntlLocale,
+            getIntlMessages,
+            { withRef },
+        )(RouterContainer);
+        const StoreContainer = createStoreContainer(
             getStoreReducers,
             getStoreInitialState,
             getStoreMiddlewares,
             storeHasChanged,
             { withRef },
-        )(WithRouterContainer);
+        )(IntlContainer);
         const UrlGeneratorContainer = createUrlGeneratorContainer(
             getUrlGeneratorRoutes,
             { withRef },
-        )(WithStoreContainer);
-        const WithIntlContainer = createIntlContainer(
-            getIntlLocale,
-            getIntlMessages,
-            { withRef },
-        )(UrlGeneratorContainer);
-        return WithIntlContainer;
+        )(StoreContainer);
+        return UrlGeneratorContainer;
     };
 }
