@@ -85,6 +85,7 @@ module.exports = (env) => {
         plugins: env === 'dev' ? [
             <% if (typeof entries.vendor !== 'undefined') { %>new webpack.optimize.CommonsChunkPlugin({
                 name: 'manifest',
+                minChunks: Infinity,
             }),
             new webpack.optimize.CommonsChunkPlugin({
                 name: 'vendor',
@@ -93,6 +94,7 @@ module.exports = (env) => {
         ] : [
             <% if (typeof entries.vendor !== 'undefined') { %>new webpack.optimize.CommonsChunkPlugin({
                 name: 'manifest',
+                minChunks: Infinity,
             }),
             new webpack.optimize.CommonsChunkPlugin({
                 name: 'vendor',
@@ -106,20 +108,7 @@ module.exports = (env) => {
                 {
                     test: /\.jsx?$/,
                     loader: 'babel-loader',
-                    exclude: [
-                        path.join(process.env.PWD, './node_modules'),
-                    ],
-                    options: {
-                        forceEnv: env,
-                        cacheDirectory: true,
-                    },
-                },
-                {
-                    test: /react-draw\/src/,
-                    loader: 'babel-loader',
-                    include: [
-                        path.join(process.env.PWD, './node_modules/react-draw'),
-                    ],
+                    include: contextPath,
                     options: {
                         forceEnv: env,
                         cacheDirectory: true,
@@ -128,23 +117,18 @@ module.exports = (env) => {
                 {
                     test: /\.json$/,
                     loader: 'json-loader',
-                    exclude: [
-                        path.join(process.env.PWD, './node_modules'),
-                    ],
+                    include: contextPath,
                 },
                 {
                     test: /\.html$/,
                     loader: 'html-loader',
-                    exclude: [
-                        path.join(process.env.PWD, './node_modules'),
-                    ],
+                    include: contextPath,
                 },
                 {
                     test: /\.svg$/,
+                    include: contextPath,
                     exclude: [
-                        path.join(process.env.PWD, './node_modules'),
-                        path.join(process.env.PWD, './.tmp'),
-                        path.join(process.env.PWD, './src/img/icons'),
+                        /\/img\//
                     ],
                     use: [
                         `babel-loader?forceEnv=${env}&cacheDirectory`,
@@ -154,6 +138,7 @@ module.exports = (env) => {
 
                 {
                     test: /\.global\.s[ac]ss$/,
+                    include: contextPath,
                     use: env === 'dev' ? ['style-loader?convertToAbsoluteUrls'].concat(cssLoaders) : extractPlugin.extract({
                         fallback: 'style-loader',
                         use: cssLoaders,
@@ -162,6 +147,7 @@ module.exports = (env) => {
 
                 {
                     test: /\.s[ac]ss$/,
+                    include: contextPath,
                     exclude: /.global\.s[ac]ss$/,
                     use: env === 'dev' ? ['style-loader?convertToAbsoluteUrls'].concat(cssLocalLoaders) : extractPlugin.extract({
                         fallback: 'style-loader',
@@ -172,6 +158,7 @@ module.exports = (env) => {
                 {
                     test: /\.(png|gif|jpg|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
                     loader: 'url-loader',
+                    include: contextPath,
                     exclude: /fonts\//,
                     options: {
                         limit: 1000,
@@ -181,9 +168,9 @@ module.exports = (env) => {
                 },
 
                 {
-                    test: /\.(ttf|eot|woff|woff2|otf|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                    test: /fonts\/(.*?)\.(ttf|eot|woff|woff2|otf|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
                     loader: 'url-loader',
-                    include: /fonts\//,
+                    include: contextPath,
                     options: {
                         limit: 1000,
                         name: FONT_FILENAME,
@@ -197,8 +184,6 @@ module.exports = (env) => {
             extensions: ['.js', '.jsx', '.es6'],
             modules: [
                 path.join(process.env.PWD, './node_modules'),
-                path.join(process.env.PWD, './web_modules'),
-                path.join(process.env.PWD, './bower_components'),
             ],
         },
 
