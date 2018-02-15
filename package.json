@@ -83,7 +83,7 @@
         "imagemin-pngquant": "^5.0.1",
         "imports-loader": "^0.7.1",
         "invariant": "^2.2.2",
-        "jest": "^21.2.1",
+        "jest": "^22.3.0",
         "jsdom": "^11.5.1",
         "json-loader": "^0.5.7",
         "lerna": "^2.7.0",
@@ -124,6 +124,9 @@
             "<rootDir>/packages/*/lib/",
             "<rootDir>/packages/*/es/",
             "<rootDir>/packages/*/dist/",
+            "<rootDir>/packages/generator-folklore/lib/",
+            "<rootDir>/packages/generator-folklore/src/generators/npm-package/templates/*",
+            "<rootDir>/packages/generator-folklore/src/generators/react-package/templates/*",
             "<rootDir>/__tests__/shim.js",
             "<rootDir>/__tests__/setup.js",
             "<rootDir>/__tests__/storyshots.test.js"
@@ -131,7 +134,9 @@
         "modulePathIgnorePatterns": [
             "<rootDir>/packages/*/lib/",
             "<rootDir>/packages/*/es/",
-            "<rootDir>/packages/*/dist/"
+            "<rootDir>/packages/*/dist/",
+            "<rootDir>/packages/generator-folklore/*/generators/*/templates/",
+            "<rootDir>/packages/generator-folklore/*/generators/*/templates/"
         ],
         "moduleNameMapper": {
             "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
@@ -141,6 +146,7 @@
         "collectCoverage": true,
         "collectCoverageFrom": [
             "packages/*/src/**/*.{js,jsx}",
+            "!packages/*/src/generators/*/templates/**",
             "!**/node_modules/**",
             "!**/vendor/**",
             "!**/__tests__/**",
