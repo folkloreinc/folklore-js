@@ -1,0 +1,42 @@
+{
+    "name": "generator-folklore",
+    "version": "2.0.8",
+    "description": "Yeoman generator for projects at Folklore",
+    "keywords": [
+        "yeoman-generator"
+    ],
+    "main": "index.js",
+    "scripts": {
+        "clean:lib": "rm -rf lib/*",
+        "clean": "npm run clean:lib",
+        "copy:templates": "find src/ -type d | grep -i templates$ | sed 's/src\\/\\///g' | xargs -I{} cp -r \"src/{}\" \"lib/{}\"",
+        "compile": "../../node_modules/.bin/babel -d lib/ src/",
+        "build": "npm run compile && npm run copy:templates",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "prepare": "npm run clean && npm run build"
+    },
+    "files": [
+        "lib"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Folkloreatelier/folklore-js.git"
+    },
+    "author": "Folklore <info@atelierfolklore.ca>",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Folkloreatelier/folklore-js/issues"
+    },
+    "homepage": "https://github.com/Folkloreatelier/folklore-js/tree/master/packages/generator-folklore#readme",
+    "dependencies": {
+        "chalk": "^2.1.0",
+        "change-case": "^3.0.1",
+        "glob": "^7.1.2",
+        "immutable": "^3.8.1",
+        "is-utf8": "^0.2.1",
+        "lodash": "^4.17.4",
+        "password-generator": "^2.0.2",
+        "yeoman-generator": "^1.1.1",
+        "yeoman-remote": "^1.0.1"
+    }
+}

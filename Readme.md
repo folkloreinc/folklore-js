@@ -9,6 +9,7 @@ This package is splitted in multiple packages that can be used independently.
 
 | Package Name | Description | Links |
 | ------------ | ----------- | ----- |
+| [generator-folklore](https://github.com/Folkloreatelier/folklore-js/tree/master/packages/generator-folklore) | Yeaom generator for Folklore projects |  [Documentation](https://github.com/Folkloreatelier/folklore-js/tree/master/packages/generator-folklore/) |
 | [@folklore/config](https://github.com/Folkloreatelier/folklore-js/tree/master/packages/config) | Config helpers |  [Documentation](https://github.com/Folkloreatelier/folklore-js/tree/master/packages/config/) |
 | [@folklore/size](https://github.com/Folkloreatelier/folklore-js/tree/master/packages/size) | Sizing utilities |  [Documentation](https://github.com/Folkloreatelier/folklore-js/tree/master/packages/size/) |
 | [@folklore/pan](https://github.com/Folkloreatelier/folklore-js/tree/master/packages/pan) | Panning and MouseWheeling utilities |  [Documentation](https://github.com/Folkloreatelier/folklore-js/tree/master/packages/pan/) |
