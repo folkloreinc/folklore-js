@@ -32,6 +32,14 @@ const getServerTime = (url, opts) => {
                 serverTimestamp,
                 serverClientRequestDiffTime,
             } = options.parseResponse(response);
+            if (
+                typeof serverTimestamp === 'undefined' ||
+                typeof serverClientRequestDiffTime === 'undefined' ||
+                Number.isNaN(serverTimestamp) ||
+                Number.isNaN(serverClientRequestDiffTime)
+            ) {
+                throw new Error('Bad response');
+            }
             const serverClientResponseDiffTime = nowTimeStamp - serverTimestamp;
             const responseTime = (
                 (serverClientRequestDiffTime - nowTimeStamp) +
