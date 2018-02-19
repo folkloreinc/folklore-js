@@ -61,6 +61,7 @@ class Clock extends EventEmitter {
         this.server = server;
         const wasStarted = this.started;
         if (wasStarted) {
+            debug('Stopping time whil syncing.');
             this.stop();
         }
         return this.sync()
@@ -68,6 +69,7 @@ class Clock extends EventEmitter {
                 this.ready = true;
                 this.emit('ready');
                 if (wasStarted || this.shouldStart) {
+                    debug('Starting back...');
                     this.start();
                 }
             });
@@ -116,8 +118,10 @@ class Clock extends EventEmitter {
         }
         if (!this.ready) {
             this.shouldStart = true;
+            debug('Not ready, waiting to start...');
             return;
         }
+        debug('Starting...');
         this.started = true;
         const { updateInterval } = this.options;
         if (updateInterval !== null && updateInterval > 0) {
