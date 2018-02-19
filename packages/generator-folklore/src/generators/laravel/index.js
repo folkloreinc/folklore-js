@@ -7,7 +7,6 @@ import generatePassword from 'password-generator';
 import Generator from '../../lib/generator';
 
 module.exports = class LaravelGenerator extends Generator {
-
     static safeDbString(str) {
         return str.replace(/[-s.]+/gi, '_')
             .replace(/[^a-z0-9]+/gi, '');
@@ -30,7 +29,7 @@ module.exports = class LaravelGenerator extends Generator {
             required: false,
         });
 
-        this.option('laravel_branch', {
+        this.option('laravel-branch', {
             type: String,
             desc: 'Laravel repository branch',
             defaults: '5.5',
@@ -265,7 +264,8 @@ module.exports = class LaravelGenerator extends Generator {
                 'resources/views/**/*.php',
                 path.join(tmpPath, 'css/*.css'),
                 path.join(publicPath, '*.html'),
-                path.join(publicPath, '**/*.{jpg,png,ico,gif}'),
+                path.join(publicPath, 'fonts/**/*'),
+                path.join(publicPath, 'img/**/*'),
             ],
             'skip-install': skipInstall,
             quiet: true,
@@ -277,7 +277,7 @@ module.exports = class LaravelGenerator extends Generator {
             laravel() {
                 const done = this.async();
 
-                remote('laravel', 'laravel', this.options.laravel_branch, (err, cachePath) => {
+                remote('laravel', 'laravel', this.options['laravel-branch'], (err, cachePath) => {
                     const destinationPath = this.destinationPath();
                     const files = glob.sync('**', {
                         dot: true,
@@ -419,8 +419,7 @@ module.exports = class LaravelGenerator extends Generator {
     get install() {
         return {
             composer() {
-                const skipInstall = _.get(this.options, 'skip-install', false);
-                if (skipInstall) {
+                if (this.options['skip-install']) {
                     return;
                 }
 
@@ -434,8 +433,7 @@ module.exports = class LaravelGenerator extends Generator {
             },
 
             keyGenerate() {
-                const skipInstall = _.get(this.options, 'skip-install', false);
-                if (skipInstall) {
+                if (this.options['skip-install']) {
                     return;
                 }
 
@@ -444,8 +442,7 @@ module.exports = class LaravelGenerator extends Generator {
             },
 
             vendorPublish() {
-                const skipInstall = _.get(this.options, 'skip-install', false);
-                if (skipInstall) {
+                if (this.options['skip-install']) {
                     return;
                 }
 
@@ -454,5 +451,4 @@ module.exports = class LaravelGenerator extends Generator {
             },
         };
     }
-
 };

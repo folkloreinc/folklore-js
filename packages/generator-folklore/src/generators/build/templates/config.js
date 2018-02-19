@@ -14,7 +14,7 @@ module.exports = {
         host: '<%= browserSyncHost %>',
         proxy: '<%= browserSyncProxy %>',
         https: false,
-        <% } %>
+<% } %>
         files: [
 <% browserSyncFiles.forEach((file) => { %>            '<%=file%>',
 <% }) %>        ],

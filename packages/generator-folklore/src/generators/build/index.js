@@ -6,7 +6,6 @@ import getWebpackEntries from './lib/getWebpackEntries';
 import formatWebpackEntries from './lib/formatWebpackEntries';
 
 module.exports = class AppGenerator extends Generator {
-
     // The name `constructor` is important here
     constructor(...args) {
         super(...args);
