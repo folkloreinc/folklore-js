@@ -40,10 +40,13 @@ class Clock extends EventEmitter {
         if (this.options.server !== null) {
             this.ready = false;
             this.setServer(this.options.server);
-        } else if (this.options.autoStart) {
-            this.start();
+        } else {
             this.ready = true;
             this.emit('ready');
+        }
+
+        if (this.options.autoStart) {
+            this.start();
         }
     }
 
