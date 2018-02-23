@@ -7,7 +7,6 @@ const createProxyMiddleware = require('./lib/createProxyMiddleware');
 const createWebpackMiddleware = require('./lib/createWebpackMiddleware');
 const config = require('./config');
 const createWebpackConfig = require('./webpack.config');
-const createPanneauWebpackConfig = require('../resources/assets/panneau/webpack.config');
 
 /**
  * BrowserSync
@@ -26,13 +25,7 @@ const webpackMiddleware = createWebpackMiddleware(
     webpackMiddlewareConfig,
     browserSync,
 );
-const webpackPanneauMiddleware = createWebpackMiddleware(
-    createPanneauWebpackConfig('dev'),
-    webpackMiddlewareConfig,
-    browserSync,
-);
 browserSyncOptions.middleware.push(webpackMiddleware);
-browserSyncOptions.middleware.push(webpackPanneauMiddleware);
 
 /**
  * Proxy
