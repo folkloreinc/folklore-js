@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const stripAnsi = require('strip-ansi');
+const { compose } = require('compose-middleware');
 /* eslint-enable import/no-extraneous-dependencies */
 
 module.exports = (webpackConfig, opts, browserSync) => {
