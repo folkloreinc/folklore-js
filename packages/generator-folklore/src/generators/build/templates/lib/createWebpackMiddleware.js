@@ -5,7 +5,7 @@ const webpackHotMiddleware = require('webpack-hot-middleware');
 const stripAnsi = require('strip-ansi');
 /* eslint-enable import/no-extraneous-dependencies */
 
-module.exports = (webpackConfig, options, browserSync) => {
+module.exports = (webpackConfig, opts, browserSync) => {
     const options = {
         hotReload: false,
         ...opts,
