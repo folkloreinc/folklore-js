@@ -19,6 +19,14 @@ module.exports = {
 <% browserSyncFiles.forEach((file) => { %>            '<%=file%>',
 <% }) %>        ],
         ghostMode: false,
+
+        logFileChanges: false,
+
+        middleware: [],
+
+        plugins: [
+            'bs-fullscreen-message',
+        ],
     },
 
     /**
@@ -44,6 +52,8 @@ module.exports = {
         quiet: false,
 
         lazy: false,
+
+        hotReload: <%= hotReload %>,
 
         watchOptions: {
             aggregateTimeout: 300,

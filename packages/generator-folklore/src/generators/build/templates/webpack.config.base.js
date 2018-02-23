@@ -82,16 +82,7 @@ module.exports = (env) => {
             publicPath,
         },
 
-        plugins: env === 'dev' ? [
-            <% if (typeof entries.vendor !== 'undefined') { %>new webpack.optimize.CommonsChunkPlugin({
-                name: 'manifest',
-                minChunks: Infinity,
-            }),
-            new webpack.optimize.CommonsChunkPlugin({
-                name: 'vendor',
-                chunks: ['main'],
-            }),<% } %>
-        ] : [
+        plugins: [
             <% if (typeof entries.vendor !== 'undefined') { %>new webpack.optimize.CommonsChunkPlugin({
                 name: 'manifest',
                 minChunks: Infinity,

@@ -279,6 +279,7 @@ module.exports = class AppGenerator extends Generator {
 
                 const buildPath = _.get(this.options, 'path', false);
                 const tmpPath = _.get(this.options, 'tmp-path');
+                const hotReload = _.get(this.options, 'hot-reload', false);
                 const hasBrowserSync = _.get(this.options, 'browsersync', false);
                 const browserSyncHost = _.get(this.options, 'browsersync-host', null);
                 const browserSyncProxy = _.get(this.options, 'browsersync-proxy', null);
@@ -293,6 +294,7 @@ module.exports = class AppGenerator extends Generator {
 
                 const templateData = {
                     hasBrowserSync,
+                    hotReload,
                     browserSyncHost: browserSyncHost && browserSyncHost.length ?
                         browserSyncHost : null,
                     browserSyncProxy: browserSyncProxy && browserSyncProxy.length ?
@@ -671,23 +673,15 @@ module.exports = class AppGenerator extends Generator {
                     'url-loader@latest',
                     'svg-react-loader@latest',
                     'webpack@latest',
+                    'webpack-hot-middleware@latest',
                     'webpack-dev-middleware@latest',
                     'webpack-merge@latest',
                 ], {
                     saveDev: true,
                 });
 
-                if (this.options['webpack-html']) {
-                    this.npmInstall([
-                        'autoprefixer@latest',
-                    ], {
-                        saveDev: true,
-                    });
-                }
-
                 if (this.options['hot-reload']) {
                     this.npmInstall([
-                        'webpack-hot-middleware@latest',
                         'react-hot-loader@^4.0.0-beta.21',
                     ], {
                         saveDev: true,
