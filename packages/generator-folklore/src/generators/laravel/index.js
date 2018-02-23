@@ -308,6 +308,7 @@ module.exports = class LaravelGenerator extends Generator {
                     'routes/web.php',
                     'public/css/app.css',
                     'public/js/app.js',
+                    'app/Exceptions/Handler.php',
                     'app/Providers/AppServiceProvider.php',
                     'resources/assets/sass',
                     'resources/assets/js',
