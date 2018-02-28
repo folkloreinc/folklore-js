@@ -15,8 +15,6 @@ export default function createRouterContainer(historyCreator, opts) {
         ...opts,
     };
 
-    const history = createHistory();
-
     return (WrappedComponent) => {
         class RouterContainer extends Component {
             static getWrappedInstance() {
@@ -25,6 +23,12 @@ export default function createRouterContainer(historyCreator, opts) {
                     'To access the wrapped instance, you need to specify `{ withRef: true }` as the second argument of the createRouterContainer() call.',
                 );
                 return this.wrappedInstance;
+            }
+
+            constructor(props) {
+                super(props);
+
+                this.history = createHistory(props);
             }
 
             render() {
@@ -39,7 +43,7 @@ export default function createRouterContainer(historyCreator, opts) {
                 }
 
                 return (
-                    <ConnectedRouter history={history}>
+                    <ConnectedRouter history={this.history}>
                         <WrappedComponent {...props} />
                     </ConnectedRouter>
                 );
