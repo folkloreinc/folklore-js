@@ -3,6 +3,7 @@ import invariant from 'invariant';
 import hoistStatics from 'hoist-non-react-statics';
 import { routerMiddleware } from 'react-router-redux';
 
+import createPropsContainer from './createPropsContainer';
 import createStoreContainer from './createStoreContainer';
 import createRouterContainer from './createRouterContainer';
 import createUrlGeneratorContainer from './createUrlGeneratorContainer';
@@ -36,6 +37,8 @@ export default function createAppContainer(opts) {
 
     const {
         withRef,
+        propTypes,
+        defaultProps,
         createRouterHistory,
         getUrlGeneratorRoutes,
         getIntlLocale,
@@ -47,14 +50,6 @@ export default function createAppContainer(opts) {
     } = options;
 
     return (WrappedComponent) => {
-        const propTypes = {
-            ...(options.propTypes || WrappedComponent.propTypes),
-        };
-
-        const defaultProps = {
-            ...(options.defaultProps || WrappedComponent.defaultProps),
-        };
-
         class Container extends Component {
             static getWrappedInstance() {
                 invariant(
@@ -86,8 +81,6 @@ export default function createAppContainer(opts) {
             }
         }
 
-        Container.propTypes = propTypes;
-        Container.defaultProps = defaultProps;
         Container.displayName = `AppContainer(${getDisplayName(WrappedComponent)})`;
         Container.WrappedComponent = WrappedComponent;
 
@@ -112,6 +105,11 @@ export default function createAppContainer(opts) {
             getUrlGeneratorRoutes,
             { withRef },
         )(StoreContainer);
-        return UrlGeneratorContainer;
+        const PropsContainer = createPropsContainer(
+            propTypes || WrappedComponent.propTypes,
+            defaultProps || WrappedComponent.defaultProps,
+            { withRef },
+        )(UrlGeneratorContainer);
+        return PropsContainer;
     };
 }
