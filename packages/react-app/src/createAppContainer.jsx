@@ -17,6 +17,8 @@ function getDisplayName(WrappedComponent) {
 
 export default function createAppContainer(opts) {
     const options = {
+        propTypes: {},
+        defaultProps: {},
         withRef: false,
         getUrlGeneratorRoutes: null,
         getIntlLocale: null,
@@ -34,6 +36,8 @@ export default function createAppContainer(opts) {
 
     const {
         withRef,
+        propTypes,
+        defaultProps,
         createRouterHistory,
         getUrlGeneratorRoutes,
         getIntlLocale,
@@ -76,8 +80,11 @@ export default function createAppContainer(opts) {
             }
         }
 
+        Container.propTypes = propTypes;
+        Container.defaultProps = defaultProps;
         Container.displayName = `AppContainer(${getDisplayName(WrappedComponent)})`;
         Container.WrappedComponent = WrappedComponent;
+
         const AppContainer = hoistStatics(Container, WrappedComponent);
         const RouterContainer = createRouterContainer(
             createRouterHistory,
