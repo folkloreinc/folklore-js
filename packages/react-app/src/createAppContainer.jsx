@@ -17,8 +17,8 @@ function getDisplayName(WrappedComponent) {
 
 export default function createAppContainer(opts) {
     const options = {
-        propTypes: {},
-        defaultProps: {},
+        propTypes: null,
+        defaultProps: null,
         withRef: false,
         getUrlGeneratorRoutes: null,
         getIntlLocale: null,
@@ -36,8 +36,6 @@ export default function createAppContainer(opts) {
 
     const {
         withRef,
-        propTypes,
-        defaultProps,
         createRouterHistory,
         getUrlGeneratorRoutes,
         getIntlLocale,
@@ -49,6 +47,14 @@ export default function createAppContainer(opts) {
     } = options;
 
     return (WrappedComponent) => {
+        const propTypes = {
+            ...(options.propTypes || WrappedComponent.propTypes),
+        };
+
+        const defaultProps = {
+            ...(options.defaultProps || WrappedComponent.defaultProps),
+        };
+
         class Container extends Component {
             static getWrappedInstance() {
                 invariant(
