@@ -7,6 +7,7 @@ import createPropsContainer from './createPropsContainer';
 import createStoreContainer from './createStoreContainer';
 import createRouterContainer from './createRouterContainer';
 import createUrlGeneratorContainer from './createUrlGeneratorContainer';
+import createHistoryContainer from './createHistoryContainer';
 import createIntlContainer from './createIntlContainer';
 import withUrlGeneratorMiddleware from './withUrlGeneratorMiddleware';
 
@@ -24,7 +25,7 @@ export default function createAppContainer(opts) {
         getUrlGeneratorRoutes: null,
         getIntlLocale: null,
         getIntlMessages: null,
-        createRouterHistory: null,
+        createHistory: null,
         getStoreReducers: null,
         getStoreInitialState: null,
         getStoreMiddlewares: props => [
@@ -39,7 +40,7 @@ export default function createAppContainer(opts) {
         withRef,
         propTypes,
         defaultProps,
-        createRouterHistory,
+        createHistory,
         getUrlGeneratorRoutes,
         getIntlLocale,
         getIntlMessages,
@@ -86,7 +87,7 @@ export default function createAppContainer(opts) {
 
         const AppContainer = hoistStatics(Container, WrappedComponent);
         const RouterContainer = createRouterContainer(
-            createRouterHistory,
+            null,
             { withRef },
         )(AppContainer);
         const IntlContainer = createIntlContainer(
@@ -101,10 +102,14 @@ export default function createAppContainer(opts) {
             storeHasChanged,
             { withRef },
         )(IntlContainer);
+        const HistoryContainer = createHistoryContainer(
+            createHistory,
+            { withRef },
+        )(StoreContainer);
         const UrlGeneratorContainer = createUrlGeneratorContainer(
             getUrlGeneratorRoutes,
             { withRef },
-        )(StoreContainer);
+        )(HistoryContainer);
         const PropsContainer = createPropsContainer(
             propTypes || WrappedComponent.propTypes,
             defaultProps || WrappedComponent.defaultProps,

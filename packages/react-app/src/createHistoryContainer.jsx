@@ -2,18 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import invariant from 'invariant';
 import hoistStatics from 'hoist-non-react-statics';
-import { ConnectedRouter } from 'react-router-redux';
 import createBrowserHistory from 'history/createBrowserHistory';
 
 function getDisplayName(WrappedComponent) {
     return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 }
 
-export default function createRouterContainer(defaultHistory, opts) {
+export default function createHistoryContainer(historyCreator, opts) {
     const options = {
         withRef: false,
         ...opts,
     };
+
+    const { withRef } = options;
 
     const propTypes = {
         history: PropTypes.shape({
@@ -22,15 +23,18 @@ export default function createRouterContainer(defaultHistory, opts) {
     };
 
     const defaultProps = {
-        history: defaultHistory,
+        history: null,
     };
 
+    const defaultCreateHistory = () => createBrowserHistory();
+    const createHistory = historyCreator || defaultCreateHistory;
+
     return (WrappedComponent) => {
-        class RouterContainer extends Component {
+        class HistoryContainer extends Component {
             static getWrappedInstance() {
                 invariant(
-                    options.withRef,
-                    'To access the wrapped instance, you need to specify `{ withRef: true }` as the second argument of the createRouterContainer() call.',
+                    withRef,
+                    'To access the wrapped instance, you need to specify `{ withRef: true }` as the second argument of the createHistoryContainer() call.',
                 );
                 return this.wrappedInstance;
             }
@@ -38,37 +42,33 @@ export default function createRouterContainer(defaultHistory, opts) {
             constructor(props) {
                 super(props);
 
-                this.state = {
-                    history: this.props.history || createBrowserHistory(),
-                };
+                this.history = props.history || createHistory(props);
             }
 
             render() {
-                const { history } = this.state;
+                const { history } = this;
                 const props = {
                     ...this.props,
                     history,
                 };
 
-                if (options.withRef) {
+                if (withRef) {
                     props.ref = (c) => {
                         this.wrappedInstance = c;
                     };
                 }
 
                 return (
-                    <ConnectedRouter history={history}>
-                        <WrappedComponent {...props} />
-                    </ConnectedRouter>
+                    <WrappedComponent {...props} />
                 );
             }
         }
 
-        RouterContainer.propTypes = propTypes;
-        RouterContainer.defaultProps = defaultProps;
-        RouterContainer.displayName = `RouterContainer(${getDisplayName(WrappedComponent)})`;
-        RouterContainer.WrappedComponent = WrappedComponent;
+        HistoryContainer.propTypes = propTypes;
+        HistoryContainer.defaultProps = defaultProps;
+        HistoryContainer.displayName = `HistoryContainer(${getDisplayName(WrappedComponent)})`;
+        HistoryContainer.WrappedComponent = WrappedComponent;
 
-        return hoistStatics(RouterContainer, WrappedComponent);
+        return hoistStatics(HistoryContainer, WrappedComponent);
     };
 }
