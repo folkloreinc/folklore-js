@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import invariant from 'invariant';
 import hoistStatics from 'hoist-non-react-statics';
 import { routerMiddleware } from 'react-router-redux';
+import { connect } from 'react-redux';
 
 import createPropsContainer from './createPropsContainer';
 import createStoreContainer from './createStoreContainer';
@@ -22,6 +23,7 @@ export default function createAppContainer(opts) {
         propTypes: null,
         defaultProps: null,
         withRef: false,
+        mapStateToProps: null,
         getUrlGeneratorRoutes: null,
         getIntlLocale: null,
         getIntlMessages: null,
@@ -41,6 +43,7 @@ export default function createAppContainer(opts) {
         propTypes,
         defaultProps,
         createHistory,
+        mapStateToProps,
         getUrlGeneratorRoutes,
         getIntlLocale,
         getIntlMessages,
@@ -95,13 +98,16 @@ export default function createAppContainer(opts) {
             getIntlMessages,
             { withRef },
         )(RouterContainer);
+        const ConnectedContainer = mapStateToProps !== null
+            ? connect(mapStateToProps)(IntlContainer)
+            : IntlContainer;
         const StoreContainer = createStoreContainer(
             getStoreReducers,
             getStoreInitialState,
             getStoreMiddlewares,
             storeHasChanged,
             { withRef },
-        )(IntlContainer);
+        )(ConnectedContainer);
         const HistoryContainer = createHistoryContainer(
             createHistory,
             { withRef },
