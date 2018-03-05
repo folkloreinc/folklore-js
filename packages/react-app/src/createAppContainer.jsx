@@ -116,11 +116,11 @@ export default function createAppContainer(opts) {
             getUrlGeneratorRoutes,
             { withRef },
         )(HistoryContainer);
-        const PropsContainer = createPropsContainer(
-            propTypes || WrappedComponent.propTypes,
-            defaultProps || WrappedComponent.defaultProps,
+        const PropsContainer = propTypes !== null || defaultProps !== null ? createPropsContainer(
+            propTypes,
+            defaultProps,
             { withRef },
-        )(UrlGeneratorContainer);
+        )(UrlGeneratorContainer) : UrlGeneratorContainer;
         return PropsContainer;
     };
 }
