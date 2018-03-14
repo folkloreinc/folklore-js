@@ -2,6 +2,6 @@
 
 @section('title', 'Accueil')
 
-@section('content')
+@section('body')
     @hypernova('App', $props)
 @endsection

@@ -7,7 +7,10 @@ const initialState = {
 };
 
 const TestReducer = (previousState, action) => {
-    const state = previousState || initialState;
+    const state = {
+        ...initialState,
+        ...(previousState || null),
+    };
 
     switch (action.type) {
     case TEST_ACTION:
