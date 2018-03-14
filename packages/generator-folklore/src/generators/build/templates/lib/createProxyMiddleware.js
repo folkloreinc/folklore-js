@@ -4,7 +4,6 @@ const servestaticMiddleware = require('serve-static');
 const url = require('url');
 const path = require('path');
 const fs = require('fs');
-const { compose } = require('compose-middleware');
 /* eslint-enable import/no-extraneous-dependencies */
 
 module.exports = (proxy, opts) => {
@@ -55,5 +54,5 @@ module.exports = (proxy, opts) => {
     proxyMiddlewareOptions.rejectUnauthorized = false;
     middlewares.push(proxyMiddleware(proxyMiddlewareOptions));
 
-    return compose(middlewares);
+    return middlewares;
 };
