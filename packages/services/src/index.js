@@ -3,4 +3,5 @@ import loadGoogleMaps from './loadGoogleMaps';
 
 export {
     loadFacebook,
+    loadGoogleMaps,
 };
