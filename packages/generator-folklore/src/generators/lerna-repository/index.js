@@ -3,8 +3,7 @@ import path from 'path';
 import chalk from 'chalk';
 import Generator from '../../lib/generator';
 
-module.exports = class LernaPackageGenerator extends Generator {
-
+module.exports = class LernaRepositoryGenerator extends Generator {
     constructor(...args) {
         super(...args);
 
@@ -63,13 +62,48 @@ module.exports = class LernaPackageGenerator extends Generator {
             quiet: true,
         });
 
+        this.composeWith('folklore:sass-lint', {
+            quiet: true,
+            'camel-case': true,
+        });
+
         this.composeWith('folklore:editorconfig', {
+            quiet: true,
+        });
+
+        this.composeWith('folklore:babel', {
+            quiet: true,
+        });
+
+        this.composeWith('folklore:build', {
+            'project-name': this.options['project-name'],
+            'tmp-path': '.tmp',
+            'src-path': 'src',
+            'dest-path': 'dist',
+            'js-path': '',
+            'clean-dest': true,
+            'hot-reload': true,
+            'webpack-entries': {},
+            browsersync: false,
+            'skip-install': skipInstall,
             quiet: true,
         });
     }
 
     get writing() {
         return {
+            gitignore() {
+                const srcPath = this.templatePath('gitignore');
+                const destPath = this.destinationPath('.gitignore');
+                this.fs.copy(srcPath, destPath);
+            },
+
+            npmrc() {
+                const srcPath = this.templatePath('npmrc');
+                const destPath = this.destinationPath('.npmrc');
+                this.fs.copy(srcPath, destPath);
+            },
+
             lernaJSON() {
                 const srcPath = this.templatePath('_lerna.json');
                 const destPath = this.destinationPath('lerna.json');
@@ -85,6 +119,40 @@ module.exports = class LernaPackageGenerator extends Generator {
                     this.fs.readJSON(destPath) : {};
                 this.fs.writeJSON(destPath, _.merge(packageJSON, currentPackageJSON));
             },
+
+            jest() {
+                const srcPath = this.templatePath('jest.config.js');
+                const destPath = this.destinationPath('jest.config.js');
+                this.fs.copy(srcPath, destPath);
+            },
+
+            readme() {
+                const srcPath = this.templatePath('Readme.md');
+                const destPath = this.destinationPath('Readme.md');
+                this.fs.copy(srcPath, destPath);
+            },
+
+            buildTranslations() {
+                const srcPath = this.templatePath('buildPackageTranslations.js');
+                const destPath = this.destinationPath('build/buildPackageTranslations.js');
+                this.fs.copy(srcPath, destPath);
+
+                const allSrcPath = this.templatePath('buildAllTranslations.js');
+                const allDestPath = this.destinationPath('build/buildAllTranslations.js');
+                this.fs.copy(allSrcPath, allDestPath);
+            },
+
+            buildLib() {
+                const srcPath = this.templatePath('lib');
+                const destPath = this.destinationPath('build/lib');
+                this.fs.copy(srcPath, destPath);
+            },
+
+            packages() {
+                const srcPath = this.templatePath('packages/.gitkeep');
+                const destPath = this.destinationPath('packages/.gitkeep');
+                this.fs.copy(srcPath, destPath);
+            },
         };
     }
 
@@ -93,6 +161,8 @@ module.exports = class LernaPackageGenerator extends Generator {
             npm() {
                 this.npmInstall([
                     'lerna@latest',
+                    'glob@latest',
+                    'mkdirp@latest',
                 ], {
                     saveDev: true,
                 });

@@ -143,6 +143,7 @@ module.exports = class HTMLGenerator extends Generator {
         this.composeWith('folklore:scss', {
             'project-name': projectName,
             path: scssSrcPath,
+            react: true,
             'skip-install': skipInstall,
             quiet: true,
         });

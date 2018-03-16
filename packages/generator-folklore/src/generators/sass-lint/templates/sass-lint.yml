@@ -8,17 +8,14 @@ rules:
         -
             size: 4
     no-css-comments: 0
-    nesting-depth: 5
-    class-name-format:
-        - 1
-        -
-            convention: camelcase
-    mixin-name-format:
+    nesting-depth: 4
+<% if (camelCase) {
+%>    mixin-name-format:
         - 1
         -
             allow-leading-underscore: false
             convention: camelcase
-    property-sort-order:
+<% } %>    property-sort-order:
         - 1
         -
             order: 'smacss'

@@ -133,6 +133,11 @@ module.exports = class AppGenerator extends Generator {
             defaults: false,
         });
 
+        this.option('webpack-library', {
+            type: Boolean,
+            defaults: false,
+        });
+
         this.option('webpack-config-dist', {
             type: Boolean,
             defaults: true,

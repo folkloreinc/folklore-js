@@ -78,7 +78,9 @@ module.exports = (env) => {
             path: outputPath,
             filename: '[name].js',
             chunkFilename: '[name].js',
-            jsonpFunction: 'flklrJsonp',
+            jsonpFunction: 'flklrJsonp',<% if(options.library) { %>
+            libraryTarget: 'umd',
+            libraryExport: 'default',<% } %>
             publicPath,
         },
 

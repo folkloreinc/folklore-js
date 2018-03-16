@@ -40,11 +40,11 @@ const plugins = [
 <% if(compile) { %>
 if (compiling) {
     plugins.push(['css-modules-transform', {
-        preprocessCss: path.join(__dirname, './lib/process-scss.js'),
+        preprocessCss: path.join(__dirname, './lib/processScss.js'),
         extensions: ['.css', '.scss'],
         generateScopedName: path.join(__dirname, './lib/generateScopedName.js'),
     }]);
-    plugins.push([path.join(__dirname, './lib/babel-plugin-transform-require-ignore'), {
+    plugins.push([path.join(__dirname, './lib/transformRequireIgnore'), {
         extensions: ['.global.scss'],
     }]);
 <% if(reactIntl) { %>    if (BABEL_ENV === 'es') {

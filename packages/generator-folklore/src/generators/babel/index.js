@@ -3,7 +3,6 @@ import chalk from 'chalk';
 import Generator from '../../lib/generator';
 
 module.exports = class BabelGenerator extends Generator {
-
     constructor(...args) {
         super(...args);
 
