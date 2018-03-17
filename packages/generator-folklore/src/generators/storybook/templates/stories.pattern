@@ -1,1 +1,1 @@
-../{packages}/*/src/__stories__/*.story.jsx
+<%= pattern %>

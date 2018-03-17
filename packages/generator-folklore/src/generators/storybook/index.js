@@ -88,8 +88,9 @@ module.exports = class StorybookGenerator extends Generator {
                     '@storybook/addons@latest',
                     '@storybook/react@latest',
                     '@storybook/storybook-deployer@latest',
+                    'glob-loader@latest',
                 ], {
-                    saveDev: true,
+                    'save-dev': true,
                 });
             },
         };

@@ -169,6 +169,11 @@ module.exports = class AppGenerator extends Generator {
             type: String,
         });
 
+        this.option('npm-scripts', {
+            type: Boolean,
+            defaults: true,
+        });
+
         this.option('images', {
             type: Boolean,
             defaults: true,
@@ -484,6 +489,9 @@ module.exports = class AppGenerator extends Generator {
             },
 
             packageJSONScripts() {
+                if (!this.options['npm-scripts']) {
+                    return;
+                }
                 const buildPath = _.get(this.options, 'path');
                 const tmpPath = _.get(this.options, 'tmp-path');
                 const srcPath = _.get(this.options, 'src-path');
@@ -642,7 +650,7 @@ module.exports = class AppGenerator extends Generator {
                     return;
                 }
 
-                this.npmInstall([
+                const devDependencies = [
                     'autoprefixer@latest',
                     'babel-loader@latest',
                     'babel-register@latest',
@@ -682,17 +690,15 @@ module.exports = class AppGenerator extends Generator {
                     'webpack-hot-middleware@latest',
                     'webpack-dev-middleware@latest',
                     'webpack-merge@latest',
-                ], {
-                    saveDev: true,
-                });
+                ];
 
                 if (this.options['hot-reload']) {
-                    this.npmInstall([
-                        'react-hot-loader@^4.0.0-beta.21',
-                    ], {
-                        saveDev: true,
-                    });
+                    devDependencies.push('react-hot-loader@^4.0.0');
                 }
+
+                this.npmInstall(devDependencies, {
+                    'save-dev': true,
+                });
             },
 
             sass() {

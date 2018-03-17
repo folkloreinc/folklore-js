@@ -14,10 +14,6 @@
         {
             "name": "Nicolas Roy-Bourdages",
             "email": "nrb@atelierfolklore.ca"
-        },
-        {
-            "name": "Hugo St-Onge",
-            "email": "hso@atelierfolklore.ca"
         }
     ],
     "scripts": {
@@ -35,9 +31,5 @@
         "build": "lerna run build",
         "publish": "npm run storybook-deploy && lerna publish",
         "start": "npm run storybook"
-    },
-    "devDependencies": {
-
-    },
-    "dependencies": {}
+    }
 }

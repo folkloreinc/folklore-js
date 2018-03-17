@@ -2,7 +2,7 @@ const path = require('path');
 const glob = require('glob');
 const fs = require('fs');
 const webpack = require('webpack');
-const getLocalIdent = require('../build/getLocalIdent');
+const getLocalIdent = require('../build/lib/getLocalIdent');
 const getPackagesPaths = require('../build/lib/getPackagesPaths');
 const config = require('../build/config');
 
@@ -52,7 +52,9 @@ module.exports = (storybookBaseConfig, configType) => {
         options: {
             sourceMap: true,
             localIdentName: CSS_NAME,
-            getLocalIdent,
+            getLocalIdent: (context, localIdentName, localName) => (
+                getLocalIdent(localIdentName, localName, context.resourcePath)
+            ),
         },
     };
 

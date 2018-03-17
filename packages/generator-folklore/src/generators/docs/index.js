@@ -4,7 +4,6 @@ import chalk from 'chalk';
 import Generator from '../../lib/generator';
 
 module.exports = class DocsGenerator extends Generator {
-
     constructor(...args) {
         super(...args);
 
@@ -18,6 +17,9 @@ module.exports = class DocsGenerator extends Generator {
             type: String,
             required: false,
         });
+
+        this.docsPath = destPath =>
+            this.destinationPath(path.join(this.options['docs-path'], destPath || ''));
     }
 
     get prompting() {
@@ -40,9 +42,8 @@ module.exports = class DocsGenerator extends Generator {
                         type: 'list',
                         name: 'type',
                         message: 'What language is used?',
-                        defaults: () => (
-                            this.fs.exists(this.destinationPath('composer.json')) ? 'php' : 'js'
-                        ),
+                        defaults: () =>
+                            (this.fs.exists(this.destinationPath('composer.json')) ? 'php' : 'js'),
                         choices: [
                             {
                                 name: 'Javascript',
@@ -60,12 +61,11 @@ module.exports = class DocsGenerator extends Generator {
                     return null;
                 }
 
-                return this.prompt(prompts)
-                    .then((answers) => {
-                        if (answers.language) {
-                            this.language = answers.language;
-                        }
-                    });
+                return this.prompt(prompts).then((answers) => {
+                    if (answers.language) {
+                        this.language = answers.language;
+                    }
+                });
             },
         };
     }
@@ -98,26 +98,20 @@ module.exports = class DocsGenerator extends Generator {
 
             docs() {
                 const srcPath = this.templatePath('docs');
-                const destPath = this.destinationPath(this.options['docs-path']);
+                const destPath = this.docsPath();
                 this.fs.copy(srcPath, destPath);
             },
 
             generateApiDoc() {
                 const srcPath = this.templatePath(`generate_api_doc.${this.options.language}`);
-                const destPath = this.destinationPath(path.join(
-                    this.options['docs-path'],
-                    'scripts/generate_api_doc',
-                ));
+                const destPath = this.destinationPath(this.docsPath('scripts/generate_api_doc'));
                 this.fs.copy(srcPath, destPath);
             },
 
             packageJSON() {
                 const generateApiPath = path.relative(
                     this.destinationPath(),
-                    this.destinationPath(path.join(
-                        this.options['docs-path'],
-                        './scripts/generate_api_doc',
-                    )),
+                    this.destinationPath(this.docsPath('./scripts/generate_api_doc')),
                 );
                 const scripts = {
                     'docs:prepare': 'gitbook install',
@@ -126,17 +120,13 @@ module.exports = class DocsGenerator extends Generator {
                     'build:docs': 'npm run docs:prepare && npm run docs:api',
                 };
 
-                const srcPath = this.templatePath('_package.json');
                 const destPath = this.destinationPath('package.json');
-
-                const packageJSON = this.fs.readJSON(srcPath);
+                const packageJSON = this.fs.exists(destPath) ? this.fs.readJSON(destPath) : {};
                 packageJSON.scripts = {
                     ...packageJSON.scripts,
                     ...scripts,
                 };
-                const currentPackageJSON = this.fs.exists(destPath) ?
-                    this.fs.readJSON(destPath) : {};
-                this.fs.writeJSON(destPath, _.merge(packageJSON, currentPackageJSON));
+                this.fs.writeJSON(destPath, packageJSON);
             },
         };
     }
@@ -148,18 +138,13 @@ module.exports = class DocsGenerator extends Generator {
                     return;
                 }
 
-                this.npmInstall([
-                    'gitbook-cli@latest',
-                ], {
-                    saveDev: true,
+                this.npmInstall(['gitbook-cli@latest'], {
+                    'save-dev': true,
                 });
 
-                if (this.options.langage === 'js') {
-                    this.npmInstall([
-                        'jsdoc@latest',
-                        'jsdoc-babel@latest',
-                    ], {
-                        saveDev: true,
+                if (this.options.language === 'js') {
+                    this.npmInstall(['jsdoc@latest', 'jsdoc-babel@latest'], {
+                        'save-dev': true,
                     });
                 }
             },

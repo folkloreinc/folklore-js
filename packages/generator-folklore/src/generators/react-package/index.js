@@ -5,7 +5,6 @@ import { pascal } from 'change-case';
 import Generator from '../../lib/generator';
 
 module.exports = class ReactPackageGenerator extends Generator {
-
     constructor(...args) {
         super(...args);
 
@@ -83,7 +82,8 @@ module.exports = class ReactPackageGenerator extends Generator {
                         name: 'component-name',
                         message: 'Name of the component:',
                         default: (answers) => {
-                            const packageName = (this.options['package-name'] || answers['package-name']);
+                            const packageName =
+                                this.options['package-name'] || answers['package-name'];
                             return packageName ? pascal(packageName) : undefined;
                         },
                     });
@@ -93,15 +93,14 @@ module.exports = class ReactPackageGenerator extends Generator {
                     return null;
                 }
 
-                return this.prompt(prompts)
-                    .then((answers) => {
-                        if (answers['package-name']) {
-                            this.options['package-name'] = answers['package-name'];
-                        }
-                        if (answers['component-name']) {
-                            this.options['component-name'] = answers['component-name'];
-                        }
-                    });
+                return this.prompt(prompts).then((answers) => {
+                    if (answers['package-name']) {
+                        this.options['package-name'] = answers['package-name'];
+                    }
+                    if (answers['component-name']) {
+                        this.options['component-name'] = answers['component-name'];
+                    }
+                });
             },
         };
     }
@@ -131,13 +130,8 @@ module.exports = class ReactPackageGenerator extends Generator {
             'webpack-dev-entries': {
                 main: './js/index',
             },
-            'browsersync-base-dir': [
-                tmpPath,
-                examplesPath,
-            ],
-            'browsersync-files': [
-                path.join(examplesPath, '**'),
-            ],
+            'browsersync-base-dir': [tmpPath, examplesPath],
+            'browsersync-files': [path.join(examplesPath, '**')],
             quiet: true,
         });
     }
@@ -177,31 +171,36 @@ module.exports = class ReactPackageGenerator extends Generator {
 
     get install() {
         return {
-            npm() {
+            npmInstall() {
                 if (this.options['skip-install']) {
                     return;
                 }
 
-                this.npmInstall([
-                    'react@latest',
-                    'prop-types@latest',
-                    'react-dom@latest',
-                ], {
+                this.npmInstall(['react@latest', 'prop-types@latest', 'react-dom@latest'], {
                     save: true,
                 });
+            },
 
-                this.npmInstall([
-                    'domready@latest',
-                    'jquery@latest',
-                    'enzyme@latest',
-                    'react-test-renderer@latest',
-                    '@storybook/react@latest',
-                    '@storybook/addon-actions@latest',
-                    'extract-text-webpack-plugin@latest',
-                    'html-webpack-plugin@latest',
-                ], {
-                    saveDev: true,
-                });
+            npmInstallDev() {
+                if (this.options['skip-install']) {
+                    return;
+                }
+
+                this.npmInstall(
+                    [
+                        'domready@latest',
+                        'jquery@latest',
+                        'enzyme@latest',
+                        'react-test-renderer@latest',
+                        '@storybook/react@latest',
+                        '@storybook/addon-actions@latest',
+                        'extract-text-webpack-plugin@latest',
+                        'html-webpack-plugin@latest',
+                    ],
+                    {
+                        'save-dev': true,
+                    },
+                );
             },
         };
     }

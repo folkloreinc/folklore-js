@@ -1,13 +1,13 @@
 {
     "presets": [
-        "env",
-        "react"
+        ["env", {
+            "targets": {
+                "node": "8"
+            }
+        }]
     ],
     "plugins": [
         "transform-class-properties",
         "transform-object-rest-spread"
-    ],
-    "ignore": [
-        "src/generators/*/templates/**"
     ]
 }

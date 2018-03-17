@@ -31,25 +31,24 @@ module.exports = class EslintGenerator extends Generator {
         };
     }
 
-    get install() {
-        return {
-            npm() {
-                if (this.options['skip-install']) {
-                    return;
-                }
+    install() {
+        if (this.options['skip-install']) {
+            return;
+        }
 
-                this.npmInstall([
-                    'babel-preset-airbnb@latest',
-                    'babel-eslint@latest',
-                    'eslint@4.16.0',
-                    'eslint-config-airbnb@latest',
-                    'eslint-plugin-import',
-                    'eslint-plugin-jsx-a11y',
-                    'eslint-plugin-react',
-                ], {
-                    saveDev: true,
-                });
+        this.npmInstall(
+            [
+                'babel-preset-airbnb@latest',
+                'babel-eslint@latest',
+                'eslint@4.16.0',
+                'eslint-config-airbnb@latest',
+                'eslint-plugin-import',
+                'eslint-plugin-jsx-a11y',
+                'eslint-plugin-react',
+            ],
+            {
+                'save-dev': true,
             },
-        };
+        );
     }
 };

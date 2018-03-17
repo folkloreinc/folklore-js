@@ -13,7 +13,7 @@ const defaultProps = {
 };
 
 class <%= componentName %> extends Component {
-    constructor() {
+    constructor(props) {
         super(props);
 
         this.onClickButton = this.onClickButton.bind(this);

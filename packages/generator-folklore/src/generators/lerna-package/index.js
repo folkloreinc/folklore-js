@@ -39,7 +39,7 @@ module.exports = class LernaPackageGenerator extends Generator {
             return this.destinationPath(path.join(
                 this.options['package-folder'],
                 nameParts[nameParts.length - 1],
-                destPath,
+                destPath || '',
             ));
         };
     }
@@ -103,8 +103,11 @@ module.exports = class LernaPackageGenerator extends Generator {
                     name: 'component-name',
                     message: 'Name of the component:',
                     when: answers => (answers.type || this.options.type) === 'react',
-                    default: answers =>
-                        pascalCase(answers['package-name'] || this.options['package-name']),
+                    default: (answers) => {
+                        const packageName = answers['package-name'] || this.options['package-name'];
+                        const parts = packageName.split(path.sep);
+                        return pascalCase(`${parts[parts.length - 1]}-component`);
+                    },
                 });
 
                 if (!prompts.length) {
@@ -161,6 +164,8 @@ module.exports = class LernaPackageGenerator extends Generator {
                 const packageJSON = this.fs.readJSON(srcPath);
                 packageJSON.name = this.options['package-name'];
                 if (type === 'react') {
+                    packageJSON.dependencies['prop-types'] = '^15.6.0';
+                    packageJSON.dependencies['react-intl'] = '^2.4.0';
                     packageJSON.devDependencies = {
                         react: '>=15.0.0 || ^16.0.0',
                         'react-dom': '>=15.0.0 || ^16.0.0',
@@ -216,9 +221,12 @@ module.exports = class LernaPackageGenerator extends Generator {
                             componentName,
                         },
                     );
-                    this.fs.copy(
+                    this.fs.copyTpl(
                         this.templatePath('src/react/index.js'),
                         this.packagePath('src/index.js'),
+                        {
+                            componentName,
+                        },
                     );
                     this.fs.copy(
                         this.templatePath('src/react/styles.scss'),
@@ -235,6 +243,25 @@ module.exports = class LernaPackageGenerator extends Generator {
 
     get install() {
         return {
+            npmInstallRoot() {
+                if (this.options['skip-install']) {
+                    return;
+                }
+
+                this.npmInstall(
+                    [
+                        'react@>=15.0.0 || ^16.0.0',
+                        'react-dom@>=15.0.0 || ^16.0.0',
+                        'classnames@latest',
+                        'lodash@latest',
+                        'prop-types@latest',
+                    ],
+                    {
+                        'save-dev': true,
+                    },
+                );
+            },
+
             bootstrap() {
                 if (this.options['skip-install']) {
                     return;
@@ -243,7 +270,6 @@ module.exports = class LernaPackageGenerator extends Generator {
                 const done = this.async();
                 this.spawnCommand('lerna', [
                     'bootstrap',
-                    '--hoist',
                     '--scope',
                     this.options['package-name'],
                 ]).on('close', done);

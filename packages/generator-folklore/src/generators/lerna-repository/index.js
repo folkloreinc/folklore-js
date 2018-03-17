@@ -11,6 +11,12 @@ module.exports = class LernaRepositoryGenerator extends Generator {
             type: String,
             required: false,
         });
+
+        this.option('features', {
+            type: String,
+            required: false,
+            defaults: 'documentation,storybook',
+        });
     }
 
     get prompting() {
@@ -40,25 +46,45 @@ module.exports = class LernaRepositoryGenerator extends Generator {
                     });
                 }
 
+                prompts.push({
+                    type: 'checkbox',
+                    name: 'features',
+                    message: 'List of features:',
+                    choices: [
+                        {
+                            name: 'Documentation',
+                            value: 'documentation',
+                        },
+                        {
+                            name: 'Storybook',
+                            value: 'storybook',
+                        },
+                    ],
+                    default: () => this.options.features.split(','),
+                });
+
                 if (!prompts.length) {
                     return null;
                 }
 
-                return this.prompt(prompts)
-                    .then((answers) => {
-                        if (answers['project-name']) {
-                            this.options['project-name'] = answers['project-name'];
-                        }
-                    });
+                return this.prompt(prompts).then((answers) => {
+                    if (answers['project-name']) {
+                        this.options['project-name'] = answers['project-name'];
+                    }
+                    if (answers.features) {
+                        this.options.features = answers.features;
+                    }
+                });
             },
         };
     }
 
     configuring() {
-        const skipInstall = _.get(this.options, 'skip-install', false);
-
+        this.options.features = _.isString(this.options.features)
+            ? this.options.features.split(',')
+            : this.options.features;
         this.composeWith('folklore:eslint', {
-            'skip-install': skipInstall,
+            'skip-install': this.options['skip-install'],
             quiet: true,
         });
 
@@ -72,18 +98,22 @@ module.exports = class LernaRepositoryGenerator extends Generator {
         });
 
         this.composeWith('folklore:babel', {
-            'skip-install': skipInstall,
+            'skip-install': this.options['skip-install'],
             quiet: true,
+            compile: true,
+            'transform-runtime': true,
+            'hot-reload': true,
+            'react-intl': true,
         });
 
         this.composeWith('folklore:test', {
-            'skip-install': skipInstall,
+            'skip-install': this.options['skip-install'],
             quiet: true,
             type: 'jest',
         });
 
         this.composeWith('folklore:build', {
-            'skip-install': skipInstall,
+            'skip-install': this.options['skip-install'],
             quiet: true,
             'project-name': this.options['project-name'],
             'tmp-path': '.tmp',
@@ -93,14 +123,25 @@ module.exports = class LernaRepositoryGenerator extends Generator {
             'clean-dest': true,
             'hot-reload': true,
             'webpack-entries': {},
+            'npm-scripts': false,
             browsersync: false,
         });
 
-        this.composeWith('folklore:storybook', {
-            quiet: true,
-            'skip-install': skipInstall,
-            pattern: '../{packages}/*/src/__stories__/*.story.jsx',
-        });
+        if (this.options.features.indexOf('storybook') !== -1) {
+            this.composeWith('folklore:storybook', {
+                quiet: true,
+                'skip-install': this.options['skip-install'],
+                pattern: '../packages/*/src/__stories__/*.story.jsx',
+            });
+        }
+
+        if (this.options.features.indexOf('documentation') !== -1) {
+            this.composeWith('folklore:docs', {
+                quiet: true,
+                'skip-install': this.options['skip-install'],
+                language: 'js',
+            });
+        }
     }
 
     get writing() {
@@ -128,8 +169,9 @@ module.exports = class LernaRepositoryGenerator extends Generator {
                 const destPath = this.destinationPath('package.json');
                 const packageJSON = this.fs.readJSON(srcPath);
                 packageJSON.name = this.options['project-name'];
-                const currentPackageJSON = this.fs.exists(destPath) ?
-                    this.fs.readJSON(destPath) : {};
+                const currentPackageJSON = this.fs.exists(destPath)
+                    ? this.fs.readJSON(destPath)
+                    : {};
                 this.fs.writeJSON(destPath, _.merge(packageJSON, currentPackageJSON));
             },
 
@@ -169,7 +211,10 @@ module.exports = class LernaRepositoryGenerator extends Generator {
 
             storybook() {
                 this.fs.copy(this.templatePath('storybook'), this.destinationPath('.storybook'));
-                this.fs.copy(this.templatePath('storybook-package'), this.destinationPath('.storybook-package'));
+                this.fs.copy(
+                    this.templatePath('storybook-package'),
+                    this.destinationPath('.storybook-package'),
+                );
             },
         };
     }
@@ -177,13 +222,25 @@ module.exports = class LernaRepositoryGenerator extends Generator {
     get install() {
         return {
             npm() {
-                this.npmInstall([
-                    'lerna@latest',
-                    'glob@latest',
-                    'mkdirp@latest',
-                ], {
-                    saveDev: true,
-                });
+                if (this.options['skip-install']) {
+                    return;
+                }
+
+                this.npmInstall(
+                    ['lerna@latest', 'glob@latest', 'mkdirp@latest', 'babel-runtime@latest'],
+                    {
+                        'save-dev': true,
+                    },
+                );
+            },
+
+            bootstrap() {
+                if (this.options['skip-install']) {
+                    return;
+                }
+
+                const done = this.async();
+                this.spawnCommand('lerna', ['bootstrap']).on('close', done);
             },
         };
     }

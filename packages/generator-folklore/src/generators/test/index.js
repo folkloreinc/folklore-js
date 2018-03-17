@@ -54,12 +54,8 @@ module.exports = class TestGenerator extends Generator {
                     return;
                 }
 
-                this.npmInstall([
-                    'jest@latest',
-                    'babel-jest@latest',
-                    'eslint-plugin-jest@latest',
-                ], {
-                    saveDev: true,
+                this.npmInstall(['jest@latest', 'babel-jest@latest', 'eslint-plugin-jest@latest'], {
+                    'save-dev': true,
                 });
             },
         };

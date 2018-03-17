@@ -109,7 +109,9 @@ module.exports = class BabelGenerator extends Generator {
                     return;
                 }
 
-                this.npmInstall([
+                const dependencies = [];
+
+                const devDependencies = [
                     'babel-cli@latest',
                     'babel-core@latest',
                     'babel-register@latest',
@@ -121,20 +123,26 @@ module.exports = class BabelGenerator extends Generator {
                     'babel-plugin-css-modules-transform@latest',
                     'babel-preset-env@latest',
                     'babel-preset-react@latest',
-                ], {
-                    saveDev: true,
-                });
+                ];
 
                 if (this.options['transform-runtime']) {
-                    this.npmInstall([
-                        'babel-plugin-transform-runtime@latest',
-                    ], {
-                        saveDev: true,
-                    });
-                    this.npmInstall([
-                        'babel-runtime@latest',
-                    ], {
+                    dependencies.push('babel-runtime@latest');
+                    devDependencies.push('babel-plugin-transform-runtime@latest');
+                }
+
+                if (this.options['react-intl']) {
+                    devDependencies.push('babel-plugin-react-intl@latest');
+                }
+
+                if (dependencies.length > 0) {
+                    this.npmInstall(dependencies, {
                         save: true,
+                    });
+                }
+
+                if (devDependencies.length > 0) {
+                    this.npmInstall(devDependencies, {
+                        'save-dev': true,
                     });
                 }
             },
