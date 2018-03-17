@@ -8,6 +8,6 @@
         "transform-object-rest-spread"
     ],
     "ignore": [
-        "**/templates/**"
+        "src/generators/*/templates/**"
     ]
 }
