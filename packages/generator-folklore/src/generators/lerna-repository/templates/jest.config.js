@@ -1,5 +1,4 @@
 const path = require('path');
-const glob = require('glob');
 const fs = require('fs');
 const lernaJson = require('./lerna.json');
 const getPackagesPaths = require('./build/lib/getPackagesPaths');

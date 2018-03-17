@@ -54,7 +54,16 @@ module.exports = class TestGenerator extends Generator {
                     return;
                 }
 
-                this.npmInstall(['jest@latest', 'babel-jest@latest', 'eslint-plugin-jest@latest'], {
+                this.npmInstall([
+                    'babel-jest@latest',
+                    'enzyme@latest',
+                    'enzyme-adapter-react-16@latest',
+                    'eslint-plugin-jest@latest',
+                    'jest@latest',
+                    'jsdom@latest',
+                    'react-test-renderer@latest',
+                    'sinon@latest',
+                ], {
                     'save-dev': true,
                 });
             },
