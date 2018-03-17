@@ -32,12 +32,11 @@ class <%= componentName %> extends Component {
                     [className]: className !== null,
                 })}
             >
-                <button
-                    type="button"
-                    onClick={this.onClickButton}
-                >Button</button>
+                <button type="button" onClick={this.onClickButton}>
+                    Button
+                </button>
             </div>
-        )
+        );
     }
 }
 

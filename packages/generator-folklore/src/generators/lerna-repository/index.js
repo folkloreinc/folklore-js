@@ -188,12 +188,12 @@ module.exports = class LernaRepositoryGenerator extends Generator {
             },
 
             buildTranslations() {
-                const srcPath = this.templatePath('buildPackageTranslations.js');
-                const destPath = this.destinationPath('build/buildPackageTranslations.js');
+                const srcPath = this.templatePath('build-package-translations.js');
+                const destPath = this.destinationPath('build/build-package-translations.js');
                 this.fs.copy(srcPath, destPath);
 
-                const allSrcPath = this.templatePath('buildAllTranslations.js');
-                const allDestPath = this.destinationPath('build/buildAllTranslations.js');
+                const allSrcPath = this.templatePath('build-all-translations.js');
+                const allDestPath = this.destinationPath('build/build-all-translations.js');
                 this.fs.copy(allSrcPath, allDestPath);
             },
 

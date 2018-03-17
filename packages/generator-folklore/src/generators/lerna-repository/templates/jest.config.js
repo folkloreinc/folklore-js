@@ -12,7 +12,7 @@ const coveragePatterns = lernaJson.packages.map(packagePath => (
 ));
 
 const moduleNameMapper = getPackagesPaths().reduce((map, packagePath) => {
-    const packageJsonPath = path.join(__dirname, packagePath, '/package.json');
+    const packageJsonPath = path.join(packagePath, '/package.json');
     const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
     return {
         ...map,
