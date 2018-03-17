@@ -19,13 +19,19 @@ module.exports = class LernaPackageGenerator extends Generator {
             required: false,
         });
 
-        const lernaJSON = this.fs.readJSON(this.destinationPath('lerna.json'));
-        const packageFolders = lernaJSON.packages.map(it => it.replace(/\/\*$/, ''));
+        this.packageFolders = this.fs
+            .readJSON(this.destinationPath('lerna.json'))
+            .packages.map(it => it.replace(/\/\*$/, ''));
 
         this.option('package-folder', {
             type: String,
             required: false,
-            defaults: packageFolders.length <= 1 ? get(packageFolders, 0) : undefined,
+            defaults: get(this.packageFolders, 0),
+        });
+
+        this.option('component-name', {
+            type: String,
+            required: false,
         });
 
         this.packagePath = (destPath) => {
@@ -53,9 +59,6 @@ module.exports = class LernaPackageGenerator extends Generator {
             prompts() {
                 const prompts = [];
 
-                const lernaJSON = this.fs.readJSON(this.destinationPath('lerna.json'));
-                const packageFolders = lernaJSON.packages.map(it => it.replace(/\/\*$/, ''));
-
                 if (!this.options['package-name']) {
                     prompts.push({
                         type: 'input',
@@ -68,12 +71,12 @@ module.exports = class LernaPackageGenerator extends Generator {
                     });
                 }
 
-                if (packageFolders.length > 1) {
+                if (this.packageFolders.length > 1) {
                     prompts.push({
                         type: 'list',
                         name: 'package-folder',
                         message: 'Which folder?',
-                        choices: packageFolders,
+                        choices: this.packageFolders,
                     });
                 }
 
@@ -95,26 +98,38 @@ module.exports = class LernaPackageGenerator extends Generator {
                     });
                 }
 
+                prompts.push({
+                    type: 'input',
+                    name: 'component-name',
+                    message: 'Name of the component:',
+                    when: answers => (answers.type || this.options.type) === 'react',
+                    default: answers =>
+                        pascalCase(answers['package-name'] || this.options['package-name']),
+                });
+
                 if (!prompts.length) {
                     return null;
                 }
 
-                return this.prompt(prompts)
-                    .then((answers) => {
-                        if (answers['package-name']) {
-                            this.options['package-name'] = answers['package-name'];
-                        }
+                return this.prompt(prompts).then((answers) => {
+                    if (answers['package-name']) {
+                        this.options['package-name'] = answers['package-name'];
+                    }
 
-                        if (answers.type) {
-                            this.options.type = answers.type;
-                        }
+                    if (answers.type) {
+                        this.options.type = answers.type;
+                    }
 
-                        if (answers['package-folder']) {
-                            this.options['package-folder'] = answers['package-folder'];
-                        } else {
-                            this.options['package-folder'] = get(packageFolders, 0, '');
-                        }
-                    });
+                    if (answers['component-name']) {
+                        this.options['component-name'] = answers['component-name'];
+                    }
+
+                    if (answers['package-folder']) {
+                        this.options['package-folder'] = answers['package-folder'];
+                    } else {
+                        this.options['package-folder'] = get(this.packageFolders, 0, '');
+                    }
+                });
             },
         };
     }
@@ -155,8 +170,9 @@ module.exports = class LernaPackageGenerator extends Generator {
                         'react-dom': '>=15.0.0 || ^16.0.0',
                     };
                 }
-                const currentPackageJSON = this.fs.exists(destPath) ?
-                    this.fs.readJSON(destPath) : {};
+                const currentPackageJSON = this.fs.exists(destPath)
+                    ? this.fs.readJSON(destPath)
+                    : {};
                 this.fs.writeJSON(destPath, _.merge(packageJSON, currentPackageJSON));
             },
 
@@ -177,9 +193,42 @@ module.exports = class LernaPackageGenerator extends Generator {
 
             src() {
                 const { type } = this.options;
-                const srcPath = this.templatePath(`src/${type}`);
-                const destPath = this.packagePath('src');
-                this.fs.copy(srcPath, destPath);
+                if (type === 'react') {
+                    const componentName = this.options['component-name'];
+                    this.fs.copyTpl(
+                        this.templatePath('src/react/Component.jsx'),
+                        this.packagePath(`src/${componentName}.jsx`),
+                        {
+                            componentName,
+                        },
+                    );
+                    this.fs.copyTpl(
+                        this.templatePath('src/react/__tests__/Component.test.jsx'),
+                        this.packagePath(`src/__tests__/${componentName}.test.jsx`),
+                        {
+                            componentName,
+                        },
+                    );
+                    this.fs.copyTpl(
+                        this.templatePath('src/react/__stories__/Component.story.jsx'),
+                        this.packagePath(`src/__stories__/${componentName}.story.jsx`),
+                        {
+                            componentName,
+                        },
+                    );
+                    this.fs.copy(
+                        this.templatePath('src/react/index.js'),
+                        this.packagePath('src/index.js'),
+                    );
+                    this.fs.copy(
+                        this.templatePath('src/react/styles.scss'),
+                        this.packagePath('src/styles.scss'),
+                    );
+                } else {
+                    const srcPath = this.templatePath(`src/${type}`);
+                    const destPath = this.packagePath('src');
+                    this.fs.copy(srcPath, destPath);
+                }
             },
         };
     }
@@ -192,7 +241,12 @@ module.exports = class LernaPackageGenerator extends Generator {
                 }
 
                 const done = this.async();
-                this.spawnCommand('lerna', ['bootstrap', '--hoist', '--scope', this.options['package-name']]).on('close', done);
+                this.spawnCommand('lerna', [
+                    'bootstrap',
+                    '--hoist',
+                    '--scope',
+                    this.options['package-name'],
+                ]).on('close', done);
             },
         };
     }

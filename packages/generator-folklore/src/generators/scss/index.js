@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import chalk from 'chalk';
 import Generator from '../../lib/generator';
 

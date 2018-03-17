@@ -39,10 +39,5 @@
     "devDependencies": {
 
     },
-    "storybook-deployer": {
-        "gitUsername": "Folklore",
-        "gitEmail": "info@atelierfolklore.ca",
-        "commitMessage": "Deploy Storybook to GitHub Pages"
-    },
     "dependencies": {}
 }

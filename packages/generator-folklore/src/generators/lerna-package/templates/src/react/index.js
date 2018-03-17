@@ -1,3 +1,3 @@
-import Component from './Component';
+import <%= componentName %> from './<%= componentName %>';
 
-export default Component;
+export default <%= componentName %>;

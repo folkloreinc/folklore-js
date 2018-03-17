@@ -2,12 +2,12 @@ import React from 'react';
 import { action } from '@storybook/addon-actions';// eslint-disable-line import/no-extraneous-dependencies
 
 import storiesOf from '../../../../.storybook/storiesOf';
-import Component from '../Component';
+import <%= componentName %> from '../<%= componentName %>';
 
-storiesOf('Component', module)
+storiesOf('<%= componentName %>', module)
     .add('simple', () => (
         <div>
-            <Component
+            <<%= componentName %>
 
             />
         </div>

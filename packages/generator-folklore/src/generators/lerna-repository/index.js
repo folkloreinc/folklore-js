@@ -72,10 +72,19 @@ module.exports = class LernaRepositoryGenerator extends Generator {
         });
 
         this.composeWith('folklore:babel', {
+            'skip-install': skipInstall,
             quiet: true,
         });
 
+        this.composeWith('folklore:test', {
+            'skip-install': skipInstall,
+            quiet: true,
+            type: 'jest',
+        });
+
         this.composeWith('folklore:build', {
+            'skip-install': skipInstall,
+            quiet: true,
             'project-name': this.options['project-name'],
             'tmp-path': '.tmp',
             'src-path': 'src',
@@ -85,8 +94,12 @@ module.exports = class LernaRepositoryGenerator extends Generator {
             'hot-reload': true,
             'webpack-entries': {},
             browsersync: false,
-            'skip-install': skipInstall,
+        });
+
+        this.composeWith('folklore:storybook', {
             quiet: true,
+            'skip-install': skipInstall,
+            pattern: '../{packages}/*/src/__stories__/*.story.jsx',
         });
     }
 
@@ -152,6 +165,11 @@ module.exports = class LernaRepositoryGenerator extends Generator {
                 const srcPath = this.templatePath('packages/.gitkeep');
                 const destPath = this.destinationPath('packages/.gitkeep');
                 this.fs.copy(srcPath, destPath);
+            },
+
+            storybook() {
+                this.fs.copy(this.templatePath('storybook'), this.destinationPath('.storybook'));
+                this.fs.copy(this.templatePath('storybook-package'), this.destinationPath('.storybook-package'));
             },
         };
     }
