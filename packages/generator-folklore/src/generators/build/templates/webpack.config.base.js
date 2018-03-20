@@ -47,7 +47,8 @@ module.exports = (env) => {
             loader: 'sass-loader',
             options: {
                 sourceMap: true,
-                includePaths: [
+                includePaths: [<% if(options.lerna) { %>
+                    path.join(__dirname, '../node_modules'),<% } %>
                     path.join(process.env.PWD, './node_modules'),
                 ],
             },
@@ -78,7 +79,9 @@ module.exports = (env) => {
             path: outputPath,
             filename: '[name].js',
             chunkFilename: '[name].js',
-            jsonpFunction: 'flklrJsonp',
+            jsonpFunction: 'flklrJsonp',<% if(options.library) { %>
+            libraryTarget: 'umd',
+            libraryExport: 'default',<% } %>
             publicPath,
         },
 
@@ -173,7 +176,8 @@ module.exports = (env) => {
 
         resolve: {
             extensions: ['.js', '.jsx', '.es6'],
-            modules: [
+            modules: [<% if(options.lerna) { %>
+                path.join(__dirname, '../node_modules'),<% } %>
                 path.join(process.env.PWD, './node_modules'),
             ],
         },

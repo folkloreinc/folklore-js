@@ -1,6 +1,6 @@
 module.exports = {
 
-    <% if(hasBrowserSync) { %>/**
+<% if(hasBrowserSync) { %>    /**
      * Browsersync
      */
     browsersync: {
@@ -27,7 +27,7 @@ module.exports = {
         plugins: [
             'bs-fullscreen-message',
         ],
-    },
+    },<% } %>
 
     /**
      * Webpack
@@ -43,7 +43,7 @@ module.exports = {
         fontPublicPath: '/',
     },
 
-    /**
+<% if(hasBrowserSync) { %>    /**
      * Webpack middleware
      */
     webpackMiddleware: {
@@ -64,8 +64,8 @@ module.exports = {
         stats: {
             colors: true,
         },
-    },<% } %>
-
+    },
+<% } %>
     /**
      * Imagemin
      */

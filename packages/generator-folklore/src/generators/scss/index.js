@@ -1,9 +1,7 @@
-import _ from 'lodash';
 import chalk from 'chalk';
 import Generator from '../../lib/generator';
 
 module.exports = class ScssGenerator extends Generator {
-
     constructor(...args) {
         super(...args);
 
@@ -15,6 +13,12 @@ module.exports = class ScssGenerator extends Generator {
         this.option('path', {
             type: String,
             defaults: 'src/scss',
+        });
+
+        this.option('react', {
+            type: Boolean,
+            required: false,
+            defaults: false,
         });
     }
 
@@ -51,17 +55,31 @@ module.exports = class ScssGenerator extends Generator {
         };
     }
 
+    configuring() {
+        this.composeWith('folklore:sass-lint', {
+            quiet: true,
+            'camel-case': this.options.react,
+        });
+    }
+
     get writing() {
         return {
-            directory() {
-                const srcPath = this.templatePath('src');
-                const destPath = this.destinationPath(_.get(this.options, 'path'));
-                /* this.directory */this.fs.copyTpl(srcPath, destPath, this);
+            main() {
+                const reactSuffix = this.options.react ? '.global' : '';
+                const srcPath = this.templatePath('main.scss');
+                const destPath = this.destinationPath(`main${reactSuffix}.scss`);
+                this.fs.copy(srcPath, destPath);
             },
 
-            sasslint() {
-                const srcPath = this.templatePath('sass-lint.yml');
-                const destPath = this.destinationPath('.sass-lint.yml');
+            views() {
+                const srcPath = this.templatePath('views');
+                const destPath = this.destinationPath(this.options.react ? 'partials' : 'views');
+                this.fs.copy(srcPath, destPath);
+            },
+
+            commmons() {
+                const srcPath = this.templatePath('commmons');
+                const destPath = this.destinationPath('commmons');
                 this.fs.copy(srcPath, destPath);
             },
         };

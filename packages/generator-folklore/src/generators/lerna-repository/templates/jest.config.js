@@ -1,7 +1,7 @@
 const path = require('path');
-const glob = require('glob');
 const fs = require('fs');
 const lernaJson = require('./lerna.json');
+const getPackagesPaths = require('./build/lib/getPackagesPaths');
 
 const packagesIgnorePatterns = lernaJson.packages.map(packagePath => (
     `<rootDir>/${packagePath}/(lib|es|dist)/`
@@ -11,19 +11,12 @@ const coveragePatterns = lernaJson.packages.map(packagePath => (
     `<rootDir>/${packagePath}/*/src/**/*.{js,jsx}`
 ));
 
-const moduleNameMapper = lernaJson.packages.reduce((totalMap, packageGlob) => {
-    const packagePaths = glob.sync(packageGlob);
-    const packagesMap = packagePaths.reduce((map, packagePath) => {
-        const packageJsonPath = path.join(__dirname, packagePath, '/package.json');
-        const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-        return {
-            ...map,
-            [packageJson.name]: `<rootDir>/${packagePath}/src/index.js`,
-        };
-    }, {});
+const moduleNameMapper = getPackagesPaths().reduce((map, packagePath) => {
+    const packageJsonPath = path.join(packagePath, '/package.json');
+    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
     return {
-        ...totalMap,
-        ...packagesMap,
+        ...map,
+        [packageJson.name]: `<rootDir>/${packagePath}/src/index.js`,
     };
 }, {});
 

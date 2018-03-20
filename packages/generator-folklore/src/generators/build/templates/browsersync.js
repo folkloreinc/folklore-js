@@ -25,7 +25,9 @@ const webpackMiddleware = createWebpackMiddleware(
     webpackMiddlewareConfig,
     browserSync,
 );
-browserSyncOptions.middleware.push(webpackMiddleware);
+webpackMiddleware.forEach((middleware) => {
+    browserSyncOptions.middleware.push(middleware);
+});
 
 /**
  * Proxy
@@ -38,7 +40,10 @@ if (browserSyncOptions.proxy) {
     const proxyMiddleware = createProxyMiddleware(proxy, {
         staticDirs: get(browserSyncOptions, 'server.baseDir', []),
     });
-    browserSyncOptions.middleware.push(proxyMiddleware);
+
+    proxyMiddleware.forEach((middleware) => {
+        browserSyncOptions.middleware.push(middleware);
+    });
 }
 
 /**

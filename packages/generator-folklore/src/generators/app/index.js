@@ -2,7 +2,6 @@ import chalk from 'chalk';
 import Generator from '../../lib/generator';
 
 module.exports = class AppGenerator extends Generator {
-
     // The name `constructor` is important here
     constructor(...args) {
         super(...args);
@@ -76,6 +75,10 @@ module.exports = class AppGenerator extends Generator {
                                 value: 'lerna-repository',
                             },
                             {
+                                name: 'Lerna package',
+                                value: 'lerna-package',
+                            },
+                            {
                                 name: 'Build tools',
                                 value: 'build',
                             },
@@ -86,6 +89,18 @@ module.exports = class AppGenerator extends Generator {
                             {
                                 name: 'Eslint',
                                 value: 'eslint',
+                            },
+                            {
+                                name: 'SASS Lint',
+                                value: 'sass-lint',
+                            },
+                            {
+                                name: 'Test',
+                                value: 'test',
+                            },
+                            {
+                                name: 'Storybook',
+                                value: 'storybook',
                             },
                             {
                                 name: 'Editorconfig',
@@ -123,5 +138,4 @@ module.exports = class AppGenerator extends Generator {
             ...this.options,
         });
     }
-
 };

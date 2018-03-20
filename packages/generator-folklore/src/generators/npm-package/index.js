@@ -254,7 +254,7 @@ module.exports = class NpmPackageGenerator extends Generator {
                 this.npmInstall([
                     'jest@latest',
                 ], {
-                    saveDev: true,
+                    'save-dev': true,
                 });
             },
         };

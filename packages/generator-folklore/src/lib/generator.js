@@ -4,7 +4,6 @@ import path from 'path';
 import _ from 'lodash';
 
 class Generator extends BaseGenerator {
-
     static prompts = {
         project_name: {
             type: 'input',
@@ -22,8 +21,8 @@ class Generator extends BaseGenerator {
         return path.join(home, '.config/yeoman-generator-folklore/config.json');
     }
 
-    constructor(...args) {
-        super(...args);
+    constructor(args, options) {
+        super(args, options);
 
         this.option('quiet', {
             type: Boolean,
@@ -56,7 +55,6 @@ class Generator extends BaseGenerator {
 
         return newData;
     }
-
 }
 
 export default Generator;

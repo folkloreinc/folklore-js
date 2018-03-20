@@ -25,17 +25,17 @@ module.exports = env => (
             }),
             new webpack.optimize.ModuleConcatenationPlugin(),
             new UglifyJSPlugin({
-                beautify: false,
                 sourceMap: true,
-                mangle: {
-                    screw_ie8: true,
-                    keep_fnames: true,
+                uglifyOptions: {
+                    beautify: false,
+                    mangle: {
+                        keep_fnames: true,
+                    },
+                    compress: {
+                        warnings: false,
+                    },
+                    comments: false,
                 },
-                compress: {
-                    screw_ie8: true,
-                    warnings: false,
-                },
-                comments: false,
             }),<% if (options['webpack-html']) { %>
             /**
              * Dynamically generate index.html page
@@ -50,7 +50,14 @@ module.exports = env => (
                 filename: '[file].map',
                 exclude: [/vendor\//],
             }),
-        ],
+        ],<% if(options.lerna) { %>
+
+        externals: [
+            nodeExternals({
+                whitelist: [/lodash/],
+                modulesDir: path.join(__dirname, '../node_modules'),
+            }),
+        ],<% } %>
 
     })
 );
