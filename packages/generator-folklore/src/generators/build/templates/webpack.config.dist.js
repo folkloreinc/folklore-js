@@ -50,7 +50,14 @@ module.exports = env => (
                 filename: '[file].map',
                 exclude: [/vendor\//],
             }),
-        ],
+        ],<% if(options.lerna) { %>
+
+        externals: [
+            nodeExternals({
+                whitelist: [/lodash/],
+                modulesDir: path.join(__dirname, '../node_modules'),
+            }),
+        ],<% } %>
 
     })
 );

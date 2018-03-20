@@ -125,6 +125,7 @@ module.exports = class LernaRepositoryGenerator extends Generator {
             'webpack-entries': {},
             'npm-scripts': false,
             browsersync: false,
+            lerna: true,
         });
 
         if (this.options.features.indexOf('storybook') !== -1) {

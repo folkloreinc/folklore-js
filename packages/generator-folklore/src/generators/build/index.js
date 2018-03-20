@@ -128,6 +128,11 @@ module.exports = class AppGenerator extends Generator {
             defaults: false,
         });
 
+        this.option('lerna', {
+            type: Boolean,
+            defaults: false,
+        });
+
         this.option('webpack-html', {
             type: Boolean,
             defaults: false,
@@ -694,6 +699,10 @@ module.exports = class AppGenerator extends Generator {
 
                 if (this.options['hot-reload']) {
                     devDependencies.push('react-hot-loader@^4.0.0');
+                }
+
+                if (this.options.lerna) {
+                    devDependencies.push('webpack-node-externals@latest');
                 }
 
                 this.npmInstall(devDependencies, {
