@@ -245,25 +245,6 @@ module.exports = class LernaPackageGenerator extends Generator {
 
     get install() {
         return {
-            npmInstallRoot() {
-                if (this.options['skip-install']) {
-                    return;
-                }
-
-                this.npmInstall(
-                    [
-                        'react@>=15.0.0 || ^16.0.0',
-                        'react-dom@>=15.0.0 || ^16.0.0',
-                        'classnames@latest',
-                        'lodash@latest',
-                        'prop-types@latest',
-                    ],
-                    {
-                        'save-dev': true,
-                    },
-                );
-            },
-
             bootstrap() {
                 if (this.options['skip-install']) {
                     return;
@@ -272,6 +253,7 @@ module.exports = class LernaPackageGenerator extends Generator {
                 const done = this.async();
                 this.spawnCommand('lerna', [
                     'bootstrap',
+                    '--ignore-scripts',
                 ]).on('close', done);
             },
         };
