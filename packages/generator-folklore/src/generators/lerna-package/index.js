@@ -19,9 +19,11 @@ module.exports = class LernaPackageGenerator extends Generator {
             required: false,
         });
 
-        this.packageFolders = this.fs
-            .readJSON(this.destinationPath('lerna.json'))
-            .packages.map(it => it.replace(/\/\*$/, ''));
+        const lernaJSON = this.fs.readJSON(this.destinationPath('lerna.json'));
+        const packageJSON = this.fs.readJSON(this.destinationPath('package.json'));
+
+        this.packageFolders = (get(lernaJSON, 'useWorkspaces', false) ? packageJSON.workspaces : lernaJSON.packages)
+            .map(it => it.replace(/\/\*$/, ''));
 
         this.option('package-folder', {
             type: String,
