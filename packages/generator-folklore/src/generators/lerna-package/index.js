@@ -272,8 +272,7 @@ module.exports = class LernaPackageGenerator extends Generator {
                 const done = this.async();
                 this.spawnCommand('lerna', [
                     'bootstrap',
-                    '--scope',
-                    this.options['package-name'],
+                    '--ignore-scripts',
                 ]).on('close', done);
             },
         };
