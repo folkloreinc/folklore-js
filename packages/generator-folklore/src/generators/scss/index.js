@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import path from 'path';
 import Generator from '../../lib/generator';
 
 module.exports = class ScssGenerator extends Generator {
@@ -20,6 +21,11 @@ module.exports = class ScssGenerator extends Generator {
             required: false,
             defaults: false,
         });
+
+        this.stylesPath = destPath => this.destinationPath(path.join(
+            this.options.path,
+            destPath || '',
+        ));
     }
 
     get prompting() {
@@ -67,19 +73,19 @@ module.exports = class ScssGenerator extends Generator {
             main() {
                 const reactSuffix = this.options.react ? '.global' : '';
                 const srcPath = this.templatePath('main.scss');
-                const destPath = this.destinationPath(`main${reactSuffix}.scss`);
+                const destPath = this.stylesPath(`main${reactSuffix}.scss`);
                 this.fs.copy(srcPath, destPath);
             },
 
             views() {
                 const srcPath = this.templatePath('views');
-                const destPath = this.destinationPath(this.options.react ? 'partials' : 'views');
+                const destPath = this.stylesPath(this.options.react ? 'partials' : 'views');
                 this.fs.copy(srcPath, destPath);
             },
 
             commmons() {
-                const srcPath = this.templatePath('commmons');
-                const destPath = this.destinationPath('commmons');
+                const srcPath = this.templatePath('commons');
+                const destPath = this.stylesPath('commons');
                 this.fs.copy(srcPath, destPath);
             },
         };

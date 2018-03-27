@@ -9,13 +9,19 @@ rules:
             size: 4
     no-css-comments: 0
     nesting-depth: 4
+    property-sort-order:
+        - 1
+        -
+            order: 'smacss'
 <% if (camelCase) {
 %>    mixin-name-format:
         - 1
         -
             allow-leading-underscore: false
             convention: camelcase
-<% } %>    property-sort-order:
+    class-name-format:
         - 1
         -
-            order: 'smacss'
+            allow-leading-underscore: false
+            convention: camelcase
+<% } %>

@@ -115,35 +115,35 @@ module.exports = class JsGenerator extends Generator {
             return;
         }
 
-        this.npmInstall(
-            [
-                'domready@latest',
-                'fastclick@latest',
-                'hypernova@latest',
-                'keymirror@latest',
-                'lodash@latest',
-                'react@latest',
-                'prop-types@latest',
-                'react-dom@latest',
-                'react-redux@latest',
-                'react-intl@latest',
-                'history@^4.7.0',
-                'react-router@^4.2.0',
-                'react-router-redux@^5.0.0-alpha.9',
-                'react-helmet@latest',
-                'node-polyglot@latest',
-                'classnames@latest',
-                '@folklore/react-app@latest',
-            ],
-            {
-                save: true,
-            },
-        );
+        const dependencies = [
+            'domready@latest',
+            'fastclick@latest',
+            'hypernova@latest',
+            'keymirror@latest',
+            'lodash@latest',
+            'react@latest',
+            'prop-types@latest',
+            'react-dom@latest',
+            'react-redux@latest',
+            'react-intl@latest',
+            'history@^4.7.0',
+            'react-router@^4.2.0',
+            'react-router-redux@^5.0.0-alpha.9',
+            'react-helmet@latest',
+            'node-polyglot@latest',
+            'classnames@latest',
+            '@folklore/react-app@latest',
+        ];
 
         const devDependencies = ['html-webpack-plugin@latest'];
+
         if (this.options['hot-reload']) {
-            devDependencies.push('react-hot-loader@^4.0.0');
+            dependencies.push('react-hot-loader@^4.0.0');
         }
+
+        this.npmInstall(dependencies, {
+            save: true,
+        });
 
         this.npmInstall(devDependencies, {
             'save-dev': true,

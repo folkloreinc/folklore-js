@@ -693,7 +693,7 @@ module.exports = class AppGenerator extends Generator {
                     'svg-react-loader@latest',
                     'webpack@^3.0', // TODO: update webpack 4
                     'webpack-hot-middleware@latest',
-                    'webpack-dev-middleware@latest',
+                    'webpack-dev-middleware@^2.0', // TODO: update webpack 4
                     'webpack-merge@latest',
                 ];
 

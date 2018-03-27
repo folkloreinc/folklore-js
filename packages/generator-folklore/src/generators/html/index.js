@@ -184,7 +184,6 @@ module.exports = class HTMLGenerator extends Generator {
                 srcPath,
             ],
             'browsersync-files': [
-                path.join(tmpPath, 'css/*.css'),
                 path.join(srcPath, '*.html'),
             ],
             'skip-install': skipInstall,

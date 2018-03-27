@@ -1,4 +1,5 @@
-import React from 'react';
+<% if (options['hot-reload']) { %>import { hot } from 'react-hot-loader';
+<% } %>import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router';
 import { createAppContainer } from '@folklore/react-app';
@@ -6,10 +7,6 @@ import { createAppContainer } from '@folklore/react-app';
 import reducers from '../reducers/index';
 import MainLayout from './layouts/Main';
 import HomePage from './pages/Home';
-<%
-if (options['hot-reload']) { %>
-// eslint-disable-next-line
-const hot = __DEV__ ? require('react-hot-loader').hot : null;<% } %>
 
 const propTypes = {
 
@@ -51,20 +48,12 @@ const getStoreReducers = () => reducers;
 const getStoreInitialState = () => ({
     // map props to state
 });
-<% if (options['hot-reload']) { %>
-const AppHot = __DEV__ ? hot(module)(App) : App;
-const AppContainer = createAppContainer({
-    propTypes: containerPropTypes,
-    defaultProps: containerDefaultProps,
-    getStoreReducers,
-    getStoreInitialState,
-})(AppHot);
-<% } else { %>
+
 const AppContainer = createAppContainer({
     propTypes: containerPropTypes,
     defaultProps: containerDefaultProps,
     getStoreReducers,
     getStoreInitialState,
 })(App);
-<% } %>
-export default AppContainer;
+
+<% if (options['hot-reload']) { %>export default hot(module)(AppContainer);<? } else { %>export default AppContainer;<% } %>
