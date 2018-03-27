@@ -187,7 +187,11 @@ class Socket extends EventEmitter {
             return;
         }
         debug('Sending', data);
-        this.pubnub.publish(data, typeof callback === 'function' ? callback : () => {});
+        const publishData = typeof data.channel !== 'undefined' && typeof data.message !== 'undefined' ? data : {
+            channel: this.channels,
+            message: data,
+        };
+        this.pubnub.publish(publishData, typeof callback === 'function' ? callback : () => {});
     }
 
     isStarted() {
