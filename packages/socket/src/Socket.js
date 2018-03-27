@@ -187,7 +187,7 @@ class Socket extends EventEmitter {
             return Promise.reject();
         }
         const publishData = typeof data.channel !== 'undefined' && typeof data.message !== 'undefined' ? data : {
-            channel: channel || this.channels,
+            channel: typeof channel !== 'undefined' ? this.getChannelWithNamespace(channel) : this.channels,
             message: data,
         };
         debug('Sending', publishData);
