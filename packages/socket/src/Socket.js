@@ -36,7 +36,7 @@ class Socket extends EventEmitter {
     }
 
     onMessage({ message }) {
-        debug(`Message received: ${JSON.stringify(message)}`);
+        debug('Message received', message);
 
         this.emit('message', message);
 
@@ -181,17 +181,29 @@ class Socket extends EventEmitter {
         });
     }
 
-    send(data, callback = null) {
+    send(data, channel) {
         if (!this.started) {
             debug('Abort sending data: Not started');
-            return;
+            return Promise.reject();
         }
-        debug('Sending', data);
         const publishData = typeof data.channel !== 'undefined' && typeof data.message !== 'undefined' ? data : {
-            channel: this.channels,
+            channel: channel || this.channels,
             message: data,
         };
-        this.pubnub.publish(publishData, typeof callback === 'function' ? callback : () => {});
+        debug('Sending', publishData);
+        return new Promise((resolve, reject) => {
+            this.pubnub.publish(publishData, (status, response) => {
+                if (status.error) {
+                    reject(new Error(`Error operation:${status.operation} status:${status.statusCode}`));
+                } else {
+                    resolve({
+                        status,
+                        response,
+                        publishData,
+                    });
+                }
+            });
+        });
     }
 
     isStarted() {
