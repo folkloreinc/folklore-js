@@ -15,10 +15,12 @@ class Socket extends EventEmitter {
             ...opts,
         };
 
+        this.onStatus = this.onStatus.bind(this);
         this.onMessage = this.onMessage.bind(this);
 
         this.shouldStart = false;
         this.started = false;
+        this.starting = false;
 
         this.pubnub = new PubNub({
             publishKey: this.options.publishKey,
@@ -33,6 +35,14 @@ class Socket extends EventEmitter {
         }
 
         this.init();
+    }
+
+    onStatus(statusEvent) {
+        if (statusEvent.category === 'PNConnectedCategory' && !this.started) {
+            this.started = true;
+            this.starting = false;
+            this.emit('start');
+        }
     }
 
     onMessage({ message }) {
@@ -68,21 +78,9 @@ class Socket extends EventEmitter {
             return;
         }
 
-        debug('Setting channels:');
-        channels.forEach((channel) => {
-            debug(`    - ${channel}`);
-        });
+        debug(`Set channels: ${namespacedChannels.join(', ')}`);
 
-        const { shouldStart, started } = this;
-        if (started) {
-            this.stop();
-        }
-
-        this.channels = namespacedChannels;
-
-        if (started || shouldStart) {
-            this.start();
-        }
+        this.updateChannels(namespacedChannels);
     }
 
     addChannel(channel) {
@@ -93,16 +91,10 @@ class Socket extends EventEmitter {
 
         debug(`Adding channel: ${channel}`);
 
-        const { shouldStart, started } = this;
-        if (started) {
-            this.stop();
-        }
-
-        this.channels.push(namespacedChannel);
-
-        if (started || shouldStart) {
-            this.start();
-        }
+        this.updateChannels([
+            ...this.channels,
+            namespacedChannel,
+        ]);
     }
 
     removeChannel(channel) {
@@ -113,20 +105,29 @@ class Socket extends EventEmitter {
 
         debug(`Removing channel: ${channel}`);
 
-        const { shouldStart, started } = this;
-        if (started) {
+        this.updateChannels([
+            ...this.channels.filter(ch => ch !== namespacedChannel),
+        ]);
+    }
+
+    updateChannels(channels) {
+        debug(`Updating channels: ${channels.join(', ')}`);
+
+        const { shouldStart, started, starting } = this;
+        if (started || starting) {
             this.stop();
         }
 
-        this.channels = this.channels.filter(ch => ch !== namespacedChannel);
+        this.channels = channels;
 
-        if (started || shouldStart) {
+        if (started || starting || shouldStart) {
             this.start();
         }
     }
 
     init() {
         this.pubnubListener = {
+            status: this.onStatus,
             message: this.onMessage,
         };
         this.pubnub.addListener(this.pubnubListener);
@@ -150,7 +151,11 @@ class Socket extends EventEmitter {
         if (this.started) {
             debug('Skipping start: Already started.');
             return;
+        } else if (this.starting) {
+            debug('Skipping start: Already starting.');
+            return;
         }
+
         if (this.channels.length === 0) {
             debug('Skipping start: No channels.');
             this.shouldStart = true;
@@ -163,22 +168,27 @@ class Socket extends EventEmitter {
         });
 
         this.shouldStart = false;
-        this.started = true;
+        this.starting = true;
         this.pubnub.subscribe({
             channels: this.channels,
         });
     }
 
     stop() {
-        if (!this.started) {
+        if (!this.started && !this.starting) {
             return;
         }
         debug('Stopping...');
+
         this.shouldStart = false;
         this.started = false;
+        this.starting = false;
+
         this.pubnub.unsubscribe({
             channels: this.channels,
         });
+
+        this.emit('stop');
     }
 
     send(data, channel) {
