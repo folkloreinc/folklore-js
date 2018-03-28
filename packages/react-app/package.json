@@ -58,6 +58,7 @@
         "lodash": "^4.17.4",
         "node-polyglot": "^2.2.2",
         "prop-types": "^15.6.0",
+        "react-hot-loader": "^4.0.0",
         "react-intl": "^2.4.0",
         "react-redux": "^5.0.6",
         "react-router-redux": "^5.0.0-alpha.9",
