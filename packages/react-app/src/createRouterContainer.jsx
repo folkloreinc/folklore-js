@@ -22,7 +22,7 @@ export default function createRouterContainer(defaultHistory, opts) {
     };
 
     const defaultProps = {
-        history: defaultHistory,
+        history: defaultHistory || createBrowserHistory(),
     };
 
     return (WrappedComponent) => {
@@ -35,19 +35,9 @@ export default function createRouterContainer(defaultHistory, opts) {
                 return this.wrappedInstance;
             }
 
-            constructor(props) {
-                super(props);
-
-                this.state = {
-                    history: this.props.history || createBrowserHistory(),
-                };
-            }
-
             render() {
-                const { history } = this.state;
                 const props = {
                     ...this.props,
-                    history,
                 };
 
                 if (options.withRef) {
@@ -57,7 +47,7 @@ export default function createRouterContainer(defaultHistory, opts) {
                 }
 
                 return (
-                    <ConnectedRouter history={history}>
+                    <ConnectedRouter history={this.props.history}>
                         <WrappedComponent {...props} />
                     </ConnectedRouter>
                 );
