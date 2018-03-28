@@ -45,8 +45,6 @@ export default function createRouterContainer(defaultHistory, opts) {
                     };
                 }
 
-                console.log(this.props.history);
-
                 return (
                     <ConnectedRouter history={this.props.history}>
                         <WrappedComponent {...props} />
