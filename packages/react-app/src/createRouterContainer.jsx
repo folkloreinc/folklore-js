@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import invariant from 'invariant';
 import hoistStatics from 'hoist-non-react-statics';
 import { ConnectedRouter } from 'react-router-redux';
-import createBrowserHistory from 'history/createBrowserHistory';
 
 function getDisplayName(WrappedComponent) {
     return WrappedComponent.displayName || WrappedComponent.name || 'Component';
@@ -15,15 +14,19 @@ export default function createRouterContainer(defaultHistory, opts) {
         ...opts,
     };
 
+    const finalDefaultHistory = defaultHistory || null;
+
     const propTypes = {
-        history: PropTypes.shape({
+        history: finalDefaultHistory !== null ? PropTypes.shape({
             push: PropTypes.func,
-        }),
+        }) : PropTypes.shape({
+            push: PropTypes.func,
+        }).isRequired,
     };
 
-    const defaultProps = {
-        history: defaultHistory || createBrowserHistory(),
-    };
+    const defaultProps = finalDefaultHistory !== null ? {
+        history: finalDefaultHistory,
+    } : {};
 
     return (WrappedComponent) => {
         class RouterContainer extends Component {
