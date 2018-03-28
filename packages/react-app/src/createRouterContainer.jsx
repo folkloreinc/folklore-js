@@ -17,11 +17,7 @@ export default function createRouterContainer(defaultHistory, opts) {
     const finalDefaultHistory = defaultHistory || null;
 
     const propTypes = {
-        history: finalDefaultHistory !== null ? PropTypes.shape({
-            push: PropTypes.func,
-        }) : PropTypes.shape({
-            push: PropTypes.func,
-        }).isRequired,
+        history: finalDefaultHistory !== null ? PropTypes.object : PropTypes.object.isRequired,
     };
 
     const defaultProps = finalDefaultHistory !== null ? {
@@ -48,6 +44,8 @@ export default function createRouterContainer(defaultHistory, opts) {
                         this.wrappedInstance = c;
                     };
                 }
+
+                console.log(this.props.history);
 
                 return (
                     <ConnectedRouter history={this.props.history}>
