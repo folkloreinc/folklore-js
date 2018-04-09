@@ -55,6 +55,7 @@ class Socket extends EventEmitter {
         this.onAdapterMessage = this.onAdapterMessage.bind(this);
         this.onAdapterStop = this.onAdapterStop.bind(this);
 
+        this.shouldStart = false;
         this.started = false;
         this.starting = false;
         this.ready = false;
@@ -62,20 +63,27 @@ class Socket extends EventEmitter {
         this.adapter = null;
         this.channels = [];
 
+        this.init();
+
         if (this.options.channels.length) {
             this.setChannels(this.options.channels);
         }
-
-        this.init();
     }
 
     onAdapterReady() {
+        debug('Adapter ready');
         this.ready = true;
 
         this.emit('ready');
+
+        if (this.shouldStart) {
+            this.shouldStart = false;
+            this.start();
+        }
     }
 
     onAdapterStart() {
+        debug('Adapter starting...');
         this.starting = true;
         this.started = false;
 
@@ -83,6 +91,7 @@ class Socket extends EventEmitter {
     }
 
     onAdapterStarted() {
+        debug('Adapter started');
         this.starting = false;
         this.started = true;
 
@@ -90,6 +99,7 @@ class Socket extends EventEmitter {
     }
 
     onAdapterStop() {
+        debug('Adapter stopped');
         this.starting = false;
         this.started = false;
 
@@ -97,6 +107,7 @@ class Socket extends EventEmitter {
     }
 
     onAdapterMessage(message) {
+        debug('Adapter message', message);
         this.emit('message', message);
     }
 
@@ -153,6 +164,10 @@ class Socket extends EventEmitter {
     updateChannels(channels) {
         debug(`Updating channels: ${channels.join(', ')}`);
 
+        this.channels = [
+            ...channels,
+        ];
+
         this.adapter.updateChannels(channels);
     }
 
@@ -205,6 +220,14 @@ class Socket extends EventEmitter {
             return;
         }
 
+        if (!this.ready) {
+            debug('Skipping start: No ready.');
+            this.shouldStart = true;
+            return;
+        }
+
+        this.shouldStart = false;
+
         debug('Starting on channels:');
         this.channels.forEach((channel) => {
             debug(`- ${this.getChannelWithoutNamespace(channel)}`);
@@ -214,6 +237,8 @@ class Socket extends EventEmitter {
     }
 
     stop() {
+        this.shouldStart = false;
+
         if (!this.started && !this.starting) {
             return;
         }

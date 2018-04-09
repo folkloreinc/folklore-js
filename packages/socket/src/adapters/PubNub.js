@@ -44,8 +44,6 @@ class PubNubSocket extends EventEmitter {
     }
 
     onMessage({ message }) {
-        debug('Message received', message);
-
         this.emit('message', message);
 
         if (typeof message.event !== 'undefined') {
@@ -64,6 +62,7 @@ class PubNubSocket extends EventEmitter {
         this.channels = channels;
 
         if (started || starting || shouldStart) {
+            this.shouldStart = false;
             this.start();
         }
     }
@@ -71,15 +70,10 @@ class PubNubSocket extends EventEmitter {
     init() {
         import(/* webpackChunkName: "vendor/pubnub" */ 'pubnub')
             .then((PubNub) => {
-                this.PubNub = PubNub.default;
+                this.PubNub = PubNub;
             })
             .then(() => this.createPubNub())
-            .then(() => this.onReady())
-            .then(() => {
-                if (this.shouldStart) {
-                    this.start();
-                }
-            });
+            .then(() => this.onReady());
     }
 
     createPubNub() {
@@ -122,12 +116,6 @@ class PubNubSocket extends EventEmitter {
             return;
         } else if (this.starting) {
             debug('Skipping start: Already starting.');
-            return;
-        }
-
-        if (this.pubnub === null) {
-            debug('Pubnub not ready.');
-            this.shouldStart = true;
             return;
         }
 
