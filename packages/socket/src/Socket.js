@@ -9,8 +9,10 @@ class Socket extends EventEmitter {
         super();
         this.options = {
             namespace: null,
+            uuid: null,
             publishKey: null,
             subscribeKey: null,
+            secretKey: null,
             channels: [],
             ...opts,
         };
@@ -22,10 +24,17 @@ class Socket extends EventEmitter {
         this.started = false;
         this.starting = false;
 
-        this.pubnub = new PubNub({
+        const pubnubOptions = {
             publishKey: this.options.publishKey,
             subscribeKey: this.options.subscribeKey,
-        });
+        };
+        if (this.options.uuid !== null) {
+            pubnubOptions.uuid = this.options.uuid;
+        }
+        if (this.options.secretKey !== null) {
+            pubnubOptions.secretKey = this.options.secretKey;
+        }
+        this.pubnub = new PubNub(pubnubOptions);
         this.pubnubListener = null;
 
         this.channels = [];
