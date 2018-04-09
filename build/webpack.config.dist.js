@@ -45,7 +45,10 @@ module.exports = env => (
 
         externals: [
             nodeExternals({
-                whitelist: [],
+                whitelist: [
+                    /pubnub/,
+                    /socket\.io/,
+                ],
             }),
         ],
 
