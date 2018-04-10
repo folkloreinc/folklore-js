@@ -53,7 +53,7 @@ class SocketIOSocket extends EventEmitter {
     init() {
         import(/* webpackChunkName: "vendor/socket.io" */ 'socket.io-client')
             .then((IO) => {
-                this.IO = IO.default;
+                this.IO = IO;
             })
             .then(() => this.createIO())
             .then(() => this.onReady())
@@ -72,7 +72,6 @@ class SocketIOSocket extends EventEmitter {
             autoConnect: false,
             ...opts,
         });
-        this.io.on('connect', this.onConnect);
     }
 
     updateChannels(channels) {
@@ -114,8 +113,6 @@ class SocketIOSocket extends EventEmitter {
         this.shouldStart = false;
         this.starting = true;
 
-        this.io.open();
-
         this.sockets = this.channels.reduce((map, channel) => ({
             ...map,
             [channel]: this.createSocket(channel),
@@ -136,14 +133,13 @@ class SocketIOSocket extends EventEmitter {
 
         Object.values(this.sockets).forEach(socket => this.stopSocket(socket));
 
-        this.io.close();
-
         this.emit('stop');
     }
 
     createSocket(channel) {
-        const socket = this.io.socket(channel);
+        const socket = this.io.socket(`/${channel.replace(/^\//, '')}`);
         socket.on('message', message => this.onMessage(message, channel));
+        socket.on('connect', this.onConnect);
         socket.open();
         return socket;
     }
