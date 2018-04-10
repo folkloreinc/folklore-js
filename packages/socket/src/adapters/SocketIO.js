@@ -53,7 +53,7 @@ class SocketIOSocket extends EventEmitter {
     init() {
         import(/* webpackChunkName: "vendor/socket.io" */ 'socket.io-client')
             .then((IO) => {
-                this.IO = IO;
+                this.IO = IO.Manager;
             })
             .then(() => this.createIO())
             .then(() => this.onReady())
