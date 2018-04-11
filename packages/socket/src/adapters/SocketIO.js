@@ -163,7 +163,7 @@ class SocketIOSocket extends EventEmitter {
 
     send(data) {
         const { channel, message } = data;
-        const channels = isArray(channel) ? [channel] : channel;
+        const channels = !isArray(channel) ? [channel] : channel;
         channels.forEach((ch) => {
             this.sockets[ch].send(message);
         });
