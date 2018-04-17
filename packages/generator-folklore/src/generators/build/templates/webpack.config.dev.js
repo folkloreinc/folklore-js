@@ -18,7 +18,7 @@ module.exports = env => (
         <% } %>
         <%- devEntriesFormatted !== null ? devEntriesFormatted : '' %>
 
-        devtool: 'source-map',
+        devtool: 'eval',
 
         plugins: [
             <% if (options['hot-reload']) { %>new webpack.HotModuleReplacementPlugin(),<% } %>

@@ -55,19 +55,22 @@ module.exports = (env) => {
         },
     ];
 
-    const cssLocalLoaders = [].concat(cssLoaders);
-    cssLocalLoaders[0] = {
-        loader: 'css-loader',
-        options: {
-            modules: true,
-            sourceMap: true,
-            importLoaders: 1,
-            localIdentName: CSS_NAME,
-            getLocalIdent: (context, localIdentName, localName) => (
-                getLocalIdent(localIdentName, localName, context.resourcePath)
-            ),
+    const [firstCssLoader, ...otherCssLoader] = cssLoaders;
+    const cssLocalLoaders = [
+        {
+            ...firstCssLoader,
+            options: {
+                ...firstCssLoader.options,
+                modules: true,
+                importLoaders: 2,
+                localIdentName: CSS_NAME,
+                getLocalIdent: env !== 'dev' ? (context, localIdentName, localName) => (
+                    getLocalIdent(localIdentName, localName, context.resourcePath)
+                ) : null,
+            },
         },
-    };
+        ...otherCssLoader,
+    ];
 
     return {
 
@@ -133,8 +136,8 @@ module.exports = (env) => {
                 {
                     test: /\.global\.s[ac]ss$/,
                     include: contextPath,
-                    use: env === 'dev' ? ['style-loader?convertToAbsoluteUrls'].concat(cssLoaders) : extractPlugin.extract({
-                        fallback: 'style-loader',
+                    use: extractPlugin.extract({
+                        fallback: 'style-loader?convertToAbsoluteUrls',
                         use: cssLoaders,
                     }),
                 },
@@ -143,8 +146,8 @@ module.exports = (env) => {
                     test: /\.s[ac]ss$/,
                     include: contextPath,
                     exclude: /.global\.s[ac]ss$/,
-                    use: env === 'dev' ? ['style-loader?convertToAbsoluteUrls'].concat(cssLocalLoaders) : extractPlugin.extract({
-                        fallback: 'style-loader',
+                    use: extractPlugin.extract({
+                        fallback: 'style-loader?convertToAbsoluteUrls',
                         use: cssLocalLoaders,
                     }),
                 },
