@@ -8,6 +8,8 @@ import reducers from '../reducers/index';
 import MainLayout from './layouts/Main';
 import HomePage from './pages/Home';
 
+import '../styles/main.global.scss';
+
 const propTypes = {
 
 };
@@ -27,6 +29,8 @@ const App = () => (
 
 App.propTypes = propTypes;
 App.defaultProps = defaultProps;
+<% if (options['hot-reload']) { %>
+const AppWithHotReload = hot(module)(App);<% } %>
 
 // Create container
 const containerPropTypes = {
@@ -54,6 +58,6 @@ const AppContainer = createAppContainer({
     defaultProps: containerDefaultProps,
     getStoreReducers,
     getStoreInitialState,
-})(App);
+})(<% if (options['hot-reload']) { %>AppWithHotReload<% } else { %>App<% } %>);
 
-<% if (options['hot-reload']) { %>export default hot(module)(AppContainer);<? } else { %>export default AppContainer;<% } %>
+export default AppContainer;
