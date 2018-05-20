@@ -3,8 +3,7 @@ import { Provider } from 'react-redux';
 import invariant from 'invariant';
 import hoistStatics from 'hoist-non-react-statics';
 import isEqual from 'lodash/isEqual';
-
-import configureStore from './configureStore';
+import { configureStore } from '@folklore/react-container';
 
 function getDisplayName(WrappedComponent) {
     return WrappedComponent.displayName || WrappedComponent.name || 'Component';

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import invariant from 'invariant';
 import hoistStatics from 'hoist-non-react-statics';
-import UrlGenerator from './UrlGenerator';
+import { UrlGenerator } from '@folklore/react-container';
 
 function getDisplayName(WrappedComponent) {
     return WrappedComponent.displayName || WrappedComponent.name || 'Component';

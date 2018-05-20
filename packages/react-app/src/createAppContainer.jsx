@@ -3,6 +3,7 @@ import invariant from 'invariant';
 import hoistStatics from 'hoist-non-react-statics';
 import { routerMiddleware } from 'react-router-redux';
 import { connect } from 'react-redux';
+import { withUrlGeneratorMiddleware } from '@folklore/react-container';
 
 import createPropsContainer from './createPropsContainer';
 import createStoreContainer from './createStoreContainer';
@@ -10,9 +11,6 @@ import createRouterContainer from './createRouterContainer';
 import createUrlGeneratorContainer from './createUrlGeneratorContainer';
 import createHistoryContainer from './createHistoryContainer';
 import createIntlContainer from './createIntlContainer';
-import withUrlGeneratorMiddleware from './withUrlGeneratorMiddleware';
-
-const DevTools = process.env.NODE_ENV !== 'production' ? require('./DevTools').default : null;
 
 function getDisplayName(WrappedComponent) {
     return WrappedComponent.displayName || WrappedComponent.name || 'Component';
@@ -74,14 +72,7 @@ export default function createAppContainer(opts) {
                     };
                 }
 
-                return process.env.NODE_ENV !== 'production' ? (
-                    <div>
-                        <WrappedComponent {...props} />
-                        <DevTools />
-                    </div>
-                ) : (
-                    <WrappedComponent {...props} />
-                );
+                return <WrappedComponent {...props} />;
             }
         }
 

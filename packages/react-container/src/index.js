@@ -6,7 +6,6 @@ import configureStore from './configureStore';
 import UrlGenerator from './UrlGenerator';
 import withUrlGenerator from './withUrlGenerator';
 import withUrlGeneratorMiddleware from './withUrlGeneratorMiddleware';
-import DevTools from './DevTools';
 
 export {
     Container,
@@ -17,7 +16,6 @@ export {
     UrlGenerator,
     withUrlGenerator,
     withUrlGeneratorMiddleware,
-    DevTools,
 };
 
 export default Container;

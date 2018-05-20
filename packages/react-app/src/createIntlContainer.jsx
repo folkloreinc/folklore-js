@@ -5,9 +5,8 @@ import hoistStatics from 'hoist-non-react-statics';
 import get from 'lodash/get';
 import en from 'react-intl/locale-data/en';
 import fr from 'react-intl/locale-data/fr';
-import es from 'react-intl/locale-data/es';
 
-addLocaleData([...en, ...fr, ...es]);
+addLocaleData([...en, ...fr]);
 
 function getDisplayName(WrappedComponent) {
     return WrappedComponent.displayName || WrappedComponent.name || 'Component';
