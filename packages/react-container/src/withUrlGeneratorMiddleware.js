@@ -7,8 +7,5 @@ const createUrlGeneratorMiddleware = urlGenerator => store => next => (action) =
     return next(dispatch => action.payload(urlGenerator, dispatch, store));
 };
 
-export {
-    WITH_URL_GENERATOR,
-};
-
+export { WITH_URL_GENERATOR };
 export default createUrlGeneratorMiddleware;
