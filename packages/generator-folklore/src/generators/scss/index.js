@@ -77,12 +77,6 @@ module.exports = class ScssGenerator extends Generator {
                 this.fs.copy(srcPath, destPath);
             },
 
-            views() {
-                const srcPath = this.templatePath('views');
-                const destPath = this.stylesPath(this.options.react ? 'partials' : 'views');
-                this.fs.copy(srcPath, destPath);
-            },
-
             commmons() {
                 const srcPath = this.templatePath('commons');
                 const destPath = this.stylesPath('commons');

@@ -1,12 +1,12 @@
 import {
     TEST_ACTION,
-} from '../actions/TestActions';
+} from '../actions/LayoutActions';
 
 const initialState = {
     tested: false,
 };
 
-const TestReducer = (previousState, action) => {
+const LayoutReducer = (previousState, action) => {
     const state = {
         ...initialState,
         ...(previousState || null),
@@ -23,4 +23,4 @@ const TestReducer = (previousState, action) => {
     }
 };
 
-export default TestReducer;
+export default LayoutReducer;

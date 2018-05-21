@@ -1,20 +1,23 @@
-<% if(compile) { %>const path = require('path');
+<% if(hasCompile) { %>const path = require('path');
 
-<% } %>const BABEL_ENV = process.env.BABEL_ENV || process.env.NODE_ENV || '';<% if(compile) { %>
-const compiling = BABEL_ENV === 'es' || BABEL_ENV === 'cjs';<% } %>
+<% } %>const env = process.env.BABEL_ENV || process.env.NODE_ENV;
+const isEnvDevelopment = env === 'development';
+const isEnvProduction = env === 'production';
+const isEnvTest = env === 'test';<% if(hasCompile) { %>
+const isCommonJS = env === 'cjs';
+const isCompiling = env === 'es' || env === 'cjs';<% } %>
 
 const presets = [
-    ['env', BABEL_ENV === 'test' ? {} : {
-        modules: BABEL_ENV === 'cjs' ? 'commonjs' : false,
+    ['env', isEnvTest ? {
         targets: {
-            browsers: [
-                '> 1%',
-                'last 5 versions',
-                'ios >= 8',
-                'ie >= 10',
-            ],
+            node: 'current',
         },
-        useBuiltIns: true,
+    } : {
+        modules: <% if(hasCompile) { %>isCommonJS ? 'commonjs' : false<% } else { %>false<% } %>,
+        targets: {
+            ie: 9,
+        },
+        useBuiltIns: false,
     }],
     'react',
 ];
@@ -23,7 +26,7 @@ const plugins = [
     'syntax-dynamic-import',
     ['transform-object-rest-spread', {
         useBuiltIns: true,
-    }],<% if(transformRuntime) { %>
+    }],<% if(hasTransformRuntime) { %>
     ['transform-runtime', {
         helpers: true,
         polyfill: false,
@@ -32,22 +35,20 @@ const plugins = [
     }],<% } %>
 ];
 
-<% if(hotReload) { %>if (BABEL_ENV === 'dev') {
-    plugins.push('react-hot-loader/babel');
-} else <% } %>if (BABEL_ENV === 'test') {
+if (isEnvTest) {
     plugins.push('dynamic-import-node');
 }
-<% if(compile) { %>
-if (compiling) {
+<% if(hasCompile) { %>
+if (isCompiling) {
     plugins.push(['css-modules-transform', {
-        preprocessCss: path.join(__dirname, './lib/processScss.js'),
+        preprocessCss: path.join(__dirname, './utils/processScss.js'),
         extensions: ['.css', '.scss'],
-        generateScopedName: path.join(__dirname, './lib/generateScopedName.js'),
+        generateScopedName: path.join(__dirname, './utils/getLocalIdent.js'),
     }]);
-    plugins.push([path.join(__dirname, './lib/transformRequireIgnore'), {
+    plugins.push([path.join(__dirname, './utils/transformRequireIgnore'), {
         extensions: ['.global.scss'],
     }]);
-<% if(reactIntl) { %>    if (BABEL_ENV === 'es') {
+<% if(hasReactIntl) { %>    if (isCompiling && !isCommonJS) {
         plugins.push(['react-intl', {
             messagesDir: './intl/messages/',
         }]);

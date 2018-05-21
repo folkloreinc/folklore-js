@@ -12,9 +12,6 @@
 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link rel="shortcut icon" href="/favicon.ico" type="image/x-ico">
-	<link rel="icon" href="/favicon.gif" type="image/gif">
-
 	@section('head:opengraph')
         <!-- Open Graph meta -->
 		<meta property="og:locale" content="{{ $locale }}_CA">
@@ -27,60 +24,67 @@
 		<meta property="og:url" content="{{ Request::url() }}">
     @show
 
-	@section('head:scripts')
-		<!-- Head Javascript -->
-		<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Array.prototype.find,Map,Set,Array.prototype.findIndex" type="text/javascript"></script>
-		<script src="{{ asset('js/modernizr.js') }}" type="text/javascript"></script>
-		<script src="{{ asset('js/manifest.js') }}" type="text/javascript"></script>
-		<script src="{{ asset('js/config.js') }}" type="text/javascript"></script>
-		@stack('scripts:head')
-		<script type="text/javascript">
-			app_config('locale', '{{ $locale }}');
-		</script>
+    @section('head:analytics')
+        @if(config('services.google.analytics_id'))
+            <!-- Global site tag (gtag.js) - Google Analytics -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id={{ $analyticsId }}"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+
+                gtag('config', '{{ $analyticsId }}');
+            </script>
+        @endif
+    @show
+
+	<link rel="shortcut icon" href="{{ asset('favicon.gif') }}" type="image/x-ico">
+	<link rel="icon" href="{{ asset('favicon.png') }}" type="image/png">
+
+    @section('head:styles')
+		<!-- Head Style -->
+		@stack('styles:head')
 	@show
 
-	@section('head:styles')
-		<!-- CSS -->
-		<link href="{{ asset('css/main.css') }}" rel="stylesheet" type="text/css">
-		@stack('styles:head')
+	@section('head:scripts')
+		<!-- Head Javascript -->
+		@stack('scripts:head')
 	@show
 
 </head>
 <body>
-	@section('body:analytics')
-        @if(config('services.google.analytics_id'))
-    		<script>
-
-    			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-    			ga('create', '{{ config('services.google.analytics_id') }}');
-    			ga('send', 'pageview');
-
-    		</script>
-        @endif
-	@show
 
 	@section('body')
-		<header id="header">
-			@yield('header')
-		</header>
+		@yield('content')
+	@show
 
-		<section id="content">
-			@yield('content')
-		</section>
 
-		<footer id="footer">
-			@yield('footer')
-		</footer>
+
+    @section('body:styles')
+        <noscript id="deferred-styles">
+    		<!-- CSS -->
+            @if(app()->environment() !== 'local')
+    		<link href="{{ asset('css/main.css') }}" rel="stylesheet" type="text/css" />
+            @endif
+    		@stack('styles:body')
+        </noscript>
+        <script type="text/javascript">
+            var loadDeferredStyles = function() {
+                var addStylesNode = document.getElementById("deferred-styles");
+                var replacement = document.createElement("div");
+                replacement.innerHTML = addStylesNode.textContent;
+                document.body.appendChild(replacement)
+                addStylesNode.parentElement.removeChild(addStylesNode);
+            };
+            var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+            if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
+            else window.addEventListener('load', loadDeferredStyles);
+        </script>
 	@show
 
 	@section('body:scripts')
 		<!-- Footer javascript -->
-		<script src="{{ asset('js/vendor.js') }}" type="text/javascript"></script>
-		<script src="{{ asset('js/main.js') }}" type="text/javascript"></script>
+		<script async src="{{ asset('js/main.js') }}" type="text/javascript"></script>
 		@stack('scripts:footer')
 	@show
 

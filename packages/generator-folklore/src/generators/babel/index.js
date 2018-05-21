@@ -18,12 +18,6 @@ module.exports = class BabelGenerator extends Generator {
             defaults: false,
         });
 
-        this.option('hot-reload', {
-            type: Boolean,
-            required: false,
-            defaults: false,
-        });
-
         this.option('compile', {
             type: Boolean,
             required: false,
@@ -35,6 +29,8 @@ module.exports = class BabelGenerator extends Generator {
             required: false,
             defaults: false,
         });
+
+        this.buildPath = filePath => this.destinationPath(path.join(this.options['build-path'], filePath));
     }
 
     get prompting() {
@@ -68,34 +64,36 @@ module.exports = class BabelGenerator extends Generator {
 
             preset() {
                 const srcPath = this.templatePath('babel-preset.js');
-                const destPath = this.destinationPath(path.join(this.options['build-path'], 'babel-preset.js'));
+                const destPath = this.buildPath('babel-preset.js');
                 this.fs.copyTpl(srcPath, destPath, {
-                    hotReload: this.options['hot-reload'],
-                    transformRuntime: this.options['transform-runtime'],
-                    reactIntl: this.options['react-intl'],
-                    compile: this.options.compile,
+                    hasTransformRuntime: this.options['transform-runtime'],
+                    hasReactIntl: this.options['react-intl'],
+                    hasCompile: this.options.compile,
                 });
             },
 
-            lib() {
-                const srcPath = this.templatePath('lib');
-                const destPath = this.destinationPath(path.join(this.options['build-path'], 'lib'));
+            utils() {
+                if (!this.options.compile) {
+                    return;
+                }
+                const srcPath = this.templatePath('utils');
+                const destPath = this.buildPath('utils');
                 this.fs.copyTpl(srcPath, destPath, {
 
                 });
             },
 
             getLocalIdent() {
-                const destPath = this.destinationPath(path.join(
-                    this.options['build-path'],
-                    'lib/getLocalIdent.js',
-                ));
+                if (!this.options.compile) {
+                    return;
+                }
+                const destPath = this.buildPath('utils/getLocalIdent.js');
                 if (this.fs.exists(destPath)) {
                     return;
                 }
                 const srcPath = path.join(
                     this.templatePath(),
-                    '../../build/templates/lib/getLocalIdent.js',
+                    '../../build/templates/utils/getLocalIdent.js',
                 );
                 this.fs.copy(srcPath, destPath);
             },
@@ -132,6 +130,10 @@ module.exports = class BabelGenerator extends Generator {
 
                 if (this.options['react-intl']) {
                     devDependencies.push('babel-plugin-react-intl@latest');
+                }
+
+                if (this.options.compile) {
+                    devDependencies.push('node-sass@latest');
                 }
 
                 if (dependencies.length > 0) {

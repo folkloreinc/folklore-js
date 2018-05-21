@@ -2,12 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import domready from 'domready';
 import { load as loadHypernova } from 'hypernova';
-<% if (!options['hot-reload']) { %>import HypernovaComponents from './hypernova';
-<% } %>
+import FastClick from 'fastclick';
 
-const FastClick = require('fastclick');
-<% if (options['hot-reload']) { %>let HypernovaComponents = require('./hypernova').default;
-<% } %>
+let HypernovaComponents = require('./hypernova').default;
+
 domready(() => {
     const findComponent = name => HypernovaComponents[name] || null;
 
@@ -37,17 +35,14 @@ domready(() => {
     FastClick.attach(document.body);
 
     const hypernovaElements = document.querySelectorAll('div[data-hypernova-key]');
-    renderHypernovaElements(hypernovaElements);<%
-    if (options['hot-reload']) { %>
-    if (__DEV__) {
-        // Hot reloading
-        if (module.hot) {
-            module.hot.accept([
-                './hypernova',
-            ], () => {
-                HypernovaComponents = require('./hypernova').default; // eslint-disable-line global-require
-                renderHypernovaElements(hypernovaElements);
-            });
-        }
-    }<% } %>
+    renderHypernovaElements(hypernovaElements);
+
+    // Webpack Hot Module Replacement API
+    if (module.hot) {
+        module.hot.accept('./hypernova.js', () => {
+            // eslint-disable-next-line
+            HypernovaComponents = require('./hypernova').default;
+            renderHypernovaElements(hypernovaElements);
+        });
+    }
 });

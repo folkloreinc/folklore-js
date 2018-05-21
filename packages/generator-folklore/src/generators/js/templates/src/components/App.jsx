@@ -1,63 +1,33 @@
-<% if (options['hot-reload']) { %>import { hot } from 'react-hot-loader';
-<% } %>import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
+// import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router';
-import { createAppContainer } from '@folklore/react-app';
+import { withUrlGenerator } from '@folklore/react-container';
 
-import reducers from '../reducers/index';
+import * as AppPropTypes from '../lib/PropTypes';
 import MainLayout from './layouts/Main';
 import HomePage from './pages/Home';
+import NotFound from './pages/NotFound';
 
-import '../styles/main.global.scss';
+import '<%= getRelativeStylesPath('components/App.jsx', 'main.global.scss') %>';
 
 const propTypes = {
-
+    urlGenerator: AppPropTypes.urlGenerator.isRequired,
 };
 
 const defaultProps = {
 
 };
 
-const App = () => (
+const App = ({ urlGenerator }) => (
     <MainLayout>
         <Switch>
-            <Route exact path="/" component={HomePage} />
-            <Route path="*" component={HomePage} />
+            <Route exact path={urlGenerator.route('home')} component={HomePage} />
+            <Route path="*" component={NotFound} />
         </Switch>
     </MainLayout>
 );
 
 App.propTypes = propTypes;
 App.defaultProps = defaultProps;
-<% if (options['hot-reload']) { %>
-const AppWithHotReload = hot(module)(App);<% } %>
 
-// Create container
-const containerPropTypes = {
-    locale: PropTypes.string,
-    messages: PropTypes.oneOfType([
-        PropTypes.objectOf(PropTypes.objectOf(PropTypes.string)),
-        PropTypes.objectOf(PropTypes.string),
-    ]),
-};
-
-const containerDefaultProps = {
-    locale: 'fr',
-    messages: {},
-};
-
-const getStoreReducers = () => reducers;
-
-// Get store initial state from props
-const getStoreInitialState = () => ({
-    // map props to state
-});
-
-const AppContainer = createAppContainer({
-    propTypes: containerPropTypes,
-    defaultProps: containerDefaultProps,
-    getStoreReducers,
-    getStoreInitialState,
-})(<% if (options['hot-reload']) { %>AppWithHotReload<% } else { %>App<% } %>);
-
-export default AppContainer;
+export default withUrlGenerator()(App);

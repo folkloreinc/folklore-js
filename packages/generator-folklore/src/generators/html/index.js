@@ -4,7 +4,6 @@ import chalk from 'chalk';
 import Generator from '../../lib/generator';
 
 module.exports = class HTMLGenerator extends Generator {
-
     // The name `constructor` is important here
     constructor(...args) {
         super(...args);
@@ -78,6 +77,8 @@ module.exports = class HTMLGenerator extends Generator {
             type: String,
             desc: 'Path for the node.js server',
         });
+
+        this.srcPath = filePath => this.destinationPath(path.join(this.options['src-path'], filePath));
     }
 
     get prompting() {
@@ -118,14 +119,11 @@ module.exports = class HTMLGenerator extends Generator {
         const projectPath = this.destinationPath();
         const srcPath = _.get(this.options, 'src-path');
         const destPath = _.get(this.options, 'dest-path');
-        const tmpPath = _.get(this.options, 'tmp-path');
         const buildPath = _.get(this.options, 'build-path') || `${projectPath}/build`;
         const jsPath = _.get(this.options, 'js-path');
         const jsSrcPath = path.join(projectPath, srcPath, jsPath);
         const scssPath = _.get(this.options, 'scss-path');
         const scssSrcPath = path.join(projectPath, srcPath, scssPath);
-        const cssPath = _.get(this.options, 'css-path');
-        const imagesPath = _.get(this.options, 'images-path');
         const skipInstall = _.get(this.options, 'skip-install', false);
 
         this.composeWith('folklore:js', {
@@ -158,34 +156,14 @@ module.exports = class HTMLGenerator extends Generator {
         }
 
         this.composeWith('folklore:build', {
-            'project-name': projectName,
             path: buildPath,
-            'tmp-path': tmpPath,
             'src-path': srcPath,
-            'dest-path': destPath,
-            'js-path': jsPath,
-            'scss-path': scssPath,
-            'css-path': cssPath,
-            'images-path': imagesPath,
+            'entry-path': path.join(srcPath, 'index.js'),
+            'html-path': path.join(srcPath, 'index.html.ejs'),
+            'build-path': destPath,
+            'empty-path': destPath,
             copy: true,
             'copy-path': path.join(srcPath, '*.{html,ico,txt,png}'),
-            'clean-dest': true,
-            'hot-reload': true,
-            'webpack-entries': {
-                main: './index',
-                config: './config',
-                vendor: [
-                    'lodash',
-                ],
-            },
-            'webpack-html': true,
-            'browsersync-base-dir': [
-                tmpPath,
-                srcPath,
-            ],
-            'browsersync-files': [
-                path.join(srcPath, '*.html'),
-            ],
             'skip-install': skipInstall,
             quiet: true,
         });
@@ -195,13 +173,12 @@ module.exports = class HTMLGenerator extends Generator {
         return {
             html() {
                 const projectName = _.get(this.options, 'project-name');
-                const srcPath = _.get(this.options, 'src-path');
                 const jsPath = _.get(this.options, 'js-path', 'js').replace(/^\/?/, '/');
                 const cssPath = _.get(this.options, 'css-path', 'css').replace(/^\/?/, '/');
 
-                const indexSrcPath = this.templatePath('index.html.ejs');
-                const indexDestPath = this.destinationPath(path.join(srcPath, 'index.html.ejs'));
-                this.fs.copyTpl(indexSrcPath, indexDestPath, {
+                const srcPath = this.templatePath('index.html.ejs');
+                const destPath = this.srcPath('index.html.ejs');
+                this.fs.copyTpl(srcPath, destPath, {
                     title: projectName || 'Prototype',
                     jsPath,
                     cssPath,
@@ -209,10 +186,15 @@ module.exports = class HTMLGenerator extends Generator {
             },
 
             img() {
-                const srcPath = _.get(this.options, 'src-path');
-                const imgSrcPath = this.templatePath('folklore.png');
-                const imgDestPath = this.destinationPath(path.join(srcPath, 'img', 'folklore.png'));
-                this.fs.copy(imgSrcPath, imgDestPath);
+                const srcPath = this.templatePath('folklore.png');
+                const destPath = this.srcPath('img/folklore.png');
+                this.fs.copy(srcPath, destPath);
+            },
+
+            data() {
+                const srcPath = this.templatePath('root.js');
+                const destPath = this.srcPath('data/root.js');
+                this.fs.copy(srcPath, destPath);
             },
 
             gitignore() {

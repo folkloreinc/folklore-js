@@ -83,22 +83,10 @@ module.exports = class LaravelGenerator extends Generator {
             defaults: 'js',
         });
 
-        this.option('scss-path', {
+        this.option('styles-path', {
             type: String,
-            desc: 'Path for the scss',
-            defaults: 'scss',
-        });
-
-        this.option('css-path', {
-            type: String,
-            desc: 'Path for the css',
-            defaults: 'css',
-        });
-
-        this.option('images-path', {
-            type: String,
-            desc: 'Path for the images',
-            defaults: 'img',
+            desc: 'Path for the styles',
+            defaults: 'styles',
         });
 
         this.option('db-host', {
@@ -201,10 +189,8 @@ module.exports = class LaravelGenerator extends Generator {
         const buildPath = _.get(this.options, 'build-path');
         const jsPath = _.get(this.options, 'js-path');
         const jsSrcPath = path.join(assetsPath, jsPath);
-        const scssPath = _.get(this.options, 'scss-path');
-        const scssSrcPath = path.join(assetsPath, scssPath);
-        const cssPath = _.get(this.options, 'css-path');
-        const imagesPath = _.get(this.options, 'images-path');
+        const stylesPath = _.get(this.options, 'styles-path');
+        const stylesSrcPath = path.join(assetsPath, stylesPath);
         const skipInstall = _.get(this.options, 'skip-install', false);
         const urlLocal = _.template(_.get(this.options, 'local-url'))({
             project_host: this.options['project-host'],
@@ -218,6 +204,7 @@ module.exports = class LaravelGenerator extends Generator {
         this.composeWith('folklore:js', {
             'project-name': this.options['project-name'],
             path: jsSrcPath,
+            'styles-path': stylesSrcPath,
             'skip-install': skipInstall,
             'hot-reload': this.options['hot-reload'],
             quiet: true,
@@ -229,34 +216,20 @@ module.exports = class LaravelGenerator extends Generator {
 
         this.composeWith('folklore:scss', {
             'project-name': this.options['project-name'],
-            path: scssSrcPath,
+            path: stylesSrcPath,
+            react: true,
             quiet: true,
         });
 
         this.composeWith('folklore:build', {
-            'project-name': this.options['project-name'],
             path: buildPath,
-            'tmp-path': tmpPath,
             'src-path': assetsPath,
-            'dest-path': publicPath,
-            'webpack-public-path': `/${jsPath.replace(/\/$/, '')}/`,
-            'js-path': jsPath,
-            'scss-path': scssPath,
-            'css-path': cssPath,
-            'images-path': imagesPath,
-            'webpack-entries': {
-                main: './index',
-                config: './config',
-                vendor: ['lodash'],
-            },
-            'hot-reload': this.options['hot-reload'],
-            'browsersync-base-dir': [
-                tmpPath,
-                publicPath,
-            ],
-            'browsersync-host': urlLocal.replace(/^https?:\/\//, ''),
-            'browsersync-proxy': urlProxy,
-            'browsersync-files': [
+            'build-path': publicPath,
+            'entry-path': path.join('./', assetsPath, 'js/index.js'),
+            'server-proxy': true,
+            'server-browser-host': urlLocal.replace(/^https?:\/\//, ''),
+            'server-proxy-host': urlProxy,
+            'server-watch-path': [
                 'config/**/*.php',
                 'app/**/*.php',
                 'routes/*.php',

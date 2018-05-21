@@ -1,92 +1,37 @@
 module.exports = {
-
-<% if(hasBrowserSync) { %>    /**
-     * Browsersync
-     */
-    browsersync: {
-        server: {
-            baseDir: [
-<% browserSyncBaseDir.forEach((dir) => { %>                '<%=dir%>',
-<% }) %>            ],
-            index: 'index.html',
-        },<% if(browserSyncProxy) { %>
-
-        host: '<%= browserSyncHost %>',
-        proxy: '<%= browserSyncProxy %>',
-        https: false,
-<% } %>
-        files: [
-<% browserSyncFiles.forEach((file) => { %>            '<%=file%>',
-<% }) %>        ],
-        ghostMode: false,
-
-        logFileChanges: false,
-
-        middleware: [],
-
-        plugins: [
-            'bs-fullscreen-message',
-        ],
-    },<% } %>
-
     /**
      * Webpack
      */
     webpack: {
-        cssFilename: env => (env === 'dev' ? '[name]-[contenthash].css' : '[name].css'),
+        filename: env => (env === 'dev' ? 'js/main.js' : 'js/main.js'),
+        chunkFilename: env => (env === 'dev' ? 'js/[name].chunk.js' : 'js/[name].chunk.js'),
+        publicPath: '/',
+
+        cssRegex: /\.global\.css$/,
+        cssModuleRegex: /\.css$/,
+        sassRegex: /\.global\.(scss|sass)$/,
+        sassModuleRegex: /\.(scss|sass)$/,
+
+        cssFilename: env => (env === 'dev' ? 'css/[name]-[contenthash].css' : 'css/[name].css'),
         cssLocalIdent: '[name]-[local]',
 
         imageFilename: env => (env === 'dev' ? 'img/[name]-[hash:6].[ext]' : 'img/[name].[ext]'),
         imagePublicPath: '/',
 
+        mediaFilename: env => (env === 'dev' ? 'medias/[name]-[hash:6].[ext]' : 'medias/[name].[ext]'),
+        mediaPublicPath: '/',
+
         fontFilename: env => (env === 'dev' ? 'fonts/[name]-[hash:6].[ext]' : 'fonts/[name].[ext]'),
-        fontPublicPath: '/',
     },
-
-<% if(hasBrowserSync) { %>    /**
-     * Webpack middleware
-     */
-    webpackMiddleware: {
-        noInfo: false,
-
-        quiet: false,
-
-        lazy: false,
-
-        hotReload: <%= hotReload %>,
-
-        watchOptions: {
-            aggregateTimeout: 300,
-            poll: false,
-            ignored: /node_modules/,
-        },
-
-        stats: {
-            colors: true,
-        },
-    },
-<% } %>
+<% if (hasServer) { %>
     /**
-     * Imagemin
+     * Webpack Dev Server
      */
-    imagemin: {
-        files: [
-            '<%= imagesSrcPath %>',
-        ],
-        output: '<%= imagesDestPath %>',
-
-        pngquant: {
-            quality: '65-80',
-        },
-
-        svgo: {
-            plugins: [
-                {
-                    removeViewBox: false,
-                },
-            ],
-        },
-    },
+    webpackDevServer: {
+<% if (hasServerProxy) {
+%>        browserHost: '<%= serverBrowserHost %>',
+        proxy: '<%= serverProxyHost %>',<% } %>
+    },<% } %>
 
     /**
      * PostCSS
@@ -115,42 +60,26 @@ module.exports = {
         },
     },
 
-    /**
-     * Modernizr
+<% if (hasImagemin) {
+%>    /**
+     * Imagemin
      */
-    modernizr: {
-        cache: true,
+    imagemin: {
+        files: [<% (imageminFiles || []).forEach((file) => {
+%>            '<%= file %>',
+<% }) %>        ],
+        output: '<%= imageminOutputPath %>',
 
-        devFile: false,
-
-        dest: '<%= modernizrDestPath %>',
-
-        options: [
-            'addTest',
-            'html5printshiv',
-            'testProp',
-            'fnBind',
-        ],
-
-        uglify: false,
-
-        tests: [],
-
-        excludeTests: ['hidden'],
-
-        crawl: true,
-
-        useBuffers: false,
-
-        files: {
-            src: [
-                '*[^(g|G)runt(file)?].{js,css,scss}',
-                '**[^node_modules]/**/*.{js,css,scss}',
-                '!lib/**/*',
-            ],
+        pngquant: {
+            quality: '65-80',
         },
 
-        customTests: [],
-    },
-
+        svgo: {
+            plugins: [
+                {
+                    removeViewBox: false,
+                },
+            ],
+        },
+    },<% } %>
 };

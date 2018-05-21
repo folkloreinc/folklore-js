@@ -1,7 +1,5 @@
-import { routerReducer } from 'react-router-redux';
-import TestReducer from './TestReducer';
+import LayoutReducer from './LayoutReducer';
 
 export default {
-    test: TestReducer,
-    routing: routerReducer,
+    layout: LayoutReducer,
 };

@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /* eslint-disable import/no-extraneous-dependencies */
 const imagemin = require('imagemin');
 const imageminMozjpeg = require('imagemin-mozjpeg');
@@ -8,10 +9,7 @@ const path = require('path');
 const fs = require('fs');
 const chalk = require('chalk');
 const prettyBytes = require('pretty-bytes');
-const buildConfig = require('./config');
-/* eslint-enable import/no-extraneous-dependencies */
-
-const imageminConfig = buildConfig.imagemin;
+const imageminConfig = require('./config').imagemin;
 
 function minifyImage(srcPath, output) {
     const stats = fs.statSync(srcPath);

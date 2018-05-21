@@ -8,10 +8,11 @@ use Illuminate\Routing\Router;
 use Illuminate\Contracts\View\Factory;
 use StdClass;
 
-class ReactComposer
+class RootComposer
 {
     protected $defaultRoutes = [
-        'home',
+        'home.fr',
+        'home.en'
     ];
 
     protected $translations = [

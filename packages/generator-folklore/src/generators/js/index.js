@@ -13,11 +13,6 @@ module.exports = class JsGenerator extends Generator {
             required: false,
         });
 
-        this.option('hot-reload', {
-            type: Boolean,
-            defaults: false,
-        });
-
         this.option('babel-compile', {
             type: Boolean,
             defaults: false,
@@ -26,6 +21,10 @@ module.exports = class JsGenerator extends Generator {
         this.option('path', {
             type: String,
             defaults: 'src/js',
+        });
+
+        this.option('styles-path', {
+            type: String,
         });
     }
 
@@ -68,7 +67,6 @@ module.exports = class JsGenerator extends Generator {
     configuring() {
         const skipInstall = this.options['skip-install'];
         this.composeWith('folklore:babel', {
-            'hot-reload': this.options['hot-reload'],
             compile: this.options['babel-compile'],
             'skip-install': skipInstall,
             quiet: true,
@@ -83,10 +81,31 @@ module.exports = class JsGenerator extends Generator {
     get writing() {
         return {
             directory() {
-                const jsPath = _.get(this.options, 'path');
-                const srcPath = this.templatePath('src');
+                const jsPath = this.options.path;
+                const stylesPath = this.options['styles-path'] || null;
+
+                const templateData = {
+                    getRelativeStylesPath: (from, src) => (
+                        path.relative(
+                            this.destinationPath(path.dirname(path.join(jsPath, from))),
+                            this.destinationPath(path.join(stylesPath || path.join(jsPath, 'styles'), src)),
+                        )
+                    ),
+                };
+
                 const destPath = this.destinationPath(jsPath);
-                this.fs.copyTpl(srcPath, destPath, this);
+                const srcPath = this.templatePath('src');
+                this.fs.copyTpl(srcPath, destPath, templateData);
+            },
+
+            styles() {
+                const templateData = {};
+
+                const stylesPath =
+                    this.options['styles-path'] || path.join(this.options.path, 'styles');
+                const srcPath = this.templatePath('styles');
+                const destPath = this.destinationPath(stylesPath);
+                this.fs.copyTpl(srcPath, destPath, templateData);
             },
 
             config() {
@@ -132,14 +151,10 @@ module.exports = class JsGenerator extends Generator {
             'react-helmet@latest',
             'node-polyglot@latest',
             'classnames@latest',
-            '@folklore/react-app@latest',
+            '@folklore/react-container@latest',
         ];
 
         const devDependencies = ['html-webpack-plugin@latest'];
-
-        if (this.options['hot-reload']) {
-            dependencies.push('react-hot-loader@^4.0.0');
-        }
 
         this.npmInstall(dependencies, {
             save: true,

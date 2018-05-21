@@ -5,28 +5,28 @@ import Helmet from 'react-helmet';
 
 import * as AppPropTypes from '../../lib/PropTypes';
 
-import styles from '<%= getRelativeStylesPath('components/pages/Home.jsx', 'pages/home.scss') %>';
+import styles from '<%= getRelativeStylesPath('components/pages/NotFound.jsx', 'pages/not-found.scss') %>';
 
 const propTypes = {
     intl: AppPropTypes.intl.isRequired,
 };
 
-const HomePage = ({ intl }) => (
+const NodeFoundPage = ({ intl }) => (
     <div className={styles.container}>
         <Helmet>
             <title>
                 {intl.formatMessage({
                     id: 'meta.title',
-                    defaultMessage: 'Accueil',
+                    defaultMessage: '404',
                 })}
             </title>
         </Helmet>
-        <div className={styles.logo} />
+        <h1>404</h1>
     </div>
 );
 
-HomePage.propTypes = propTypes;
+NodeFoundPage.propTypes = propTypes;
 
-const WithIntlContainer = injectIntl(HomePage);
+const WithIntlContainer = injectIntl(NodeFoundPage);
 
 export default WithIntlContainer;

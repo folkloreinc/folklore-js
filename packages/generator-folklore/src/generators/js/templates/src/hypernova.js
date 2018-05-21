@@ -1,5 +1,5 @@
-import App from './components/App';
+import Root from './components/Root';
 
 export default {
-    App,
+    Root,
 };
