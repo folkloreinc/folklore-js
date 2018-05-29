@@ -259,11 +259,13 @@ module.exports = class AppGenerator extends Generator {
             },
 
             packageJSON() {
+                const prodWebpackPath = path.join(this.options.path, 'webpack.config.prod.js');
                 const scripts = {
-                    build: 'node ./build/scripts/build.js',
+                    build: `node ./build/scripts/build.js --config ${prodWebpackPath}`,
                 };
                 if (this.options.server) {
-                    scripts.server = 'node ./build/scripts/server.js';
+                    const devWebpackPath = path.join(this.options.path, 'webpack.config.dev.js');
+                    scripts.server = `node ./build/scripts/server.js --config ${devWebpackPath}`;
                     scripts.start = 'npm run server';
                 }
 
