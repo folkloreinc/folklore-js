@@ -1,6 +1,4 @@
-import {
-    TEST_ACTION,
-} from '../actions/LayoutActions';
+import { TEST_ACTION } from '../actions/LayoutActions';
 
 const initialState = {
     tested: false,
