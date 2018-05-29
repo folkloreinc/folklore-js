@@ -17,7 +17,7 @@ const presets = [
         targets: {
             ie: 9,
         },
-        useBuiltIns: false,
+        useBuiltIns: true,
     }],
     'react',
 ];
