@@ -4,7 +4,7 @@ class UrlGenerator {
     constructor(routes, opts) {
         this.routes = routes;
         this.options = {
-            paramFormat: '\:{key}(\([^\)]*\))?', // eslint-disable-line
+            paramFormat: '\:{key}(\\([^\\)]*\\))?', // eslint-disable-line
             ...opts,
         };
     }
