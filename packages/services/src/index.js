@@ -9,4 +9,5 @@ export {
     loadGoogleMaps,
     loadStripeCheckout,
     loadSrcPlayer,
+    loadYouTube,
 };
