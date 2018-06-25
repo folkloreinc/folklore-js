@@ -6,10 +6,10 @@ const webpackConfig = require('../../build/webpack.config.dist');
 module.exports = env => (
     webpackMerge(webpackConfig(env), {
         entry: {
-            size: './index',
+            fetch: './index',
         },
         output: {
-            library: 'Size',
+            library: 'FetchUtilities',
         },
     })
 );
