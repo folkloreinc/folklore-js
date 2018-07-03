@@ -84,6 +84,7 @@
 
 	@section('body:scripts')
 		<!-- Footer javascript -->
+        <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Set,Map,WeakMap,Object.values,Object.entries,Intl,Intl.~locale.fr,Intl.~locale.en"></script>
 		<script async src="{{ asset('js/main.js') }}" type="text/javascript"></script>
 		@stack('scripts:footer')
 	@show
