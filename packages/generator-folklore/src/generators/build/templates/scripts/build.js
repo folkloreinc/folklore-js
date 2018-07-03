@@ -102,7 +102,7 @@ function build(webpackConfig, previousFileSizes) {
 Promise.all(webpackConfigs.map(conf => measureFileSizesBeforeBuild(conf.output.path)))
     .then((previousSizes) => {
         // Merge with the public folder
-        paths.emptyDirs.forEach((dir) => {
+        paths.emptyPaths.forEach((dir) => {
             fs.emptyDirSync(dir);
         });
 

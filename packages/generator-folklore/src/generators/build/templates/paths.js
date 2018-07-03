@@ -51,14 +51,14 @@ module.exports = {
     publicUrl: getPublicUrl(resolveApp('package.json')),
     servedPath: getServedPath(resolveApp('package.json')),
     copyPaths: [<% (copyPaths || []).forEach((dir) => { %>
-        resolveApp('<%= dir %>'),
-    <% }) %>],
+        resolveApp('<%= dir %>'),<%
+    }) %>],
     emptyPaths: [<% (emptyPaths || []).forEach((dir) => { %>
-        resolveApp('<%= dir %>'),
-    <% }) %>],
+        resolveApp('<%= dir %>'),<%
+    }) %>],
     watchPaths: [<% (watchPaths || []).forEach((dir) => { %>
-        resolveApp('<%= dir %>'),
-    <% }) %>],
+        resolveApp('<%= dir %>'),<%
+    }) %>],
 };
 
 module.exports.srcPaths = [module.exports.appSrc];
