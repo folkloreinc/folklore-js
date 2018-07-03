@@ -1,24 +1,17 @@
 /**
  * Constants
  */
-const TEST_ACTION = 'TEST_ACTION';
+export const SET_SIZE = 'layout@SET_SIZE';
+export const SET_FONTS_LOADED = 'layout@SET_FONTS_LOADED';
 
 /**
  * Actions creator
  */
-const testAction = () => ({
-    type: TEST_ACTION,
+export const setSize = payload => ({
+    type: SET_SIZE,
+    payload,
 });
-
-/**
- * Exports
- */
-const TestActions = {
-    testAction,
-};
-
-export default TestActions;
-export {
-    TEST_ACTION,
-    testAction,
-};
+export const setFontsLoaded = payload => ({
+    type: SET_FONTS_LOADED,
+    payload,
+});

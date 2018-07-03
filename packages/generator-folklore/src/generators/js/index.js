@@ -152,6 +152,7 @@ module.exports = class JsGenerator extends Generator {
             'node-polyglot@latest',
             'classnames@latest',
             '@folklore/react-container@latest',
+            'react-loadable@latest',
         ];
 
         const devDependencies = ['html-webpack-plugin@latest'];

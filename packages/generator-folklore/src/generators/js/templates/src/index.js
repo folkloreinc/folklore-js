@@ -6,7 +6,7 @@ import FastClick from 'fastclick';
 
 let HypernovaComponents = require('./hypernova').default;
 
-domready(() => {
+const start = () => {
     const findComponent = name => HypernovaComponents[name] || null;
 
     const renderReact = (el, componentName, props) => {
@@ -46,3 +46,10 @@ domready(() => {
         });
     }
 });
+
+const ready = (document.readyState || 'loading') !== 'loading';
+if (ready) {
+    start();
+} else {
+    domready(start);
+}

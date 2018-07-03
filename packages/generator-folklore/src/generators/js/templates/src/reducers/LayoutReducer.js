@@ -1,7 +1,11 @@
-import { TEST_ACTION } from '../actions/LayoutActions';
+import { SET_SIZE, SET_HEADER_MENU_OPENED, SET_FONTS_LOADED } from '../actions/LayoutActions';
 
 const initialState = {
-    tested: false,
+    size: {
+        width: window.innerWidth || 0,
+        height: window.innerHeight || 0,
+    },
+    fontsLoaded: false,
 };
 
 const LayoutReducer = (previousState, action) => {
@@ -11,10 +15,17 @@ const LayoutReducer = (previousState, action) => {
     };
 
     switch (action.type) {
-    case TEST_ACTION:
+    case SET_SIZE:
         return {
             ...state,
-            tested: true,
+            size: {
+                ...action.payload,
+            },
+        };
+    case SET_FONTS_LOADED:
+        return {
+            ...state,
+            fontsLoaded: action.payload,
         };
     default:
         return state;
