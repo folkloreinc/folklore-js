@@ -25,6 +25,9 @@ module.exports = {
         '\\.(css|less|scss)$': '<rootDir>/__mocks__/styleMock.js',
         '^@folklore/(.*)': '<rootDir>/packages/$1/src/index.js',
     },
+    transformIgnorePatterns: [
+        'node_modules/(?!(@folklore|react-intl)/)',
+    ],
     collectCoverage: true,
     collectCoverageFrom: [
         'packages/*/src/**/*.{js,jsx}',

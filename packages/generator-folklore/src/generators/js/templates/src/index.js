@@ -45,7 +45,7 @@ const start = () => {
             renderHypernovaElements(hypernovaElements);
         });
     }
-});
+};
 
 const ready = (document.readyState || 'loading') !== 'loading';
 if (ready) {

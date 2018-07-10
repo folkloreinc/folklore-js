@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => '<%= project_name %>',
+    'name' => '<%= options.project_name %>',
 
     /*
     |--------------------------------------------------------------------------
@@ -178,10 +178,10 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
+        App\Providers\EventServiceProvider::class,<% if (options.panneau) { %>
+        App\Providers\PanneauServiceProvider::class,<% } %>
         App\Providers\RouteServiceProvider::class,
         App\Providers\ViewServiceProvider::class,
-
     ],
 
     /*

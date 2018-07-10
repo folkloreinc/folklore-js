@@ -207,15 +207,10 @@ module.exports = {
                     // Process JS with Babel.
                     {
                         test: /\.(js|jsx|mjs)$/,
-                        include: paths.appSrc,
-                        loader: require.resolve('babel-loader'),
-                        options: {
-                            compact: true,
-                        },
-                    },
-                    {
-                        test: /\.(js|jsx|mjs)$/,
-                        include: require.resolve('react-intl/src/locale-data-registry'),
+                        include: [
+                            paths.appSrc,
+                            /react-intl\//,
+                        ],
                         loader: require.resolve('babel-loader'),
                         options: {
                             compact: true,

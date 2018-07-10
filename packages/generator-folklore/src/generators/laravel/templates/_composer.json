@@ -1,0 +1,8 @@
+{
+    "require": {
+        "folklore/image": "v1.x-dev",
+        "folklore/laravel-locale": "^2.2",
+        "folklore/laravel-hypernova": "^0.1",
+        "barryvdh/laravel-debugbar": "^2.3"
+    }
+}
