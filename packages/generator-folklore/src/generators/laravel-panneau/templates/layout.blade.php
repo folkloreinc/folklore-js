@@ -12,10 +12,11 @@
 
 	<link rel="shortcut icon" href="/favicon.ico" type="image/x-ico">
 	<link rel="icon" href="/favicon.gif" type="image/gif">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
 	@section('head:scripts')
 		<!-- Head Javascript -->
-		<script src="https://cdn.polyfill.io/v2/polyfill.min.js" type="text/javascript"></script>
+        <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=WeakMap,Object.values,Object.entries,Intl,Intl.~locale.fr,Intl.~locale.en"></script>
         <script type="text/javascript">
             var PANNEAU_ASSETS_PATH = '{{ asset('vendor/panneau') }}/';
             window._panneau_config=window._panneau_config||{};
@@ -29,9 +30,9 @@
 	@show
 
 	@section('head:styles')
-        <link href="/vendor/panneau/panneau.css" rel="stylesheet" type="text/css" />
+        <link href="{{asset('vendor/panneau/panneau.css')}}?version={{config('app.version')}}" rel="stylesheet" type="text/css" />
         @if (app()->environment() === 'production')
-        <link href="/panneau/main.css" rel="stylesheet" type="text/css" />
+        <link href="{{asset('panneau/main.css')}}?version={{config('app.version')}}" rel="stylesheet" type="text/css" />
         @endif
 		@stack('styles:head')
 	@show
@@ -52,7 +53,7 @@
             panneau_config('messages', {!! json_encode($messages) !!});
             panneau_config('definition', {!! json_encode($definition) !!});
         </script>
-        <script src="/panneau/main.js" type="text/javascript"></script
+        <script src="{{asset('panneau/main.js')}}?version={{config('app.version')}}" type="text/javascript"></script>
 		@stack('styles:footer')
 	@show
 
