@@ -1,4 +1,4 @@
-import { SET_SIZE, SET_HEADER_MENU_OPENED, SET_FONTS_LOADED } from '../actions/LayoutActions';
+import { SET_SIZE, SET_FONTS_LOADED } from '../actions/LayoutActions';
 
 const initialState = {
     size: {

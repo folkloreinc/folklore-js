@@ -42,6 +42,9 @@ module.exports = {
         '\\.(css|less|scss)$': '<rootDir>/__mocks__/styleMock.js',
         ...moduleNameMapper,
     },
+    transformIgnorePatterns: [
+        'node_modules/(?!(@folklore|react-intl)/)',
+    ],
     collectCoverage: true,
     collectCoverageFrom: [
         ...coveragePatterns,

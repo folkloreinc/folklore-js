@@ -8,8 +8,7 @@ import Generator from '../../lib/generator';
 
 module.exports = class LaravelGenerator extends Generator {
     static safeDbString(str) {
-        return str.replace(/[-s.]+/gi, '_')
-            .replace(/[^a-z0-9]+/gi, '');
+        return str.replace(/[-s.]+/gi, '_').replace(/[^a-z0-9]+/gi, '');
     }
 
     static getPassword() {
@@ -117,6 +116,12 @@ module.exports = class LaravelGenerator extends Generator {
             desc: 'Enable hot reload',
             defaults: false,
         });
+
+        this.option('panneau', {
+            type: Boolean,
+            desc: 'Add panneau',
+            defaults: false,
+        });
     }
 
     get prompting() {
@@ -144,8 +149,11 @@ module.exports = class LaravelGenerator extends Generator {
                         name: 'project-host',
                         message: 'What is the host of the project?',
                         default: (answers) => {
-                            const projectName = (this.options['project-name'] || answers['project-name']);
-                            return projectName.match(/.[^.]+$/) ? projectName : `${projectName}.com`;
+                            const projectName =
+                                this.options['project-name'] || answers['project-name'];
+                            return projectName.match(/.[^.]+$/)
+                                ? projectName
+                                : `${projectName}.com`;
                         },
                     });
                 }
@@ -156,9 +164,34 @@ module.exports = class LaravelGenerator extends Generator {
                         name: 'db-name',
                         message: 'What is the name of the database?',
                         default: (answers) => {
-                            const projectName = (this.options['project-name'] || answers['project-name']);
-                            return (projectName.match(/^([^.]+)/))[1];
+                            const projectName =
+                                this.options['project-name'] || answers['project-name'];
+                            return projectName.match(/^([^.]+)/)[1];
                         },
+                    });
+                }
+
+                const featuresChoices = [
+                    !this.options.panneau && {
+                        name: 'Panneau',
+                        value: 'panneau',
+                        checked: true,
+                    },
+                    !this.options['hot-reload'] && {
+                        name: 'Hot Reload',
+                        value: 'hot-reload',
+                        checked: true,
+                    },
+                ].filter(Boolean);
+                if (featuresChoices.length) {
+                    prompts.push({
+                        type: 'checkbox',
+                        name: 'features',
+                        choices: featuresChoices,
+                        message: 'Which features?',
+                        default: featuresChoices
+                            .filter(it => it.checked || false)
+                            .map(it => it.name),
                     });
                 }
 
@@ -166,18 +199,25 @@ module.exports = class LaravelGenerator extends Generator {
                     return null;
                 }
 
-                return this.prompt(prompts)
-                    .then((answers) => {
-                        if (answers['project-name']) {
-                            this.options['project-name'] = answers['project-name'];
-                        }
-                        if (answers['project-host']) {
-                            this.options['project-host'] = answers['project-host'];
-                        }
-                        if (answers['db-name']) {
-                            this.options['db-name'] = answers['db-name'];
-                        }
-                    });
+                return this.prompt(prompts).then((answers) => {
+                    if (answers['project-name']) {
+                        this.options['project-name'] = answers['project-name'];
+                    }
+                    if (answers['project-host']) {
+                        this.options['project-host'] = answers['project-host'];
+                    }
+                    if (answers['db-name']) {
+                        this.options['db-name'] = answers['db-name'];
+                    }
+
+                    const features = answers.features || [];
+                    if (features.indexOf('panneau') !== -1) {
+                        this.options.panneau = true;
+                    }
+                    if (features.indexOf('hot-reload') !== -1) {
+                        this.options['hot-reload'] = true;
+                    }
+                });
             },
         };
     }
@@ -243,6 +283,15 @@ module.exports = class LaravelGenerator extends Generator {
             'skip-install': skipInstall,
             quiet: true,
         });
+
+        if (this.options.panneau) {
+            this.composeWith('folklore:laravel-panneau', {
+                'project-name': this.options['project-name'],
+                'skip-install': true,
+                'install-npm': true,
+                quiet: true,
+            });
+        }
     }
 
     get writing() {
@@ -305,15 +354,12 @@ module.exports = class LaravelGenerator extends Generator {
             },
 
             composerJSON() {
-                const src = this.destinationPath('composer.json');
-                this.fs.extendJSON(src, {
-                    require: {
-                        'folklore/image': 'v1.x-dev',
-                        'folklore/laravel-locale': '^2.2',
-                        'folklore/laravel-hypernova': '^0.1',
-                        'barryvdh/laravel-debugbar': '^2.3',
-                    },
-                });
+                const srcPath = this.templatePath('_composer.json');
+                const destPath = this.destinationPath('composer.json');
+
+                const newJson = this.fs.readJSON(srcPath);
+                const currentJson = this.fs.exists(destPath) ? this.fs.readJSON(destPath) : {};
+                this.fs.writeJSON(destPath, _.merge(currentJson, newJson));
             },
 
             env() {
@@ -378,12 +424,12 @@ module.exports = class LaravelGenerator extends Generator {
                 files.forEach((file) => {
                     const source = path.join(templatePath, file);
                     const destination = path.join(destinationPath, file);
-                    if (file.match(/\.(jpg|jpeg|gif|png)$/i)) {
-                        this.fs.copy(source, destination);
-                    } else {
+                    if (file.match(/\.php$/i)) {
                         this.fs.copyTpl(source, destination, {
-                            project_name: this.options['project-name'],
+                            options: this.options,
                         });
+                    } else {
+                        this.fs.copy(source, destination);
                     }
                 });
             },
@@ -421,7 +467,7 @@ module.exports = class LaravelGenerator extends Generator {
                 }
 
                 const done = this.async();
-                this.spawnCommand('php', ['artisan', 'vendor:publish']).on('close', done);
+                this.spawnCommand('php', ['artisan', 'vendor:publish', '--all']).on('close', done);
             },
         };
     }

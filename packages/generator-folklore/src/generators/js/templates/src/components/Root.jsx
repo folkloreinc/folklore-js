@@ -1,16 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Container from '@folklore/react-container';
-import { addLocaleData } from 'react-intl';
-import en from 'react-intl/locale-data/en';
-import fr from 'react-intl/locale-data/fr';
 
 import reducers from '../reducers/index';
 // import * as AppPropTypes from '../lib/PropTypes';
 
 import App from './App';
-
-addLocaleData([...fr, ...en]);
 
 const propTypes = {
     locale: PropTypes.string,
@@ -54,12 +49,8 @@ class Root extends PureComponent {
     }
 
     render() {
-        const {
-            locale, messages, ...props
-        } = this.props;
         return (
             <Container
-                {...props}
                 store={this.getStoreProps()}
                 intl={this.getIntlProps()}
                 urlGenerator={this.getUrlGenerator()}
