@@ -10,8 +10,8 @@ class SlugExtractReducer extends ExtractColumnReducer
     {
         $columns = [];
         $locales = config('locale.locales', [config('app.locale')]);
-        foreach ($locales as $column) {
-            $columns['slug_'.$column] = 'data.slug.'.$locale;
+        foreach ($locales as $locale) {
+            $columns['slug_'.$locale] = 'data.slug.'.$locale;
         }
         return $columns;
     }
