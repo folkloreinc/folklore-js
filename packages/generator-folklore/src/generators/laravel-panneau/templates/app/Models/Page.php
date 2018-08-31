@@ -29,7 +29,7 @@ class Page extends BasePage
         \Folklore\Panneau\Reducers\PagesReducer::class,
         \Folklore\Panneau\Reducers\MediasReducer::class,
         \Folklore\Panneau\Reducers\SlugReducer::class,
-        \App\Reducers\PageExtractReducer::class,
+        \App\Reducers\SlugExtractReducer::class,
     ];
 
     protected function getUrlAttribute()
