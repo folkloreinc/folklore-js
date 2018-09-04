@@ -8,11 +8,11 @@ class MainComposer
 {
     public function __construct()
     {
-        
+
     }
-    
+
     public function compose(View $view)
     {
-        
+        $view->analyticsId = config('services.google.analytics_id');
     }
 }

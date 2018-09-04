@@ -110,6 +110,9 @@ choosePort(HOST, DEFAULT_PORT)
                         context: '**',
                         target: proxySetting,
                         autoRewrite: true,
+                        bypass: req => (
+                            req.url.match(/\.hot-update\.(js|json)$/) ? req.url : null
+                        ),
                     },
                 ]
                 : null;
