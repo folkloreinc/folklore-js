@@ -28,9 +28,7 @@ const defaultProps = {
         google: {
             families: ['Open Sans:400,700'],
         },
-        custom: {
-            families: ['CPMono:n3,n4,n7'],
-        },
+        custom: {},
     },
 };
 
