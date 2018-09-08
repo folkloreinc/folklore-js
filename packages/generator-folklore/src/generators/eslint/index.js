@@ -40,7 +40,7 @@ module.exports = class EslintGenerator extends Generator {
             [
                 'babel-preset-airbnb@latest',
                 'babel-eslint@latest',
-                'eslint@4.16.0',
+                'eslint@latest',
                 'eslint-config-airbnb@latest',
                 'eslint-plugin-import',
                 'eslint-plugin-jsx-a11y',
