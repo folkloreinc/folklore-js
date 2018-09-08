@@ -112,6 +112,7 @@ module.exports = class BabelGenerator extends Generator {
                 const devDependencies = [
                     '@babel/cli@latest',
                     '@babel/core@latest',
+                    '@babel/polyfill@latest',
                     '@babel/register@latest',
                     'babel-plugin-dynamic-import-node@latest',
                     '@babel/plugin-syntax-dynamic-import@latest',
