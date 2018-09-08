@@ -310,6 +310,7 @@ module.exports = class AppGenerator extends Generator {
 
                     // Others
                     'autoprefixer@latest',
+                    'cssnano@latest',
                     'chalk@latest',
                     'dotenv@latest',
                     'dotenv-expand@latest',

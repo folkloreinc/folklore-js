@@ -57,13 +57,16 @@ class MainLayout extends Component {
     }
 
     onFontsActive() {
-        this.props.setFontsLoaded(true);
+        const { setFontsLoaded } = this.props;
+        setFontsLoaded(true);
     }
 
     onResize() {
-        this.props.setSize({
-            width: window.innerWidth,
-            height: window.innerHeight,
+        const { setSize } = this.props;
+        const { innerWidth, innerHeight } = window;
+        setSize({
+            width: innerWidth,
+            height: innerHeight,
         });
     }
 
