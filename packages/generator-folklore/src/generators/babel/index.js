@@ -110,22 +110,19 @@ module.exports = class BabelGenerator extends Generator {
                 const dependencies = [];
 
                 const devDependencies = [
-                    'babel-cli@latest',
-                    'babel-core@latest',
-                    'babel-register@latest',
+                    '@babel/cli@latest',
+                    '@babel/core@latest',
+                    '@babel/register@latest',
                     'babel-plugin-dynamic-import-node@latest',
-                    'babel-plugin-syntax-dynamic-import@latest',
-                    'babel-plugin-transform-es2015-spread@latest',
-                    'babel-plugin-transform-object-rest-spread@latest',
-                    'babel-plugin-transform-class-properties@latest',
+                    '@babel/plugin-syntax-dynamic-import@latest',
                     'babel-plugin-css-modules-transform@latest',
-                    'babel-preset-env@latest',
-                    'babel-preset-react@latest',
+                    '@babel/preset-env@latest',
+                    '@babel/preset-react@latest',
                 ];
 
                 if (this.options['transform-runtime']) {
-                    dependencies.push('babel-runtime@latest');
-                    devDependencies.push('babel-plugin-transform-runtime@latest');
+                    dependencies.push('@babel/runtime@latest');
+                    devDependencies.push('@babel/plugin-transform-runtime@latest');
                 }
 
                 if (this.options['react-intl']) {

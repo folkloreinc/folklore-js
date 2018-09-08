@@ -246,7 +246,7 @@ module.exports = class NpmPackageGenerator extends Generator {
                 }
 
                 this.npmInstall([
-                    'babel-runtime@latest',
+                    '@babel/runtime@latest',
                 ], {
                     save: true,
                 });
