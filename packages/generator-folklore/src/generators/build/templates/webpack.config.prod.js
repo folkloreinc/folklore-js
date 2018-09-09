@@ -186,22 +186,22 @@ module.exports = {
                     // "url" loader works just like "file" loader but it also embeds
                     // assets smaller than specified size as data URLs to avoid requests.
                     {
-                        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
-                        loader: require.resolve('url-loader'),
-                        options: {
-                            limit: 10000,
-                            name: getConfigValue(config.imageFilename, 'prod'),
-                        },
-                    },
-                    {
-                        test: [/\.woff$/, /\.woff2$/, /\.otf$/, /\.ttf$/, /\.otf$/, /\.svg$/],
+                        test: [/\.woff$/, /\.woff2$/, /\.otf$/, /\.ttf$/, /\.otf$/, /\.eot$/, /\.svg$/],
                         include: [
                             /\/fonts\//,
                         ],
                         loader: require.resolve('file-loader'),
                         options: {
                             limit: 10000,
-                            name: getConfigValue(config.fontFilename, 'prod'),
+                            name: getConfigValue(config.fontFilename, 'dev'),
+                        },
+                    },
+                    {
+                        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.svg$/],
+                        loader: require.resolve('url-loader'),
+                        options: {
+                            limit: 10000,
+                            name: getConfigValue(config.imageFilename, 'dev'),
                         },
                     },
                     // Process JS with Babel.
@@ -209,11 +209,23 @@ module.exports = {
                         test: /\.(js|jsx|mjs)$/,
                         include: [
                             paths.appSrc,
-                            /react-intl\//,
                         ],
                         loader: require.resolve('babel-loader'),
                         options: {
                             compact: true,
+                        },
+                    },
+                    // For dependencies
+                    {
+                        test: /\.(js|jsx|mjs)$/,
+                        include: [
+                            /react-intl/,
+                        ],
+                        loader: require.resolve('babel-loader'),
+                        options: {
+                            presets: [
+                                path.resolve(path.join(__dirname, './babel-preset')),
+                            ],
                         },
                     },
                     // The notation here is somewhat confusing.

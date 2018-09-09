@@ -169,15 +169,7 @@ module.exports = {
                     // smaller than specified limit in bytes as data URLs to avoid requests.
                     // A missing `test` is equivalent to a match.
                     {
-                        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
-                        loader: require.resolve('url-loader'),
-                        options: {
-                            limit: 10000,
-                            name: getConfigValue(config.imageFilename, 'dev'),
-                        },
-                    },
-                    {
-                        test: [/\.woff$/, /\.woff2$/, /\.otf$/, /\.ttf$/, /\.otf$/, /\.svg$/],
+                        test: [/\.woff$/, /\.woff2$/, /\.otf$/, /\.ttf$/, /\.otf$/, /\.eot$/, /\.svg$/],
                         include: [
                             /\/fonts\//,
                         ],
@@ -187,12 +179,19 @@ module.exports = {
                             name: getConfigValue(config.fontFilename, 'dev'),
                         },
                     },
+                    {
+                        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.svg$/],
+                        loader: require.resolve('url-loader'),
+                        options: {
+                            limit: 10000,
+                            name: getConfigValue(config.imageFilename, 'dev'),
+                        },
+                    },
                     // Process JS with Babel.
                     {
                         test: /\.(js|jsx|mjs)$/,
                         include: [
                             paths.appSrc,
-                            /react-intl\//,
                         ],
                         loader: require.resolve('babel-loader'),
                         options: {
@@ -200,6 +199,19 @@ module.exports = {
                             // It enables caching results in ./node_modules/.cache/babel-loader/
                             // directory for faster rebuilds.
                             cacheDirectory: true,
+                        },
+                    },
+                    // For dependencies
+                    {
+                        test: /\.(js|jsx|mjs)$/,
+                        include: [
+                            /react-intl/,
+                        ],
+                        loader: require.resolve('babel-loader'),
+                        options: {
+                            presets: [
+                                path.resolve(path.join(__dirname, './babel-preset')),
+                            ],
                         },
                     },
                     // Global CSS
