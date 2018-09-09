@@ -26,6 +26,7 @@ class PubNubSocket extends EventEmitter {
         this.PubNub = null;
         this.pubnub = null;
         this.pubnubListener = null;
+        this.channels = [];
 
         this.init();
     }

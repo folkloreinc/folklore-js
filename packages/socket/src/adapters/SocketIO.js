@@ -27,6 +27,7 @@ class SocketIOSocket extends EventEmitter {
         this.IO = null;
         this.io = null;
         this.sockets = {};
+        this.channels = [];
 
         this.init();
     }
