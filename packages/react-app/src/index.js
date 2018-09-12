@@ -2,7 +2,6 @@ import {
     UrlGenerator,
     withUrlGenerator,
     withUrlGeneratorMiddleware,
-    WITH_URL_GENERATOR,
 } from '@folklore/react-container';
 import createAppContainer from './createAppContainer';
 import createIntlContainer from './createIntlContainer';
@@ -19,5 +18,4 @@ export {
     UrlGenerator,
     withUrlGenerator,
     withUrlGeneratorMiddleware,
-    WITH_URL_GENERATOR,
 };
