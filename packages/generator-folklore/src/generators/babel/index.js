@@ -116,6 +116,7 @@ module.exports = class BabelGenerator extends Generator {
                     '@babel/register@latest',
                     'babel-plugin-dynamic-import-node@latest',
                     '@babel/plugin-syntax-dynamic-import@latest',
+                    '@babel/plugin-proposal-object-rest-spread@latest',
                     'babel-plugin-css-modules-transform@latest',
                     '@babel/preset-env@latest',
                     '@babel/preset-react@latest',
