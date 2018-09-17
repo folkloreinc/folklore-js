@@ -11,8 +11,13 @@ use StdClass;
 class RootComposer
 {
     protected $defaultRoutes = [
-        'home.fr',
-        'home.en'
+
+    ];
+
+    protected $localizedRoutes = [
+        'home',
+        'test',
+        'test_with_param'
     ];
 
     protected $translations = [
@@ -32,7 +37,7 @@ class RootComposer
     public function compose(View $view)
     {
         $path = '/'.ltrim($this->request->path(), '/');
-        $locale = isset($view->locale) ? $view->locale : config('app.locale');
+        $locale = isset($view->locale) ? $view->locale : app()->getLocale();
         $routes = $this->getRoutes($locale, isset($view->routes) ? $view->routes : null);
         $translations = isset($view->translations) ? $view->translations : $this->getTranslations($locale);
 
@@ -71,25 +76,33 @@ class RootComposer
         $routes = [];
         $allRoutes = $this->router->getRoutes();
         if (is_null($routeNames)) {
-            $routeNames = $this->defaultRoutes;
+            $routeNames = $this->getRoutesNames();
         }
 
         foreach ($routeNames as $name) {
             $route = $allRoutes->getByName($name);
             $parameters = $route->parameterNames();
             $key = preg_replace('/\.'.$locale.'$/', '', $name);
-            if (sizeof($parameters)) {
-                $params = [];
-                foreach ($parameters as $parameter) {
-                    $params[] = ':'.$parameter;
-                }
-                $routes[$key] = preg_replace('/^https?\:\/\/[^\/]+/i', '', route($name, $params));
-            } else {
-                $routes[$key] = preg_replace('/^https?\:\/\/[^\/]+/i', '', route($name));
+            $params = [];
+            foreach ($parameters as $parameter) {
+                $params[] = ':'.$parameter;
             }
+            $routes[$key] = route($name, $params, false);
             $routes[$name] = $routes[$key];
         }
 
+        return $routes;
+    }
+
+    protected function getRoutesNames()
+    {
+        $locales = config('locale.locales');
+        $routes = $this->defaultRoutes;
+        foreach ($this->localizedRoutes as $routeName) {
+            foreach ($locales as $locale) {
+                $routes[] = $routeName.'.'.$locale;
+            }
+        }
         return $routes;
     }
 }
