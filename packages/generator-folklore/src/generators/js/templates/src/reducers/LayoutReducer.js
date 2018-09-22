@@ -8,12 +8,7 @@ const initialState = {
     fontsLoaded: false,
 };
 
-const LayoutReducer = (previousState, action) => {
-    const state = {
-        ...initialState,
-        ...(previousState || null),
-    };
-
+const LayoutReducer = (state = initialState, action) => {
     switch (action.type) {
     case SET_SIZE:
         return {

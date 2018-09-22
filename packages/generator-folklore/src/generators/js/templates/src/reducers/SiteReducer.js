@@ -2,12 +2,7 @@ const initialState = {
 
 };
 
-const SiteReducer = (previousState, action) => {
-    const state = {
-        ...initialState,
-        ...(previousState || null),
-    };
-
+const SiteReducer = (state = initialState, action) => {
     switch (action.type) {
     default:
         return state;
