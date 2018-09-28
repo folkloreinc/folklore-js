@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import isObject from 'lodash/isObject';
@@ -48,7 +48,7 @@ const defaultProps = {
     router: null,
 };
 
-class Container extends PureComponent {
+class Container extends Component {
     constructor(props) {
         super(props);
 
