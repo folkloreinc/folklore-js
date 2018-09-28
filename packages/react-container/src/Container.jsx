@@ -73,8 +73,9 @@ class Container extends PureComponent {
 
     renderRouter(children) {
         const { router } = this.props;
+        const { memoryHistory, createHistory, ...routerProps } = isObject(router) ? router : {};
         return (
-            <RouterContainer history={this.history} {...router}>
+            <RouterContainer history={this.history} {...routerProps}>
                 {children}
             </RouterContainer>
         );
