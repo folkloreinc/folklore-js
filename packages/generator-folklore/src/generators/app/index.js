@@ -91,6 +91,10 @@ module.exports = class AppGenerator extends Generator {
                                 value: 'eslint',
                             },
                             {
+                                name: 'Stylelint',
+                                value: 'stylelint',
+                            },
+                            {
                                 name: 'SASS Lint',
                                 value: 'sass-lint',
                             },

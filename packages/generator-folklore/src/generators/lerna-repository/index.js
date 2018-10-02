@@ -88,7 +88,7 @@ module.exports = class LernaRepositoryGenerator extends Generator {
             quiet: true,
         });
 
-        this.composeWith('folklore:sass-lint', {
+        this.composeWith('folklore:stylelint', {
             quiet: true,
             'camel-case': true,
         });

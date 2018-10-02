@@ -62,7 +62,7 @@ module.exports = class ScssGenerator extends Generator {
     }
 
     configuring() {
-        this.composeWith('folklore:sass-lint', {
+        this.composeWith('folklore:stylelint', {
             quiet: true,
             'camel-case': this.options.react,
         });
