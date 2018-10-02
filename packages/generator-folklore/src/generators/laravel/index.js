@@ -43,7 +43,7 @@ module.exports = class LaravelGenerator extends Generator {
         this.option('local-url', {
             type: String,
             desc: 'Project local url',
-            defaults: 'http://<%= project_host %>.local.flklr.ca',
+            defaults: 'http://<%= project_host %>.local.flklr.ca:3000',
         });
 
         this.option('proxy-url', {
@@ -267,7 +267,7 @@ module.exports = class LaravelGenerator extends Generator {
             'build-path': publicPath,
             'entry-path': path.join('./', assetsPath, 'js/index.js'),
             'server-proxy': true,
-            'server-browser-host': urlLocal.replace(/^https?:\/\//, ''),
+            'server-browser-host': urlLocal.replace(/^https?:\/\//, '').replace(/:[0-9]+$/, ''),
             'server-proxy-host': urlProxy,
             'server-watch-path': [
                 'config/**/*.php',
