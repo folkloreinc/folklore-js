@@ -13,9 +13,12 @@ class UserMedia extends EventEmitter {
 
         this.options = {
             type: 'video',
+            audio: true,
+            videoConstraints: null,
+            audioConstraints: null,
             mimeType: null,
-            recorder: true,
-            recordFilename: `file-${(new Date()).getTime()}`,
+            recorder: false,
+            recordFilename: `file-${new Date().getTime()}`,
             ...opts,
         };
 
@@ -83,10 +86,14 @@ class UserMedia extends EventEmitter {
         const context = this.snapshotCanvas.getContext('2d');
         context.drawImage(
             this.snapshotVideo,
-            0, 0,
-            videoWidth, videoHeight,
-            0, 0,
-            videoWidth, videoHeight,
+            0,
+            0,
+            videoWidth,
+            videoHeight,
+            0,
+            0,
+            videoWidth,
+            videoHeight,
         );
         const blob = dataUriToBlob(this.snapshotCanvas.toDataURL(this.getMimeType()));
         const file = this.createFile(blob);
@@ -101,18 +108,27 @@ class UserMedia extends EventEmitter {
             return Promise.resolve();
         }
         debug('Starting user media...');
-        const { type } = this.options;
+        const {
+            type, videoConstraints, audioConstraints, audio,
+        } = this.options;
         return new Promise((resolve, reject) => {
-            navigator.getUserMedia({
-                video: type === 'video' || type === 'image',
-                audio: type === 'audio' || type === 'video',
-            }, (stream) => {
-                this.onUserMediaSuccess(stream);
-                resolve(stream);
-            }, (err) => {
-                this.onUserMediaError(err);
-                reject(err);
-            });
+            navigator.getUserMedia(
+                {
+                    video: type === 'video' || type === 'image' ? videoConstraints || true : false,
+                    audio:
+                        (type === 'audio' || type === 'video') && audio
+                            ? audioConstraints || true
+                            : false,
+                },
+                (stream) => {
+                    this.onUserMediaSuccess(stream);
+                    resolve(stream);
+                },
+                (err) => {
+                    this.onUserMediaError(err);
+                    reject(err);
+                },
+            );
         });
     }
 
