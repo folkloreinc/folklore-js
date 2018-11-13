@@ -4,7 +4,7 @@ import get from 'lodash/get';
 import isObject from 'lodash/isObject';
 import createBrowserHistory from 'history/createBrowserHistory';
 import createMemoryHistory from 'history/createMemoryHistory';
-import { routerReducer, routerMiddleware } from 'react-router-redux';
+import { connectRouter, routerMiddleware } from 'connected-react-router';
 
 import StoreContainer from './StoreContainer';
 import IntlContainer from './IntlContainer';
@@ -98,7 +98,7 @@ class Container extends Component {
                 getReducers={reducers =>
                     (router !== false
                         ? {
-                            router: routerReducer,
+                            router: connectRouter(this.history),
                             ...reducers,
                         }
                         : reducers)
