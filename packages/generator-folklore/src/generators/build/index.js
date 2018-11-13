@@ -302,11 +302,19 @@ module.exports = class AppGenerator extends Generator {
                     'url-loader@latest',
 
                     // Plugins
-                    'extract-text-webpack-plugin@latest',
-                    'html-webpack-plugin@latest',
-                    'sw-precache-webpack-plugin@latest',
+                    'html-webpack-plugin@^4.0.0-alpha.2',
                     'webpack-manifest-plugin@latest',
                     'case-sensitive-paths-webpack-plugin@latest',
+                    'postcss-preset-env@latest',
+                    'postcss-safe-parser@latest',
+                    'postcss-flexbugs-fixes@latest',
+                    'pnp-webpack-plugin@latest',
+                    'babel-preset-react-app@^6.1.0',
+                    'babel-plugin-named-asset-import@latest',
+                    'terser-webpack-plugin@latest',
+                    'mini-css-extract-plugin@latest',
+                    'optimize-css-assets-webpack-plugin@latest',
+                    'workbox-webpack-plugin@latest',
 
                     // Others
                     'autoprefixer@latest',
@@ -314,19 +322,19 @@ module.exports = class AppGenerator extends Generator {
                     'chalk@latest',
                     'dotenv@latest',
                     'dotenv-expand@latest',
+                    'node-sass@latest',
                     'fs-extra@latest',
                     'glob@latest',
                     'lodash@latest',
-                    'node-sass@latest',
                     'pretty-bytes@latest',
-                    'react-dev-utils@^5.0.1',
-                    'webpack@^3.0', // TODO: update webpack 4
+                    'react-dev-utils@^6.1.1',
+                    'webpack@^4.0', // TODO: update webpack 4
                 ];
 
                 const dependencies = ['whatwg-fetch', 'core-js', 'promise', 'raf', 'object-assign'];
 
                 if (this.options.server) {
-                    devDependencies.push('webpack-dev-server@^2.0');
+                    devDependencies.push('webpack-dev-server@^3.1');
                 }
 
                 if (this.options.imagemin) {

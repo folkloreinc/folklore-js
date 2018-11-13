@@ -111,12 +111,6 @@ module.exports = class LaravelGenerator extends Generator {
             desc: 'Database name',
         });
 
-        this.option('hot-reload', {
-            type: Boolean,
-            desc: 'Enable hot reload',
-            defaults: false,
-        });
-
         this.option('panneau', {
             type: Boolean,
             desc: 'Add panneau',
@@ -177,11 +171,6 @@ module.exports = class LaravelGenerator extends Generator {
                         value: 'panneau',
                         checked: true,
                     },
-                    !this.options['hot-reload'] && {
-                        name: 'Hot Reload',
-                        value: 'hot-reload',
-                        checked: true,
-                    },
                 ].filter(Boolean);
                 if (featuresChoices.length) {
                     prompts.push({
@@ -214,9 +203,6 @@ module.exports = class LaravelGenerator extends Generator {
                     if (features.indexOf('panneau') !== -1) {
                         this.options.panneau = true;
                     }
-                    if (features.indexOf('hot-reload') !== -1) {
-                        this.options['hot-reload'] = true;
-                    }
                 });
             },
         };
@@ -246,7 +232,6 @@ module.exports = class LaravelGenerator extends Generator {
             path: jsSrcPath,
             'styles-path': stylesSrcPath,
             'skip-install': skipInstall,
-            'hot-reload': this.options['hot-reload'],
             quiet: true,
         });
 

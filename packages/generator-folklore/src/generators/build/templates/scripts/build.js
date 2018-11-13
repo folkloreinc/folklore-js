@@ -1,5 +1,5 @@
 /* eslint-disable no-console, global-require */
-/* eslint-disable import/no-extraneous-dependencies, import/no-dynamic-require */
+/* eslint-disable import/no-extraneous-dependencies, import/no-dynamic-require, import/order */
 const program = require('commander');
 
 program

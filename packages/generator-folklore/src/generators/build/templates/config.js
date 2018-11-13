@@ -13,6 +13,7 @@ module.exports = {
         sassModuleRegex: /\.(scss|sass)$/,
 
         cssFilename: env => (env === 'dev' ? 'css/[name]-[contenthash].css' : 'css/[name].css'),
+        cssChunkFilename: () => 'css/[name].[contenthash:8].chunk.css',
         cssLocalIdent: '[name]-[local]',
 
         imageFilename: env => (env === 'dev' ? 'img/[name]-[hash:6].[ext]' : 'img/[name].[ext]'),
@@ -37,27 +38,16 @@ module.exports = {
      * PostCSS
      */
     postcss: {
-        map: {
-            inline: false,
-        },
-        plugins: {
-            autoprefixer: {},
-            cssnano: {
-                preset: 'default',
-                zindex: false,
-                discardUnused: {
-                    fontFace: false,
+        ident: 'postcss',
+        plugins: [
+            require('postcss-flexbugs-fixes'),
+            require('postcss-preset-env')({
+                autoprefixer: {
+                    flexbox: 'no-2009',
                 },
-            },
-        },
-        env: {
-            dev: {
-                plugins: {
-                    autoprefixer: false,
-                    cssnano: false,
-                },
-            },
-        },
+                stage: 3,
+            }),
+        ],
     },
 
 <% if (hasImagemin) {

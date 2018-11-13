@@ -1,5 +1,7 @@
-/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable import/no-extraneous-dependencies, import/no-dynamic-require, global-require */
+const fs = require('fs');
 const errorOverlayMiddleware = require('react-dev-utils/errorOverlayMiddleware');
+const evalSourceMapMiddleware = require('react-dev-utils/evalSourceMapMiddleware');
 const noopServiceWorkerMiddleware = require('react-dev-utils/noopServiceWorkerMiddleware');
 const ignoredFiles = require('react-dev-utils/ignoredFiles');
 const { proxy: serverProxy, browserHost, ...config } = require('./config').webpackDevServer;
@@ -26,7 +28,8 @@ module.exports = (proxy, allowedHost) => ({
     // So we will disable the host check normally, but enable it if you have
     // specified the `proxy` setting. Finally, we let you override it if you
     // really know what you're doing with a special environment variable.
-    disableHostCheck: true,
+    disableHostCheck:
+    !proxy || process.env.DANGEROUSLY_DISABLE_HOST_CHECK === 'true',
     // Enable gzip compression of generated files.
     compress: true,
     // Silence WebpackDevServer's own logs since they're generally not useful.
@@ -46,10 +49,7 @@ module.exports = (proxy, allowedHost) => ({
     // for files like `favicon.ico`, `manifest.json`, and libraries that are
     // for some reason broken when imported through Webpack. If you just want to
     // use an image, put it in `src` and `import` it from JavaScript instead.
-    contentBase: [
-        paths.appPublic,
-        ...paths.watchPaths,
-    ],
+    contentBase: paths.appPublic,
     // By default files from `contentBase` will not trigger a page reload.
     watchContentBase: true,
     // Enable hot reloading server. It will provide /sockjs-node/ endpoint
@@ -62,8 +62,8 @@ module.exports = (proxy, allowedHost) => ({
     // as we specified in the config. In development, we always serve from /.
     publicPath: webpackConfig.output.publicPath,
     // WebpackDevServer is noisy by default so we emit custom message instead
-    // by listening to the compiler events with `compiler.plugin` calls above.
-    quiet: false,
+    // by listening to the compiler events with `compiler.hooks[...].tap` calls above.
+    quiet: true,
     // Reportedly, this avoids CPU overload on some systems.
     // https://github.com/facebook/create-react-app/issues/293
     // src/node_modules is not ignored to support absolute imports
@@ -84,9 +84,17 @@ module.exports = (proxy, allowedHost) => ({
     ...(proxy !== null ? {
         proxy,
     } : null),
-    before(app) {
+    before(app, server) {
+        if (fs.existsSync(paths.proxySetup)) {
+            // This registers user provided middleware for proxy reasons
+            require(paths.proxySetup)(app);
+        }
+
+        // This lets us fetch source contents from webpack for the error overlay
+        app.use(evalSourceMapMiddleware(server));
         // This lets us open files from the runtime error overlay.
         app.use(errorOverlayMiddleware());
+
         // This service worker file is effectively a 'no-op' that will reset any
         // previous service worker registered for the same host:port combination.
         // We do this in development to avoid hitting the production cache if

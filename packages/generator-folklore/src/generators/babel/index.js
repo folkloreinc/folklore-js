@@ -12,6 +12,12 @@ module.exports = class BabelGenerator extends Generator {
             defaults: './build',
         });
 
+        this.option('react-app', {
+            type: Boolean,
+            required: false,
+            defaults: false,
+        });
+
         this.option('transform-runtime', {
             type: Boolean,
             required: false,
@@ -63,7 +69,7 @@ module.exports = class BabelGenerator extends Generator {
             },
 
             preset() {
-                const srcPath = this.templatePath('babel-preset.js');
+                const srcPath = this.templatePath(this.options['react-app'] ? 'babel-preset-react.js' : 'babel-preset.js');
                 const destPath = this.buildPath('babel-preset.js');
                 this.fs.copyTpl(srcPath, destPath, {
                     hasTransformRuntime: this.options['transform-runtime'],
@@ -109,7 +115,13 @@ module.exports = class BabelGenerator extends Generator {
 
                 const dependencies = [];
 
-                const devDependencies = [
+                const devDependencies = this.options['react-app'] ? [
+                    '@babel/cli@latest',
+                    '@babel/core@latest',
+                    '@babel/polyfill@latest',
+                    '@babel/register@latest',
+                    'babel-preset-react-app@latest',
+                ] : [
                     '@babel/cli@latest',
                     '@babel/core@latest',
                     '@babel/polyfill@latest',

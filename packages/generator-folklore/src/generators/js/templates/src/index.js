@@ -4,7 +4,7 @@ import domready from 'domready';
 import { load as loadHypernova } from 'hypernova';
 import FastClick from 'fastclick';
 
-let HypernovaComponents = require('./hypernova').default;
+import HypernovaComponents from './hypernova';
 
 const start = () => {
     const findComponent = name => HypernovaComponents[name] || null;
@@ -36,15 +36,6 @@ const start = () => {
 
     const hypernovaElements = document.querySelectorAll('div[data-hypernova-key]');
     renderHypernovaElements(hypernovaElements);
-
-    // Webpack Hot Module Replacement API
-    if (module.hot) {
-        module.hot.accept('./hypernova.js', () => {
-            // eslint-disable-next-line
-            HypernovaComponents = require('./hypernova').default;
-            renderHypernovaElements(hypernovaElements);
-        });
-    }
 };
 
 const ready = (document.readyState || 'loading') !== 'loading';

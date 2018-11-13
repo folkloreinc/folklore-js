@@ -15,5 +15,8 @@
             "name": "Nicolas Roy-Bourdages",
             "email": "nrb@atelierfolklore.ca"
         }
+    ],
+    "browserslist": [
+        "ie >= 9"
     ]
 }

@@ -67,6 +67,7 @@ module.exports = class JsGenerator extends Generator {
     configuring() {
         const skipInstall = this.options['skip-install'];
         this.composeWith('folklore:babel', {
+            'react-app': !this.options['babel-compile'],
             compile: this.options['babel-compile'],
             'skip-install': skipInstall,
             quiet: true,
