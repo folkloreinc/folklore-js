@@ -115,7 +115,7 @@ checkBrowsers(paths.appPath, isInteractive)
                     ...proxyConfig[0],
                     context(pathname, req) {
                         return (
-                            req.method !== 'GET' || pathname === '/' || mayProxy(pathname)
+                            req.method !== 'GET' || pathname === '/' || (mayProxy(pathname) && req.headers.accept)
                         );
                     },
                     changeOrigin: false,
