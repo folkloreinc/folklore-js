@@ -73,7 +73,7 @@ class IntlContainer extends Component {
             return;
         }
         import(/* webpackChunkName: "vendor/react-intl/locale-data/[request]" */`react-intl/locale-data/${locale}`)
-            .then((localeData) => {
+            .then(({ default: localeData }) => {
                 this.setState(state => ({
                     locales: {
                         ...state.locales,
