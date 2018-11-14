@@ -12,22 +12,20 @@ const { attachEvent } = document;
 let stylesCreated = false;
 
 const requestFrame = (() => {
-    const raf = (
+    const raf =
         window.requestAnimationFrame ||
         window.mozRequestAnimationFrame ||
         window.webkitRequestAnimationFrame ||
-        (fn => setTimeout(fn, 20))
-    );
+        (fn => setTimeout(fn, 20));
     return fn => raf(fn);
 })();
 
 const cancelFrame = (() => {
-    const cancel = (
+    const cancel =
         window.cancelAnimationFrame ||
         window.mozCancelAnimationFrame ||
         window.webkitCancelAnimationFrame ||
-        clearTimeout
-    );
+        clearTimeout;
     return id => cancel(id);
 })();
 
@@ -44,19 +42,18 @@ const resetTriggers = (element) => {
     expand.scrollTop = expand.scrollHeight;
 };
 
-const checkTriggers = element => (
-    element.offsetWidth !== element.__resizeLast__.width ||
-    element.offsetHeight !== element.__resizeLast__.height
-);
-
 const scrollListener = (e) => {
     const element = e.currentTarget;
     resetTriggers(element);
     if (element.__resizeRAF__) cancelFrame(element.__resizeRAF__);
     element.__resizeRAF__ = requestFrame(() => {
-        if (checkTriggers(element)) {
-            element.__resizeLast__.width = element.offsetWidth;
-            element.__resizeLast__.height = element.offsetHeight;
+        const { offsetWidth, offsetHeight } = element;
+        if (
+            offsetWidth !== element.__resizeLast__[0] ||
+            offsetHeight !== element.__resizeLast__[1]
+        ) {
+            element.__resizeLast__[0] = offsetWidth;
+            element.__resizeLast__[1] = offsetHeight;
             element.__resizeListeners__.forEach((fn) => {
                 fn.call(element, e);
             });
@@ -129,11 +126,12 @@ const addResizeListener = (element, fn) => {
                 element.style.position = 'relative';
             }
             createStyles();
-            element.__resizeLast__ = {};
+            element.__resizeLast__ = [0, 0];
             element.__resizeListeners__ = [];
             element.__resizeTriggers__ = document.createElement('div');
             element.__resizeTriggers__.className = 'resize-triggers';
-            element.__resizeTriggers__.innerHTML = '<div class="expand-trigger"><div></div></div><div class="contract-trigger"></div>';
+            element.__resizeTriggers__.innerHTML =
+                '<div class="expand-trigger"><div></div></div><div class="contract-trigger"></div>';
             element.appendChild(element.__resizeTriggers__);
             resetTriggers(element);
             element.addEventListener('scroll', scrollListener, true);
@@ -161,7 +159,4 @@ const removeResizeListener = (element, fn) => {
     }
 };
 
-export {
-    addResizeListener,
-    removeResizeListener,
-};
+export { addResizeListener, removeResizeListener };
