@@ -21,7 +21,7 @@ const getSizeInPixel = (size, maxSize, opts) => {
             const value = unit === 'rem' || unit === 'em' ? (floatValue * 100) : floatValue;
             pixelSize = options.units.indexOf(unit) !== -1 ? ((value / 100) * maxSize) : value;
         } else {
-            pixelSize = !isNaN(parseFloat(size)) ? parseFloat(size) : null;
+            pixelSize = !Math.isNaN(parseFloat(size)) ? parseFloat(size) : null;
         }
     } else {
         pixelSize = maxSize;
