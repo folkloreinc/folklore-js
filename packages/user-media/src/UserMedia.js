@@ -116,7 +116,7 @@ class UserMedia extends EventEmitter {
                 {
                     video: type === 'video' || type === 'image' ? videoConstraints || true : false,
                     audio:
-                        (type === 'audio' || type === 'video') && audio
+                        type === 'audio' || (type === 'video' && audio)
                             ? audioConstraints || true
                             : false,
                 },
