@@ -116,6 +116,12 @@ module.exports = class JsGenerator extends Generator {
                 this.fs.copy(srcPath, destPath);
             },
 
+            browserslistrc() {
+                const srcPath = this.templatePath('browserslistrc');
+                const destPath = this.destinationPath('.browserslistrc');
+                this.fs.copy(srcPath, destPath);
+            },
+
             packageJSON() {
                 const srcPath = this.templatePath('_package.json');
                 const destPath = this.destinationPath('package.json');
