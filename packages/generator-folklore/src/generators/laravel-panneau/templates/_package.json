@@ -3,6 +3,7 @@
         "build:panneau": "node ./build/scripts/build.js --config ./resources/assets/vendor/panneau/webpack.config.js",
         "build:site": "node ./build/scripts/build.js --config ./build/webpack.config.prod.js",
         "build": "node ./build/scripts/build.js --config ./resources/assets/vendor/panneau/webpack.config.js --config ./build/webpack.config.prod.js",
+        "server:panneau": "node ./build/scripts/server.js --config ./resources/assets/vendor/panneau/webpack.config.js",
         "server:site": "node ./build/scripts/server.js --config ./build/webpack.config.dev.js",
         "server": "node ./build/scripts/server.js --config ./resources/assets/vendor/panneau/webpack.config.js --config ./build/webpack.config.dev.js",
         "start": "npm run server"

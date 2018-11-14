@@ -508,6 +508,8 @@ module.exports = {
         // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
         // You can remove this if you don't use Moment.js:
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+        // Ignore react-intl locale except fr and en
+        new webpack.IgnorePlugin(/(?!fr|en)([a-z]{2,3})/, /locale-data/),
         // Generate a service worker script that will precache, and keep up to date,
         // the HTML & assets that are part of the Webpack build.
         new WorkboxWebpackPlugin.GenerateSW({
