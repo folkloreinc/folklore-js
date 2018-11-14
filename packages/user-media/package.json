@@ -1,6 +1,6 @@
 {
     "name": "@folklore/user-media",
-    "version": "0.1.9",
+    "version": "0.1.10",
     "description": "getUserMedia utilities",
     "keywords": [
         "javascript",
