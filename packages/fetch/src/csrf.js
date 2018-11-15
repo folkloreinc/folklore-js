@@ -5,7 +5,7 @@ export const getXSRFToken = () => {
     return cookies['X-XSRF-TOKEN'] || null;
 };
 
-const getCsrfToken = (name) => {
+export const getCsrfToken = (name) => {
     const metaName = name || 'csrf-token';
     const metas = [].slice.call(document.getElementsByTagName('meta'));
     return metas.reduce((val, meta) => (
