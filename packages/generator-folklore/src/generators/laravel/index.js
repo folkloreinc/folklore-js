@@ -250,7 +250,7 @@ module.exports = class LaravelGenerator extends Generator {
             path: buildPath,
             'src-path': assetsPath,
             'build-path': publicPath,
-            'entry-path': path.join('./', assetsPath, 'js/index.js'),
+            'entry-path': path.join('./', assetsPath, 'js/index'),
             'server-proxy': true,
             'server-browser-host': urlLocal.replace(/^https?:\/\//, '').replace(/:[0-9]+$/, ''),
             'server-proxy-host': urlProxy,

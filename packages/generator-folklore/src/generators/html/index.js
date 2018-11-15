@@ -158,7 +158,7 @@ module.exports = class HTMLGenerator extends Generator {
         this.composeWith('folklore:build', {
             path: buildPath,
             'src-path': srcPath,
-            'entry-path': path.join(srcPath, 'index.js'),
+            'entry-path': path.join(srcPath, 'index'),
             'html-path': path.join(srcPath, 'index.html.ejs'),
             'build-path': destPath,
             'empty-path': destPath,
