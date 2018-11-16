@@ -39,6 +39,8 @@ const publicUrl = publicPath.slice(0, -1);
 // Get environment variables to inject into our app.
 const env = getClientEnvironment(publicUrl);
 
+const hasHtml = (paths.appHtml || null) !== null;
+
 // Assert this just to be safe.
 // Development builds of React are slow and not intended for production.
 if (env.stringified['process.env'].NODE_ENV !== '"production"') {
@@ -190,12 +192,12 @@ module.exports = {
         // https://twitter.com/wSokra/status/969633336732905474
         // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
         splitChunks: {
-            chunks: (paths.appHtml || null) !== null ? 'all' : 'async',
+            chunks: hasHtml ? 'all' : 'async',
             name: false,
         },
         // Keep the runtime chunk seperated to enable long term caching
         // https://twitter.com/wSokra/status/969679223278505985
-        runtimeChunk: (paths.appHtml || null) !== null,
+        runtimeChunk: hasHtml,
     },
     resolve: {
         // This allows you to set a fallback for where Webpack should look for modules.
@@ -451,7 +453,7 @@ module.exports = {
     },
     plugins: [
         // Generates an `index.html` file with the <script> injected.
-        ...((paths.appHtml || null) !== null
+        ...(hasHtml
             ? [
                 new HtmlWebpackPlugin({
                     inject: true,
@@ -516,13 +518,39 @@ module.exports = {
             clientsClaim: true,
             exclude: [/\.map$/, /asset-manifest\.json$/],
             importWorkboxFrom: 'cdn',
-            navigateFallback: `${publicUrl}/index.html`,
-            navigateFallbackBlacklist: [
-                // Exclude URLs starting with /_, as they're likely an API call
-                new RegExp('^/_'),
-                // Exclude URLs containing a dot, as they're likely a resource in
-                // public/ and not a SPA route
-                new RegExp('/[^/]+\\.[^/]+$'),
+            ...(hasHtml ? {
+                navigateFallback: `${publicUrl}/index.html`,
+                navigateFallbackBlacklist: [
+                    // Exclude URLs starting with /_, as they're likely an API call
+                    new RegExp('^/_'),
+                    // Exclude URLs containing a dot, as they're likely a resource in
+                    // public/ and not a SPA route
+                    new RegExp('/[^/]+\\.[^/]+$'),
+                ],
+            } : null),
+            runtimeCaching: [
+                {
+                    urlPattern: /^https:\/\/fonts\.googleapis\.com\//,
+                    handler: 'cacheFirst',
+                },
+                {
+                    urlPattern: /^https:\/\/cdn\.polyfill\.io\//,
+                    handler: 'cacheFirst',
+                },
+                ...(!hasHtml ? [
+                    {
+                        urlPattern: /\/(fr|en)(\.json)?$/,
+                        handler: 'networkFirst',
+                    },
+                    {
+                        urlPattern: /\/(fr|en)\/(.*)$/,
+                        handler: 'networkFirst',
+                    },
+                    {
+                        urlPattern: /\/files\/(.*)$/,
+                        handler: 'cacheFirst',
+                    },
+                ] : []),
             ],
         }),
     ],
