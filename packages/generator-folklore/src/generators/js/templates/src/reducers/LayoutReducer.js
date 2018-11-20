@@ -8,7 +8,15 @@ const initialState = {
     fontsLoaded: false,
 };
 
-const LayoutReducer = (state = initialState, action) => {
+const LayoutReducer = (previousState, action) => {
+    let state = previousState || initialState;
+    if (typeof state.hydrated === 'undefined' || !state.hydrated) {
+        state = {
+            ...initialState,
+            ...previousState,
+            hydrated: true,
+        };
+    }
     switch (action.type) {
     case SET_SIZE:
         return {
