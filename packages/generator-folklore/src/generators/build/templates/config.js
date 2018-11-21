@@ -33,7 +33,8 @@ module.exports = {
     webpackDevServer: {
 <% if (hasServerProxy) {
 %>        browserHost: '<%= serverBrowserHost %>',
-        proxy: '<%= serverProxyHost %>',<% } %>
+        proxy: '<%= serverProxyHost %>',
+        https: false,<% } %>
     },<% } %>
 
     /**
