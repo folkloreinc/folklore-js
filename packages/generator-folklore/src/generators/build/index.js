@@ -45,7 +45,7 @@ module.exports = class AppGenerator extends Generator {
             defaults: true,
         });
 
-        this.option('server-watch-path', {
+        this.option('watch-path', {
             type: String,
         });
 
@@ -155,10 +155,10 @@ module.exports = class AppGenerator extends Generator {
                     srcPath: this.options['src-path'] || null,
                     htmlPath: this.options['html-path'] || null,
                     watchPaths:
-                        (this.options['server-watch-path'] || null) !== null &&
-                        !isArray(this.options['server-watch-path'])
-                            ? [...this.options['server-watch-path'].split(',')]
-                            : this.options['server-watch-path'],
+                        (this.options['watch-path'] || null) !== null &&
+                        !isArray(this.options['watch-path'])
+                            ? [...this.options['watch-path'].split(',')]
+                            : this.options['watch-path'],
                     emptyPaths:
                         (this.options['empty-path'] || null) !== null &&
                         !isArray(this.options['empty-path'])
