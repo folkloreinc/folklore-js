@@ -98,7 +98,11 @@ class UserMedia extends EventEmitter {
         const blob = dataUriToBlob(this.snapshotCanvas.toDataURL(this.getMimeType()));
         const file = this.createFile(blob);
         this.snapshotVideo.removeEventListener('canplay', this.onSnapshotVideoCanPlay);
-        this.snapshotVideo.src = null;
+        try {
+            this.snapshotVideo.srcObject = null;
+        } catch (e) {
+            this.snapshotVideo.src = null;
+        }
         this.snapshotVideo = null;
         this.emit('file', file, blob);
     }
@@ -154,7 +158,11 @@ class UserMedia extends EventEmitter {
             this.snapshotVideo.addEventListener('canplay', this.onSnapshotVideoCanPlay);
             this.snapshotVideo.preload = 'auto';
             this.snapshotVideo.autoplay = true;
-            this.snapshotVideo.src = this.getStreamUrl();
+            try {
+                this.snapshotVideo.srcObject = this.getStream();
+            } catch (e) {
+                this.snapshotVideo.src = this.getStreamUrl();
+            }
         });
     }
 
