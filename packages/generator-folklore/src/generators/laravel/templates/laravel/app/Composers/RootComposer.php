@@ -63,7 +63,7 @@ class RootComposer
                 $key = sizeof($texts) === 1 && $key === 0 ? $translation : ($translation.'.'.$key);
                 $translations[$locale][$key] = preg_replace(
                     '/\:([a-z][a-z0-9\_\-]+)/',
-                    '%{$1}',
+                    '{$1}',
                     $value
                 );
             }
