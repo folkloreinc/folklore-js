@@ -198,6 +198,12 @@ module.exports = class HTMLGenerator extends Generator {
                 this.fs.copy(srcPath, destPath);
             },
 
+            utils() {
+                const srcPath = this.templatePath('utils.js');
+                const destPath = this.srcPath('lib/utils.js');
+                this.fs.copy(srcPath, destPath);
+            },
+
             gitignore() {
                 const srcPath = this.templatePath('gitignore');
                 const destPath = this.destinationPath('.gitignore');
