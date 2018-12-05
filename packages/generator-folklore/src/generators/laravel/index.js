@@ -232,6 +232,7 @@ module.exports = class LaravelGenerator extends Generator {
             path: jsSrcPath,
             'styles-path': stylesSrcPath,
             'skip-install': skipInstall,
+            hypernova: true,
             quiet: true,
         });
 
