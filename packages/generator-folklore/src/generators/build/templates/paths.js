@@ -70,23 +70,23 @@ module.exports = {
     appPath: resolveApp('.'),
     appBuild: resolveApp('<%= buildPath %>'),
     appPublic: resolveApp('<%= publicPath %>'),
-    appIndexJs: resolveModule(resolveApp, '<%= entryPath %>')),<% if (htmlPath !== null) { %>
+    appIndexJs: resolveModule(resolveApp, '<%= entryPath %>'),<% if (htmlPath !== null) { %>
     appHtml: resolveApp('<%= htmlPath %>'),<% } %>
     appPackageJson: resolveApp('package.json'),
     appNodeModules: resolveApp('node_modules'),
     appSrc: resolveApp('<%= srcPath %>'),
-    testsSetup: resolveModule(resolveApp, 'tests/setupTests')),
+    testsSetup: resolveModule(resolveApp, 'tests/setupTests'),
     publicUrl: getPublicUrl(resolveApp('package.json')),
     servedPath: getServedPath(resolveApp('package.json')),
     copyPaths: [<% (copyPaths || []).forEach((dir) => { %>
-        resolveApp('<%= dir %>'),<%
-    }) %>],
-    emptyPaths: [<% (emptyPaths || []).forEach((dir) => { %>
-        resolveApp('<%= dir %>'),<%
-    }) %>],
+        resolveApp('<%= dir %>'),<% }) %>
+    ],
+    emptyPaths: [<% (emptyPaths || []).forEach((dir) => {%>
+        resolveApp('<%= dir %>'),<% }) %>
+    ],
     watchPaths: [<% (watchPaths || []).forEach((dir) => { %>
-        resolveApp('<%= dir %>'),<%
-    }) %>],
+        resolveApp('<%= dir %>'),<% }) %>
+    ],
 };
 
 module.exports.moduleFileExtensions = moduleFileExtensions;
