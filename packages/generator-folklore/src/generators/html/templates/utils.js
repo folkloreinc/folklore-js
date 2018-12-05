@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/prefer-default-export
-export const getLocaleFromLocation = (currentLocation = window.location, locales = ['fr', 'en']) => {
+export const getLocaleFromLocation = (locales = ['fr', 'en'], currentLocation = window.location) => {
     const { pathname = '/' } = currentLocation;
     const localeRegEx = new RegExp(`^/(${locales.join('|')})(/.*)?$`, 'i');
     const matches = pathname.match(localeRegEx);
