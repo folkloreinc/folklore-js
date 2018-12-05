@@ -18,12 +18,21 @@ module.exports = class JsGenerator extends Generator {
             defaults: false,
         });
 
+        this.option('hypernova', {
+            type: Boolean,
+            defaults: false,
+        });
+
         this.option('path', {
             type: String,
             defaults: 'src/js',
         });
 
         this.option('styles-path', {
+            type: String,
+        });
+
+        this.option('root-props-import', {
             type: String,
         });
     }
@@ -86,17 +95,37 @@ module.exports = class JsGenerator extends Generator {
                 const stylesPath = this.options['styles-path'] || null;
 
                 const templateData = {
-                    getRelativeStylesPath: (from, src) => (
+                    getRelativeStylesPath: (from, src) =>
                         path.relative(
                             this.destinationPath(path.dirname(path.join(jsPath, from))),
                             this.destinationPath(path.join(stylesPath || path.join(jsPath, 'styles'), src)),
-                        )
-                    ),
+                        ),
                 };
 
                 const destPath = this.destinationPath(jsPath);
                 const srcPath = this.templatePath('src');
                 this.fs.copyTpl(srcPath, destPath, templateData);
+            },
+
+            index() {
+                const jsPath = this.options.path;
+                if (this.options.hypernova) {
+                    this.fs.copy(
+                        this.templatePath('hypernova.js'),
+                        this.destinationPath(path.join(jsPath, 'hypernova.js')),
+                    );
+                    this.fs.copy(
+                        this.templatePath('index-hypernova.js'),
+                        this.destinationPath(path.join(jsPath, 'index.js')),
+                    );
+                } else {
+                    const rootPropsImport = this.options['root-props-import'] || null;
+                    this.fs.copyTpl(
+                        this.templatePath('index.js'),
+                        this.destinationPath(path.join(jsPath, 'index.js')),
+                        { rootPropsImport },
+                    );
+                }
             },
 
             styles() {
@@ -144,7 +173,6 @@ module.exports = class JsGenerator extends Generator {
         const dependencies = [
             'domready@latest',
             'fastclick@latest',
-            'hypernova@latest',
             'keymirror@latest',
             'lodash@latest',
             'react@latest',
@@ -152,8 +180,8 @@ module.exports = class JsGenerator extends Generator {
             'react-dom@latest',
             'react-redux@latest',
             'react-intl@latest',
-            'history@^4.7.0',
-            'react-router@^4.2.0',
+            'react-router@^4.3',
+            'connected-react-router@latest',
             'react-helmet@latest',
             'node-polyglot@latest',
             'classnames@latest',
@@ -161,6 +189,10 @@ module.exports = class JsGenerator extends Generator {
             'react-loadable@latest',
             'webfontloader@latest',
         ];
+
+        if (this.options.hypernova) {
+            dependencies.push('hypernova@latest');
+        }
 
         const devDependencies = ['html-webpack-plugin@latest'];
 

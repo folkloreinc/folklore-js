@@ -130,6 +130,7 @@ module.exports = class HTMLGenerator extends Generator {
             'project-name': projectName,
             'hot-reload': true,
             path: jsSrcPath,
+            'root-props-import': './data/root',
             'skip-install': skipInstall,
             quiet: true,
         });

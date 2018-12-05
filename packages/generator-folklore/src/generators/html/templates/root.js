@@ -1,4 +1,4 @@
-module.exports = () => ({
+module.exports = {
     locale: 'fr',
     messages: {
         'meta.title': 'Titre',
@@ -6,4 +6,4 @@ module.exports = () => ({
     routes: {
         home: '/',
     },
-});
+};
