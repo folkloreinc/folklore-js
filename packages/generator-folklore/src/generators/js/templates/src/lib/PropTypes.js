@@ -12,6 +12,16 @@ export const intl = PropTypes.shape({
     formatMessage: PropTypes.func.isRequired,
 });
 
+export const message = PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    defaultMessage: PropTypes.string,
+});
+
+export const label = PropTypes.oneOfType([
+    message,
+    PropTypes.node,
+]);
+
 /**
  * Site
  */
