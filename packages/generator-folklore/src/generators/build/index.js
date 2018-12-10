@@ -117,6 +117,7 @@ module.exports = class AppGenerator extends Generator {
         return {
             config() {
                 const templateData = {
+                    hasHtml: (this.options['html-path'] || null) !== null,
                     hasServer: this.options.server || false,
                     hasServerProxy: this.options['server-proxy'] || false,
                     serverProxyHost: this.options['server-proxy-host'] || null,

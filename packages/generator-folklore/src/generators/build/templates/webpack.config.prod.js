@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 const path = require('path');
 const webpack = require('webpack');
-const isFunction = require('lodash/isFunction');
 const PnpWebpackPlugin = require('pnp-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
@@ -17,9 +16,8 @@ const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const paths = require('./paths');
 const config = require('./config').webpack;
 const getLocalIdent = require('./utils/getLocalIdent');
+const getConfigValue = require('./utils/getConfigValue');
 const getClientEnvironment = require('./env');
-
-const getConfigValue = (val, ...args) => (isFunction(val) ? val(...args) : val);
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -48,10 +46,10 @@ if (env.stringified['process.env'].NODE_ENV !== '"production"') {
 }
 
 // Note: defined here because it will be used more than once.
-const cssFilename = getConfigValue(config.cssFilename, 'prod');
+const cssFilename = getConfigValue(config.cssFilename);
 
 // Note: defined here because it will be used more than once.
-const cssChunkFilename = getConfigValue(config.cssChunkFilename, 'prod');
+const cssChunkFilename = getConfigValue(config.cssChunkFilename);
 
 // Options for PostCSS as we reference these options twice
 // Adds vendor prefixing based on your specified browser support in
@@ -67,10 +65,10 @@ const postCSSLoaderOptions = {
 };
 
 // style files regexes
-const cssRegex = getConfigValue(config.cssRegex, 'prod');
-const cssModuleRegex = getConfigValue(config.cssModuleRegex, 'prod');
-const sassRegex = getConfigValue(config.sassRegex, 'prod');
-const sassModuleRegex = getConfigValue(config.sassModuleRegex, 'prod');
+const cssRegex = getConfigValue(config.cssRegex);
+const cssModuleRegex = getConfigValue(config.cssModuleRegex);
+const sassRegex = getConfigValue(config.sassRegex);
+const sassModuleRegex = getConfigValue(config.sassModuleRegex);
 
 // common function to get style loaders
 const getStyleLoaders = (cssOptions, preProcessor) => {
@@ -120,9 +118,9 @@ module.exports = {
         // Generated JS file names (with nested folders).
         // There will be one main bundle, and one file per asynchronous chunk.
         // We don't currently advertise code splitting but Webpack supports it.
-        filename: getConfigValue(config.filename, 'prod'),
+        filename: getConfigValue(config.filename),
         // There are also additional JS chunk files if you use code splitting.
-        chunkFilename: getConfigValue(config.chunkFilename, 'prod'),
+        chunkFilename: getConfigValue(config.chunkFilename),
         // We inferred the "public path" (such as / or /my-project) from homepage.
         publicPath,
         // Point sourcemap entries to original disk location (format as URL on Windows)
@@ -282,7 +280,7 @@ module.exports = {
                         loader: require.resolve('file-loader'),
                         options: {
                             limit: 10000,
-                            name: getConfigValue(config.fontFilename, 'dev'),
+                            name: getConfigValue(config.fontFilename),
                         },
                     },
                     {
@@ -290,7 +288,7 @@ module.exports = {
                         loader: require.resolve('url-loader'),
                         options: {
                             limit: 10000,
-                            name: getConfigValue(config.imageFilename, 'dev'),
+                            name: getConfigValue(config.imageFilename),
                         },
                     },
                     // Process JS with Babel.
@@ -380,7 +378,7 @@ module.exports = {
                             minimize: true,
                             sourceMap: shouldUseSourceMap,
                             modules: true,
-                            localIdentName: getConfigValue(config.cssLocalIdent, 'prod'),
+                            localIdentName: getConfigValue(config.cssLocalIdent),
                             // prettier-ignore
                             getLocalIdent: (context, localIdentName, localName) => (
                                 getLocalIdent(localIdentName, localName, context.resourcePath)
@@ -420,7 +418,7 @@ module.exports = {
                                 minimize: true,
                                 sourceMap: shouldUseSourceMap,
                                 modules: true,
-                                localIdentName: getConfigValue(config.cssLocalIdent, 'prod'),
+                                localIdentName: getConfigValue(config.cssLocalIdent),
                                 // prettier-ignore
                                 getLocalIdent: (context, localIdentName, localName) => (
                                     getLocalIdent(localIdentName, localName, context.resourcePath)
@@ -442,7 +440,7 @@ module.exports = {
                         // by webpacks internal loaders.
                         exclude: [/\.(js|jsx|mjs)$/, /\.html$/, /\.html\.ejs$/, /\.json$/],
                         options: {
-                            name: getConfigValue(config.mediaFilename, 'prod'),
+                            name: getConfigValue(config.mediaFilename),
                         },
                     },
                     // ** STOP ** Are you adding a new loader?

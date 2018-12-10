@@ -16,7 +16,7 @@ const getConfigValue = require('./utils/getConfigValue');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
-const publicPath = getConfigValue(config.publicPath, 'dev');
+const publicPath = getConfigValue(config.publicPath);
 // `publicUrl` is just like `publicPath`, but we will provide it to our app
 // as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.
 // Omit trailing slash as %PUBLIC_PATH%/xyz looks better than %PUBLIC_PATH%xyz.
@@ -37,10 +37,10 @@ const postCSSLoaderOptions = {
 };
 
 // style files regexes
-const cssRegex = getConfigValue(config.cssRegex, 'dev');
-const cssModuleRegex = getConfigValue(config.cssModuleRegex, 'dev');
-const sassRegex = getConfigValue(config.sassRegex, 'dev');
-const sassModuleRegex = getConfigValue(config.sassModuleRegex, 'dev');
+const cssRegex = getConfigValue(config.cssRegex);
+const cssModuleRegex = getConfigValue(config.cssModuleRegex);
+const sassRegex = getConfigValue(config.sassRegex);
+const sassModuleRegex = getConfigValue(config.sassModuleRegex);
 
 // common function to get style loaders
 const getStyleLoaders = (cssOptions, preProcessor) => {
@@ -96,9 +96,9 @@ module.exports = {
         // This does not produce a real file. It's just the virtual path that is
         // served by WebpackDevServer in development. This is the JS bundle
         // containing code from all our entry points, and the Webpack runtime.
-        filename: getConfigValue(config.filename, 'dev'),
+        filename: getConfigValue(config.filename),
         // There are also additional JS chunk files if you use code splitting.
-        chunkFilename: getConfigValue(config.chunkFilename, 'dev'),
+        chunkFilename: getConfigValue(config.chunkFilename),
         // This is the URL that app is served from. We use "/" in development.
         publicPath,
         // Point sourcemap entries to original disk location (format as URL on Windows)
@@ -197,7 +197,7 @@ module.exports = {
                         loader: require.resolve('file-loader'),
                         options: {
                             limit: 10000,
-                            name: getConfigValue(config.fontFilename, 'dev'),
+                            name: getConfigValue(config.fontFilename),
                         },
                     },
                     {
@@ -205,7 +205,7 @@ module.exports = {
                         loader: require.resolve('url-loader'),
                         options: {
                             limit: 10000,
-                            name: getConfigValue(config.imageFilename, 'dev'),
+                            name: getConfigValue(config.imageFilename),
                         },
                     },
                     // Process JS with Babel.
@@ -276,7 +276,7 @@ module.exports = {
                         use: getStyleLoaders({
                             importLoaders: 1,
                             modules: true,
-                            localIdentName: getConfigValue(config.cssLocalIdent, 'dev'),
+                            localIdentName: getConfigValue(config.cssLocalIdent),
                             getLocalIdent: (context, localIdentName, localName) => (
                                 getLocalIdent(localIdentName, localName, context.resourcePath)
                             ),
@@ -295,7 +295,7 @@ module.exports = {
                             {
                                 importLoaders: 2,
                                 modules: true,
-                                localIdentName: getConfigValue(config.cssLocalIdent, 'dev'),
+                                localIdentName: getConfigValue(config.cssLocalIdent),
                                 getLocalIdent: (context, localIdentName, localName) => (
                                     getLocalIdent(localIdentName, localName, context.resourcePath)
                                 ),
@@ -316,7 +316,7 @@ module.exports = {
                         exclude: [/\.(js|jsx|mjs)$/, /\.html$/, /\.html\.ejs$/, /\.json$/],
                         loader: require.resolve('file-loader'),
                         options: {
-                            name: getConfigValue(config.mediaFilename, 'dev'),
+                            name: getConfigValue(config.mediaFilename),
                         },
                     },
                 ],

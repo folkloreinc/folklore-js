@@ -1,5 +1,5 @@
 const isFunction = require('lodash/isFunction');
 
-const getConfigValue = (val, ...args) => (isFunction(val) ? val(...args) : val);
+const getConfigValue = (val, env = process.env.NODE_ENV) => (isFunction(val) ? val(env) : val);
 
 module.exports = getConfigValue;

@@ -5,8 +5,8 @@ module.exports = {
      * Webpack
      */
     webpack: {
-        filename: env => (env === 'dev' ? 'js/main.js' : 'js/main.js'),
-        chunkFilename: env => (env === 'dev' ? 'js/[name].chunk.js' : 'js/[name].chunk.js'),
+        filename: <% if (hasHtml) { %>() => 'js/main-[hash:8].js'<% } else { %>() => 'js/main.js'<% } %>,
+        chunkFilename: () => 'js/[name]-[hash:8].chunk.js',
         publicPath: '/',
 
         cssRegex: /\.global\.css$/,
@@ -14,17 +14,17 @@ module.exports = {
         sassRegex: /\.global\.(scss|sass)$/,
         sassModuleRegex: /\.(scss|sass)$/,
 
-        cssFilename: env => (env === 'dev' ? 'css/[name]-[contenthash].css' : 'css/[name].css'),
-        cssChunkFilename: () => 'css/[name].[contenthash:8].chunk.css',
+        cssFilename: <% if (hasHtml) { %>() => 'css/[name]-[contenthash:8].css'<% } else { %>() => 'css/[name].css'<% } %>,
+        cssChunkFilename: () => 'css/[name]-[contenthash:8].chunk.css',
         cssLocalIdent: '[name]-[local]',
 
-        imageFilename: env => (env === 'dev' ? 'img/[name]-[hash:6].[ext]' : 'img/[name].[ext]'),
+        imageFilename: () => 'img/[name]-[hash:8].[ext]',
         imagePublicPath: '/',
 
-        mediaFilename: env => (env === 'dev' ? 'medias/[name]-[hash:6].[ext]' : 'medias/[name].[ext]'),
+        mediaFilename: () => 'medias/[name]-[hash:8].[ext]',
         mediaPublicPath: '/',
 
-        fontFilename: env => (env === 'dev' ? 'fonts/[name]-[hash:6].[ext]' : 'fonts/[name].[ext]'),
+        fontFilename: () => 'fonts/[name]-[hash:8].[ext]',
     },
 <% if (hasServer) { %>
     /**
