@@ -1,6 +1,6 @@
 {
     "name": "@folklore/react-app",
-    "version": "0.1.26",
+    "version": "0.1.27",
     "description": "React app container",
     "keywords": [
         "javascript",
@@ -51,15 +51,15 @@
         "start": "npm run storybook"
     },
     "dependencies": {
-        "@folklore/react-container": "^0.1.9",
+        "@folklore/react-container": "^0.1.10",
         "babel-runtime": "^6.26.0",
+        "connected-react-router": "^5.0.0",
         "history": "^4.7.2",
         "hoist-non-react-statics": "^2.3.1",
         "invariant": "^2.2.2",
         "prop-types": "^15.6.0",
         "react-intl": "^2.4.0",
-        "react-redux": "^6.0.0",
-        "connected-react-router": "^5.0.0"
+        "react-redux": "^6.0.0"
     },
     "devDependencies": {
         "react": ">=15.0.0 || ^16.0.0",
