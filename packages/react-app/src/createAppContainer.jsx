@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import invariant from 'invariant';
 import hoistStatics from 'hoist-non-react-statics';
-import { routerMiddleware } from 'react-router-redux';
+import { routerMiddleware } from 'connected-react-router';
 import { connect } from 'react-redux';
 import { withUrlGeneratorMiddleware } from '@folklore/react-container';
 
