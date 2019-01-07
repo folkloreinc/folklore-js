@@ -1,13 +1,6 @@
 {
     "require": {
         "folklore/laravel-mediatheque": "v1.x-dev",
-        "folklore/laravel-panneau": "v1.x-dev",
-        "php-ffmpeg/binary-driver": "dev-master"
-    },
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/PHP-FFMpeg/BinaryDriver.git"
-        }
-    ]
+        "folklore/laravel-panneau": "v1.x-dev"
+    }
 }
