@@ -366,7 +366,7 @@ module.exports = class LaravelGenerator extends Generator {
             },
 
             env() {
-                const url = _.template(_.get(this.options, 'local-url'))({
+                const url = _.template(_.get(this.options, 'url'))({
                     project_host: this.options['project-host'],
                     project_name: this.options['project-name'],
                 }).replace(/^(http)?(s)?(:\/\/)?/, 'http$2://');
@@ -385,6 +385,12 @@ module.exports = class LaravelGenerator extends Generator {
                     url: urlLocal,
                 };
 
+                const prodTemplateData = {
+                    ...templateData,
+                    url,
+                    db_username: this.options['db-name'],
+                };
+
                 const src = this.templatePath('env');
                 const dest = this.destinationPath('.env');
                 this.fs.copyTpl(src, dest, templateData);
@@ -395,9 +401,7 @@ module.exports = class LaravelGenerator extends Generator {
 
                 const srcProd = this.templatePath('env.prod');
                 const destProd = this.destinationPath('.env.prod');
-                templateData.url = url;
-                templateData.db_username = this.options['db-name'];
-                this.fs.copyTpl(srcProd, destProd, templateData);
+                this.fs.copyTpl(srcProd, destProd, prodTemplateData);
             },
 
             phpcs() {
