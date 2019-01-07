@@ -31,7 +31,7 @@ module.exports = class LaravelGenerator extends Generator {
         this.option('laravel-version', {
             type: String,
             desc: 'Laravel version',
-            defaults: '5.5',
+            defaults: 'latest',
         });
 
         this.option('laravel-branch', {
@@ -299,7 +299,8 @@ module.exports = class LaravelGenerator extends Generator {
             laravel() {
                 const done = this.async();
 
-                const branch = this.options['laravel-branch'] || this.options['laravel-version'];
+                const versionBranch = this.options['laravel-version'] === 'latest' ? 'master' : this.options['laravel-version'];
+                const branch = this.options['laravel-branch'] || versionBranch;
 
                 remote('laravel', 'laravel', branch, (err, cachePath) => {
                     const destinationPath = this.destinationPath();
