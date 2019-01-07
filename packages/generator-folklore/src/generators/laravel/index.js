@@ -28,10 +28,15 @@ module.exports = class LaravelGenerator extends Generator {
             required: false,
         });
 
+        this.option('laravel-version', {
+            type: String,
+            desc: 'Laravel version',
+            defaults: '5.5',
+        });
+
         this.option('laravel-branch', {
             type: String,
             desc: 'Laravel repository branch',
-            defaults: '5.5',
         });
 
         this.option('url', {
@@ -294,7 +299,9 @@ module.exports = class LaravelGenerator extends Generator {
             laravel() {
                 const done = this.async();
 
-                remote('laravel', 'laravel', this.options['laravel-branch'], (err, cachePath) => {
+                const branch = this.options['laravel-branch'] || this.options['laravel-version'];
+
+                remote('laravel', 'laravel', branch, (err, cachePath) => {
                     const destinationPath = this.destinationPath();
                     const files = glob.sync('**', {
                         dot: true,
