@@ -28,6 +28,7 @@ require('../env');
 
 const path = require('path');
 const chalk = require('chalk');
+const glob = require('glob');
 const fs = require('fs-extra');
 const webpack = require('webpack');
 const defaultWebpackConfig = require('../webpack.config.prod');
@@ -102,16 +103,19 @@ Promise.all(webpackConfigs.map(conf => measureFileSizesBeforeBuild(conf.output.p
     .then((previousSizes) => {
         // Merge with the public folder
         paths.emptyPaths.forEach((dir) => {
-            fs.emptyDirSync(dir);
+            glob.sync(dir).forEach((file) => {
+                fs.removeSync(file);
+            });
         });
 
+        // prettier-ignore
         return webpackConfigs.reduce(
-            (lastPromise, webpackConfig, index) =>
-                lastPromise.then(responses =>
-                    build(webpackConfig, previousSizes[index]).then(response => [
-                        ...responses,
-                        response,
-                    ])),
+            (lastPromise, webpackConfig, index) => lastPromise.then(responses => (
+                build(webpackConfig, previousSizes[index]).then(response => [
+                    ...responses,
+                    response,
+                ])
+            )),
             Promise.resolve([]),
         );
     })
