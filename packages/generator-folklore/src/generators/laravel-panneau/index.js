@@ -87,24 +87,25 @@ module.exports = class LaravelPanneauGenerator extends Generator {
             },
 
             files() {
-                const templatePath = this.templatePath('app');
-                const destinationPath = this.destinationPath('app');
-                const files = glob.sync('**', {
-                    dot: true,
-                    nodir: true,
-                    cwd: templatePath,
-                });
-
-                files.forEach((file) => {
-                    const source = path.join(templatePath, file);
-                    const destination = path.join(destinationPath, file);
-                    if (file.match(/\.(jpg|jpeg|gif|png)$/i)) {
-                        this.fs.copy(source, destination);
-                    } else {
-                        this.fs.copyTpl(source, destination, {
-                            project_name: this.options['project-name'],
-                        });
-                    }
+                const folders = ['app', 'resources'];
+                folders.forEach((folder) => {
+                    const templatePath = this.templatePath(folder);
+                    const destinationPath = this.destinationPath(folder);
+                    glob.sync('**', {
+                        dot: true,
+                        nodir: true,
+                        cwd: templatePath,
+                    }).forEach((file) => {
+                        const source = path.join(templatePath, file);
+                        const destination = path.join(destinationPath, file);
+                        if (file.match(/\.(jpg|jpeg|gif|png)$/i)) {
+                            this.fs.copy(source, destination);
+                        } else {
+                            this.fs.copyTpl(source, destination, {
+                                project_name: this.options['project-name'],
+                            });
+                        }
+                    });
                 });
             },
         };
