@@ -375,7 +375,6 @@ module.exports = {
                         exclude: cssRegex,
                         loader: getStyleLoaders({
                             importLoaders: 1,
-                            minimize: true,
                             sourceMap: shouldUseSourceMap,
                             modules: true,
                             localIdentName: getConfigValue(config.cssLocalIdent),
@@ -396,7 +395,6 @@ module.exports = {
                         loader: getStyleLoaders(
                             {
                                 importLoaders: 2,
-                                minimize: true,
                                 sourceMap: shouldUseSourceMap,
                             },
                             'sass-loader',
@@ -415,7 +413,6 @@ module.exports = {
                         loader: getStyleLoaders(
                             {
                                 importLoaders: 2,
-                                minimize: true,
                                 sourceMap: shouldUseSourceMap,
                                 modules: true,
                                 localIdentName: getConfigValue(config.cssLocalIdent),
