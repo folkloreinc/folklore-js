@@ -90,7 +90,7 @@ const { checkBrowsers } = require('react-dev-utils/browsersHelper');
 
 function mayProxy(pathname) {
     const maybePublicPath = path.resolve(paths.appPublic, pathname.slice(1));
-    return !fs.existsSync(maybePublicPath);
+    return !fs.existsSync(maybePublicPath) || fs.lstatSync(maybePublicPath).isDirectory();
 }
 
 checkBrowsers(paths.appPath, isInteractive)
