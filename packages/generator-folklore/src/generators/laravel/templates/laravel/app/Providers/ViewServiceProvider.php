@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\View\View;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -28,7 +29,8 @@ class ViewServiceProvider extends ServiceProvider
             ]);
         });
 
-        $reactPages = ['page', 'errors::404', 'errors::500'];
+        $reactPages = ['root', 'errors::404', 'errors::500'];
+
         $view->composer($reactPages, \App\Composers\TranslationsComposer::class);
         $view->composer($reactPages, \App\Composers\RoutesComposer::class);
         $view->composer($reactPages, \App\Composers\RootComposer::class);
