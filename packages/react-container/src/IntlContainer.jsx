@@ -40,10 +40,10 @@ class IntlContainer extends Component {
     componentWillUpdate(nextProps, nextState) {
         const localesChanged = nextState.locales !== this.state.locales;
         if (localesChanged) {
-            const localesData = Object.values(nextState.locales).reduce((allLocales, locales) => ([
-                ...allLocales,
-                ...locales,
-            ]), []);
+            const localesData = Object.values(nextState.locales).reduce(
+                (allLocales, locales) => [...allLocales, ...locales],
+                [],
+            );
             addLocaleData(localesData);
         }
     }
@@ -65,26 +65,27 @@ class IntlContainer extends Component {
     getMessages(props) {
         const { getMessages, messages } = props || this.props;
         const locale = this.getLocale(props);
-        return getMessages !== null ? getMessages(locale) : (messages[locale] || messages);
+        return getMessages !== null ? getMessages(locale) : messages[locale] || messages;
     }
 
     loadLocaleData(locale) {
         if (hasLocaleData(locale)) {
             return;
         }
-        import(/* webpackChunkName: "vendor/react-intl/locale-data/[request]" */`react-intl/locale-data/${locale}`)
-            .then(({ default: localeData }) => {
-                this.setState(state => ({
-                    locales: {
-                        ...state.locales,
-                        [locale]: localeData,
-                    },
-                }));
-            });
+        import(`react-intl/locale-data/${locale}`).then(({ default: localeData }) => {
+            this.setState(state => ({
+                locales: {
+                    ...state.locales,
+                    [locale]: localeData,
+                },
+            }));
+        });
     }
 
     render() {
-        const { children } = this.props;
+        const {
+            children, getLocale, getMessages, ...props
+        } = this.props;
         const locale = this.getLocale();
 
         if (!hasLocaleData(locale)) {
@@ -92,10 +93,7 @@ class IntlContainer extends Component {
         }
 
         return (
-            <IntlProvider
-                locale={locale}
-                messages={this.getMessages()}
-            >
+            <IntlProvider {...props} locale={locale} messages={this.getMessages()}>
                 {children}
             </IntlProvider>
         );
