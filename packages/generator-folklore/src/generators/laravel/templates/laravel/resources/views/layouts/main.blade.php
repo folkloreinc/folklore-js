@@ -6,22 +6,26 @@
 
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="language" content="{{ $locale }}">
 
 	<title>@yield('title')</title>
-	<meta name="description" content="@yield('description')">
+	<meta name="description" content="@yield('description')" data-react-helmet="true">
 
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-ico">
+	<link rel="icon" href="{{ asset('favicon.png') }}" type="image/png">
 
 	@section('head:opengraph')
         <!-- Open Graph meta -->
 		<meta property="og:locale" content="{{ $locale }}_CA">
 		@hasSection('thumbnail')
-			<meta property="og:image" content="@yield('thumbnail')">
+			<meta property="og:image" content="@yield('thumbnail')" data-react-helmet="true">
 		@endif
-		<meta property="og:title" content="@yield('title')">
-		<meta property="og:type" content="website">
-		<meta property="og:description" content="@yield('description')">
-		<meta property="og:url" content="{{ Request::url() }}">
+		<meta property="og:title" content="@yield('title')" data-react-helmet="true">
+		<meta property="og:type" content="website" data-react-helmet="true">
+		<meta property="og:description" content="@yield('description')" data-react-helmet="true">
+		<meta property="og:url" content="{{ Request::url() }}" data-react-helmet="true">
     @show
 
     @section('head:analytics')
@@ -47,11 +51,9 @@
         @endif
     @show
 
-	<link rel="shortcut icon" href="{{ asset('favicon.gif') }}" type="image/x-ico">
-	<link rel="icon" href="{{ asset('favicon.png') }}" type="image/png">
-
     @section('head:styles')
 		<!-- Head Style -->
+        <link href="{{ asset('css/main.css') }}" rel="stylesheet" type="text/css" />
 		@stack('styles:head')
 	@show
 
@@ -73,28 +75,6 @@
 
 	@section('body')
 		@yield('content')
-	@show
-
-    @section('body:styles')
-        <noscript id="deferred-styles">
-    		<!-- CSS -->
-            @if(app()->environment() !== 'local')
-    		<link href="{{ asset('css/main.css') }}" rel="stylesheet" type="text/css" />
-            @endif
-    		@stack('styles:body')
-        </noscript>
-        <script type="text/javascript">
-            var loadDeferredStyles = function() {
-                var addStylesNode = document.getElementById("deferred-styles");
-                var replacement = document.createElement("div");
-                replacement.innerHTML = addStylesNode.textContent;
-                document.body.appendChild(replacement)
-                addStylesNode.parentElement.removeChild(addStylesNode);
-            };
-            var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-            if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
-            else window.addEventListener('load', loadDeferredStyles);
-        </script>
 	@show
 
 	@section('body:scripts')

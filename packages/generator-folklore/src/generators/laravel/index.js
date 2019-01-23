@@ -344,6 +344,8 @@ module.exports = class LaravelGenerator extends Generator {
                     'resources/assets/sass',
                     'resources/assets/js',
                     'resources/views/welcome.blade.php',
+                    'resources/views/errors/404.blade.php',
+                    'resources/views/errors/500.blade.php',
                 ];
 
                 files.forEach((file) => {

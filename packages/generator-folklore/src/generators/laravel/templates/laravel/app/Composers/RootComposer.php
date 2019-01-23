@@ -23,6 +23,7 @@ class RootComposer
         $viewProps = is_array($view->props) ? $view->props : [];
         $view->props = array_merge($viewProps, [
             'url' => $path,
+            'statusCode' => $view->statusCode,
             'locale' => $locale,
             'routes' => $view->routes,
             'messages' => $view->translations,
