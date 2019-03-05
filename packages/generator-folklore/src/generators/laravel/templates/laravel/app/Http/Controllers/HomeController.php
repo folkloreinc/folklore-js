@@ -11,8 +11,10 @@ class HomeController extends Controller
         return view('root');
     }
 
-    public function redirect()
+    public function redirect(Request $request)
     {
-        return redirect()->route('home.'.app()->getLocale());
+        $queryString = $request->getQueryString();
+        $url = route('home.'.app()->getLocale()).(!empty($queryString) ? '?'.$queryString : '');
+        return redirect()->to($url);
     }
 }
