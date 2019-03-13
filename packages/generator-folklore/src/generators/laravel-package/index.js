@@ -179,7 +179,7 @@ module.exports = class ComposerPackageGenerator extends Generator {
             },
 
             composerJSON() {
-                const { packageName, namespace } = this.templateData;
+                const { packageName, baseClassName, namespace } = this.templateData;
                 const srcPath = this.templatePath('_composer.json');
                 const destPath = this.destinationPath('composer.json');
                 const newJson = this.fs.readJSON(srcPath);
@@ -187,6 +187,9 @@ module.exports = class ComposerPackageGenerator extends Generator {
                 newJson.autoload['psr-0'] = {
                     [namespace]: 'src/',
                 };
+                newJson.extra.laravel.providers = [
+                    `${namespace}\\${baseClassName}ServiceProvider`,
+                ];
                 const currentJson = this.fs.exists(destPath) ?
                     this.fs.readJSON(destPath) : {};
                 this.fs.writeJSON(destPath, _.merge(newJson, currentJson));
