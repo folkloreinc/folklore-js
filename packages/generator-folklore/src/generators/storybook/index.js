@@ -66,7 +66,7 @@ module.exports = class StorybookGenerator extends Generator {
                     this.fs.readJSON(destPath) : {};
                 packageJSON['storybook-deployer'] = {
                     gitUsername: 'Folklore',
-                    gitEmail: 'info@atelierfolklore.ca',
+                    gitEmail: 'info@folklore.email',
                     commitMessage: 'Deploy Storybook to GitHub Pages',
                 };
                 this.fs.writeJSON(destPath, packageJSON);

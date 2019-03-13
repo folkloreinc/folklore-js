@@ -4,16 +4,16 @@
     "private": true,
     "author": {
         "name": "Folklore",
-        "email": "info@atelierfolklore.ca"
+        "email": "info@folklore.email"
     },
     "contributors": [
         {
             "name": "David Mongeau-Petitpas",
-            "email": "dmp@atelierfolklore.ca"
+            "email": "dmp@folklore.email"
         },
         {
             "name": "Nicolas Roy-Bourdages",
-            "email": "nrb@atelierfolklore.ca"
+            "email": "nrb@folklore.email"
         }
     ]
 }

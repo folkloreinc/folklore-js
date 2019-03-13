@@ -8,8 +8,8 @@ MMMNddddh   NMMh   sMMM` yMM       `MMMMh MMNy   dMM       .MMM+   dMMd  mMMNmNM
 MMMy`````   mMMNsosmMMN` yMMoooooo `MMMs  -mMMh  dMMoooooo .MMMdoosNMMh  mMMd`.yMMN/  dMMM
 NNNs        -ymNNNNNmh:  yNNNNNNNN `NNNo   hNNh  hNNNNNNNN  /hmNNNNNmy.  dNNh  `NNNo  hNNNNNNNNN
 
-Author: Folklore (http://atelierfolklore.ca)
-Email: info@atelierfolklore.ca
+Author: Folklore (http://folkloreinc.ca)
+Email: info@folklore.email
 Github: https://github.com/Folkloreatelier
 
 -->
