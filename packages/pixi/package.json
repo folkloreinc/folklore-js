@@ -1,6 +1,6 @@
 {
     "name": "@folklore/pixi",
-    "version": "0.1.28",
+    "version": "0.1.29",
     "description": "Pixi.js utilities",
     "keywords": [
         "javascript",
@@ -47,7 +47,7 @@
         "start": "npm run storybook"
     },
     "dependencies": {
-        "@folklore/size": "^0.1.8",
+        "@folklore/size": "^0.1.9",
         "babel-runtime": "^6.26.0",
         "color": "^2.0.1",
         "es6-promise": "^4.2.2",
