@@ -1,6 +1,6 @@
 {
     "name": "@folklore/clock",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "description": "Clock synced with server",
     "keywords": [
         "javascript",
