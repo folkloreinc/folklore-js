@@ -10,6 +10,6 @@ NNNs        -ymNNNNNmh:  yNNNNNNNN `NNNo   hNNh  hNNNNNNNN  /hmNNNNNmy.  dNNh  `
 
 Author: Folklore (http://folkloreinc.ca)
 Email: info@folklore.email
-Github: https://github.com/Folkloreatelier
+Github: https://github.com/folkloreinc
 
 -->

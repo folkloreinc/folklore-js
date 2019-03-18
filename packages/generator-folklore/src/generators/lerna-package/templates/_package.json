@@ -5,10 +5,10 @@
     "keywords": [
         "javascript"
     ],
-    "homepage": "https://github.com/Folkloreatelier",
+    "homepage": "https://github.com/folkloreinc",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Folkloreatelier.git"
+        "url": "git+https://github.com/folkloreinc.git"
     },
     "author": {
         "name": "Folklore",

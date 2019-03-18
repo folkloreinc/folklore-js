@@ -8,10 +8,10 @@
         "microphone",
         "getUserMedia"
     ],
-    "homepage": "https://github.com/Folkloreatelier/folklore-js",
+    "homepage": "https://github.com/folkloreinc/folklore-js",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Folkloreatelier/folklore-js.git"
+        "url": "git+https://github.com/folkloreinc/folklore-js.git"
     },
     "author": {
         "name": "Folklore",

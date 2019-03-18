@@ -14,4 +14,4 @@ This package is splitted in multiple packages that can be used independently.
 
 | Package Name | Description | Links |
 | ------------ | ----------- | ----- |
-| [package-name](https://github.com/Folkloreatelier/package-name) | Main package |  [Documentation](https://github.com/Folkloreatelier/package-name) |
+| [package-name](https://github.com/folkloreinc/package-name) | Main package |  [Documentation](https://github.com/folkloreinc/package-name) |

@@ -20,14 +20,14 @@
     ],
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Folkloreatelier/folklore-js.git"
+        "url": "git+https://github.com/folkloreinc/folklore-js.git"
     },
     "author": "Folklore <info@atelierfolklore.ca>",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/Folkloreatelier/folklore-js/issues"
+        "url": "https://github.com/folkloreinc/folklore-js/issues"
     },
-    "homepage": "https://github.com/Folkloreatelier/folklore-js/tree/master/packages/generator-folklore#readme",
+    "homepage": "https://github.com/folkloreinc/folklore-js/tree/master/packages/generator-folklore#readme",
     "dependencies": {
         "chalk": "^2.1.0",
         "change-case": "^3.0.1",
