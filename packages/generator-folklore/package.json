@@ -22,7 +22,7 @@
         "type": "git",
         "url": "git+https://github.com/folkloreinc/folklore-js.git"
     },
-    "author": "Folklore <info@atelierfolklore.ca>",
+    "author": "Folklore <info@folklore.email>",
     "license": "ISC",
     "bugs": {
         "url": "https://github.com/folkloreinc/folklore-js/issues"

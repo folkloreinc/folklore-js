@@ -15,20 +15,16 @@
     },
     "author": {
         "name": "Folklore",
-        "email": "info@atelierfolklore.ca"
+        "email": "info@folklore.email"
     },
     "contributors": [
         {
             "name": "David Mongeau-Petitpas",
-            "email": "dmp@atelierfolklore.ca"
+            "email": "dmp@folklore.email"
         },
         {
             "name": "Nicolas Roy-Bourdages",
-            "email": "nrb@atelierfolklore.ca"
-        },
-        {
-            "name": "Hugo St-Onge",
-            "email": "hso@atelierfolklore.ca"
+            "email": "nrb@folklore.email"
         }
     ],
     "main": "lib/index.js",

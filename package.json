@@ -4,20 +4,16 @@
     "homepage": "https://github.com/folkloreinc/folklore-js",
     "author": {
         "name": "Folklore",
-        "email": "info@atelierfolklore.ca"
+        "email": "info@folklore.email"
     },
     "contributors": [
         {
             "name": "David Mongeau-Petitpas",
-            "email": "dmp@atelierfolklore.ca"
+            "email": "dmp@folklore.email"
         },
         {
             "name": "Nicolas Roy-Bourdages",
-            "email": "nrb@atelierfolklore.ca"
-        },
-        {
-            "name": "Hugo St-Onge",
-            "email": "hso@atelierfolklore.ca"
+            "email": "nrb@folklore.email"
         }
     ],
     "scripts": {
@@ -117,7 +113,7 @@
     },
     "storybook-deployer": {
         "gitUsername": "Folklore",
-        "gitEmail": "info@atelierfolklore.ca",
+        "gitEmail": "info@folklore.email",
         "commitMessage": "Deploy Storybook to GitHub Pages"
     }
 }
