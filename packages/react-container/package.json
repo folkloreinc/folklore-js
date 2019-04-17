@@ -1,6 +1,6 @@
 {
     "name": "@folklore/react-container",
-    "version": "0.1.15",
+    "version": "0.1.16",
     "description": "React app container",
     "keywords": [
         "javascript",
@@ -55,8 +55,8 @@
         "lodash": "^4.17.4",
         "prop-types": "^15.6.0",
         "react-intl": "^2.4.0",
-        "react-router": "^4.3.1 || ^5.0.0",
         "react-redux": "^6.0.0",
+        "react-router": "^4.3.1 || ^5.0.0",
         "redux": "^4.0.0",
         "redux-devtools": "^3.4.1",
         "redux-devtools-dock-monitor": "^1.1.3",
