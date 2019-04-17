@@ -235,9 +235,9 @@ class UserMedia extends EventEmitter {
 
         if (type === 'video') {
             return 'video/webm';
-        } else if (type === 'image') {
+        } if (type === 'image') {
             return 'image/jpeg';
-        } else if (type === 'audio') {
+        } if (type === 'audio') {
             return 'audio/wav';
         }
 
