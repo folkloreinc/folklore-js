@@ -14,19 +14,20 @@ const getPositionFromString = (positionString, width, height, maxWidth, maxHeigh
     const firstPositionValue = firstPositionParts[1] || null;
     const secondPositionValue = secondPositionParts[1] || null;
 
-    const horizontalFirst = firstPosition === 'left' || firstPosition === 'right' ||
-        secondPosition === 'top' || secondPosition === 'bottom' || (
-            firstPosition === 'center' && secondPosition === 'center'
-        );
+    const horizontalFirst = firstPosition === 'left'
+        || firstPosition === 'right'
+        || secondPosition === 'top'
+        || secondPosition === 'bottom'
+        || (firstPosition === 'center' && secondPosition === 'center');
 
     const horizontal = horizontalFirst ? firstPosition : secondPosition;
     const vertical = horizontalFirst ? secondPosition : firstPosition;
     const horizontalOffset = getSizeInPixel(
-        horizontalFirst ? (firstPositionValue || 0) : (secondPositionValue || 0),
+        horizontalFirst ? firstPositionValue || 0 : secondPositionValue || 0,
         maxWidth,
     );
     const verticalOffset = getSizeInPixel(
-        horizontalFirst ? (secondPositionValue || 0) : (firstPositionValue || 0),
+        horizontalFirst ? secondPositionValue || 0 : firstPositionValue || 0,
         maxHeight,
     );
 

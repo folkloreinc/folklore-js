@@ -31,8 +31,9 @@ class UrlGeneratorContainer extends Component {
     }
 
     getChildContext() {
+        const { urlGenerator } = this.state;
         return {
-            urlGenerator: this.state.urlGenerator,
+            urlGenerator,
         };
     }
 

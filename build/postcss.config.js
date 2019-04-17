@@ -1,12 +1,12 @@
-module.exports = ({ options }) => ({
-    map: {
-        inline: false,
-    },
-    plugins: {
-        autoprefixer: options.env !== 'dev' ? {} : false,
-        cssnano: options.env !== 'dev' ? {
-            preset: 'default',
-            zindex: false,
-        } : false,
-    },
+module.exports = () => ({
+    ident: 'postcss',
+    plugins: [
+        require('postcss-flexbugs-fixes'),
+        require('postcss-preset-env')({
+            autoprefixer: {
+                flexbox: 'no-2009',
+            },
+            stage: 3,
+        }),
+    ],
 });

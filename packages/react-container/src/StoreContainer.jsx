@@ -12,14 +12,14 @@ const propTypes = {
     options: PropTypes.shape({
         devTools: PropTypes.object,
     }),
-    updateStoreInProduction: PropTypes.bool,
+    updateStoreInProduction: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
     getReducers: PropTypes.func,
     getInitialState: PropTypes.func,
     getMiddlewares: PropTypes.func,
     getOptions: PropTypes.func,
     createStore: PropTypes.func,
-    updateStore: PropTypes.func,
-    storeChanged: PropTypes.func,
+    updateStore: PropTypes.func, // eslint-disable-line react/no-unused-prop-types
+    storeChanged: PropTypes.func, // eslint-disable-line react/no-unused-prop-types
     children: PropTypes.node,
 };
 
@@ -40,23 +40,52 @@ const defaultProps = {
 };
 
 class StoreContainer extends Component {
+    static getDerivedStateFromProps(props, state) {
+        if (
+            (process.env.NODE_ENV !== 'production' || props.updateStoreInProduction)
+            && StoreContainer.storeChanged(state.prevProps, props)
+        ) {
+            return {
+                store: StoreContainer.updateStore(state.store, props),
+                storeKey: `store-${new Date().getTime()}`,
+                prevProps: props,
+            };
+        }
+        return {
+            prevProps: props,
+        };
+    }
+
+    static storeChanged(prevProps, nextProps) {
+        const { storeChanged } = nextProps;
+        return storeChanged !== null
+            ? storeChanged(prevProps, nextProps)
+            : isEqual(prevProps, nextProps);
+    }
+
+    static updateStore(store, props) {
+        const { updateStore } = props;
+        const reducers = this.getReducers();
+        const initialState = this.getInitialStoreState();
+        const middlewares = this.getMiddlewares();
+        const options = this.getOptions();
+        const storeState = {
+            ...initialState,
+            ...store.getState(),
+        };
+        return updateStore !== null
+            ? updateStore(reducers, storeState, middlewares, options)
+            : configureStore(reducers, storeState, middlewares, options);
+    }
+
     constructor(props) {
         super(props);
 
         this.state = {
             store: this.createStore(props),
             storeKey: `store-${new Date().getTime()}`,
+            prevProps: props, // eslint-disable-line react/no-unused-state
         };
-    }
-
-    componentWillReceiveProps(nextProps) {
-        const { updateStoreInProduction } = this.props;
-        if ((process.env.NODE_ENV !== 'production' || updateStoreInProduction) && this.storeChanged(this.props, nextProps)) {
-            this.setState({
-                store: this.updateStore(this.state.store, nextProps),
-                storeKey: `store-${new Date().getTime()}`,
-            });
-        }
     }
 
     getReducers() {
@@ -79,11 +108,6 @@ class StoreContainer extends Component {
         return getOptions !== null ? getOptions(options) : options;
     }
 
-    storeChanged(props, nextProps) {
-        const { storeChanged } = this.props;
-        return storeChanged !== null ? storeChanged(props, nextProps) : isEqual(props, nextProps);
-    }
-
     createStore() {
         const { createStore } = this.props;
         const reducers = this.getReducers();
@@ -93,32 +117,6 @@ class StoreContainer extends Component {
         return createStore !== null
             ? createStore(reducers, initialState, middlewares, options)
             : configureStore(reducers, initialState, middlewares, options);
-    }
-
-    updateStore() {
-        const { updateStore } = this.props;
-        const { store } = this.state;
-        const reducers = this.getReducers();
-        const initialState = this.getInitialStoreState();
-        const middlewares = this.getMiddlewares();
-        const options = this.getOptions();
-        const storeState = {
-            ...initialState,
-            ...store.getState(),
-        };
-        return updateStore !== null
-            ? updateStore(
-                reducers,
-                storeState,
-                middlewares,
-                options,
-            )
-            : configureStore(
-                reducers,
-                storeState,
-                middlewares,
-                options,
-            );
     }
 
     render() {

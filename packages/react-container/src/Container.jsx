@@ -14,24 +14,28 @@ import UrlGeneratorContainer from './UrlGeneratorContainer';
 const propTypes = {
     store: PropTypes.oneOfType([
         PropTypes.shape({
+            // eslint-disable-next-line react/forbid-foreign-prop-types
             ...StoreContainer.propTypes,
         }),
         PropTypes.bool,
     ]),
     intl: PropTypes.oneOfType([
         PropTypes.shape({
+            // eslint-disable-next-line react/forbid-foreign-prop-types
             ...IntlContainer.propTypes,
         }),
         PropTypes.bool,
     ]),
     urlGenerator: PropTypes.oneOfType([
         PropTypes.shape({
+            // eslint-disable-next-line react/forbid-foreign-prop-types
             ...UrlGeneratorContainer.propTypes,
         }),
         PropTypes.bool,
     ]),
     router: PropTypes.oneOfType([
         PropTypes.shape({
+            // eslint-disable-next-line react/forbid-foreign-prop-types
             ...RouterContainer.propTypes,
             memoryHistory: PropTypes.bool,
             createHistory: PropTypes.func,
@@ -95,18 +99,16 @@ class Container extends Component {
         const { store, router } = this.props;
         return (
             <StoreContainer
-                getReducers={reducers =>
-                    (router !== false
-                        ? {
-                            router: connectRouter(this.history),
-                            ...reducers,
-                        }
-                        : reducers)
+                getReducers={reducers => (router !== false
+                    ? {
+                        router: connectRouter(this.history),
+                        ...reducers,
+                    }
+                    : reducers)
                 }
-                getMiddlewares={middlewares =>
-                    (router !== false
-                        ? [routerMiddleware(this.history), ...middlewares]
-                        : middlewares)
+                getMiddlewares={middlewares => (router !== false
+                    ? [routerMiddleware(this.history), ...middlewares]
+                    : middlewares)
                 }
                 {...store}
             >
@@ -139,9 +141,10 @@ class Container extends Component {
             },
         ];
 
-        return renderMethods.reduce((element, { test, render }) => (
-            test ? render(element) : element
-        ), children);
+        return renderMethods.reduce(
+            (element, { test, render }) => (test ? render(element) : element),
+            children,
+        );
     }
 }
 

@@ -54,13 +54,7 @@ class PanContainer extends EventEmitter {
 
     init() {
         const {
-            pan,
-            swipe,
-            mouseWheel,
-            axis,
-            speed,
-            minProgress,
-            maxProgress,
+            pan, swipe, mouseWheel, axis, speed, minProgress, maxProgress,
         } = this.options;
 
         // Gestures
@@ -100,12 +94,17 @@ class PanContainer extends EventEmitter {
         this.panTimeline = new TimelineMax({
             paused: true,
         });
-        this.panTimeline.fromTo(this, speed, {
-            panProgress: minProgress,
-        }, {
-            panProgress: maxProgress,
-            ease: Linear.easeNone,
-        });
+        this.panTimeline.fromTo(
+            this,
+            speed,
+            {
+                panProgress: minProgress,
+            },
+            {
+                panProgress: maxProgress,
+                ease: Linear.easeNone,
+            },
+        );
         this.panTimeline.progress(0.5);
     }
 
@@ -131,9 +130,10 @@ class PanContainer extends EventEmitter {
         this.stopMouseWheelTimeout();
 
         if (
-            !this.enabled || this.panning ||
-            (this.lastDeltaX === null && axis === 'x' && Math.abs(deltaY) > Math.abs(deltaX)) ||
-            (this.lastDeltaY === null && axis === 'y' && Math.abs(deltaX) > Math.abs(deltaY))
+            !this.enabled
+            || this.panning
+            || (this.lastDeltaX === null && axis === 'x' && Math.abs(deltaY) > Math.abs(deltaX))
+            || (this.lastDeltaY === null && axis === 'y' && Math.abs(deltaX) > Math.abs(deltaY))
         ) {
             return;
         }
@@ -319,7 +319,7 @@ class PanContainer extends EventEmitter {
 
     endPan() {
         const { minDelta, minProgress, maxProgress } = this.options;
-        const middle = minProgress + ((maxProgress - minProgress) / 2);
+        const middle = minProgress + (maxProgress - minProgress) / 2;
         const delta = Math.abs(this.panProgress - middle);
         let tween = null;
         if (this.panProgress > middle && delta > minDelta) {
@@ -331,11 +331,9 @@ class PanContainer extends EventEmitter {
         }
 
         if (tween !== null) {
-            this.endTween = (new TimelineMax())
-                .add(tween)
-                .eventCallback('onComplete', () => {
-                    this.emit('end');
-                });
+            this.endTween = new TimelineMax().add(tween).eventCallback('onComplete', () => {
+                this.emit('end');
+            });
         } else {
             this.emit('end');
         }

@@ -3,11 +3,7 @@ import isString from 'lodash/isString';
 
 const getSizeInPixel = (size, maxSize, opts) => {
     const options = {
-        units: [
-            '%',
-            'em',
-            'rem',
-        ],
+        units: ['%', 'em', 'rem'],
         ...opts,
     };
     let pixelSize;
@@ -18,8 +14,8 @@ const getSizeInPixel = (size, maxSize, opts) => {
         if (sizeMatches) {
             const unit = sizeMatches[2].toLowerCase();
             const floatValue = parseFloat(sizeMatches[1]);
-            const value = unit === 'rem' || unit === 'em' ? (floatValue * 100) : floatValue;
-            pixelSize = options.units.indexOf(unit) !== -1 ? ((value / 100) * maxSize) : value;
+            const value = unit === 'rem' || unit === 'em' ? floatValue * 100 : floatValue;
+            pixelSize = options.units.indexOf(unit) !== -1 ? (value / 100) * maxSize : value;
         } else {
             pixelSize = !Number.isNaN(parseFloat(size)) ? parseFloat(size) : null;
         }

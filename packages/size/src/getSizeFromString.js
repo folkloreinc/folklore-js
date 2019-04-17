@@ -2,11 +2,14 @@ import getSizeInPixel from './getSizeInPixel';
 import getSizeWithinBounds from './getSizeWithinBounds';
 
 const getSizeFromString = (size, width, height, maxWidth, maxHeight, opts) => {
-    const options = Object.assign({
-        force: false,
-        autoIsNull: true,
-        round: false,
-    }, opts);
+    const options = Object.assign(
+        {
+            force: false,
+            autoIsNull: true,
+            round: false,
+        },
+        opts,
+    );
 
     let returnSize = {
         width: maxWidth,
@@ -27,15 +30,12 @@ const getSizeFromString = (size, width, height, maxWidth, maxHeight, opts) => {
         const widthPixel = getSizeInPixel(sizeWidth, maxWidth);
         const heightPixel = getSizeInPixel(sizeHeight, maxHeight);
         if (widthPixel !== null && heightPixel !== null) {
-            returnSize = options.force ? {
-                width: widthPixel,
-                height: heightPixel,
-            } : getSizeWithinBounds(
-                width,
-                height,
-                widthPixel,
-                heightPixel,
-            );
+            returnSize = options.force
+                ? {
+                    width: widthPixel,
+                    height: heightPixel,
+                }
+                : getSizeWithinBounds(width, height, widthPixel, heightPixel);
         } else if (widthPixel !== null) {
             returnSize.width = widthPixel;
             if (sizeHeight === 'auto') {

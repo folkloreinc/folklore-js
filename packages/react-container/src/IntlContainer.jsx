@@ -32,28 +32,28 @@ class IntlContainer extends Component {
             locales: {},
         };
     }
+
     componentDidMount() {
         const locale = this.getLocale();
         this.loadLocaleData(locale);
     }
 
-    componentWillUpdate(nextProps, nextState) {
-        const localesChanged = nextState.locales !== this.state.locales;
-        if (localesChanged) {
-            const localesData = Object.values(nextState.locales).reduce(
-                (allLocales, locales) => [...allLocales, ...locales],
-                [],
-            );
-            addLocaleData(localesData);
-        }
-    }
-
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps, prevState) {
         const prevLocale = this.getLocale(prevProps);
         const locale = this.getLocale();
         const localeChanged = prevLocale !== locale;
         if (localeChanged) {
             this.loadLocaleData(locale);
+        }
+
+        const { locales } = this.state;
+        const localesChanged = prevState.locales !== locales;
+        if (localesChanged) {
+            const localesData = Object.values(locales).reduce(
+                (allLocales, items) => [...allLocales, ...items],
+                [],
+            );
+            addLocaleData(localesData);
         }
     }
 

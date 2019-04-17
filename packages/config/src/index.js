@@ -6,7 +6,8 @@ const config = new Config();
 const configFunc = (key, value) => {
     if (typeof value !== 'undefined') {
         return config.set(key, value);
-    } else if (typeof key === 'undefined') {
+    }
+    if (typeof key === 'undefined') {
         return config.get();
     }
     return config.get(key);
