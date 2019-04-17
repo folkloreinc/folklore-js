@@ -1,6 +1,6 @@
 {
     "name": "@folklore/services",
-    "version": "0.1.10",
+    "version": "0.1.11",
     "description": "External services utilities",
     "keywords": [
         "javascript",
