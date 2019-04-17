@@ -53,7 +53,9 @@
 
     @section('head:styles')
 		<!-- Head Style -->
+        @if(app()->environment() !== 'local')
         <link href="{{ asset('css/main.css') }}" rel="stylesheet" type="text/css" />
+        @endif
 		@stack('styles:head')
 	@show
 
