@@ -29,7 +29,7 @@ class IntlContainer extends Component {
         super(props);
 
         this.state = {
-            locales: {},
+            locales: {}, // eslint-disable-line react/no-unused-state
         };
     }
 
@@ -38,22 +38,12 @@ class IntlContainer extends Component {
         this.loadLocaleData(locale);
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps) {
         const prevLocale = this.getLocale(prevProps);
         const locale = this.getLocale();
         const localeChanged = prevLocale !== locale;
         if (localeChanged) {
             this.loadLocaleData(locale);
-        }
-
-        const { locales } = this.state;
-        const localesChanged = prevState.locales !== locales;
-        if (localesChanged) {
-            const localesData = Object.values(locales).reduce(
-                (allLocales, items) => [...allLocales, ...items],
-                [],
-            );
-            addLocaleData(localesData);
         }
     }
 
@@ -73,6 +63,7 @@ class IntlContainer extends Component {
             return;
         }
         import(`react-intl/locale-data/${locale}`).then(({ default: localeData }) => {
+            addLocaleData(localeData);
             this.setState(state => ({
                 locales: {
                     ...state.locales,
