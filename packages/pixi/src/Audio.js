@@ -14,7 +14,7 @@ class Audio extends Container {
             smoothingTimeConstant: 0.2,
             barWidth: 2,
             barMargin: 1,
-            barColor: 0xCCCCCC,
+            barColor: 0xcccccc,
             barMinHeight: 10,
             size: 'cover',
             position: 'center',
@@ -58,8 +58,7 @@ class Audio extends Container {
         if (this.audioContext === null) {
             this.audioContext = this.createAudioContext();
         }
-        const audio = stream !== null ?
-            this.audioContext.createMediaStreamSource(stream) : null;
+        const audio = stream !== null ? this.audioContext.createMediaStreamSource(stream) : null;
         this.setAudioNode(audio);
     }
 
@@ -115,10 +114,7 @@ class Audio extends Container {
             return;
         }
 
-        const {
-            activeWidthRatio,
-            barMinHeight,
-        } = this.options;
+        const { activeWidthRatio, barMinHeight } = this.options;
 
         const currentBarsCount = this.bars.length;
         const activeCount = Math.ceil(currentBarsCount * activeWidthRatio);
@@ -131,7 +127,7 @@ class Audio extends Container {
             const barHeight = Math.max((volume / 256) * this.maxHeight, barMinHeight);
             bar.volume = volume;
             bar.scale.y = barHeight;
-            bar.position.y = (this.maxHeight / 2) - (barHeight / 2);
+            bar.position.y = this.maxHeight / 2 - barHeight / 2;
         }
     }
 
@@ -168,10 +164,7 @@ class Audio extends Container {
 
     createBars(container, bars) {
         const {
-            size,
-            barWidth,
-            barMargin,
-            barMinHeight,
+            size, barWidth, barMargin, barMinHeight,
         } = this.options;
 
         const { width, height } = getSizeFromString(
@@ -199,7 +192,7 @@ class Audio extends Container {
                 newBars.push(bar);
                 if (!barExists) {
                     bar.scale.y = barMinHeight;
-                    bar.position.y = (height / 2) - (barMinHeight / 2);
+                    bar.position.y = height / 2 - barMinHeight / 2;
                     container.addChild(bar);
                 }
             }

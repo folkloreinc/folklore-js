@@ -42,9 +42,7 @@ export default function withSocket(opts) {
                     };
                 }
 
-                return (
-                    <WrappedComponent {...props} />
-                );
+                return <WrappedComponent {...props} />;
             }
         }
 

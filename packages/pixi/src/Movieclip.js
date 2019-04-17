@@ -1,4 +1,6 @@
-import { Container, Texture, loaders, extras } from 'pixi.js';
+import {
+    Container, Texture, loaders, extras,
+} from 'pixi.js';
 import { TweenMax, Linear } from 'gsap';
 import isArray from 'lodash/isArray';
 import sortBy from 'lodash/sortBy';
@@ -65,9 +67,13 @@ class Movieclip extends Container {
         if (getTexturesFromResources !== null) {
             return getTexturesFromResources(spritesheets, resources);
         }
-        return this.spritesheets.reduce((textures, spritesheet) => (
-            textures.concat(Object.values(resources[spritesheet].textures))
-        ), []);
+        // prettier-ignore
+        return this.spritesheets.reduce(
+            (textures, spritesheet) => textures.concat(
+                Object.values(resources[spritesheet].textures),
+            ),
+            [],
+        );
     }
 
     loadSpritesheets() {
@@ -84,22 +90,23 @@ class Movieclip extends Container {
 
     createTween(totalFrames) {
         const {
-            frameRate,
-            repeat,
-            paused,
-            easing,
-            duration,
+            frameRate, repeat, paused, easing, duration,
         } = this.options;
-        const tweenDuration = duration || (totalFrames / frameRate);
-        return TweenMax.fromTo(this, tweenDuration, {
-            progress: 0,
-        }, {
-            progress: 1,
-            paused,
-            repeat,
-            ease: easing,
-            onUpdate: this.onTweenUpdate,
-        });
+        const tweenDuration = duration || totalFrames / frameRate;
+        return TweenMax.fromTo(
+            this,
+            tweenDuration,
+            {
+                progress: 0,
+            },
+            {
+                progress: 1,
+                paused,
+                repeat,
+                ease: easing,
+                onUpdate: this.onTweenUpdate,
+            },
+        );
     }
 
     getSize() {

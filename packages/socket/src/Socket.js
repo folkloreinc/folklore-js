@@ -15,8 +15,10 @@ class Socket extends EventEmitter {
     }
 
     static getAdapter(adapter) {
-        const adapterKey =
-            Object.keys(Socket.adapters).find(key => normalize(key) === normalize(adapter)) || null;
+        // prettier-ignore
+        const adapterKey = Object.keys(Socket.adapters).find(key => (
+            normalize(key) === normalize(adapter)
+        )) || null;
         if (adapterKey === null) {
             throw new Error(`Adapter ${adapter} not found`);
         }
@@ -164,9 +166,7 @@ class Socket extends EventEmitter {
     updateChannels(channels) {
         debug(`Updating channels: ${channels.join(', ')}`);
 
-        this.channels = [
-            ...channels,
-        ];
+        this.channels = [...channels];
 
         this.adapter.updateChannels(channels);
     }
@@ -215,7 +215,7 @@ class Socket extends EventEmitter {
         if (this.started) {
             debug('Skipping start: Already started.');
             return;
-        } else if (this.starting) {
+        } if (this.starting) {
             debug('Skipping start: Already starting.');
             return;
         }
@@ -253,16 +253,15 @@ class Socket extends EventEmitter {
             return Promise.reject();
         }
 
-        const publishData =
-            typeof data.channel !== 'undefined' && typeof data.message !== 'undefined'
-                ? data
-                : {
-                    channel:
+        const publishData = typeof data.channel !== 'undefined' && typeof data.message !== 'undefined'
+            ? data
+            : {
+                channel:
                           typeof channel !== 'undefined'
                               ? this.getChannelWithNamespace(channel)
                               : this.channels,
-                    message: data,
-                };
+                message: data,
+            };
         debug('Sending', publishData);
 
         return this.adapter.send(publishData);

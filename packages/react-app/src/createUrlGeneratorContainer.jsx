@@ -37,24 +37,22 @@ export default function createUrlGeneratorContainer(selectRoutes, opts) {
 
                 const routes = routesSelector(props);
 
-
                 this.state = {
                     urlGenerator: new UrlGenerator(routes, urlGeneratorOptions),
                 };
             }
 
             getChildContext() {
+                const { urlGenerator } = this.state;
                 return {
-                    urlGenerator: this.state.urlGenerator,
+                    urlGenerator,
                 };
             }
 
             componentWillReceiveProps(nextProps) {
                 const nextRoutes = routesSelector(nextProps);
                 const routes = routesSelector(this.props);
-                const routesChanged = (
-                    JSON.stringify(nextRoutes) !== JSON.stringify(routes)
-                );
+                const routesChanged = JSON.stringify(nextRoutes) !== JSON.stringify(routes);
                 if (routesChanged) {
                     this.setState({
                         urlGenerator: new UrlGenerator(routes, urlGeneratorOptions),
@@ -63,9 +61,10 @@ export default function createUrlGeneratorContainer(selectRoutes, opts) {
             }
 
             render() {
+                const { urlGenerator } = this.state;
                 const props = {
                     ...this.props,
-                    urlGenerator: this.state.urlGenerator,
+                    urlGenerator,
                 };
 
                 if (withRef) {
@@ -74,14 +73,14 @@ export default function createUrlGeneratorContainer(selectRoutes, opts) {
                     };
                 }
 
-                return (
-                    <WrappedComponent {...props} />
-                );
+                return <WrappedComponent {...props} />;
             }
         }
 
         UrlGeneratorContainer.childContextTypes = childContextTypes;
-        UrlGeneratorContainer.displayName = `UrlGeneratorContainer(${getDisplayName(WrappedComponent)})`;
+        UrlGeneratorContainer.displayName = `UrlGeneratorContainer(${getDisplayName(
+            WrappedComponent,
+        )})`;
         UrlGeneratorContainer.WrappedComponent = WrappedComponent;
 
         return hoistStatics(UrlGeneratorContainer, WrappedComponent);

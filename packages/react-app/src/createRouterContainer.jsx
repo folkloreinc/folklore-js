@@ -20,9 +20,11 @@ export default function createRouterContainer(defaultHistory, opts) {
         history: finalDefaultHistory !== null ? PropTypes.object : PropTypes.object.isRequired,
     };
 
-    const defaultProps = finalDefaultHistory !== null ? {
-        history: finalDefaultHistory,
-    } : {};
+    const defaultProps = finalDefaultHistory !== null
+        ? {
+            history: finalDefaultHistory,
+        }
+        : {};
 
     return (WrappedComponent) => {
         class RouterContainer extends Component {
@@ -35,6 +37,7 @@ export default function createRouterContainer(defaultHistory, opts) {
             }
 
             render() {
+                const { history } = this.props;
                 const props = {
                     ...this.props,
                 };
@@ -46,7 +49,7 @@ export default function createRouterContainer(defaultHistory, opts) {
                 }
 
                 return (
-                    <ConnectedRouter history={this.props.history}>
+                    <ConnectedRouter history={history}>
                         <WrappedComponent {...props} />
                     </ConnectedRouter>
                 );

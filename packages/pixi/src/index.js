@@ -4,8 +4,5 @@ import Movieclip from './Movieclip';
 import Pixels from './Pixels';
 
 export {
-    Video,
-    Audio,
-    Movieclip,
-    Pixels,
+    Video, Audio, Movieclip, Pixels,
 };

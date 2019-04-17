@@ -80,15 +80,11 @@ export default function createAppContainer(opts) {
         Container.WrappedComponent = WrappedComponent;
 
         const AppContainer = hoistStatics(Container, WrappedComponent);
-        const RouterContainer = createRouterContainer(
-            null,
-            { withRef },
-        )(AppContainer);
-        const IntlContainer = createIntlContainer(
-            getIntlLocale,
-            getIntlMessages,
-            { withRef },
-        )(RouterContainer);
+        const RouterContainer = createRouterContainer(null, { withRef })(AppContainer);
+        const IntlContainer = createIntlContainer(getIntlLocale, getIntlMessages, { withRef })(
+            RouterContainer,
+        );
+        // prettier-ignore
         const ConnectedContainer = mapStateToProps !== null
             ? connect(mapStateToProps)(IntlContainer)
             : IntlContainer;
@@ -99,19 +95,13 @@ export default function createAppContainer(opts) {
             storeHasChanged,
             { withRef },
         )(ConnectedContainer);
-        const HistoryContainer = createHistoryContainer(
-            createHistory,
-            { withRef },
-        )(StoreContainer);
-        const UrlGeneratorContainer = createUrlGeneratorContainer(
-            getUrlGeneratorRoutes,
-            { withRef },
-        )(HistoryContainer);
-        const PropsContainer = propTypes !== null || defaultProps !== null ? createPropsContainer(
-            propTypes,
-            defaultProps,
-            { withRef },
-        )(UrlGeneratorContainer) : UrlGeneratorContainer;
+        const HistoryContainer = createHistoryContainer(createHistory, { withRef })(StoreContainer);
+        const UrlGeneratorContainer = createUrlGeneratorContainer(getUrlGeneratorRoutes, {
+            withRef,
+        })(HistoryContainer);
+        const PropsContainer = propTypes !== null || defaultProps !== null
+            ? createPropsContainer(propTypes, defaultProps, { withRef })(UrlGeneratorContainer)
+            : UrlGeneratorContainer;
         return PropsContainer;
     };
 }

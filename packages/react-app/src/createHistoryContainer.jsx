@@ -58,9 +58,7 @@ export default function createHistoryContainer(historyCreator, opts) {
                     };
                 }
 
-                return (
-                    <WrappedComponent {...props} />
-                );
+                return <WrappedComponent {...props} />;
             }
         }
 

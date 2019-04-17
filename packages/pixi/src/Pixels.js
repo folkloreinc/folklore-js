@@ -1,4 +1,6 @@
-import { Container, Texture, Sprite, Point } from 'pixi.js';
+import {
+    Container, Texture, Sprite, Point,
+} from 'pixi.js';
 import Color from 'color';
 import get from 'lodash/get';
 
@@ -66,12 +68,7 @@ class Pixels extends Container {
         };
 
         const {
-            width,
-            height,
-            colors,
-            pixelWidth,
-            pixelHeight,
-            debug,
+            width, height, colors, pixelWidth, pixelHeight, debug,
         } = this.options;
 
         this.expandRadius = this.expandRadius.bind(this);
@@ -156,10 +153,7 @@ class Pixels extends Container {
 
         const pixelWidth = get(this.options, 'pixelWidth', null);
         const pixelHeight = get(this.options, 'pixelHeight', null);
-        if (
-            pixelWidth !== this.pixelWidth ||
-            pixelHeight !== this.pixelHeight
-        ) {
+        if (pixelWidth !== this.pixelWidth || pixelHeight !== this.pixelHeight) {
             this.setPixelSize(pixelWidth, pixelHeight);
         }
 
@@ -198,10 +192,10 @@ class Pixels extends Container {
         const canvasSize = this.getCanvasSize();
         const rows = canvasSize.height;
         const cols = canvasSize.width;
-        const scaleX = pixelWidth > pixelHeight ? (pixelWidth / pixelHeight) : 1;
-        const scaleY = pixelHeight > pixelWidth ? (pixelHeight / pixelWidth) : 1;
-        for (let row = 0; row < rows; row += (1 * scaleY)) {
-            for (let col = 0; col < cols; col += (1 * scaleX)) {
+        const scaleX = pixelWidth > pixelHeight ? pixelWidth / pixelHeight : 1;
+        const scaleY = pixelHeight > pixelWidth ? pixelHeight / pixelWidth : 1;
+        for (let row = 0; row < rows; row += 1 * scaleY) {
+            for (let col = 0; col < cols; col += 1 * scaleX) {
                 const pixel = this.updatePixel(row, col, rows, cols);
                 pixel.position.set((col * pixelWidth) / scaleX, (row * pixelHeight) / scaleY);
             }
@@ -210,8 +204,8 @@ class Pixels extends Container {
 
     updatePixel(row, col, rows, cols) {
         const { enableAlpha, minPixelAlpha, hideTransparentPixels } = this.options;
-        const maxPixelIndex = ((rows - 1) * cols) + (cols - 1);
-        const pixelIndex = (row * cols) + col;
+        const maxPixelIndex = (rows - 1) * cols + (cols - 1);
+        const pixelIndex = row * cols + col;
         const imageDataIndex = pixelIndex * 4;
         const pixelColor = [
             this.imageData[imageDataIndex + 0],
@@ -235,10 +229,9 @@ class Pixels extends Container {
         pixel.pixelPosition.set(col, row);
 
         // Hide transparent pixel
-        const isTransparent = (
-            (hideTransparentPixels && pixelAlpha < minPixelAlpha) ||
-            pixel.pixelDead
-        );
+        // prettier-ignore
+        const isTransparent = (hideTransparentPixels && pixelAlpha < minPixelAlpha)
+            || pixel.pixelDead;
         const visibleAlpha = enableAlpha ? pixelAlpha : 1;
         if (isTransparent && !pixel.pixelTransparent) {
             pixel.pixelTransparent = true;
@@ -249,9 +242,7 @@ class Pixels extends Container {
         }
 
         // Disable visible
-        const isUnused = (
-            pixelIndex > maxPixelIndex
-        );
+        const isUnused = pixelIndex > maxPixelIndex;
         if (isUnused) {
             pixel.pixelUnused = true;
             pixel.visible = false;
@@ -278,8 +269,9 @@ class Pixels extends Container {
             colorOffsetProbability,
             maxColorOffset,
         } = this.options;
-        const colorOffset = Math.random() < colorOffsetProbability ?
-            Math.round(-(maxColorOffset / 2) + (Math.random() * maxColorOffset)) : 0;
+        const colorOffset = Math.random() < colorOffsetProbability
+            ? Math.round(-(maxColorOffset / 2) + Math.random() * maxColorOffset)
+            : 0;
         const maxColorsIndex = this.colorsTextures.length - 1;
         const realColorIndex = Math.max(Math.min(colorIndex + colorOffset, maxColorsIndex), 0);
         const texture = this.colorsTextures[realColorIndex] || null;
@@ -326,8 +318,11 @@ class Pixels extends Container {
     }
 
     updateColorTextures() {
-        this.colorsCanvas = this.colors.map(color => (
-            createColorCanvas(color.rgb(), this.pixelWidth, this.pixelHeight)
+        // prettier-ignore
+        this.colorsCanvas = this.colors.map(color => createColorCanvas(
+            color.rgb(),
+            this.pixelWidth,
+            this.pixelHeight,
         ));
 
         const lastTextures = this.colorsTextures;
@@ -348,6 +343,7 @@ class Pixels extends Container {
         this.pixels.forEach((pixel) => {
             const colorIndex = this.colorsTextures.indexOf(pixel.texture);
             if (colorIndex === -1) {
+                // prettier-ignore
                 const realColorIndex = (
                     pixel.colorIndex + pixel.pixelColorOffset + maxColorsIndex
                 ) % maxColorsIndex;
@@ -412,20 +408,19 @@ class Pixels extends Container {
 
     clearSavedImageData(name) {
         const imageName = name || 'default';
-        this.savedImagesData = Object.keys(this.savedImagesData).reduce((images, key) => (
-            key !== imageName ? {
-                ...images,
-                [key]: this.savedImagesData[key],
-            } : images
-        ), {});
+        this.savedImagesData = Object.keys(this.savedImagesData).reduce(
+            (images, key) => (key !== imageName
+                ? {
+                    ...images,
+                    [key]: this.savedImagesData[key],
+                }
+                : images),
+            {},
+        );
     }
 
     createDebugContainer() {
-        const {
-            debugContainer,
-            debugContainerStyles,
-            debugContainerParent,
-        } = this.options;
+        const { debugContainer, debugContainerStyles, debugContainerParent } = this.options;
         let container = debugContainer;
         if (container === null) {
             container = document.createElement('div');

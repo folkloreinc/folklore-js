@@ -14,11 +14,12 @@ const childContextTypes = {
 };
 
 export default function createSocketContainer(socketOptionsGetter, opts) {
-    const getSocketOptions = socketOptionsGetter || (props => ({
-        namespace: props.socketNamespace,
-        publishKey: props.socketPublishKey,
-        subscribeKey: props.socketSubscribeKey,
-    }));
+    const getSocketOptions = socketOptionsGetter
+        || (props => ({
+            namespace: props.socketNamespace,
+            publishKey: props.socketPublishKey,
+            subscribeKey: props.socketSubscribeKey,
+        }));
     const options = {
         withRef: false,
         ...opts,
@@ -34,54 +35,57 @@ export default function createSocketContainer(socketOptionsGetter, opts) {
                 return this.wrappedInstance;
             }
 
+            static getDerivedStateFromProps(props, { options: lastOptions }) {
+                const nextOptions = getSocketOptions(props);
+                const optionsChanged = JSON.stringify(lastOptions) !== JSON.stringify(nextOptions);
+                if (optionsChanged) {
+                    return {
+                        socket: new Socket(nextOptions),
+                        options: nextOptions,
+                    };
+                }
+                return null;
+            }
+
             constructor(props) {
                 super(props);
 
                 const socketOptions = getSocketOptions(props);
                 this.state = {
                     socket: new Socket(socketOptions),
-                    options: socketOptions,
+                    options: socketOptions, // eslint-disable-line react/no-unused-state
                 };
             }
 
             getChildContext() {
+                const { socket } = this.state;
                 return {
-                    socket: this.state.socket,
+                    socket,
                 };
             }
 
             componentDidMount() {
-                this.state.socket.start();
-            }
-
-            componentWillReceiveProps(nextProps) {
-                const nextOptions = getSocketOptions(nextProps);
-                const optionsChanged = (
-                    JSON.stringify(this.state.options) !== JSON.stringify(nextOptions)
-                );
-                if (optionsChanged) {
-                    this.setState({
-                        socket: new Socket(nextOptions),
-                        options: nextOptions,
-                    });
-                }
+                const { socket } = this.state;
+                socket.start();
             }
 
             componentDidUpdate(prevProps, prevState) {
-                const socketChanged = prevState.socket !== this.state.socket;
+                const { socket } = this.state;
+                const socketChanged = prevState.socket !== socket;
                 if (socketChanged) {
                     const wasStarted = prevState.socket ? prevState.socket.isStarted() : false;
                     if (prevState.socket) {
                         prevState.socket.destroy();
                     }
                     if (wasStarted) {
-                        this.state.socket.start();
+                        socket.start();
                     }
                 }
             }
 
             componentWillUnmount() {
-                this.state.socket.destroy();
+                const { socket } = this.state;
+                socket.destroy();
             }
 
             render() {
@@ -97,9 +101,7 @@ export default function createSocketContainer(socketOptionsGetter, opts) {
                     };
                 }
 
-                return (
-                    <WrappedComponent {...props} />
-                );
+                return <WrappedComponent {...props} />;
             }
         }
 

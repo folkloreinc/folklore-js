@@ -26,12 +26,11 @@ export default function createStoreContainer(
     const defaultGetMiddlewares = () => [];
     const defaultStoreHasChanged = (props, nextProps) => isEqual(props, nextProps);
     const storeChanged = storeHasChanged || defaultStoreHasChanged;
-    const createStore = props =>
-        configureStore(
-            (getReducers || defaultGetReducers)(props),
-            (getInitialState || defaultGetInitialState)(props),
-            (getMiddlewares || defaultGetMiddlewares)(props),
-        );
+    const createStore = props => configureStore(
+        (getReducers || defaultGetReducers)(props),
+        (getInitialState || defaultGetInitialState)(props),
+        (getMiddlewares || defaultGetMiddlewares)(props),
+    );
 
     const updateStore = (store, props) => {
         const initialState = (getInitialState || defaultGetInitialState)(props);
@@ -66,12 +65,17 @@ export default function createStoreContainer(
             }
 
             componentWillReceiveProps(nextProps) {
+                const { store, storeKey } = this.state;
                 if (storeChanged(this.props, nextProps)) {
                     this.setState({
-                        store: process.env.NODE_ENV !== 'production'
-                            ? updateStore(this.state.store, nextProps)
-                            : createStore(nextProps),
-                        storeKey: process.env.NODE_ENV !== 'production' ? this.state.storekey : `store-${new Date().getTime()}`,
+                        store:
+                            process.env.NODE_ENV !== 'production'
+                                ? updateStore(store, nextProps)
+                                : createStore(nextProps),
+                        storeKey:
+                            process.env.NODE_ENV !== 'production'
+                                ? storeKey
+                                : `store-${new Date().getTime()}`,
                     });
                 }
             }

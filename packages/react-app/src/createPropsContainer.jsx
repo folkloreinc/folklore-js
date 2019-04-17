@@ -36,9 +36,7 @@ export default function createPropsContainer(propTypes, defaultProps, opts) {
                     };
                 }
 
-                return (
-                    <WrappedComponent {...props} />
-                );
+                return <WrappedComponent {...props} />;
             }
         }
 

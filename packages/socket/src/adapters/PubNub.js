@@ -115,7 +115,7 @@ class PubNubSocket extends EventEmitter {
         if (this.started) {
             debug('Skipping start: Already started.');
             return;
-        } else if (this.starting) {
+        } if (this.starting) {
             debug('Skipping start: Already starting.');
             return;
         }
@@ -157,7 +157,11 @@ class PubNubSocket extends EventEmitter {
         return new Promise((resolve, reject) => {
             this.pubnub.publish(data, (status, response) => {
                 if (status.error) {
-                    reject(new Error(`Error operation:${status.operation} status:${status.statusCode}`));
+                    reject(
+                        new Error(
+                            `Error operation:${status.operation} status:${status.statusCode}`,
+                        ),
+                    );
                 } else {
                     resolve({
                         status,

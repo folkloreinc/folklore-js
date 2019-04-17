@@ -94,7 +94,7 @@ class SocketIOSocket extends EventEmitter {
         if (this.started) {
             debug('Skipping start: Already started.');
             return;
-        } else if (this.starting) {
+        } if (this.starting) {
             debug('Skipping start: Already starting.');
             return;
         }
@@ -114,10 +114,13 @@ class SocketIOSocket extends EventEmitter {
         this.shouldStart = false;
         this.starting = true;
 
-        this.sockets = this.channels.reduce((map, channel) => ({
-            ...map,
-            [channel]: this.createSocket(channel),
-        }), {});
+        this.sockets = this.channels.reduce(
+            (map, channel) => ({
+                ...map,
+                [channel]: this.createSocket(channel),
+            }),
+            {},
+        );
 
         this.emit('start');
     }
