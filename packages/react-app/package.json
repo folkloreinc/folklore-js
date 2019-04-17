@@ -1,6 +1,6 @@
 {
     "name": "@folklore/react-app",
-    "version": "0.1.35",
+    "version": "0.1.36",
     "description": "React app container",
     "keywords": [
         "javascript",
@@ -48,7 +48,7 @@
     },
     "dependencies": {
         "@babel/runtime": "^7.4.3",
-        "@folklore/react-container": "^0.1.18",
+        "@folklore/react-container": "^0.1.19",
         "connected-react-router": "^6.0.0",
         "history": "^4.7.2",
         "hoist-non-react-statics": "^2.3.1",
