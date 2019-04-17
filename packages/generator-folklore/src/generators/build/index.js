@@ -332,7 +332,7 @@ module.exports = class AppGenerator extends Generator {
                     'webpack@^4.0', // TODO: update webpack 4
                 ];
 
-                const dependencies = ['whatwg-fetch', 'core-js', 'promise', 'raf', 'object-assign'];
+                const dependencies = ['whatwg-fetch', 'core-js@^2.4.0', 'promise', 'raf', 'object-assign'];
 
                 if (this.options.server) {
                     devDependencies.push('webpack-dev-server@^3.1');
