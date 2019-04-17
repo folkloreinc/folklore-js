@@ -40,52 +40,23 @@ const defaultProps = {
 };
 
 class StoreContainer extends Component {
-    static getDerivedStateFromProps(props, state) {
-        if (
-            (process.env.NODE_ENV !== 'production' || props.updateStoreInProduction)
-            && StoreContainer.storeChanged(state.prevProps, props)
-        ) {
-            return {
-                store: StoreContainer.updateStore(state.store, props),
-                storeKey: `store-${new Date().getTime()}`,
-                prevProps: props,
-            };
-        }
-        return {
-            prevProps: props,
-        };
-    }
-
-    static storeChanged(prevProps, nextProps) {
-        const { storeChanged } = nextProps;
-        return storeChanged !== null
-            ? storeChanged(prevProps, nextProps)
-            : isEqual(prevProps, nextProps);
-    }
-
-    static updateStore(store, props) {
-        const { updateStore } = props;
-        const reducers = this.getReducers();
-        const initialState = this.getInitialStoreState();
-        const middlewares = this.getMiddlewares();
-        const options = this.getOptions();
-        const storeState = {
-            ...initialState,
-            ...store.getState(),
-        };
-        return updateStore !== null
-            ? updateStore(reducers, storeState, middlewares, options)
-            : configureStore(reducers, storeState, middlewares, options);
-    }
-
     constructor(props) {
         super(props);
 
         this.state = {
             store: this.createStore(props),
             storeKey: `store-${new Date().getTime()}`,
-            prevProps: props, // eslint-disable-line react/no-unused-state
         };
+    }
+
+    componentDidUpdate(prevProps) {
+        const { updateStoreInProduction } = this.props;
+        if (
+            (process.env.NODE_ENV !== 'production' || updateStoreInProduction)
+            && this.storeChanged(prevProps)
+        ) {
+            this.updateStore();
+        }
     }
 
     getReducers() {
@@ -106,6 +77,39 @@ class StoreContainer extends Component {
     getOptions() {
         const { options, getOptions } = this.props;
         return getOptions !== null ? getOptions(options) : options;
+    }
+
+    storeChanged(prevProps) {
+        const { storeChanged } = this.props;
+        return storeChanged !== null
+            ? storeChanged(prevProps, this.props)
+            : isEqual(prevProps, this.props);
+    }
+
+    updateStore() {
+        const newStore = this.replaceStore();
+
+        this.setState({
+            store: newStore,
+            storeKey: `store-${new Date().getTime()}`,
+        });
+    }
+
+    replaceStore() {
+        const { store } = this.state;
+        const { updateStore } = this.props;
+        const reducers = this.getReducers();
+        const initialState = this.getInitialStoreState();
+        const middlewares = this.getMiddlewares();
+        const options = this.getOptions();
+        const storeState = {
+            ...initialState,
+            ...store.getState(),
+        };
+
+        return updateStore !== null
+            ? updateStore(reducers, storeState, middlewares, options)
+            : configureStore(reducers, storeState, middlewares, options);
     }
 
     createStore() {
