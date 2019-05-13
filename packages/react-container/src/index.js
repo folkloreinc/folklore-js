@@ -6,7 +6,6 @@ import configureStore from './configureStore';
 import UrlGenerator from './UrlGenerator';
 import withUrlGenerator from './withUrlGenerator';
 import withUrlGeneratorMiddleware from './withUrlGeneratorMiddleware';
-import StoreContext from './StoreContext';
 
 export {
     Container,
@@ -17,7 +16,6 @@ export {
     UrlGenerator,
     withUrlGenerator,
     withUrlGeneratorMiddleware,
-    StoreContext,
 };
 
 export default Container;

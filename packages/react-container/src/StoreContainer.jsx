@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 
 import configureStore from './configureStore';
-import StoreContext from './StoreContext';
 
 const propTypes = {
     reducers: PropTypes.objectOf(PropTypes.func),
@@ -22,7 +21,6 @@ const propTypes = {
     updateStore: PropTypes.func, // eslint-disable-line react/no-unused-prop-types
     storeChanged: PropTypes.func, // eslint-disable-line react/no-unused-prop-types
     children: PropTypes.node,
-    context: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
 const defaultProps = {
@@ -39,7 +37,6 @@ const defaultProps = {
     updateStore: null,
     storeChanged: null,
     children: null,
-    context: StoreContext,
 };
 
 class StoreContainer extends Component {
@@ -127,10 +124,10 @@ class StoreContainer extends Component {
     }
 
     render() {
-        const { children, context } = this.props;
+        const { children } = this.props;
         const { store, storeKey } = this.state;
         return (
-            <Provider store={store} key={storeKey} context={context}>
+            <Provider store={store} key={storeKey}>
                 {children}
             </Provider>
         );
