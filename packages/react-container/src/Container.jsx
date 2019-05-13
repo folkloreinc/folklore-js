@@ -75,10 +75,11 @@ class Container extends Component {
     }
 
     renderRouter(children) {
-        const { router } = this.props;
+        const { router, store } = this.props;
         const { memoryHistory, createHistory, ...routerProps } = isObject(router) ? router : {};
+        const { context: storeContext } = isObject(store) ? store : {};
         return (
-            <RouterContainer history={this.history} {...routerProps}>
+            <RouterContainer history={this.history} storeContext={storeContext} {...routerProps}>
                 {children}
             </RouterContainer>
         );
