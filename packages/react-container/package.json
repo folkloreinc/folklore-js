@@ -1,6 +1,6 @@
 {
     "name": "@folklore/react-container",
-    "version": "0.1.21",
+    "version": "0.1.24",
     "description": "React app container",
     "keywords": [
         "javascript",
@@ -48,18 +48,18 @@
     },
     "dependencies": {
         "@babel/runtime": "^7.4.3",
-        "connected-react-router": "^6.0.0",
-        "history": "^4.7.2",
-        "hoist-non-react-statics": "^2.3.1",
+        "connected-react-router": "^5.0.0 || ^6.4.0",
+        "history": "^4.9.0",
+        "hoist-non-react-statics": "^3.3.0",
         "invariant": "^2.2.2",
         "lodash": "^4.17.4",
         "prop-types": "^15.6.0",
-        "react-intl": "^2.4.0",
-        "react-redux": "^6.0.0",
+        "react-intl": "^2.8.0",
+        "react-redux": "^7.0.3",
         "react-router": "^4.3.1 || ^5.0.0",
         "redux": "^4.0.0",
         "redux-devtools-extension": "^2.13.2",
-        "redux-promise": "^0.5.3",
+        "redux-promise": "^0.6.0",
         "redux-thunk": "^2.2.0"
     },
     "devDependencies": {
