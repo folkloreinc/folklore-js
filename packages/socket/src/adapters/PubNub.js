@@ -70,7 +70,7 @@ class PubNubSocket extends EventEmitter {
 
     init() {
         import(/* webpackChunkName: "vendor/pubnub" */ 'pubnub')
-            .then((PubNub) => {
+            .then(({ default: PubNub }) => {
                 this.PubNub = PubNub;
             })
             .then(() => this.createPubNub())
