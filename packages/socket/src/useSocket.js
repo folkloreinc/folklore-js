@@ -33,7 +33,7 @@ const useSocket = (channels, opts = {}) => {
             socket.on('stop', onStop);
             socket.on('started', onStarted);
         };
-    }, [channels, customOnMessage]);
+    }, [...channels, customSocket, customOnMessage]);
 
     return {
         socket,
