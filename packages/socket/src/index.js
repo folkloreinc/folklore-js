@@ -1,7 +1,4 @@
-import Socket from './Socket';
-import createSocketContainer from './createSocketContainer';
-import withSocket from './withSocket';
-
-export { Socket, createSocketContainer, withSocket };
-
-export default Socket;
+export { default, default as Socket } from './Socket';
+export { default as SocketContext } from './SocketContext';
+export { default as SocketContainer } from './SocketContainer';
+export { default as withSocket } from './withSocket';
