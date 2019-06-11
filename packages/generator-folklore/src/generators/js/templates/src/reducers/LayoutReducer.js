@@ -1,11 +1,10 @@
-import { SET_SIZE, SET_FONTS_LOADED } from '../actions/LayoutActions';
+import { SET_SIZE } from '../actions/LayoutActions';
 
 const initialState = {
     size: {
         width: window.innerWidth || 0,
         height: window.innerHeight || 0,
     },
-    fontsLoaded: false,
 };
 
 const LayoutReducer = (previousState, action) => {
@@ -24,11 +23,6 @@ const LayoutReducer = (previousState, action) => {
             size: {
                 ...action.payload,
             },
-        };
-    case SET_FONTS_LOADED:
-        return {
-            ...state,
-            fontsLoaded: action.payload,
         };
     default:
         return state;

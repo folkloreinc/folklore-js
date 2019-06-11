@@ -22,6 +22,8 @@ export const label = PropTypes.oneOfType([
     PropTypes.node,
 ]);
 
+export const statusCode = PropTypes.oneOf([401, 403, 404, 500]);
+
 /**
  * Site
  */

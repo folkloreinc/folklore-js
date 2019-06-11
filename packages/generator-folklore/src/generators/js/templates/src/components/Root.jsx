@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Container from '@folklore/react-container';
+import { TrackingContainer } from '@folklore/tracking';
 
 import reducers from '../reducers/index';
 // import * as AppPropTypes from '../lib/PropTypes';
@@ -14,12 +15,14 @@ const propTypes = {
         PropTypes.objectOf(PropTypes.string),
     ]),
     routes: PropTypes.objectOf(PropTypes.string),
+    statusCode: AppPropTypes.statusCode,
 };
 
 const defaultProps = {
     locale: 'fr',
     messages: {},
     routes: {},
+    statusCode: null,
 };
 
 class Root extends PureComponent {
@@ -28,7 +31,9 @@ class Root extends PureComponent {
         return {
             reducers,
             initialState: {
-
+                site: {
+                    statusCode,
+                },
             },
         };
     }
@@ -48,6 +53,11 @@ class Root extends PureComponent {
         };
     }
 
+    getKeys() {
+        return {
+        };
+    }
+
     render() {
         return (
             <Container
@@ -55,7 +65,11 @@ class Root extends PureComponent {
                 intl={this.getIntlProps()}
                 urlGenerator={this.getUrlGenerator()}
             >
-                <App />
+                <TrackingContainer>
+                    <KeysContext.Provider value={this.getKeys()}>
+                        <App />
+                    </KeysContext.Provider>
+                </TrackingContainer>
             </Container>
         );
     }
