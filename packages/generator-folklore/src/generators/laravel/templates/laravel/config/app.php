@@ -184,7 +184,6 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         Folklore\LaravelLocale\LocaleServiceProvider::class,
         Folklore\Image\ImageServiceProvider::class,
-        Folklore\Hypernova\HypernovaServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -247,7 +246,6 @@ return [
 
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Image' => Folklore\Image\Support\Facades\Image::class,
-        'Hypernova' => Folklore\Hypernova\Support\Facades\Hypernova::class,
     ],
 
 ];
