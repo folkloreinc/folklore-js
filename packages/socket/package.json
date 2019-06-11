@@ -1,6 +1,6 @@
 {
     "name": "@folklore/socket",
-    "version": "0.3.1",
+    "version": "0.3.2",
     "description": "Socket utilities",
     "keywords": [
         "javascript",
