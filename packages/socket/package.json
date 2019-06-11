@@ -1,6 +1,6 @@
 {
     "name": "@folklore/socket",
-    "version": "0.2.12",
+    "version": "0.3.1",
     "description": "Socket utilities",
     "keywords": [
         "javascript",
@@ -64,5 +64,5 @@
         "react": "^16.8.0",
         "react-dom": "^16.8.0"
     },
-    "gitHead": "6518bfedf5cdcb652b75a91ac3592afbe1898562"
+    "gitHead": "68095ff46611eb37a5aba97aedc67019ca46474a"
 }
