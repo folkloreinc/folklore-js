@@ -6,7 +6,6 @@ import { withUrlGenerator } from '@folklore/react-container';
 
 import * as AppPropTypes from '../../lib/PropTypes';
 import PageMeta from '../partials/PageMeta';
-import Envelope from '../partials/Envelope';
 import Button from '../buttons/Button';
 
 import styles from '<%= getRelativeStylesPath('components/pages/Error.jsx', 'pages/error.scss') %>';
@@ -90,7 +89,9 @@ const ErrorPage = ({ urlGenerator, statusCode }) => (
                 <FormattedMessage {...messages[`description${statusCode || 404}`]} />
             </p>
             <div className={styles.actions}>
-                <Button href={urlGenerator.route('home')} green label={messages.gotoHome} />
+                <Link to={urlGenerator.route('home')}>
+                    <FormattedMessage {...messages.gotoHome} />
+                </Link>
             </div>
         </div>
     </div>

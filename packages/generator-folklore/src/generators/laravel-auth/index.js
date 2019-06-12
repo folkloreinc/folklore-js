@@ -60,26 +60,6 @@ module.exports = class LaravelAuthGenerator extends Generator {
                 this.fs.writeJSON(destPath, _.merge(currentJson, newJson));
             },
 
-            packageJSON() {
-                const srcPath = this.templatePath('_package.json');
-                const destPath = this.destinationPath('package.json');
-
-                const newJson = this.fs.readJSON(srcPath);
-                const currentJson = this.fs.exists(destPath)
-                    ? this.fs.readJSON(destPath)
-                    : {};
-                this.fs.writeJSON(destPath, _.merge(currentJson, newJson));
-            },
-
-            layout() {
-                const source = this.templatePath('layout.blade.php');
-                const destination = this.destinationPath('resources/views/vendor/panneau/index.blade.php');
-                if (this.fs.exists(destination)) {
-                    this.fs.delete(destination);
-                }
-                this.fs.copyTpl(source, destination, {});
-            },
-
             files() {
                 const folders = ['app', 'resources'];
                 folders.forEach((folder) => {
@@ -123,16 +103,6 @@ module.exports = class LaravelAuthGenerator extends Generator {
 
                 const done = this.async();
                 this.spawnCommand('php', ['artisan', 'vendor:publish']).on('close', done);
-            },
-
-            panneau() {
-                if (this.options['skip-install'] && !this.options['install-npm']) {
-                    return;
-                }
-
-                this.npmInstall(['panneau@latest'], {
-                    save: true,
-                });
             },
         };
     }
