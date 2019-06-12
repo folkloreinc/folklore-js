@@ -16,6 +16,7 @@ const useSocket = (channels, opts = {}) => {
             }
             return () => {};
         }
+        const wasStarted = socket.isStarted();
         socket.setChannels(channels);
         const onStarted = () => setStarted(true);
         const onStop = () => setStarted(false);
@@ -27,11 +28,17 @@ const useSocket = (channels, opts = {}) => {
         socket.on('message', onMessage);
         socket.on('stop', onStop);
         socket.on('started', onStarted);
+        if (!wasStarted) {
+            socket.start();
+        }
         return () => {
             socket.setChannels([]);
             socket.off('message', onMessage);
             socket.on('stop', onStop);
             socket.on('started', onStarted);
+            if (!wasStarted) {
+                socket.stop();
+            }
         };
     }, [...channels, customSocket, customOnMessage]);
 
