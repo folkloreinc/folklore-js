@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 import classNames from 'classnames';
 import { withUrlGenerator } from '@folklore/react-container';
+import { useForm } from '@folklore/forms';
 
 import * as AppPropTypes from '../../lib/PropTypes';
-import useForm from '../../lib/useForm';
 import TextField from '../fields/Text';
 import Button from '../buttons/Button';
 import formMessages from './messages';
 
-import styles from '../../../styles/forms/forgot-password.scss';
+import styles from '<%= getRelativeStylesPath('components/forms/ForgotPassword.jsx', 'forms/forgot-password.scss') %>';
 
 const propTypes = {
     urlGenerator: AppPropTypes.urlGenerator.isRequired,

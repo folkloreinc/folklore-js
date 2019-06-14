@@ -6,7 +6,7 @@ import { withUrlGenerator } from '@folklore/react-container';
 import * as AppPropTypes from '../lib/PropTypes';
 import MainLayout from './layouts/Main';
 import HomePage from './pages/Home';
-import ErrorPage from './pages/ErrorPage';
+import ErrorPage from './pages/Error';
 
 import '<%= getRelativeStylesPath('components/App.jsx', 'main.global.scss') %>';
 

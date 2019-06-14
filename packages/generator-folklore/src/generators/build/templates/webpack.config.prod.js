@@ -376,12 +376,13 @@ module.exports = {
                         loader: getStyleLoaders({
                             importLoaders: 1,
                             sourceMap: shouldUseSourceMap,
-                            modules: true,
-                            localIdentName: getConfigValue(config.cssLocalIdent),
-                            // prettier-ignore
-                            getLocalIdent: (context, localIdentName, localName) => (
-                                getLocalIdent(localIdentName, localName, context.resourcePath)
-                            ),
+                            modules: {
+                                localIdentName: getConfigValue(config.cssLocalIdent),
+                                // prettier-ignore
+                                getLocalIdent: (context, localIdentName, localName) => (
+                                    getLocalIdent(localIdentName, localName, context.resourcePath)
+                                ),
+                            },
                         }),
                         // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
                     },
@@ -414,12 +415,18 @@ module.exports = {
                             {
                                 importLoaders: 2,
                                 sourceMap: shouldUseSourceMap,
-                                modules: true,
-                                localIdentName: getConfigValue(config.cssLocalIdent),
-                                // prettier-ignore
-                                getLocalIdent: (context, localIdentName, localName) => (
-                                    getLocalIdent(localIdentName, localName, context.resourcePath)
-                                ),
+                                modules: {
+                                    localIdentName: getConfigValue(config.cssLocalIdent),
+                                    // prettier-ignore
+                                    getLocalIdent: (context, localIdentName, localName) => (
+                                        getLocalIdent(
+                                            localIdentName,
+                                            localName,
+                                            context.resourcePath,
+                                        )
+                                    ),
+                                },
+
                             },
                             'sass-loader',
                         ),

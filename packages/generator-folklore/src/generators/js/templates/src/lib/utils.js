@@ -1,5 +1,4 @@
 import isObject from 'lodash/isObject';
-import isArray from 'lodash/isArray';
 
 export const pascalCase = str => str
     .replace(/[^a-z0-9]+/gi, ' ')

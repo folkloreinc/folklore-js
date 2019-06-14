@@ -124,8 +124,8 @@ module.exports = class AppGenerator extends Generator {
                     serverBrowserHost: this.options['server-browser-host'] || null,
                     hasImagemin: this.options.imagemin,
                     imageminFiles:
-                        (this.options['imagemin-files'] || null) !== null &&
-                        !isArray(this.options['imagemin-files'])
+                        (this.options['imagemin-files'] || null) !== null
+                        && !isArray(this.options['imagemin-files'])
                             ? [this.options['imagemin-files']]
                             : this.options['imagemin-files'],
                     imageminOutputPath: this.options['imagemin-output-path'] || null,
@@ -156,18 +156,18 @@ module.exports = class AppGenerator extends Generator {
                     srcPath: this.options['src-path'] || null,
                     htmlPath: this.options['html-path'] || null,
                     watchPaths:
-                        (this.options['watch-path'] || null) !== null &&
-                        !isArray(this.options['watch-path'])
+                        (this.options['watch-path'] || null) !== null
+                        && !isArray(this.options['watch-path'])
                             ? [...this.options['watch-path'].split(',')]
                             : this.options['watch-path'],
                     emptyPaths:
-                        (this.options['empty-path'] || null) !== null &&
-                        !isArray(this.options['empty-path'])
+                        (this.options['empty-path'] || null) !== null
+                        && !isArray(this.options['empty-path'])
                             ? [...this.options['empty-path'].split(',')]
                             : this.options['empty-path'],
                     copyPaths:
-                        (this.options['copy-path'] || null) !== null &&
-                        !isArray(this.options['copy-path'])
+                        (this.options['copy-path'] || null) !== null
+                        && !isArray(this.options['copy-path'])
                             ? [...this.options['copy-path'].split(',')]
                             : this.options['copy-path'],
                 };
@@ -326,13 +326,19 @@ module.exports = class AppGenerator extends Generator {
                     'node-sass@latest',
                     'fs-extra@latest',
                     'glob@latest',
-                    'lodash@latest',
                     'pretty-bytes@latest',
                     'react-dev-utils@^6.1.1',
                     'webpack@^4.0', // TODO: update webpack 4
                 ];
 
-                const dependencies = ['whatwg-fetch', 'core-js@^2.4.0', 'promise', 'raf', 'object-assign'];
+                const dependencies = [
+                    'whatwg-fetch',
+                    'core-js@^2.4.0',
+                    'promise',
+                    'raf',
+                    'lodash@latest',
+                    'object-assign',
+                ];
 
                 if (this.options.server) {
                     devDependencies.push('webpack-dev-server@^3.1');

@@ -1,9 +1,9 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 import { defineMessages, injectIntl } from 'react-intl';
-import Helmet from 'react-helmet';
 
-import * as AppPropTypes from '../../lib/PropTypes';
+// import * as AppPropTypes from '../../lib/PropTypes';
+import PageMeta from '../partials/PageMeta';
 
 import styles from '<%= getRelativeStylesPath('components/pages/Home.jsx', 'pages/home.scss') %>';
 
@@ -15,10 +15,10 @@ const messages = defineMessages({
 });
 
 const propTypes = {
-    intl: AppPropTypes.intl.isRequired,
+    // intl: AppPropTypes.intl.isRequired,
 };
 
-const HomePage = ({ intl }) => (
+const HomePage = () => (
     <div className={styles.container}>
         <PageMeta title={messages.metaTitle} />
         <div className={styles.logo} />

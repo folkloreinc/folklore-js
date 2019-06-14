@@ -165,14 +165,18 @@ module.exports = class JsGenerator extends Generator {
             'react-redux@latest',
             'react-intl@latest',
             'react-router@^5.0.1',
+            'react-router-dom@latest',
             'connected-react-router@latest',
             'react-helmet@latest',
             'node-polyglot@latest',
             'classnames@latest',
             '@folklore/react-container@latest',
             '@folklore/fonts@latest',
+            '@folklore/forms@latest',
+            '@folklore/tracking@latest',
             'react-loadable@latest',
             'webfontloader@latest',
+            'intl@latest',
         ];
 
         const devDependencies = ['html-webpack-plugin@latest'];

@@ -17,10 +17,9 @@ export const message = PropTypes.shape({
     defaultMessage: PropTypes.string,
 });
 
-export const label = PropTypes.oneOfType([
-    message,
-    PropTypes.node,
-]);
+export const text = PropTypes.oneOfType([message, PropTypes.string]);
+
+export const label = PropTypes.oneOfType([message, PropTypes.node]);
 
 export const statusCode = PropTypes.oneOf([401, 403, 404, 500]);
 

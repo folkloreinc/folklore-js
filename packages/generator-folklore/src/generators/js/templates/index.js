@@ -1,27 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Root from './components/Root';<% if (rootPropsImport !== null) { %>
-import rootProps from '<%= rootPropsImport %>';<% } %>
-
-const rootEl = document.getElementById('root');
-const root = React.createElement(Root<%=rootPropsImport !== null ? ', rootProps' : ''%>);
-ReactDOM.render(root, rootEl);
-
-
-import React from 'react';
-import ReactDOM from 'react-dom';
 import domready from 'domready';<% if (rootPropsImport !== null) { %>
-import rootProps from '<%= rootPropsImport %>';<% } %>
+import defaultRootProps from '<%= rootPropsImport %>';<% } %>
 
 import Root from './components/Root';
 
 <%
     if (rootPropsImport !== null) {
-        %>const getRootProps = () => rootProps;<%
+        %>const getRootProps = () => defaultRootProps;<%
     } else {
         %>const getRootProps = () => {
     const propsEl = document.getElementById('root-props');
-    return propsEl !== null ? JSON.parse(propsEl.innerHTML) : {};
+    return propsEl !== null ? JSON.parse(propsEl.innerHTML) || {} : {};
 };<%
     }
 %>

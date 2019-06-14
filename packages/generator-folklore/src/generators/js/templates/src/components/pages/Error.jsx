@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { withUrlGenerator } from '@folklore/react-container';
 
 import * as AppPropTypes from '../../lib/PropTypes';
 import PageMeta from '../partials/PageMeta';
-import Button from '../buttons/Button';
 
 import styles from '<%= getRelativeStylesPath('components/pages/Error.jsx', 'pages/error.scss') %>';
 

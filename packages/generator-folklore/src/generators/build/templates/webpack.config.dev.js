@@ -275,11 +275,13 @@ module.exports = {
                         exclude: cssRegex,
                         use: getStyleLoaders({
                             importLoaders: 1,
-                            modules: true,
-                            localIdentName: getConfigValue(config.cssLocalIdent),
-                            getLocalIdent: (context, localIdentName, localName) => (
-                                getLocalIdent(localIdentName, localName, context.resourcePath)
-                            ),
+                            modules: {
+                                localIdentName: getConfigValue(config.cssLocalIdent),
+                                // prettier-ignore
+                                getLocalIdent: (context, localIdentName, localName) => (
+                                    getLocalIdent(localIdentName, localName, context.resourcePath)
+                                ),
+                            },
                         }),
                     },
                     // Global SASS
@@ -294,11 +296,17 @@ module.exports = {
                         use: getStyleLoaders(
                             {
                                 importLoaders: 2,
-                                modules: true,
-                                localIdentName: getConfigValue(config.cssLocalIdent),
-                                getLocalIdent: (context, localIdentName, localName) => (
-                                    getLocalIdent(localIdentName, localName, context.resourcePath)
-                                ),
+                                modules: {
+                                    localIdentName: getConfigValue(config.cssLocalIdent),
+                                    // prettier-ignore
+                                    getLocalIdent: (context, localIdentName, localName) => (
+                                        getLocalIdent(
+                                            localIdentName,
+                                            localName,
+                                            context.resourcePath,
+                                        )
+                                    ),
+                                },
                             },
                             'sass-loader',
                         ),

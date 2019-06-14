@@ -12,6 +12,16 @@ module.exports = class LaravelAuthGenerator extends Generator {
             type: String,
             required: false,
         });
+
+        this.option('js-path', {
+            type: String,
+            defaults: 'resources/assets/js',
+        });
+
+        this.option('styles-path', {
+            type: String,
+            defaults: 'resources/assets/styles',
+        });
     }
 
     get prompting() {
@@ -61,7 +71,11 @@ module.exports = class LaravelAuthGenerator extends Generator {
             },
 
             files() {
-                const folders = ['app', 'resources'];
+                const folders = ['app', 'resources', 'routes'];
+
+                const jsPath = this.options['js-path'] || null;
+                const stylesPath = this.options['styles-path'] || null;
+
                 folders.forEach((folder) => {
                     const templatePath = this.templatePath(folder);
                     const destinationPath = this.destinationPath(folder);
@@ -77,6 +91,12 @@ module.exports = class LaravelAuthGenerator extends Generator {
                         } else {
                             this.fs.copyTpl(source, destination, {
                                 project_name: this.options['project-name'],
+                                getRelativeStylesPath: (from, src) => path.relative(
+                                    this.destinationPath(path.dirname(path.join(jsPath, from))),
+                                    this.destinationPath(
+                                        path.join(stylesPath || path.join(jsPath, 'styles'), src),
+                                    ),
+                                ),
                             });
                         }
                     });
@@ -102,7 +122,7 @@ module.exports = class LaravelAuthGenerator extends Generator {
                 }
 
                 const done = this.async();
-                this.spawnCommand('php', ['artisan', 'vendor:publish']).on('close', done);
+                this.spawnCommand('php', ['artisan', 'vendor:publish', '--all']).on('close', done);
             },
         };
     }

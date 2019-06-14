@@ -1,7 +1,5 @@
-import { getLocaleFromLocation } from '../lib/utils';
-
 export default {
-    locale: getLocaleFromLocation(),
+    locale: 'fr',
     messages: {
         'meta.title': 'Titre',
     },

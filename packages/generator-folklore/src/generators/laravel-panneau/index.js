@@ -128,7 +128,7 @@ module.exports = class LaravelPanneauGenerator extends Generator {
                 }
 
                 const done = this.async();
-                this.spawnCommand('php', ['artisan', 'vendor:publish']).on('close', done);
+                this.spawnCommand('php', ['artisan', 'vendor:publish', '--all']).on('close', done);
             },
 
             panneau() {

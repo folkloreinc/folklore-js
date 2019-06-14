@@ -8,7 +8,7 @@ import { FormattedMessage } from 'react-intl';
 import * as AppPropTypes from '../../lib/PropTypes';
 import { isMessage } from '../../lib/utils';
 
-import styles from '../../../styles/buttons/button.scss';
+import styles from '<%= getRelativeStylesPath('components/buttons/Button.jsx', 'buttons/button.scss') %>';
 
 const propTypes = {
     type: PropTypes.string,
@@ -25,9 +25,6 @@ const propTypes = {
     disableOnLoading: PropTypes.bool,
     small: PropTypes.bool,
     big: PropTypes.bool,
-    green: PropTypes.bool,
-    yellow: PropTypes.bool,
-    grey: PropTypes.bool,
     withShadow: PropTypes.bool,
     className: PropTypes.string,
     iconClassName: PropTypes.string,
@@ -50,9 +47,6 @@ const defaultProps = {
     disableOnLoading: true,
     small: false,
     big: false,
-    green: false,
-    yellow: false,
-    grey: false,
     withShadow: false,
     className: null,
     iconClassName: null,
@@ -75,9 +69,6 @@ const Button = ({
     disableOnLoading,
     small,
     big,
-    green,
-    yellow,
-    grey,
     withShadow,
     onClick,
     className,
@@ -144,9 +135,6 @@ const Button = ({
             [styles.withShadow]: withShadow,
             [styles.isSmall]: small,
             [styles.isBig]: big,
-            [styles.isGreen]: green,
-            [styles.isYellow]: yellow,
-            [styles.isGrey]: grey,
             [styles.isLink]: href !== null,
             [styles.isDisabled]: disabled,
             [styles.isLoading]: loading,

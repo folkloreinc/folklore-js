@@ -4,7 +4,8 @@ import Container from '@folklore/react-container';
 import { TrackingContainer } from '@folklore/tracking';
 
 import reducers from '../reducers/index';
-// import * as AppPropTypes from '../lib/PropTypes';
+import * as AppPropTypes from '../lib/PropTypes';
+import KeysContext from '../lib/KeysContext';
 
 import App from './App';
 
@@ -28,6 +29,7 @@ const defaultProps = {
 class Root extends PureComponent {
     // eslint-disable-next-line class-methods-use-this
     getStoreProps() {
+        const { statusCode } = this.props;
         return {
             reducers,
             initialState: {
@@ -53,9 +55,9 @@ class Root extends PureComponent {
         };
     }
 
+    // eslint-disable-next-line
     getKeys() {
-        return {
-        };
+        return {};
     }
 
     render() {

@@ -4,14 +4,14 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { withUrlGenerator } from '@folklore/react-container';
+import { useForm } from '@folklore/forms';
 
 import * as AppPropTypes from '../../lib/PropTypes';
-import useForm from '../../lib/useForm';
 import TextField from '../fields/Text';
 import Button from '../buttons/Button';
 import formMessages from './messages';
 
-import styles from '../../../styles/forms/login.scss';
+import styles from '<%= getRelativeStylesPath('components/forms/Login.jsx', 'forms/login.scss') %>';
 
 const messages = defineMessages({
     forgotPassword: {
@@ -37,25 +37,13 @@ const defaultProps = {
 const LoginForm = ({
     urlGenerator, errors, className, onComplete,
 }) => {
-    const [askPassword, setAskPassword] = useState(null);
-    const isVerify = askPassword === null;
-    const action = isVerify
-        ? urlGenerator.route('auth.prelogin')
-        : urlGenerator.route('auth.login');
     const {
         csrfToken, fields, onSubmit, loading,
     } = useForm({
         action,
         fields: ['email', 'password'],
         errors,
-        onComplete: (data) => {
-            const { loginType = null } = data;
-            if (isVerify && loginType === 'password') {
-                setAskPassword(true);
-            } else {
-                onComplete(data);
-            }
-        },
+        onComplete,
     });
     return (
         <div
@@ -66,7 +54,7 @@ const LoginForm = ({
                 },
             ])}
         >
-            <form action={action} method="POST" onSubmit={onSubmit}>
+            <form action={urlGenerator.route('auth.login')} method="POST" onSubmit={onSubmit}>
                 <input type="hidden" name="_token" value={csrfToken} />
 
                 <TextField
@@ -75,24 +63,22 @@ const LoginForm = ({
                     {...fields.email}
                 />
 
-                {askPassword ? (
-                    <TextField
-                        type="password"
-                        label={formMessages.passwordLabel}
-                        className={styles.password}
-                        {...fields.password}
-                        helpText={(
-                            <div className={styles.forgot}>
-                                <Link
-                                    to={urlGenerator.route('auth.password.request')}
-                                    className={styles.link}
-                                >
-                                    <FormattedMessage {...messages.forgotPassword} />
-                                </Link>
-                            </div>
-                        )}
-                    />
-                ) : null}
+                <TextField
+                    type="password"
+                    label={formMessages.passwordLabel}
+                    className={styles.password}
+                    {...fields.password}
+                    helpText={(
+                        <div className={styles.forgot}>
+                            <Link
+                                to={urlGenerator.route('auth.password.request')}
+                                className={styles.link}
+                            >
+                                <FormattedMessage {...messages.forgotPassword} />
+                            </Link>
+                        </div>
+                    )}
+                />
 
                 <div className={styles.actions}>
                     <Button

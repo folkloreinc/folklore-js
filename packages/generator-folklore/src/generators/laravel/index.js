@@ -121,6 +121,12 @@ module.exports = class LaravelGenerator extends Generator {
             desc: 'Add panneau',
             defaults: false,
         });
+
+        this.option('auth', {
+            type: Boolean,
+            desc: 'Add auth',
+            defaults: false,
+        });
     }
 
     get prompting() {
@@ -148,8 +154,7 @@ module.exports = class LaravelGenerator extends Generator {
                         name: 'project-host',
                         message: 'What is the host of the project?',
                         default: (answers) => {
-                            const projectName =
-                                this.options['project-name'] || answers['project-name'];
+                            const projectName = this.options['project-name'] || answers['project-name'];
                             return projectName.match(/.[^.]+$/)
                                 ? projectName
                                 : `${projectName}.com`;
@@ -163,8 +168,7 @@ module.exports = class LaravelGenerator extends Generator {
                         name: 'db-name',
                         message: 'What is the name of the database?',
                         default: (answers) => {
-                            const projectName =
-                                this.options['project-name'] || answers['project-name'];
+                            const projectName = this.options['project-name'] || answers['project-name'];
                             return projectName.match(/^([^.]+)/)[1];
                         },
                     });
@@ -174,6 +178,11 @@ module.exports = class LaravelGenerator extends Generator {
                     !this.options.panneau && {
                         name: 'Panneau',
                         value: 'panneau',
+                        checked: true,
+                    },
+                    !this.options.auth && {
+                        name: 'Auth',
+                        value: 'auth',
                         checked: true,
                     },
                 ].filter(Boolean);
@@ -208,6 +217,9 @@ module.exports = class LaravelGenerator extends Generator {
                     if (features.indexOf('panneau') !== -1) {
                         this.options.panneau = true;
                     }
+                    if (features.indexOf('auth') !== -1) {
+                        this.options.auth = true;
+                    }
                 });
             },
         };
@@ -227,7 +239,9 @@ module.exports = class LaravelGenerator extends Generator {
             project_host: this.options['project-host'],
             project_name: this.options['project-name'],
         }).replace(/^(http)?(s)?(:\/\/)?/, 'http$2://');
-        const urlProxy = _.template(_.get(this.options, 'proxy-url', _.get(this.options, 'local-url')))({
+        const urlProxy = _.template(
+            _.get(this.options, 'proxy-url', _.get(this.options, 'local-url')),
+        )({
             project_host: this.options['project-host'],
             project_name: this.options['project-name'],
         }).replace(/^(http)?(s)?(:\/\/)?/, 'http$2://');
@@ -286,7 +300,20 @@ module.exports = class LaravelGenerator extends Generator {
         if (this.options.panneau) {
             this.composeWith('folklore:laravel-panneau', {
                 'project-name': this.options['project-name'],
-                'skip-install': true,
+                'js-path': jsSrcPath,
+                'styles-path': stylesSrcPath,
+                'skip-install': skipInstall,
+                'install-npm': true,
+                quiet: true,
+            });
+        }
+
+        if (this.options.auth) {
+            this.composeWith('folklore:laravel-auth', {
+                'project-name': this.options['project-name'],
+                'js-path': jsSrcPath,
+                'styles-path': stylesSrcPath,
+                'skip-install': skipInstall,
                 'install-npm': true,
                 quiet: true,
             });
@@ -298,7 +325,9 @@ module.exports = class LaravelGenerator extends Generator {
             laravel() {
                 const done = this.async();
 
-                const versionBranch = this.options['laravel-version'] === 'latest' ? 'master' : this.options['laravel-version'];
+                const versionBranch = this.options['laravel-version'] === 'latest'
+                    ? 'master'
+                    : this.options['laravel-version'];
                 const branch = this.options['laravel-branch'] || versionBranch;
 
                 remote('laravel', 'laravel', branch, (err, cachePath) => {
