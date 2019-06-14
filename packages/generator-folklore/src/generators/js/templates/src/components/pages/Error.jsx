@@ -16,11 +16,11 @@ const messages = defineMessages({
         defaultMessage: 'Error 401',
     },
     title401: {
-        id: 'content.error_401_title',
+        id: 'errors.title_401',
         defaultMessage: 'Error 401',
     },
     description401: {
-        id: 'content.error_401_description',
+        id: 'errors.description_401',
         defaultMessage: 'You are not authorized to access this page.',
     },
 
@@ -29,11 +29,11 @@ const messages = defineMessages({
         defaultMessage: 'Error 403',
     },
     title403: {
-        id: 'content.error_403_title',
+        id: 'errors.title_403',
         defaultMessage: 'Error 403',
     },
     description403: {
-        id: 'content.error_403_description',
+        id: 'errors.description_403',
         defaultMessage: 'Access to this page is forbidden',
     },
 
@@ -42,11 +42,11 @@ const messages = defineMessages({
         defaultMessage: 'Error 404',
     },
     title404: {
-        id: 'content.error_404_title',
+        id: 'errors.title_404',
         defaultMessage: 'Error 404',
     },
     description404: {
-        id: 'content.error_404_description',
+        id: 'errors.description_404',
         defaultMessage: 'This page doesn’t exists',
     },
 
@@ -55,16 +55,16 @@ const messages = defineMessages({
         defaultMessage: 'Error 500',
     },
     title500: {
-        id: 'content.error_500_title',
+        id: 'errors.title_500',
         defaultMessage: 'Error 500',
     },
     description500: {
-        id: 'content.error_500_description',
+        id: 'errors.description_500',
         defaultMessage: 'There was an error',
     },
 
     gotoHome: {
-        id: 'content.goto_home',
+        id: 'errors.goto_home',
         defaultMessage: 'Go to home',
     },
 });
