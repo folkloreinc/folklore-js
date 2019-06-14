@@ -71,7 +71,7 @@ module.exports = class LaravelAuthGenerator extends Generator {
             },
 
             files() {
-                const folders = ['app', 'resources', 'routes'];
+                const folders = ['app', 'resources', 'routes', 'database'];
 
                 const jsPath = this.options['js-path'] || null;
                 const stylesPath = this.options['styles-path'] || null;
