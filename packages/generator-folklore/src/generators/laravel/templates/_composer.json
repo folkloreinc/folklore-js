@@ -1,6 +1,6 @@
 {
     "require": {
-        "folklore/image": "v1.x-dev",
+        "folklore/image": "v1.0.0-beta.1",
         "folklore/laravel-locale": "^3.0",
         "barryvdh/laravel-debugbar": "^3.2",
         "hackzilla/password-generator": "^1.4"
