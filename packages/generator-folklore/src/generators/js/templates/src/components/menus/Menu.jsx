@@ -5,8 +5,9 @@ import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 
 import * as AppPropTypes from '../../lib/PropTypes';
+import Label from '../partials/Label';
 
-import styles from '../../../styles/menus/menu.scss';
+import styles from '<%= getRelativeStylesPath('components/menus/Menu.jsx', 'menus/menu.scss') %>';
 
 const propTypes = {
     items: AppPropTypes.menuItems,
@@ -28,9 +29,7 @@ const Menu = ({ items, className }) => (
         ])}
     >
         <ul className={styles.items}>
-            {items.map(({
-                label, url, active = false, external = false,
-            }, index) => (
+            {items.map(({ label, url, active = false, external = false }, index) => (
                 <li
                     className={classNames([
                         styles.item,
@@ -42,11 +41,11 @@ const Menu = ({ items, className }) => (
                 >
                     {external ? (
                         <a href={url} className={styles.link}>
-                            {label}
+                            <Label>{label}</Label>
                         </a>
                     ) : (
                         <Link to={url} className={styles.link}>
-                            {label}
+                            <Label>{label}</Label>
                         </Link>
                     )}
                 </li>

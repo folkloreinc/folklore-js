@@ -1,11 +1,10 @@
-/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { FormattedMessage } from 'react-intl';
 
 import * as AppPropTypes from '../../lib/PropTypes';
-import { isMessage } from '../../lib/utils';
+import Label from '../partials/Label';
 
 import styles from '<%= getRelativeStylesPath('components/messages/Success.jsx', 'messages/success.scss') %>';
 
@@ -18,9 +17,7 @@ const defaultProps = {
     className: null,
 };
 
-const SuccessMessage = ({
-    children, className,
-}) => (
+const SuccessMessage = ({ children, className }) => (
     <div
         className={classNames([
             styles.container,
@@ -29,7 +26,7 @@ const SuccessMessage = ({
             },
         ])}
     >
-        {isMessage(children) ? <FormattedMessage {...children} /> : children}
+        <Label>{children}</Label>
     </div>
 );
 

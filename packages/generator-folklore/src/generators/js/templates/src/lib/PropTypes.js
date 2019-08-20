@@ -7,6 +7,10 @@ export const urlGenerator = PropTypes.shape({
     route: PropTypes.func.isRequired,
 });
 
+export const history = PropTypes.shape({
+    listen: PropTypes.func.isRequired,
+});
+
 export const intl = PropTypes.shape({
     locale: PropTypes.string.isRequired,
     formatMessage: PropTypes.func.isRequired,
@@ -36,7 +40,7 @@ export const user = PropTypes.shape({
 });
 
 export const menuItem = PropTypes.shape({
-    label: PropTypes.string,
+    label,
     url: PropTypes.string,
     external: PropTypes.bool,
     active: PropTypes.bool,
