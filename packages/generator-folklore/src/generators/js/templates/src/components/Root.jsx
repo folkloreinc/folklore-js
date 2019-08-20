@@ -5,7 +5,7 @@ import { TrackingContainer } from '@folklore/tracking';
 
 import reducers from '../reducers/index';
 import * as AppPropTypes from '../lib/PropTypes';
-import KeysContext from '../lib/KeysContext';
+import KeysContext from '../contexts/KeysContext';
 
 import App from './App';
 

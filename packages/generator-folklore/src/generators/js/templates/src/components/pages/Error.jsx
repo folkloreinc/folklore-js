@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -8,7 +9,7 @@ import { withUrlGenerator } from '@folklore/react-container';
 import * as AppPropTypes from '../../lib/PropTypes';
 import PageMeta from '../partials/PageMeta';
 
-import styles from '<%= getRelativeStylesPath('components/pages/Error.jsx', 'pages/error.scss') %>';
+import styles from '../../../styles/pages/error.scss';
 
 const messages = defineMessages({
     metaTitle401: {
