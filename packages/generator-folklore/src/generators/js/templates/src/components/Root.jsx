@@ -20,6 +20,7 @@ const propTypes = {
     ]),
     routes: PropTypes.objectOf(PropTypes.string),
     statusCode: AppPropTypes.statusCode,
+    googleApiKey: PropTypes.string,
 };
 
 const defaultProps = {
@@ -27,9 +28,10 @@ const defaultProps = {
     messages: {},
     routes: {},
     statusCode: null,
+    googleApiKey: null,
 };
 
-const Root = ({ locale, messages, routes, statusCode }) => {
+const Root = ({ locale, messages, routes, statusCode, googleApiKey }) => {
     const store = useMemo(
         () =>
             createStore(reducers, {
@@ -39,12 +41,18 @@ const Root = ({ locale, messages, routes, statusCode }) => {
             }),
         [statusCode],
     );
+    const keys = useMemo(
+        () => ({
+            googleApiKey,
+        }),
+        [googleApiKey],
+    );
     return (
         <ReduxProvider store={store}>
             <IntlProvider locale={locale} messages={messages[locale] || messages}>
                 <BrowserRouter>
                     <UrlGeneratorProvider routes={routes}>
-                        <KeysProvider>
+                        <KeysProvider keys={keys}>
                             <TrackingContainer>
                                 <App />
                             </TrackingContainer>
