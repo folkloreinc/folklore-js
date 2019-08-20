@@ -48,6 +48,7 @@ module.exports = class EslintGenerator extends Generator {
                 'eslint@latest',
                 'eslint-config-airbnb@latest',
                 'eslint-config-prettier@latest',
+                'eslint-plugin-prettier@latest',
                 'eslint-plugin-import',
                 'eslint-plugin-jsx-a11y',
                 'eslint-plugin-react',
