@@ -47,9 +47,7 @@ export const UrlGeneratorProvider = ({ children, routes, urlGenerator }) => {
         routes,
         urlGenerator,
     ]);
-    return (
-        <UrlGeneratorContext.Provider value={value}>{children}</UrlGeneratorContext.Provider>
-    );
+    return <UrlGeneratorContext.Provider value={value}>{children}</UrlGeneratorContext.Provider>;
 };
 
 UrlGeneratorProvider.propTypes = propTypes;
