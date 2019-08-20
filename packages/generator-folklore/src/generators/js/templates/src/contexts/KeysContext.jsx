@@ -24,15 +24,15 @@ export const withKeys = WrappedComponent => {
 
 const propTypes = {
     children: PropTypes.node.isRequired,
-    googleApiKey: PropTypes.string,
+    keys: PropTypes.objectOf(PropTypes.string),
 };
 
 const defaultProps = {
-    googleApiKey: null,
+    keys: {},
 };
 
-export const KeysProvider = ({ children, googleApiKey }) => (
-    <KeysContext.Provider value={{ googleApiKey }}>{children}</KeysContext.Provider>
+export const KeysProvider = ({ children, keys }) => (
+    <KeysContext.Provider value={keys}>{children}</KeysContext.Provider>
 );
 
 KeysProvider.propTypes = propTypes;
