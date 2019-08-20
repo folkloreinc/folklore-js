@@ -28,6 +28,11 @@ module.exports = class EslintGenerator extends Generator {
                 const destPath = this.destinationPath('.eslintignore');
                 this.fs.copy(srcPath, destPath);
             },
+            prettierrc() {
+                const srcPath = this.templatePath('prettierrc.json');
+                const destPath = this.destinationPath('.prettierrc.json');
+                this.fs.copy(srcPath, destPath);
+            },
         };
     }
 
@@ -42,6 +47,7 @@ module.exports = class EslintGenerator extends Generator {
                 'babel-eslint@latest',
                 'eslint@latest',
                 'eslint-config-airbnb@latest',
+                'eslint-config-prettier@latest',
                 'eslint-plugin-import',
                 'eslint-plugin-jsx-a11y',
                 'eslint-plugin-react',
