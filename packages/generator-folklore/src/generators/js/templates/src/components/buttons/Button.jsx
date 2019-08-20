@@ -1,12 +1,11 @@
 /* eslint-disable react/button-has-type */
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
 
 import * as AppPropTypes from '../../lib/PropTypes';
-import { isMessage } from '../../lib/utils';
+import Label from '../partials/Label';
 
 import styles from '<%= getRelativeStylesPath('components/buttons/Button.jsx', 'buttons/button.scss') %>';
 
@@ -76,15 +75,15 @@ const Button = ({
     labelClassName,
 }) => {
     const finalLabel = label || children;
-    const text = isMessage(finalLabel) ? <FormattedMessage {...finalLabel} /> : finalLabel;
+    const text = <Label>{finalLabel}</Label>;
     const hasChildren = label !== null && children !== null;
     const hasIcon = icon !== null;
     const hasInlineIcon = hasIcon && (iconPosition === 'inline' || text === null);
     const hasIconColumns = hasIcon && !hasInlineIcon;
     const content = (
-        <Fragment>
+        <>
             {hasInlineIcon ? (
-                <Fragment>
+                <>
                     <span
                         className={classNames([
                             styles.icon,
@@ -107,10 +106,10 @@ const Button = ({
                             {text}
                         </span>
                     ) : null}
-                </Fragment>
+                </>
             ) : null}
             {hasIconColumns ? (
-                <Fragment>
+                <>
                     <span className={classNames([styles.left])}>
                         {iconPosition === 'left' ? icon : null}
                     </span>
@@ -119,11 +118,11 @@ const Button = ({
                         {iconPosition === 'right' ? icon : null}
                     </span>
                     {hasChildren ? children : null}
-                </Fragment>
+                </>
             ) : null}
             {!hasIcon ? text : null}
             {hasChildren ? children : null}
-        </Fragment>
+        </>
     );
 
     const buttonClassNames = classNames([

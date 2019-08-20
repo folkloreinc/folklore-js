@@ -1,16 +1,18 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { defineMessages, FormattedMessage } from 'react-intl';
-import { withUrlGenerator } from '@folklore/react-container';
+import { defineMessages } from 'react-intl';
+import { useUrlGenerator } from '@folklore/react-container';
 
-import * as AppPropTypes from '../../lib/PropTypes';
+// import * as AppPropTypes from '../../lib/PropTypes';
 import PageMeta from '../partials/PageMeta';
+import Label from '../partials/Label';
 
 import styles from '<%= getRelativeStylesPath('components/pages/Error.jsx', 'pages/error.scss') %>';
 
-const messages = defineMessages({
+export const messages = defineMessages({
     metaTitle401: {
         id: 'meta.title_401',
         defaultMessage: 'Error 401',
@@ -70,7 +72,6 @@ const messages = defineMessages({
 });
 
 const propTypes = {
-    urlGenerator: AppPropTypes.urlGenerator.isRequired,
     statusCode: PropTypes.number,
 };
 
@@ -78,30 +79,31 @@ const defaultProps = {
     statusCode: 404,
 };
 
-const ErrorPage = ({ urlGenerator, statusCode }) => (
-    <div className={styles.container}>
-        <PageMeta title={messages[`metaTitle${statusCode || 404}`]} />
-        <div className={styles.inner}>
-            <h1 className={styles.title}>
-                <FormattedMessage {...messages[`title${statusCode || 404}`]} />
-            </h1>
-            <p className={styles.description}>
-                <FormattedMessage {...messages[`description${statusCode || 404}`]} />
-            </p>
-            <div className={styles.actions}>
-                <Link to={urlGenerator.route('home')}>
-                    <FormattedMessage {...messages.gotoHome} />
-                </Link>
+const ErrorPage = ({ statusCode }) => {
+    const urlGenerator = useUrlGenerator();
+    return (
+        <div className={styles.container}>
+            <PageMeta title={messages[`metaTitle${statusCode || 404}`]} />
+            <div className={styles.inner}>
+                <h1 className={styles.title}>
+                    <Label>{messages[`title${statusCode || 404}`]}</Label>
+                </h1>
+                <p className={styles.description}>
+                    <Label>{messages[`description${statusCode || 404}`]}</Label>
+                </p>
+                <div className={styles.actions}>
+                    <Link to={urlGenerator.route('home')}>
+                        <Label>{messages.gotoHome}</Label>
+                    </Link>
+                </div>
             </div>
         </div>
-    </div>
-);
+    );
+};
 
 ErrorPage.propTypes = propTypes;
 ErrorPage.defaultProps = defaultProps;
 
-const WithStateContainer = connect(({ site }) => ({
-    statusCode: site.statusCode,
+export default connect(({ site: { statusCode } }) => ({
+    statusCode,
 }))(ErrorPage);
-const WithUrlGeneratorContainer = withUrlGenerator()(WithStateContainer);
-export default WithUrlGeneratorContainer;

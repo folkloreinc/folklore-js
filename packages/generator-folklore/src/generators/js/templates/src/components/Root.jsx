@@ -1,11 +1,14 @@
-import React, { PureComponent } from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import Container from '@folklore/react-container';
+import { UrlGeneratorProvider, createStore } from '@folklore/react-container';
 import { TrackingContainer } from '@folklore/tracking';
+import { IntlProvider } from 'react-intl';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider as ReduxProvider } from 'react-redux';
 
 import reducers from '../reducers/index';
 import * as AppPropTypes from '../lib/PropTypes';
-import KeysContext from '../lib/KeysContext';
+import { KeysProvider } from '../contexts/KeysContext';
 
 import App from './App';
 
@@ -26,56 +29,32 @@ const defaultProps = {
     statusCode: null,
 };
 
-class Root extends PureComponent {
-    // eslint-disable-next-line class-methods-use-this
-    getStoreProps() {
-        const { statusCode } = this.props;
-        return {
-            reducers,
-            initialState: {
+const Root = ({ locale, messages, routes, statusCode }) => {
+    const store = useMemo(
+        () =>
+            createStore(reducers, {
                 site: {
                     statusCode,
                 },
-            },
-        };
-    }
-
-    getIntlProps() {
-        const { locale, messages } = this.props;
-        return {
-            locale,
-            messages,
-        };
-    }
-
-    getUrlGenerator() {
-        const { routes } = this.props;
-        return {
-            routes,
-        };
-    }
-
-    // eslint-disable-next-line
-    getKeys() {
-        return {};
-    }
-
-    render() {
-        return (
-            <Container
-                store={this.getStoreProps()}
-                intl={this.getIntlProps()}
-                urlGenerator={this.getUrlGenerator()}
-            >
-                <TrackingContainer>
-                    <KeysContext.Provider value={this.getKeys()}>
-                        <App />
-                    </KeysContext.Provider>
-                </TrackingContainer>
-            </Container>
-        );
-    }
-}
+            }),
+        [statusCode],
+    );
+    return (
+        <ReduxProvider store={store}>
+            <IntlProvider locale={locale} messages={messages}>
+                <BrowserRouter>
+                    <UrlGeneratorProvider routes={routes}>
+                        <KeysProvider>
+                            <TrackingContainer>
+                                <App />
+                            </TrackingContainer>
+                        </KeysProvider>
+                    </UrlGeneratorProvider>
+                </BrowserRouter>
+            </IntlProvider>
+        </ReduxProvider>
+    );
+};
 
 Root.propTypes = propTypes;
 Root.defaultProps = defaultProps;
