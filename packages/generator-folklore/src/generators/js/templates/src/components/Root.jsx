@@ -41,7 +41,7 @@ const Root = ({ locale, messages, routes, statusCode }) => {
     );
     return (
         <ReduxProvider store={store}>
-            <IntlProvider locale={locale} messages={messages}>
+            <IntlProvider locale={locale} messages={messages[locale] || messages}>
                 <BrowserRouter>
                     <UrlGeneratorProvider routes={routes}>
                         <KeysProvider>
