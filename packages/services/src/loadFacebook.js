@@ -34,7 +34,7 @@ const loadFacebook = opts => new Promise((resolve) => {
         autoLogAppEvents: true,
         cookie: true,
         state: true,
-        version: 'v2.10',
+        version: 'v2.11',
         ...opts,
     };
 
