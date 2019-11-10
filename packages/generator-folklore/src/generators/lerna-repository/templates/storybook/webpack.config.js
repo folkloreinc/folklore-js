@@ -2,13 +2,13 @@ const path = require('path');
 const glob = require('glob');
 const fs = require('fs');
 const webpack = require('webpack');
-const getLocalIdent = require('../build/lib/getLocalIdent');
-const getPackagesPaths = require('../build/lib/getPackagesPaths');
+const getLocalIdent = require('../build/utils/getLocalIdent');
+const getPackagesPaths = require('../build/utils/getPackagesPaths');
 const config = require('../build/config');
 
 const CSS_NAME = config.webpack.cssLocalIdent;
 
-module.exports = (storybookBaseConfig, configType) => {
+module.exports =  async ({ config: storybookBaseConfig }) => {
     // Alias packages
     const alias = {};
     const exactPackages = [

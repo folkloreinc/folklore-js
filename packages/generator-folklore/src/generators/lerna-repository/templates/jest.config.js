@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const lernaJson = require('./lerna.json');
-const getPackagesPaths = require('./build/lib/getPackagesPaths');
+const getPackagesPaths = require('./build/utils/getPackagesPaths');
 
 const packagesIgnorePatterns = lernaJson.packages.map(packagePath => (
     `<rootDir>/${packagePath}/(lib|es|dist)/`

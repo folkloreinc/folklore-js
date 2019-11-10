@@ -3,9 +3,9 @@ const fs = require('fs');
 /* eslint-disable import/no-extraneous-dependencies */
 const mkdirp = require('mkdirp');
 /* eslint-enable import/no-extraneous-dependencies */
-const getPackagesPaths = require('./lib/getPackagesPaths');
-const getTranslations = require('./lib/getTranslations');
-const sortTranslations = require('./lib/sortTranslations');
+const getPackagesPaths = require('./utils/getPackagesPaths');
+const getTranslations = require('./utils/getTranslations');
+const sortTranslations = require('./utils/sortTranslations');
 
 const langFile = path.join(process.env.PWD, './intl/lang/en.json');
 
