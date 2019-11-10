@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Route, Switch, withRouter } from 'react-router';
+import { Route, Switch, useHistory } from 'react-router';
 import { useUrlGenerator } from '@folklore/react-container';
 
 import * as AppPropTypes from '../lib/PropTypes';
@@ -13,13 +13,13 @@ import ErrorPage from './pages/Error';
 import '<%= getRelativeStylesPath('components/App.jsx', 'main.global.scss') %>';
 
 const propTypes = {
-    history: AppPropTypes.history.isRequired,
     resetRequest: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
 
-const App = ({ history, resetRequest }) => {
+const App = ({ resetRequest }) => {
+    const history = useHistory();
     const urlGenerator = useUrlGenerator();
 
     // Reset request on history change
@@ -49,4 +49,4 @@ const WithStateContainer = connect(
         resetRequest: () => dispatch(resetRequestAction()),
     }),
 )(App);
-export default withRouter(WithStateContainer);
+export default WithStateContainer;

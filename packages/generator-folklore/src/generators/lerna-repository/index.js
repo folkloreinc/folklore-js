@@ -198,9 +198,9 @@ module.exports = class LernaRepositoryGenerator extends Generator {
                 this.fs.copy(allSrcPath, allDestPath);
             },
 
-            buildLib() {
-                const srcPath = this.templatePath('lib');
-                const destPath = this.destinationPath('build/lib');
+            buildUtils() {
+                const srcPath = this.templatePath('utils');
+                const destPath = this.destinationPath('build/utils');
                 this.fs.copy(srcPath, destPath);
             },
 

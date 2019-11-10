@@ -1,26 +1,24 @@
 import React, { Component } from 'react';
 
 const propTypes = {
-
+    className: PropTypes.string,
 };
 
 const defaultProps = {
-
+    className: null,
 };
 
-class <%= componentName %> extends Component {
-
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return (
-            <div />
-        );
-    }
-
-}
+const <%= componentName %> = ({ className }) => (
+    <div
+        className={classNames({
+            [className]: className !== null,
+        })}
+    >
+        <button type="button" onClick={this.onClickButton}>
+            Button
+        </button>
+    </div>
+);
 
 <%= componentName %>.propTypes = propTypes;
 <%= componentName %>.defaultProps = defaultProps;
