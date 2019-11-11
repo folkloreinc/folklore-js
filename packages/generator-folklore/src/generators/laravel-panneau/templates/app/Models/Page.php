@@ -46,6 +46,16 @@ class Page extends BasePage
         }
         return $urls;
     }
+
+    protected function getUrl($locale = null)
+    {
+        if (is_null($locale)) {
+            $locale = app()->getLocale();
+        }
+        return '';
+        // return route('pages.show.'.$locale, [array_get($this->attributes, 'slug_'.$locale)]);
+    }
+
     /**
      * Get the route key for the model.
      *
