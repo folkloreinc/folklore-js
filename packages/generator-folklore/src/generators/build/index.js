@@ -327,7 +327,7 @@ module.exports = class AppGenerator extends Generator {
                     'fs-extra@latest',
                     'glob@latest',
                     'pretty-bytes@latest',
-                    'react-dev-utils@^6.1.1',
+                    'react-dev-utils@^10.0.0',
                     'webpack@^4.0', // TODO: update webpack 4
                 ];
 
