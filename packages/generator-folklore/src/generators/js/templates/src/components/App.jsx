@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Route, Switch, useHistory } from 'react-router';
 import { useUrlGenerator } from '@folklore/react-container';
 
-import * as AppPropTypes from '../lib/PropTypes';
+// import * as AppPropTypes from '../lib/PropTypes';
 import { resetRequest as resetRequestAction } from '../actions/SiteActions';
 import MainLayout from './layouts/Main';
 import HomePage from './pages/Home';
