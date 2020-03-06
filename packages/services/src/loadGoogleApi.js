@@ -7,15 +7,23 @@ const loadGoogleApi = createLoader(
     ({
         url = 'https://apis.google.com/js/api.js',
         callback = `onGoogleApiLoaded_${new Date().getTime()}`,
+        withClient = true,
     } = {}) =>
         loadScriptWithCallback(
             `${url}?${queryString.stringify({
                 onLoad: callback,
             })}`,
             callback,
+        ).then(() =>
+            withClient
+                ? new Promise(resolve => {
+                      window.gapi.load('client', resolve);
+                  })
+                : null,
         ),
-    () =>
-        typeof window.gapi !== 'undefined' && typeof window.gapi.client !== 'undefined'
+    ({ withClient = true }) =>
+        typeof window.gapi !== 'undefined' &&
+        (!withClient || typeof window.gapi.client !== 'undefined')
             ? window.gapi
             : null,
 );
