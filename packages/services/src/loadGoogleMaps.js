@@ -1,46 +1,30 @@
-/* globals google: true */
 import queryString from 'query-string';
-import { Promise } from 'es6-promise';
-import EventEmitter from 'wolfy87-eventemitter';
 
-let loading = false;
-const events = new EventEmitter();
+import createLoader from './createLoader';
+import loadScriptWithCallback from './loadScriptWithCallback';
 
-const loadGoogleMaps = opts => new Promise((resolve) => {
-    if (typeof google !== 'undefined' && typeof google.maps !== 'undefined') {
-        resolve(google);
-        return;
-    }
-
-    if (loading) {
-        events.once('loaded', resolve);
-        return;
-    }
-    loading = true;
-
-    const options = {
-        locale: 'en',
-        apiKey: null,
-        libraries: null,
-        ...opts,
-    };
-
-    const timestamp = (new Date()).getTime();
-    const callbackName = `initMap_${timestamp}`;
-    window[callbackName] = () => {
-        resolve(google);
-        events.emit('loaded', google);
-    };
-
-    const query = queryString.stringify({
-        key: options.apiKey,
-        callback: callbackName,
-        libraries: options.libraries !== null ? options.libraries.join(',') : null,
-        language: options.locale,
-    });
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?${query}`;
-    document.getElementsByTagName('head')[0].appendChild(script);
-});
+const loadGoogleMaps = createLoader(
+    ({
+        url = 'https://maps.googleapis.com/maps/api/js',
+        locale = 'en',
+        key = null,
+        apiKey = null,
+        libraries = null,
+        callback = `onGoogleMapsLoaded_${new Date().getTime()}`,
+    } = {}) =>
+        loadScriptWithCallback(
+            `${url}?${queryString.stringify({
+                key: apiKey || key,
+                callback,
+                libraries: libraries !== null ? libraries.join(',') : null,
+                language: locale,
+            })}`,
+            callback,
+        ),
+    () =>
+        typeof window.google !== 'undefined' && typeof window.google.maps !== 'undefined'
+            ? window.google
+            : null,
+);
 
 export default loadGoogleMaps;

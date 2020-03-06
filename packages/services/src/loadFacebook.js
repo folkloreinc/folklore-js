@@ -1,9 +1,4 @@
-/* globals FB: true */
-import { Promise } from 'es6-promise';
-import EventEmitter from 'wolfy87-eventemitter';
-
-let loading = false;
-const events = new EventEmitter();
+import createLoader from './createLoader';
 
 const loadFacebookScript = (d, s, id, locale) => {
     const fjs = d.getElementsByTagName(s)[0];
@@ -16,38 +11,30 @@ const loadFacebookScript = (d, s, id, locale) => {
     fjs.parentNode.insertBefore(js, fjs);
 };
 
-const loadFacebook = opts => new Promise((resolve) => {
-    if (typeof FB !== 'undefined') {
-        resolve(FB);
-        return;
-    }
+const loadFacebook = createLoader(
+    opts =>
+        new Promise(resolve => {
+            const options = {
+                appId: null,
+                locale: 'EN_US',
+                autoLogAppEvents: true,
+                cookie: true,
+                state: true,
+                version: 'v2.11',
+                ...opts,
+            };
 
-    if (loading) {
-        events.once('loaded', resolve);
-        return;
-    }
-    loading = true;
+            window.fbAsyncInit = () => {
+                window.FB.init({
+                    ...options,
+                });
+                window.FB.AppEvents.logPageView();
+                resolve(window.FB);
+            };
 
-    const options = {
-        appId: null,
-        locale: 'EN_US',
-        autoLogAppEvents: true,
-        cookie: true,
-        state: true,
-        version: 'v2.11',
-        ...opts,
-    };
-
-    window.fbAsyncInit = () => {
-        FB.init({
-            ...options,
-        });
-        FB.AppEvents.logPageView();
-        resolve(FB);
-        events.emit('loaded', FB);
-    };
-
-    loadFacebookScript(document, 'script', 'facebook-jssdk', options.locale);
-});
+            loadFacebookScript(document, 'script', 'facebook-jssdk', options.locale);
+        }),
+    () => (typeof window.FB !== 'undefined' ? window.FB : null),
+);
 
 export default loadFacebook;
