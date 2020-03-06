@@ -21,7 +21,7 @@ const loadGoogleApi = createLoader(
                   })
                 : null,
         ),
-    ({ withClient = true }) =>
+    ({ withClient = true } = {}) =>
         typeof window.gapi !== 'undefined' &&
         (!withClient || typeof window.gapi.client !== 'undefined')
             ? window.gapi
