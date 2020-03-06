@@ -11,7 +11,7 @@ const loadGoogleApi = createLoader(
     } = {}) =>
         loadScriptWithCallback(
             `${url}?${queryString.stringify({
-                onLoad: callback,
+                onload: callback,
             })}`,
             callback,
         ).then(() =>
