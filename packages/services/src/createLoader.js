@@ -2,7 +2,7 @@ import EventEmitter from 'wolfy87-eventemitter';
 
 const createLoader = (loader, getLibrary = null) => {
     let loading = false;
-    let loaded = true;
+    let loaded = false;
     const events = new EventEmitter();
     return (...args) =>
         new Promise(resolve => {
