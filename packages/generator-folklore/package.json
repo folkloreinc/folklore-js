@@ -1,6 +1,6 @@
 {
     "name": "generator-folklore",
-    "version": "2.2.50",
+    "version": "2.2.51",
     "description": "Yeoman generator for projects at Folklore",
     "keywords": [
         "yeoman-generator"
