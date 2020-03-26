@@ -30,6 +30,7 @@ const useForm = (opts = {}) => {
     const {
         fields = [],
         action = null,
+        postForm = null,
         errors: providedErrors = null,
         setErrors: setProvidedErrors = null,
         generalError: providedGeneralError = null,
@@ -84,7 +85,7 @@ const useForm = (opts = {}) => {
 
     const csrfToken = useMemo(() => getCsrfToken(), []);
 
-    const onSubmitError = (error) => {
+    const onSubmitError = error => {
         setRequestState({
             success: false,
             loading: false,
@@ -98,7 +99,7 @@ const useForm = (opts = {}) => {
         }
     };
 
-    const onSubmitSuccess = (resp) => {
+    const onSubmitSuccess = resp => {
         setRequestState({
             success: true,
             loading: false,
@@ -107,6 +108,17 @@ const useForm = (opts = {}) => {
         setResponse(resp);
         onComplete(resp);
     };
+
+    const finalPostForm = useCallback(
+        (postAction, postData) =>
+            postForm !== null
+                ? postForm(postAction, postData)
+                : postJSON(postAction, postData, {
+                      credentials: 'include',
+                      headers: getCSRFHeaders(),
+                  }),
+        [postForm, postJSON, getCSRFHeaders],
+    );
 
     const submit = useCallback(
         (submitValue = value) => {
@@ -117,21 +129,19 @@ const useForm = (opts = {}) => {
             });
             setGeneralError(null);
             setErrors(null);
-            postJSON(action, {
+
+            finalPostForm(action, {
                 ...submitValue,
                 _token: csrfToken,
-            }, {
-                credentials: 'include',
-                headers: getCSRFHeaders(),
             })
                 .then(onSubmitSuccess)
                 .catch(onSubmitError);
         },
-        [action, value],
+        [finalPostForm, action, value],
     );
 
     const onSubmit = useCallback(
-        (e) => {
+        e => {
             e.preventDefault();
             submit();
         },
