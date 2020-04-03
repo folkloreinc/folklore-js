@@ -20,7 +20,7 @@ const loadFacebook = createLoader(
                 autoLogAppEvents: true,
                 cookie: true,
                 state: true,
-                version: 'v2.11',
+                version: 'v6.0',
                 ...opts,
             };
 
