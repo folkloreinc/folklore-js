@@ -31,18 +31,23 @@ const useForm = (opts = {}) => {
         fields = [],
         action = null,
         postForm = null,
+        initialErrors = null,
         errors: providedErrors = null,
         setErrors: setProvidedErrors = null,
+        initialGeneralError = null,
         generalError: providedGeneralError = null,
         setGeneralError: setProvidedGeneralError = null,
+        initialValue = null,
         value: providedValue = null,
         setValue: setProvidedValue = null,
         onComplete = null,
     } = opts;
 
-    const [stateValue, setStateValue] = useState(providedValue);
-    const [stateErrors, setStateErrors] = useState(providedErrors);
-    const [stateGeneralError, setStateGeneralError] = useState(providedGeneralError);
+    const [stateValue, setStateValue] = useState(initialValue || providedValue);
+    const [stateErrors, setStateErrors] = useState(initialErrors || providedErrors);
+    const [stateGeneralError, setStateGeneralError] = useState(
+        initialGeneralError || providedGeneralError,
+    );
     const [requestState, setRequestState] = useState({
         success: false,
         loading: false,
@@ -85,7 +90,7 @@ const useForm = (opts = {}) => {
 
     const csrfToken = useMemo(() => getCsrfToken(), []);
 
-    const onSubmitError = error => {
+    const onSubmitError = (error) => {
         setRequestState({
             success: false,
             loading: false,
@@ -99,7 +104,7 @@ const useForm = (opts = {}) => {
         }
     };
 
-    const onSubmitSuccess = resp => {
+    const onSubmitSuccess = (resp) => {
         setRequestState({
             success: true,
             loading: false,
@@ -141,7 +146,7 @@ const useForm = (opts = {}) => {
     );
 
     const onSubmit = useCallback(
-        e => {
+        (e) => {
             e.preventDefault();
             submit();
         },
