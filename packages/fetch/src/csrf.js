@@ -2,7 +2,7 @@ import Cookies from 'js-cookie';
 
 export const getXSRFToken = () => {
     const cookies = Cookies.get();
-    return cookies['X-XSRF-TOKEN'] || null;
+    return cookies['XSRF-TOKEN'] || null;
 };
 
 export const getCsrfToken = (name) => {
