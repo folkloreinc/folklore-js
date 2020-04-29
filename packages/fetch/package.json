@@ -49,7 +49,6 @@
         "es6-promise": "^4.2.2",
         "js-cookie": "^2.2.0",
         "lodash": "^4.17.4",
-        "query-string": "^5.0.1",
         "wolfy87-eventemitter": "^5.2.4"
     },
     "gitHead": "6518bfedf5cdcb652b75a91ac3592afbe1898562"
