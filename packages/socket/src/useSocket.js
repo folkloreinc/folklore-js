@@ -38,6 +38,9 @@ const useSocket = (channels, opts = {}) => {
     }, [channelsKey, customSocket]);
 
     useEffect(() => {
+        if (socket === null) {
+            return () => {};
+        }
         const onMessage = (...args) => {
             if (customOnMessage !== null) {
                 customOnMessage(...args);
