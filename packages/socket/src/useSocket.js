@@ -8,6 +8,7 @@ const useSocket = (channels, opts = {}) => {
     const contextSocket = useContext(SocketContext);
     const socket = customSocket || contextSocket || null;
     const [started, setStarted] = useState(socket !== null ? socket.isStarted() : false);
+    const channelsKey = channels.sort().join(',');
 
     useEffect(() => {
         if (socket === null) {
@@ -20,12 +21,7 @@ const useSocket = (channels, opts = {}) => {
         socket.setChannels(channels);
         const onStarted = () => setStarted(true);
         const onStop = () => setStarted(false);
-        const onMessage = (...args) => {
-            if (customOnMessage !== null) {
-                customOnMessage(...args);
-            }
-        };
-        socket.on('message', onMessage);
+
         socket.on('stop', onStop);
         socket.on('started', onStarted);
         if (!wasStarted) {
@@ -33,14 +29,25 @@ const useSocket = (channels, opts = {}) => {
         }
         return () => {
             socket.setChannels([]);
-            socket.off('message', onMessage);
-            socket.on('stop', onStop);
-            socket.on('started', onStarted);
+            socket.off('stop', onStop);
+            socket.off('started', onStarted);
             if (!wasStarted) {
                 socket.stop();
             }
         };
-    }, [...channels, customSocket, customOnMessage]);
+    }, [channelsKey, customSocket]);
+
+    useEffect(() => {
+        const onMessage = (...args) => {
+            if (customOnMessage !== null) {
+                customOnMessage(...args);
+            }
+        };
+        socket.on('message', onMessage);
+        return () => {
+            socket.off('message', onMessage);
+        };
+    }, [customOnMessage]);
 
     return {
         socket,
