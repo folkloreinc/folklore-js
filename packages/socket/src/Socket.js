@@ -168,7 +168,9 @@ class Socket extends EventEmitter {
 
         this.channels = [...channels];
 
-        this.adapter.updateChannels(channels);
+        if (this.adapter !== null) {
+            this.adapter.updateChannels(channels);
+        }
     }
 
     init() {
@@ -244,7 +246,9 @@ class Socket extends EventEmitter {
         }
         debug('Stopping...');
 
-        this.adapter.stop();
+        if (this.adapter !== null) {
+            this.adapter.stop();
+        }
     }
 
     send(data, channel) {
