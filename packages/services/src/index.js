@@ -7,6 +7,9 @@ import loadSrcPlayer from './loadSrcPlayer';
 import loadStripeCheckout from './loadStripeCheckout';
 import loadTwitter from './loadTwitter';
 import loadYouTube from './loadYouTube';
+import createLoader from './createLoader';
+import loadScript from './loadScript';
+import loadScriptWithCallback from './loadScriptWithCallback';
 
 export {
     loadDailymotion,
@@ -18,4 +21,7 @@ export {
     loadStripeCheckout,
     loadTwitter,
     loadYouTube,
+    createLoader,
+    loadScript,
+    loadScriptWithCallback,
 };
