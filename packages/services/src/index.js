@@ -1,27 +1,14 @@
-import loadDailymotion from './loadDailymotion';
-import loadFacebook from './loadFacebook';
-import loadGoogleApi from './loadGoogleApi';
-import loadGoogleMaps from './loadGoogleMaps';
-import loadInstagram from './loadInstagram';
-import loadSrcPlayer from './loadSrcPlayer';
-import loadStripeCheckout from './loadStripeCheckout';
-import loadTwitter from './loadTwitter';
-import loadYouTube from './loadYouTube';
-import createLoader from './createLoader';
-import loadScript from './loadScript';
-import loadScriptWithCallback from './loadScriptWithCallback';
+export { default as loadDailymotion } from './loadDailymotion';
+export { default as loadFacebook } from './loadFacebook';
+export { default as loadGoogleApi } from './loadGoogleApi';
+export { default as loadGoogleMaps } from './loadGoogleMaps';
+export { default as loadInstagram } from './loadInstagram';
+export { default as loadSrcPlayer } from './loadSrcPlayer';
+export { default as loadStripeCheckout } from './loadStripeCheckout';
+export { default as loadTikTok } from './loadTikTok';
+export { default as loadTwitter } from './loadTwitter';
+export { default as loadYouTube } from './loadYouTube';
 
-export {
-    loadDailymotion,
-    loadFacebook,
-    loadGoogleApi,
-    loadGoogleMaps,
-    loadInstagram,
-    loadSrcPlayer,
-    loadStripeCheckout,
-    loadTwitter,
-    loadYouTube,
-    createLoader,
-    loadScript,
-    loadScriptWithCallback,
-};
+export { default as createLoader } from './createLoader';
+export { default as loadScript } from './loadScript';
+export { default as loadScriptWithCallback } from './loadScriptWithCallback';
