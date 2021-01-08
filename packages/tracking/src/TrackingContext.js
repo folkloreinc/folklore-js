@@ -1,7 +1,5 @@
 import React from 'react';
 
-import Tracking from './Tracking';
-
-const TrackingContext = React.createContext(new Tracking());
+const TrackingContext = React.createContext(null);
 
 export default TrackingContext;
