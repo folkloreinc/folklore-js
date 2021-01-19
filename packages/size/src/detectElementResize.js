@@ -12,19 +12,23 @@ const { attachEvent = null } = typeof document !== 'undefined' ? document || {} 
 let stylesCreated = false;
 
 const requestFrame = (() => {
-    const raf = window.requestAnimationFrame
-        || window.mozRequestAnimationFrame
-        || window.webkitRequestAnimationFrame
-        || (fn => setTimeout(fn, 20));
-    return fn => raf(fn);
+    const raf =
+        (typeof window !== 'undefined'
+            ? window.requestAnimationFrame ||
+              window.mozRequestAnimationFrame ||
+              window.webkitRequestAnimationFrame
+            : null) || ((fn) => setTimeout(fn, 20));
+    return (fn) => raf(fn);
 })();
 
 const cancelFrame = (() => {
-    const cancel = window.cancelAnimationFrame
-        || window.mozCancelAnimationFrame
-        || window.webkitCancelAnimationFrame
-        || clearTimeout;
-    return id => cancel(id);
+    const cancel =
+        (typeof window !== 'undefined'
+            ? window.cancelAnimationFrame ||
+              window.mozCancelAnimationFrame ||
+              window.webkitCancelAnimationFrame
+            : null) || clearTimeout;
+    return (id) => cancel(id);
 })();
 
 const resetTriggers = (element) => {
@@ -47,8 +51,8 @@ const scrollListener = (e) => {
     element.__resizeRAF__ = requestFrame(() => {
         const { offsetWidth, offsetHeight } = element;
         if (
-            offsetWidth !== element.__resizeLast__[0]
-            || offsetHeight !== element.__resizeLast__[1]
+            offsetWidth !== element.__resizeLast__[0] ||
+            offsetHeight !== element.__resizeLast__[1]
         ) {
             element.__resizeLast__[0] = offsetWidth;
             element.__resizeLast__[1] = offsetHeight;
@@ -130,7 +134,8 @@ const addResizeListener = (element, fn) => {
             element.__resizeListeners__ = [];
             element.__resizeTriggers__ = document.createElement('div');
             element.__resizeTriggers__.className = 'resize-triggers';
-            element.__resizeTriggers__.innerHTML = '<div class="expand-trigger"><div></div></div><div class="contract-trigger"></div>';
+            element.__resizeTriggers__.innerHTML =
+                '<div class="expand-trigger"><div></div></div><div class="contract-trigger"></div>';
             element.appendChild(element.__resizeTriggers__);
             resetTriggers(element);
             element.addEventListener('scroll', scrollListener, true);
