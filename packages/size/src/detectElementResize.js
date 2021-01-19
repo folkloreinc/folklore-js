@@ -8,7 +8,7 @@
  * version: 0.5.3
  */
 
-const { attachEvent } = document;
+const { attachEvent = null } = typeof document !== 'undefined' ? document || {} : {};
 let stylesCreated = false;
 
 const requestFrame = (() => {
