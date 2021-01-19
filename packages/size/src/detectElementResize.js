@@ -69,14 +69,14 @@ const startEvents = 'webkitAnimationStart animationstart oAnimationStart MSAnima
 );
 let pfx = '';
 
-const elm = document.createElement('fakeelement');
-if (typeof elm.style.animationName !== 'undefined') {
+const elm = typeof document !== 'undefined' ? document.createElement('fakeelement') : null;
+if (elm !== null && typeof elm.style.animationName !== 'undefined') {
     animation = true;
 }
 
 if (animation === false) {
     for (let i = 0; i < domPrefixes.length; i += 1) {
-        if (typeof elm.style[`${domPrefixes[i]}AnimationName`] !== 'undefined') {
+        if (elm !== null && typeof elm.style[`${domPrefixes[i]}AnimationName`] !== 'undefined') {
             pfx = domPrefixes[i];
             keyframeprefix = `-${pfx.toLowerCase()}-`;
             animationstartevent = startEvents[i];
