@@ -7,6 +7,9 @@ export const getXSRFToken = () => {
 
 export const getCsrfToken = (name) => {
     const metaName = name || 'csrf-token';
+    if (typeof document === 'undefined') {
+        return null;
+    }
     const metas = [].slice.call(document.getElementsByTagName('meta'));
     return metas.reduce((val, meta) => (
         meta.getAttribute('name') === metaName ? meta.getAttribute('content') : val

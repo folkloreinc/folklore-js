@@ -3,7 +3,7 @@
 class Tracking {
     constructor(opts = {}) {
         this.options = {
-            dataLayer: window.dataLayer || null,
+            dataLayer: typeof window !== 'undefined' ? window.dataLayer || null : null,
             ...opts,
         };
     }
@@ -31,8 +31,12 @@ class Tracking {
             event: 'socialInteraction',
             socialNetwork: network,
             socialAction: action,
-            socialTarget: target || `${window.location.protocol}//${window.location.host}`,
+            socialTarget: target || this.getSocialTarget(),
         });
+    }
+
+    getSocialTarget() {
+        return typeof window !== 'undefined' ? `${window.location.protocol}//${window.location.host}` : null;
     }
 }
 
