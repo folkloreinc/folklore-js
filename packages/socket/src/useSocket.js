@@ -1,14 +1,18 @@
 import { useContext, useEffect, useState } from 'react';
+import isString from 'lodash/isString';
 
 import SocketContext from './SocketContext';
 
-const useSocket = (channels, opts = {}) => {
-    const { socket: customSocket = null, onMessage: customOnMessage = null } = opts;
-
-    const contextSocket = useContext(SocketContext);
+const useSocket = (
+    channelNames = null,
+    { socket: customSocket = null, onMessage: customOnMessage = null } = {},
+) => {
+    const { socket: contextSocket, subscribe, unsubscribe } = useContext(SocketContext);
     const socket = customSocket || contextSocket || null;
     const [started, setStarted] = useState(socket !== null ? socket.isStarted() : false);
-    const channelsKey = channels.sort().join(',');
+
+    const channels = isString(channelNames) ? [channelNames] : channelNames;
+    const channelsKey = (channels || []).sort().join(',');
 
     useEffect(() => {
         if (socket === null) {
@@ -18,19 +22,22 @@ const useSocket = (channels, opts = {}) => {
             return () => {};
         }
         const wasStarted = socket.isStarted();
-        socket.setChannels(channels);
         const onStarted = () => setStarted(true);
         const onStop = () => setStarted(false);
-
         socket.on('stop', onStop);
         socket.on('started', onStarted);
+        if (channels !== null) {
+            subscribe(channels);
+        }
         if (!wasStarted) {
             socket.start();
         }
         return () => {
-            socket.setChannels([]);
             socket.off('stop', onStop);
             socket.off('started', onStarted);
+            if (channels !== null) {
+                unsubscribe(channels);
+            }
             if (!wasStarted) {
                 socket.stop();
             }
@@ -55,6 +62,8 @@ const useSocket = (channels, opts = {}) => {
     return {
         socket,
         started,
+        subscribe,
+        unsubscribe,
     };
 };
 

@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo, useEffect, useRef, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Socket from './Socket';
@@ -40,33 +40,77 @@ const SocketContainer = ({
     publishKey,
     subscribeKey,
     secretKey,
-    channels,
-    ...props
+    channels: initialChannels,
 }) => {
     const finalSocket = useMemo(
-        () => socket
-            || new Socket({
+        () =>
+            socket ||
+            new Socket({
                 adapter,
                 namespace,
                 uuid,
                 publishKey,
                 subscribeKey,
                 secretKey,
-                channels,
-                ...props,
             }),
-        [
-            socket,
-            adapter,
-            namespace,
-            uuid,
-            publishKey,
-            subscribeKey,
-            secretKey,
-            ...channels,
-            ...Object.keys(props),
-        ],
+        [socket, adapter, namespace, uuid, publishKey, subscribeKey, secretKey],
     );
+
+    const [channels, setChannels] = useState([]);
+    const channelsCountRef = useRef({});
+
+    const updateChannels = useCallback(
+        (newChannels) => {
+            finalSocket.setChannels(newChannels);
+            setChannels(newChannels);
+        },
+        [finalSocket, setChannels],
+    );
+
+    const addToChannelsCount = useCallback(
+        (newChannels) => {
+            channelsCountRef.current = newChannels.reduce(
+                (map, channel) => ({
+                    ...map,
+                    [channel]: (map[channel] || 0) + 1,
+                }),
+                channelsCountRef.current,
+            );
+            updateChannels(Object.keys(channelsCountRef.current));
+        },
+        [updateChannels],
+    );
+
+    const removeToChannelsCount = useCallback(
+        (newChannels) => {
+            channelsCountRef.current = newChannels.reduce((map, channel) => {
+                const newCount = (map[channel] || 0) - 1;
+                return newCount > 0
+                    ? {
+                          ...map,
+                          [channel]: newCount,
+                      }
+                    : map;
+            }, channelsCountRef.current);
+            updateChannels(Object.keys(channelsCountRef.current));
+        },
+        [updateChannels],
+    );
+
+    const subscribe = useCallback((channelsToAdd) => addToChannelsCount(channelsToAdd), [
+        addToChannelsCount,
+    ]);
+    const unsubscribe = useCallback((channelsToRemove) => removeToChannelsCount(channelsToRemove), [
+        removeToChannelsCount,
+    ]);
+
+    useEffect(() => {
+        subscribe(initialChannels);
+        return () => {
+            unsubscribe(initialChannels);
+        };
+    }, [initialChannels, subscribe, unsubscribe]);
+
     useEffect(() => {
         if (autoStart) {
             finalSocket.start();
@@ -75,7 +119,18 @@ const SocketContainer = ({
             finalSocket.destroy();
         };
     }, [autoStart, finalSocket]);
-    return <SocketContext.Provider value={finalSocket}>{children}</SocketContext.Provider>;
+
+    const value = useMemo(
+        () => ({
+            socket: finalSocket,
+            subscribe,
+            unsubscribe,
+            channels,
+        }),
+        [finalSocket, subscribe],
+    );
+
+    return <SocketContext.Provider value={value}>{children}</SocketContext.Provider>;
 };
 
 SocketContainer.propTypes = propTypes;

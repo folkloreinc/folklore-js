@@ -5,7 +5,7 @@ import isFunction from 'lodash/isFunction';
 
 import SocketAdapters from './adapters/index';
 
-const normalize = str => str.replace(/[^a-z0-9]+/gi, '').toLowerCase();
+const normalize = (str) => str.replace(/[^a-z0-9]+/gi, '').toLowerCase();
 
 const debug = createDebug('folklore:socket');
 
@@ -131,7 +131,9 @@ class Socket extends EventEmitter {
     }
 
     setChannels(channels) {
-        const namespacedChannels = channels.map(channel => this.getChannelWithNamespace(channel));
+        const namespacedChannels = channels
+            .map((channel) => this.getChannelWithNamespace(channel))
+            .sort();
         if (this.channels.join(',') === namespacedChannels.join(',')) {
             return;
         }
@@ -152,6 +154,19 @@ class Socket extends EventEmitter {
         this.updateChannels([...this.channels, namespacedChannel]);
     }
 
+    addChannels(channels) {
+        const namespacedChannels = channels
+            .map((channel) => this.getChannelWithNamespace(channel))
+            .sort();
+
+        debug(`Adding channels: ${channels.join(',')}`);
+
+        this.updateChannels([
+            ...this.channels,
+            ...namespacedChannels.filter((it) => this.channels.indexOf(it) === -1),
+        ]);
+    }
+
     removeChannel(channel) {
         const namespacedChannel = this.getChannelWithNamespace(channel);
         if (this.channels.indexOf(namespacedChannel) === -1) {
@@ -160,17 +175,37 @@ class Socket extends EventEmitter {
 
         debug(`Removing channel: ${channel}`);
 
-        this.updateChannels([...this.channels.filter(ch => ch !== namespacedChannel)]);
+        this.updateChannels(this.channels.filter((ch) => ch !== namespacedChannel));
+    }
+
+    removeChannels(channels) {
+        const namespacedChannels = channels
+            .map((channel) => this.getChannelWithNamespace(channel))
+            .sort();
+
+        debug(`Removing channels: ${channels.join(',')}`);
+
+        this.updateChannels(this.channels.filter((it) => namespacedChannels.indexOf(it) === -1));
     }
 
     updateChannels(channels) {
-        debug(`Updating channels: ${channels.join(', ')}`);
+        const sortedChannels = channels.sort();
+        debug(`Updating channels: ${sortedChannels.join(', ')}`);
 
-        this.channels = [...channels];
+        this.channels = [...sortedChannels];
 
         if (this.adapter !== null) {
-            this.adapter.updateChannels(channels);
+            this.adapter.updateChannels(sortedChannels);
         }
+    }
+
+    hasChannel(channel) {
+        const namespacedChannel = this.getChannelWithNamespace(channel);
+        return this.channels.reduce((found, it) => found || it === namespacedChannel, false);
+    }
+
+    getChannels() {
+        return this.channels.map((channel) => this.getChannelWithoutNamespace(channel));
     }
 
     init() {
@@ -217,7 +252,8 @@ class Socket extends EventEmitter {
         if (this.started) {
             debug('Skipping start: Already started.');
             return;
-        } if (this.starting) {
+        }
+        if (this.starting) {
             debug('Skipping start: Already starting.');
             return;
         }
@@ -257,15 +293,16 @@ class Socket extends EventEmitter {
             return Promise.reject();
         }
 
-        const publishData = typeof data.channel !== 'undefined' && typeof data.message !== 'undefined'
-            ? data
-            : {
-                channel:
+        const publishData =
+            typeof data.channel !== 'undefined' && typeof data.message !== 'undefined'
+                ? data
+                : {
+                      channel:
                           typeof channel !== 'undefined'
                               ? this.getChannelWithNamespace(channel)
                               : this.channels,
-                message: data,
-            };
+                      message: data,
+                  };
         debug('Sending', publishData);
 
         return this.adapter.send(publishData);
