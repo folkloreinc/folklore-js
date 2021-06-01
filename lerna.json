@@ -1,12 +1,10 @@
 {
-  "lerna": "2.4.0",
-  "version": "independent",
-  "packages": [
-    "packages/*"
-  ],
-  "command": {
-    "publish": {
-      "allowBranch": "master"
+    "lerna": "2.4.0",
+    "version": "independent",
+    "packages": ["packages/*"],
+    "command": {
+        "publish": {
+            "allowBranch": ["master", "develop"]
+        }
     }
-  }
 }
