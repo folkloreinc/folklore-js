@@ -24,7 +24,7 @@ class SocketIOSocket extends EventEmitter {
         this.started = false;
         this.starting = false;
 
-        this.IO = null;
+        this.Manager = null;
         this.io = null;
         this.sockets = {};
         this.channels = [];
@@ -54,9 +54,9 @@ class SocketIOSocket extends EventEmitter {
     init() {
         import('socket.io-client')
             .then(({ default: IO }) => {
-                this.IO = IO.Manager;
+                this.Manager = IO.Manager;
             })
-            .then(() => this.createIO())
+            .then(() => this.createManager())
             .then(() => this.onReady())
             .then(() => {
                 if (this.shouldStart) {
@@ -65,11 +65,11 @@ class SocketIOSocket extends EventEmitter {
             });
     }
 
-    createIO() {
-        const { IO } = this;
+    createManager() {
+        const { Manager } = this;
         const { host, ...opts } = this.options;
 
-        this.io = IO(host, {
+        this.io = new Manager(host, {
             autoConnect: false,
             ...opts,
         });
