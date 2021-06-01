@@ -7,6 +7,7 @@ import SocketContext from './SocketContext';
 const propTypes = {
     socket: PropTypes.instanceOf(Socket),
     adapter: PropTypes.string,
+    host: PropTypes.string,
     namespace: PropTypes.string,
     uuid: PropTypes.string,
     publishKey: PropTypes.string,
@@ -20,6 +21,7 @@ const propTypes = {
 const defaultProps = {
     socket: null,
     adapter: 'pubnub',
+    host: null,
     namespace: null,
     uuid: null,
     publishKey: null,
@@ -35,6 +37,7 @@ const SocketContainer = ({
     socket,
     autoStart,
     adapter,
+    host,
     namespace,
     uuid,
     publishKey,
@@ -47,13 +50,14 @@ const SocketContainer = ({
             socket ||
             new Socket({
                 adapter,
+                host,
                 namespace,
                 uuid,
                 publishKey,
                 subscribeKey,
                 secretKey,
             }),
-        [socket, adapter, namespace, uuid, publishKey, subscribeKey, secretKey],
+        [socket, host, adapter, namespace, uuid, publishKey, subscribeKey, secretKey],
     );
 
     const [channels, setChannels] = useState([]);
