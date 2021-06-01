@@ -37,7 +37,9 @@ class SocketIOSocket extends EventEmitter {
         this.emit('ready');
     }
 
-    onConnect() {
+    onConnect(channel) {
+        debug('Socket connected on %s', channel);
+
         if (!this.started) {
             this.started = true;
             this.starting = false;
@@ -45,10 +47,10 @@ class SocketIOSocket extends EventEmitter {
         }
     }
 
-    onMessage(message) {
-        debug('Message received', message);
+    onMessage(message, channel) {
+        debug('Message received on %s %o', channel, message);
 
-        this.emit('message', message);
+        this.emit('message', message, channel);
     }
 
     init() {
@@ -143,7 +145,7 @@ class SocketIOSocket extends EventEmitter {
     createSocket(channel) {
         const socket = this.io.socket(`/${channel.replace(/^\//, '')}`);
         socket.on('message', message => this.onMessage(message, channel));
-        socket.on('connect', this.onConnect);
+        socket.on('connect', () => this.onConnect(channel));
         socket.open();
         return socket;
     }
