@@ -1,6 +1,6 @@
 import isString from 'lodash/isString';
 import isNumber from 'lodash/isNumber';
-import pascalCase from 'pascal-case';
+import { pascalCase } from 'pascal-case';
 
 const paddingProps = ['paddingTop', 'paddingBottom', 'paddingLeft', 'paddingRight'];
 
