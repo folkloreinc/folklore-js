@@ -31,6 +31,8 @@ const createWebpackServer = (config, opts = {}) => {
                       target: proxy,
                       changeOrigin: true,
                       secure: false,
+                      ws: true,
+                      xfwd: true,
                       onProxyReq: (proxyReq) => {
                           proxyReq.setHeader('X-WEBPACK-DEV-SERVER', true);
                       },
