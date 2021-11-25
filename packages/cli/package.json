@@ -44,5 +44,6 @@
         "webpack-bundle-analyzer": "^4.5.0",
         "webpack-dev-server": "^4.5.0",
         "webpack-manifest-plugin": "^4.0.2"
-    }
+    },
+    "gitHead": "43afc23a34b03ccc39eeddc29c939f4b938502da"
 }

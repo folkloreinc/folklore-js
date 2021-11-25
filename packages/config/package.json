@@ -39,5 +39,5 @@
         "@babel/runtime": "^7.16.3",
         "lodash": "^4.17.21"
     },
-    "gitHead": "6518bfedf5cdcb652b75a91ac3592afbe1898562"
+    "gitHead": "43afc23a34b03ccc39eeddc29c939f4b938502da"
 }
