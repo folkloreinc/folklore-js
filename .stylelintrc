@@ -1,14 +1,17 @@
 {
-    "extends": ["stylelint-config-sass-guidelines", "stylelint-config-property-sort-order-smacss"],
+    "extends": [
+        "stylelint-config-standard-scss",
+        "stylelint-config-idiomatic-order",
+        "stylelint-config-prettier"
+    ],
     "rules": {
         "indentation": 4,
-        "order/properties-alphabetical-order": null,
         "selector-class-pattern": [
             "^[a-z][a-z0-9A-Z]+$",
             {
                 "message": "Selector should be written in camel-case (selector-class-pattern)"
             }
-        ],
-        "max-nesting-depth": 4
-    }
+        ]
+    },
+    "ignoreFiles": ["**/*.js", "**/*.jsx"]
 }

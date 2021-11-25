@@ -1,0 +1,535 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-12-14 14:06-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 3.2.0\n"
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+#: content.ad_title
+msgctxt "content.ad_title"
+msgid "Publicité"
+msgstr "Publicité"
+
+#: content.article_duration
+msgctxt "content.article_duration"
+msgid "{duration} min"
+msgstr "{duration} min"
+
+#: content.author_by
+msgctxt "content.author_by"
+msgid "par"
+msgstr "par"
+
+#: content.author_conjunction
+msgctxt "content.author_conjunction"
+msgid "et"
+msgstr "et"
+
+#: content.author_role
+msgctxt "content.author_role"
+msgid "Auteur"
+msgstr "Auteur"
+
+#: content.block_gallery
+msgctxt "content.block_gallery"
+msgid "Galerie de photos"
+msgstr "Galerie de photos"
+
+#: content.buy_magazine
+msgctxt "content.buy_magazine"
+msgid "Acheter le magazine"
+msgstr "Acheter le magazine"
+
+#: content.click_micromag_to_start
+msgctxt "content.click_micromag_to_start"
+msgid "Cliquez pour consulter"
+msgstr "Cliquez pour consulter"
+
+#: content.comments_button
+msgctxt "content.comments_button"
+msgid "Afficher les commentaires"
+msgstr "Afficher les commentaires"
+
+#: content.comments_subtitle
+msgctxt "content.comments_subtitle"
+msgid "Faites vous entendre..."
+msgstr "Faites vous entendre..."
+
+#: content.comments_title
+msgctxt "content.comments_title"
+msgid "Vous n’allez pas rester là sans rien dire ?"
+msgstr "Vous n’allez pas rester là sans rien dire ?"
+
+#: content.contact_block_title
+msgctxt "content.contact_block_title"
+msgid ""
+"Vous connaissez les légendes {br}urbaines de {university}? "
+"{br}Écrivez-nous.{br}{email}"
+msgstr ""
+"Vous connaissez les légendes {br}urbaines de {university}? "
+"{br}Écrivez-nous.{br}{email}"
+
+#: content.contact_block_title_without_university
+msgctxt "content.contact_block_title_without_university"
+msgid ""
+"Vous connaissez les légendes {br}urbaines de votre université? "
+"{br}Écrivez-nous.{br}{email}"
+msgstr ""
+"Vous connaissez les légendes {br}urbaines de votre université? "
+"{br}Écrivez-nous.{br}{email}"
+
+#: content.contact_description
+msgctxt "content.contact_description"
+msgid ""
+"Écrivez-nous au {email} pour devenir un de nos collaborateurs, et faites "
+"rayonner vos histoires de foire, vos mèmes savoureux, votre savoir et "
+"peut-être votre université."
+msgstr ""
+"Écrivez-nous au {email} pour devenir un de nos collaborateurs, et faites "
+"rayonner vos histoires de foire, vos mèmes savoureux, votre savoir et "
+"peut-être votre université."
+
+#: content.contact_title
+msgctxt "content.contact_title"
+msgid "Vous connaissez les meilleures {br}histoires universitaires?"
+msgstr "Vous connaissez les meilleures {br}histoires universitaires?"
+
+#: content.cookies_button
+msgctxt "content.cookies_button"
+msgid "Je comprends"
+msgstr "Je comprends"
+
+#: content.cookies_text
+msgctxt "content.cookies_text"
+msgid ""
+"Comme tous ceux qui fument, on aime beaucoup les <em>cookies</em>. Ils nous "
+"aident à améliorer votre expérience sur le site... et vendre de la pub "
+"(parce que ce qu’on aime encore plus, c’est de vous offrir du contenu "
+"gratuitement). <a>En savoir plus</a>"
+msgstr ""
+"Comme tous ceux qui fument, on aime beaucoup les <em>cookies</em>. Ils nous "
+"aident à améliorer votre expérience sur le site... et vendre de la pub "
+"(parce que ce qu’on aime encore plus, c’est de vous offrir du contenu "
+"gratuitement). <a>En savoir plus</a>"
+
+#: content.last_videos
+msgctxt "content.last_videos"
+msgid "Derniers vidéos"
+msgstr "Derniers vidéos"
+
+#: content.learn_more
+msgctxt "content.learn_more"
+msgid "En savoir plus"
+msgstr "En savoir plus"
+
+#: content.loading_next_article
+msgctxt "content.loading_next_article"
+msgid "Chargement du prochain article..."
+msgstr "Chargement du prochain article..."
+
+#: content.loading_videos
+msgctxt "content.loading_videos"
+msgid "Chargement des vidéos..."
+msgstr "Chargement des vidéos..."
+
+#: content.more_button_label
+msgctxt "content.more_button_label"
+msgid "Voir plus d’articles"
+msgstr "Voir plus d’articles"
+
+#: content.more_button_loading_label
+msgctxt "content.more_button_loading_label"
+msgid "Chargement des articles..."
+msgstr "Chargement des articles..."
+
+#: content.more_videos
+msgctxt "content.more_videos"
+msgid "Voir plus de vidéos"
+msgstr "Voir plus de vidéos"
+
+#: content.new_content
+msgctxt "content.new_content"
+msgid "Derniers contenus"
+msgstr "Derniers contenus"
+
+#: content.newsletter_button
+msgctxt "content.newsletter_button"
+msgid "OK"
+msgstr "OK"
+
+#: content.newsletter_description
+msgctxt "content.newsletter_description"
+msgid ""
+"Un condensé inégalé de sujets pour alimenter les discussions avec vos "
+"collègues, votre belle-famille et les chauffeurs de taxi accros au small "
+"talk."
+msgstr ""
+"Un condensé inégalé de sujets pour alimenter les discussions avec vos "
+"collègues, votre belle-famille et les chauffeurs de taxi accros au small "
+"talk."
+
+#: content.newsletter_email_placeholder
+msgctxt "content.newsletter_email_placeholder"
+msgid "VOTRE E-MAIL…"
+msgstr "VOTRE E-MAIL…"
+
+#: content.newsletter_form_title
+msgctxt "content.newsletter_form_title"
+msgid "Inscription à l’infolettre"
+msgstr "Inscription à l’infolettre"
+
+#: content.newsletter_thanks
+msgctxt "content.newsletter_thanks"
+msgid "Vous êtes maintenant inscrit(e) à notre infolettre!"
+msgstr "Vous êtes maintenant inscrit(e) à notre infolettre!"
+
+#: content.newsletter_thanks_france
+msgctxt "content.newsletter_thanks_france"
+msgid "Vous êtes maintenant inscrit(e) à notre newsletter!"
+msgstr "Vous êtes maintenant inscrit(e) à notre newsletter!"
+
+#: content.newsletter_title
+msgctxt "content.newsletter_title"
+msgid "Recevez notre infolettre à chaque semaine"
+msgstr "Recevez notre infolettre à chaque semaine"
+
+#: content.newsletter_title_france
+msgctxt "content.newsletter_title_france"
+msgid "Recevez notre<{br}infolettre à<{br}chaque semaine!"
+msgstr "Recevez notre<{br}infolettre à<{br}chaque semaine!"
+
+#: content.newsletter_title_urbania
+msgctxt "content.newsletter_title_urbania"
+msgid "Recevez notre{br}infolettre à{br}chaque semaine!"
+msgstr "Recevez notre{br}infolettre à{br}chaque semaine!"
+
+#: content.next_article
+msgctxt "content.next_article"
+msgid "Charger le prochain article."
+msgstr "Charger le prochain article."
+
+#: content.popular_section
+msgctxt "content.popular_section"
+msgid "Populaires"
+msgstr "Populaires"
+
+#: content.presented_by
+msgctxt "content.presented_by"
+msgid "Présenté par <em>{name}</em>"
+msgstr "Présenté par <em>{name}</em>"
+
+#: content.presented_by_alt
+msgctxt "content.presented_by_alt"
+msgid "Présenté en collaboration avec <em>{name}</em>"
+msgstr "Présenté en collaboration avec <em>{name}</em>"
+
+#: content.presented_by_without_name
+msgctxt "content.presented_by_without_name"
+msgid "Présenté par"
+msgstr "Présenté par"
+
+#: content.quiz_button
+msgctxt "content.quiz_button"
+msgid "Voter"
+msgstr "Voter"
+
+#: content.search_description
+msgctxt "content.search_description"
+msgid "Recherche"
+msgstr "Recherche"
+
+#: content.search_no_results
+msgctxt "content.search_no_results"
+msgid "Aucun résultat pour votre recherche"
+msgstr "Aucun résultat pour votre recherche"
+
+#: content.search_placeholder
+msgctxt "content.search_placeholder"
+msgid "Pitonnez"
+msgstr "Pitonnez"
+
+#: content.search_placeholder_france
+msgctxt "content.search_placeholder_france"
+msgid "Tappez"
+msgstr "Tappez"
+
+#: content.search_placeholder_france_mobile
+msgctxt "content.search_placeholder_france_mobile"
+msgid "Tappez"
+msgstr "Tappez"
+
+#: content.search_placeholder_mobile
+msgctxt "content.search_placeholder_mobile"
+msgid "Pitonnez"
+msgstr "Pitonnez"
+
+# Afficher le nombre d’article trouvé pour la recherche donnée.
+#: content.search_results
+msgctxt "content.search_results"
+msgid ""
+"Résultats de votre recherche: {itemCount, plural,=0 {aucun article} =1 {1 "
+"article} other {# articles}}"
+msgstr ""
+"Résultats de votre recherche: {itemCount, plural,=0 {aucun article} =1 {1 "
+"article} other {# articles}}"
+
+#: content.view_magazine
+msgctxt "content.view_magazine"
+msgid "Explorer le magazine"
+msgstr "Explorer le magazine"
+
+#: errors.description_401
+msgctxt "errors.description_401"
+msgid "You are not authorized to access this page."
+msgstr "You are not authorized to access this page."
+
+#: errors.description_403
+msgctxt "errors.description_403"
+msgid "Access to this page is forbidden"
+msgstr "Access to this page is forbidden"
+
+#: errors.description_404
+msgctxt "errors.description_404"
+msgid "This page doesn’t exists"
+msgstr "This page doesn’t exists"
+
+#: errors.description_500
+msgctxt "errors.description_500"
+msgid "There was an error"
+msgstr "There was an error"
+
+#: errors.goto_home
+msgctxt "errors.goto_home"
+msgid "Go to home"
+msgstr "Go to home"
+
+#: errors.title_401
+msgctxt "errors.title_401"
+msgid "Error 401"
+msgstr "Error 401"
+
+#: errors.title_403
+msgctxt "errors.title_403"
+msgid "Error 403"
+msgstr "Error 403"
+
+#: errors.title_404
+msgctxt "errors.title_404"
+msgid "Error 404"
+msgstr "Error 404"
+
+#: errors.title_500
+msgctxt "errors.title_500"
+msgid "Error 500"
+msgstr "Error 500"
+
+#: forms.button_go
+msgctxt "forms.button_go"
+msgid "Go"
+msgstr "Go"
+
+#: forms.button_send
+msgctxt "forms.button_send"
+msgid "Envoyer"
+msgstr "Envoyer"
+
+#: forms.googlesheets_url_label
+msgctxt "forms.googlesheets_url_label"
+msgid "Entrez l’url de votre Google Sheet"
+msgstr "Entrez l’url de votre Google Sheet"
+
+#: forms.googlesheets_url_placeholder
+msgctxt "forms.googlesheets_url_placeholder"
+msgid "Url de votre Google Sheet..."
+msgstr "Url de votre Google Sheet..."
+
+#: forms.medias_add_button
+msgctxt "forms.medias_add_button"
+msgid "Ajouter des fichiers"
+msgstr "Ajouter des fichiers"
+
+#: forms.medias_files_count
+msgctxt "forms.medias_files_count"
+msgid "{count, plural,=0 {aucun fichier} =1 {1 fichier} other {# fichiers}}"
+msgstr "{count, plural,=0 {aucun fichier} =1 {1 fichier} other {# fichiers}}"
+
+#: forms.medias_no_value
+msgctxt "forms.medias_no_value"
+msgid "Aucun fichier pour le moment."
+msgstr "Aucun fichier pour le moment."
+
+#: forms.submissions_description_label
+msgctxt "forms.submissions_description_label"
+msgid "Votre histoire"
+msgstr "Votre histoire"
+
+#: forms.submissions_email_label
+msgctxt "forms.submissions_email_label"
+msgid "Votre courriel"
+msgstr "Votre courriel"
+
+#: forms.submissions_medias_label
+msgctxt "forms.submissions_medias_label"
+msgid "Fichiers médias (Images, vidéos, audios..)"
+msgstr "Fichiers médias (Images, vidéos, audios..)"
+
+#: forms.submissions_name_label
+msgctxt "forms.submissions_name_label"
+msgid "Votre nom"
+msgstr "Votre nom"
+
+#: forms.submissions_newsletter_label
+msgctxt "forms.submissions_newsletter_label"
+msgid "Je souhaite m’abonner à l’infolettre d’URBANIA."
+msgstr "Je souhaite m’abonner à l’infolettre d’URBANIA."
+
+#: forms.submissions_phone_label
+msgctxt "forms.submissions_phone_label"
+msgid "Votre téléphone"
+msgstr "Votre téléphone"
+
+#: forms.submissions_rights_label
+msgctxt "forms.submissions_rights_label"
+msgid ""
+"Je garantis a) détenir tout droit, titre et intérêt sur le contenu "
+"audiovisuel téléversé; b) avoir tous les droits pour autoriser "
+"l’exploitation par URBANIA Média, tel que définis ci-après. Conséquemment, "
+"j’autorise URBANIA Média à diffuser sans restriction, sur tout média, à "
+"perpétuité, pour le monde et de manière coopérative et sans contrepartie, "
+"le contenu audiovisuel téléversé; c) j’autorise URBANIA Média à me "
+"contacter pour davantage de renseignements."
+msgstr ""
+"Je garantis a) détenir tout droit, titre et intérêt sur le contenu "
+"audiovisuel téléversé; b) avoir tous les droits pour autoriser "
+"l’exploitation par URBANIA Média, tel que définis ci-après. Conséquemment, "
+"j’autorise URBANIA Média à diffuser sans restriction, sur tout média, à "
+"perpétuité, pour le monde et de manière coopérative et sans contrepartie, "
+"le contenu audiovisuel téléversé; c) j’autorise URBANIA Média à me "
+"contacter pour davantage de renseignements."
+
+#: games.questions_participant_title
+msgctxt "games.questions_participant_title"
+msgid "Questions pour {participant}"
+msgstr "Questions pour {participant}"
+
+#: games.questions_question_button
+msgctxt "games.questions_question_button"
+msgid "Afficher la question {index}"
+msgstr "Afficher la question {index}"
+
+#: games.questions_question_button_disabled
+msgctxt "games.questions_question_button_disabled"
+msgid "Question {index}"
+msgstr "Question {index}"
+
+#: meta.title_401
+msgctxt "meta.title_401"
+msgid "Error 401"
+msgstr "Error 401"
+
+#: meta.title_403
+msgctxt "meta.title_403"
+msgid "Error 403"
+msgstr "Error 403"
+
+#: meta.title_404
+msgctxt "meta.title_404"
+msgid "Error 404"
+msgstr "Error 404"
+
+#: meta.title_500
+msgctxt "meta.title_500"
+msgid "Error 500"
+msgstr "Error 500"
+
+#: pages.newsletter.success
+msgctxt "pages.newsletter.success"
+msgid "Vous êtes maintenant inscrit!"
+msgstr "Vous êtes maintenant inscrit!"
+
+#: pages.newsletter.title_form
+msgctxt "pages.newsletter.title_form"
+msgid "Recevez notre infolettre{br}aux deux semaines!"
+msgstr "Recevez notre infolettre{br}aux deux semaines!"
+
+#: partials.ad-splash.continue
+msgctxt "partials.ad-splash.continue"
+msgid "Poursuivre sur"
+msgstr "Poursuivre sur"
+
+#: popups.bnc_survey_2020.button
+msgctxt "popups.bnc_survey_2020.button"
+msgid "Commencez ici!"
+msgstr "Commencez ici!"
+
+#: popups.bnc_survey_2020.description
+msgctxt "popups.bnc_survey_2020.description"
+msgid "En répondant à un sondage sur le contenu Quatre95."
+msgstr "En répondant à un sondage sur le contenu Quatre95."
+
+#: popups.bnc_survey_2020.small
+msgctxt "popups.bnc_survey_2020.small"
+msgid "Ça ne vous prendra que quelques minutes."
+msgstr "Ça ne vous prendra que quelques minutes."
+
+#: popups.bnc_survey_2020.title
+msgctxt "popups.bnc_survey_2020.title"
+msgid ""
+"Courez la chance de <strong>gagner 100$</strong> et plusieurs objets "
+"URBANIA!"
+msgstr ""
+"Courez la chance de <strong>gagner 100$</strong> et plusieurs objets "
+"URBANIA!"
+
+#: universities.header_score_title
+msgctxt "universities.header_score_title"
+msgid "Indice{br}Urbania"
+msgstr "Indice{br}Urbania"
+
+#: universities.indice_urbania_description
+msgctxt "universities.indice_urbania_description"
+msgid ""
+"Afin d’établir la meilleur université du Québec, l’Indice Urbania compile "
+"les données en temps réel qui représente la qualité de vie et le fun brut "
+"qui se dégage de chacune des institutions."
+msgstr ""
+"Afin d’établir la meilleur université du Québec, l’Indice Urbania compile "
+"les données en temps réel qui représente la qualité de vie et le fun brut "
+"qui se dégage de chacune des institutions."
+
+#: universities.indice_urbania_more_information
+msgctxt "universities.indice_urbania_more_information"
+msgid "En savoir plus"
+msgstr "En savoir plus"
+
+#: universities.indice_urbania_title
+msgctxt "universities.indice_urbania_title"
+msgid "L’Indice Urbania"
+msgstr "L’Indice Urbania"
+
+#: universities.indice_urbania_university
+msgctxt "universities.indice_urbania_university"
+msgid "Universités"
+msgstr "Universités"
+
+#: universities.main_menu_title
+msgctxt "universities.main_menu_title"
+msgid "Universités"
+msgstr "Universités"
+
+#: universities.rank_superscript
+msgctxt "universities.rank_superscript"
+msgid "{rank, plural, =1 {#<sup>er</sup>} other {#<sup>e</sup>}}"
+msgstr "{rank, plural, =1 {#<sup>er</sup>} other {#<sup>e</sup>}}"

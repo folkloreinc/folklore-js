@@ -4,3 +4,5 @@ node_modules
 .sass-cache
 /coverage
 /out*
+dist/
+package-lock.json

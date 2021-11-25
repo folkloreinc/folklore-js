@@ -1,0 +1,48 @@
+{
+    "name": "@folklore/cli",
+    "version": "1.0.0",
+    "description": "",
+    "scripts": {
+        "clean": "rm -rf dist",
+        "build": "rollup --config rollup.config.js",
+        "prepare": "npm run build && npm run build",
+        "cli": "../../node_modules/.bin/babel-node ./src/cli.js"
+    },
+    "main": "./dist/cjs.js",
+    "module": "./dist/ejs.js",
+    "bin": {
+        "flklr": "./dist/cli.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@babel/core": "^7.16.0",
+        "@babel/preset-env": "^7.16.4",
+        "@babel/preset-react": "^7.16.0",
+        "@babel/runtime": "^7.4.3",
+        "@formatjs/cli": "^4.4.0",
+        "@pmmmwh/react-refresh-webpack-plugin": "^0.5.2",
+        "@svgr/webpack": "^5.5.0",
+        "babel-loader": "^8.2.3",
+        "commander": "^8.3.0",
+        "core-js": "^3.19.1",
+        "css-loader": "^6.5.1",
+        "file-loader": "^6.2.0",
+        "fs-extra": "^10.0.0",
+        "gettext-parser": "^4.2.0",
+        "lodash": "^4.17.21",
+        "mini-css-extract-plugin": "^2.4.5",
+        "postcss-flexbugs-fixes": "^5.0.2",
+        "postcss-loader": "^6.2.0",
+        "postcss-normalize": "^10.0.1",
+        "postcss-preset-env": "^7.0.1",
+        "react-dev-utils": "^11.0.4",
+        "resolve-url-loader": "^4.0.0",
+        "sass-loader": "^12.3.0",
+        "style-loader": "^3.3.1",
+        "webpack": "^5.64.2",
+        "webpack-bundle-analyzer": "^4.5.0",
+        "webpack-dev-server": "^4.5.0",
+        "webpack-manifest-plugin": "^4.0.2"
+    }
+}
