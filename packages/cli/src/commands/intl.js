@@ -73,7 +73,7 @@ generateCommand
                     throws: true,
                     idInterpolationPattern,
                     outFile: localePath,
-                })
+                });
             } else {
                 const newMessages = Object.keys(extractedMessages).reduce(
                     (map, messageId) => ({
