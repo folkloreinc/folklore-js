@@ -1,7 +1,28 @@
 {
     "name": "@folklore/cli",
     "version": "0.0.3",
-    "description": "",
+    "description": "Command lines to build and serve javascript projects",
+    "homepage": "https://github.com/folkloreinc/folklore-js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/folkloreinc/folklore-js.git"
+    },
+    "author": {
+        "name": "Folklore",
+        "email": "info@folklore.email"
+    },
+    "contributors": [
+        {
+            "name": "David Mongeau-Petitpas",
+            "email": "dmp@folklore.email"
+        },
+        {
+            "name": "Nicolas Roy-Bourdages",
+            "email": "nrb@folklore.email"
+        }
+    ],
+
+    "license": "ISC",
     "scripts": {
         "clean": "rm -rf dist",
         "build": "rollup --config rollup.config.js",
@@ -13,8 +34,6 @@
     "bin": {
         "flklr": "./dist/cli.js"
     },
-    "author": "",
-    "license": "ISC",
     "dependencies": {
         "@babel/core": "^7.16.0",
         "@babel/preset-env": "^7.16.4",
@@ -45,5 +64,5 @@
         "webpack-dev-server": "^4.5.0",
         "webpack-manifest-plugin": "^4.0.2"
     },
-    "gitHead": "43afc23a34b03ccc39eeddc29c939f4b938502da"
+    "gitHead": "55a5d3ae12a27c5319c5e1d6c2a8ed3b9a02cb71"
 }
