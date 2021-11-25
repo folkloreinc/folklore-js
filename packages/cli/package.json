@@ -1,6 +1,6 @@
 {
     "name": "@folklore/cli",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "Command lines to build and serve javascript projects",
     "homepage": "https://github.com/folkloreinc/folklore-js",
     "repository": {
@@ -21,7 +21,6 @@
             "email": "nrb@folklore.email"
         }
     ],
-
     "license": "ISC",
     "scripts": {
         "clean": "rm -rf dist",
