@@ -1,3 +1,4 @@
+import url from 'url';
 import isString from 'lodash/isString';
 import WebpackDevServer from 'webpack-dev-server';
 import createWebpackCompiler from './createWebpackCompiler';
@@ -14,7 +15,7 @@ const createWebpackServer = (config, opts = {}) => {
         },
         open: true,
         port: 'auto',
-        host,
+        host: host || (isString(proxy) ? url.parse(proxy).hostname : null),
         headers: {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': '*',
