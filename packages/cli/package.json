@@ -63,5 +63,5 @@
         "webpack-dev-server": "^4.5.0",
         "webpack-manifest-plugin": "^4.0.2"
     },
-    "gitHead": "55a5d3ae12a27c5319c5e1d6c2a8ed3b9a02cb71"
+    "gitHead": "03cdca76413a59fe6bf04ca04e12db6f9e3aad5e"
 }
