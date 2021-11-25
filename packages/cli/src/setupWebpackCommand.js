@@ -6,6 +6,7 @@ const setupWebpackCommand = (command, opts = {}) => {
         .option('-c, --config <config>', 'Path to custom config file')
         .option('-e, --env <env>', 'Environment', env)
         .option('-s, --src-path <path>', 'Source path', srcPath)
+        .option('--package-json <path>', 'Path to package.json', './package.json')
         .option('--public-path <path>', 'Public path')
         .option('--js-output-path <path>', 'Output path for javascript files')
         .option('--css-output-path <path>', 'Output path for CSS files')

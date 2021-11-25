@@ -10,7 +10,6 @@ setupWebpackCommand(command, {
     env: 'development',
 })
     .description('Start development server')
-    .option('--package-json <path>', 'Path to package.json', './package.json')
     .option('-p, --proxy <host>', 'Host to proxy')
     .option('-o, --open <url>', 'Url to open')
     .action(async (entry) => {
