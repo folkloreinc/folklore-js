@@ -36,7 +36,7 @@ generateCommand
         } = generateCommand.opts();
 
         const packageJson = path.join(process.cwd(), './package.json');
-        const { supportedLocales = null } = getOptionsFromPackage(packageJson) || {};
+        const { supportedLocales = null } = getOptionsFromPackage(packageJson, ['supportedLocales']) || {};
         const locales = (!isArray(locale) && locale !== null ? [locale] : locale) ||
             supportedLocales || ['en'];
         const defaultLocale = sourceLocale || (locales.length > 0 ? locales[0] : null);
