@@ -15,6 +15,7 @@ export default (entry, opts = {}) => {
         assetOutputPath = 'static/media',
         disableSourceMap = false,
         analyzer = false,
+        formatjsIdInterpolationPattern = '[sha512:contenthash:base64:6]',
     } = opts;
 
     const isProduction = process.env.NODE_ENV === 'production';
@@ -189,9 +190,6 @@ export default (entry, opts = {}) => {
                                 : path.join(process.cwd(), srcPath),
                             loader: require.resolve('babel-loader'),
                             options: {
-                                plugins: [
-                                    isDevelopment && require.resolve('react-refresh/babel'),
-                                ].filter(Boolean),
                                 presets: [
                                     [
                                         require.resolve('@babel/preset-env'),
@@ -209,6 +207,17 @@ export default (entry, opts = {}) => {
                                         },
                                     ],
                                 ],
+                                plugins: [
+                                    isDevelopment && require.resolve('react-refresh/babel'),
+                                    [
+                                        require.resolve('babel-plugin-formatjs'),
+                                        {
+                                            idInterpolationPattern: formatjsIdInterpolationPattern,
+                                            removeDefaultMessage: isProduction,
+                                            ast: isProduction,
+                                        },
+                                    ],
+                                ].filter(Boolean),
                                 cacheDirectory: true,
                                 cacheCompression: false,
                                 compact: isProduction,

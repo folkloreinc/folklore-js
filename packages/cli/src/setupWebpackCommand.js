@@ -12,6 +12,10 @@ const setupWebpackCommand = (command, opts = {}) => {
         .option('--css-output-path <path>', 'Output path for CSS files')
         .option('--asset-output-path <path>', 'Output path for asset files')
         .option('--disable-source-map', 'Disable source map')
+        .option(
+            '--formatjs-id-interpolation-pattern <pattern>',
+            'FormatJS id interpolation pattern',
+        )
         .option('-a, --analyzer', 'Start analyzer');
 
     return command;
