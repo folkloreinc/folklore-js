@@ -1,21 +1,38 @@
 import { Command } from 'commander';
+import path from 'path';
+import dotenv from 'dotenv';
 import setupWebpackCommand from '../setupWebpackCommand';
 import createWebpackCompiler from '../createWebpackCompiler';
 import createWebpackConfig from '../createWebpackConfig';
 import getOptionsFromPackage from '../getOptionsFromPackage';
+import getOptionsFromEnv from '../getOptionsFromEnv';
 
 const command = new Command('build');
 
 setupWebpackCommand(command)
     .description('Build project')
-    .option('-o, --output-path <path>', 'Output path', './dist')
+    .option('-o, --output-path <path>', 'Output path')
     .action((entry) => {
         // Get options
-        const { config: customConfig = null, env, packageJson, ...commandOptions } = command.opts();
+        const {
+            config: customConfig = null,
+            env = 'production',
+            packageJson = './package.json',
+            loadEnv = null,
+            ...commandOptions
+        } = command.opts();
+
+        if (loadEnv !== null) {
+            dotenv.config({ path: loadEnv === true ? path.join(process.cwd(), '.env') : loadEnv });
+        }
+
+        // Get options
         const packageOptions = getOptionsFromPackage(packageJson);
+        const envOptions = getOptionsFromEnv();
         const finalOptions = {
-            ...commandOptions,
             ...packageOptions,
+            ...envOptions,
+            ...commandOptions,
         };
 
         // Set environment
