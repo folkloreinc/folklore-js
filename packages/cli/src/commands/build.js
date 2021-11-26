@@ -18,12 +18,13 @@ setupWebpackCommand(command)
             config: customConfig = null,
             env = 'production',
             packageJson = './package.json',
-            loadEnv = null,
+            loadEnv = false,
+            envFile = null,
             ...commandOptions
         } = command.opts();
 
-        if (loadEnv !== null) {
-            dotenv.config({ path: loadEnv === true ? path.join(process.cwd(), '.env') : loadEnv });
+        if (loadEnv) {
+            dotenv.config({ path: envFile !== null ? envFile : path.join(process.cwd(), '.env') });
         }
 
         // Get options
