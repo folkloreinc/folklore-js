@@ -10,8 +10,8 @@ const getOptionsFromPackage = (packagePath, keys = ['...build', 'proxy']) => {
     }
     const data = fsExtra.readJsonSync(finalPath);
     return keys.reduce((options, key) => {
-        let matches = null;
-        if ((matches = key.match(/^\.\.\.(.*)$/))) {
+        const matches = key.match(/^\.\.\.(.*)$/);
+        if (matches !== null) {
             const value = data[matches[1]] || null;
             return {
                 ...options,

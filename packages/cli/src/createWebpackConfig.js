@@ -1,5 +1,7 @@
 import path from 'path';
 import isArray from 'lodash/isArray';
+import isString from 'lodash/isString';
+import isObject from 'lodash/isObject';
 import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import getCSSModuleLocalIdent from 'react-dev-utils/getCSSModuleLocalIdent';
@@ -24,7 +26,7 @@ export default (entry, opts = {}) => {
     const isDevelopment = process.env.NODE_ENV === 'development';
 
     const getStyleLoaders = (cssOptions, preProcessor) => {
-        const loaders = [
+        const styleLoaders = [
             isProduction
                 ? {
                       loader: MiniCssExtractPlugin.loader,
@@ -66,7 +68,7 @@ export default (entry, opts = {}) => {
             },
         ].filter(Boolean);
         if (preProcessor) {
-            loaders.push(
+            styleLoaders.push(
                 {
                     loader: require.resolve('resolve-url-loader'),
                     options: {
@@ -84,8 +86,18 @@ export default (entry, opts = {}) => {
                 },
             );
         }
-        return loaders;
+        return styleLoaders;
     };
+
+    let extraLoaders = null;
+    if (isArray(loaders)) {
+        extraLoaders = loaders;
+    } else if (isString(loaders)) {
+        const newLoaders = require(loaders);
+        extraLoaders = isArray(newLoaders) ? newLoaders : [newLoaders];
+    } else if (isObject(loaders)) {
+        extraLoaders = [loaders];
+    }
 
     return {
         target: 'browserslist',
@@ -146,7 +158,7 @@ export default (entry, opts = {}) => {
             rules: [
                 {
                     oneOf: [
-                        ...(isArray(loaders) ? loaders : [loaders]).filter((it) => it !== null),
+                        ...(extraLoaders || []),
                         {
                             test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
                             type: 'asset',

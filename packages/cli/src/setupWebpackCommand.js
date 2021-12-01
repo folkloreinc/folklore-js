@@ -1,4 +1,4 @@
-const setupWebpackCommand = (command, opts = {}) => {
+const setupWebpackCommand = (command) => {
     command
         .argument('<entry>', 'entry point')
         .option('-c, --config <config>', 'Path to custom config file')
