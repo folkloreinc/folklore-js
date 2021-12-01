@@ -93,7 +93,9 @@ export default (entry, opts = {}) => {
     if (isArray(loaders)) {
         extraLoaders = loaders;
     } else if (isString(loaders)) {
-        const newLoaders = require(loaders);
+        const newLoaders = require(path.isAbsolute(loaders)
+            ? loaders
+            : path.join(process.cwd(), loaders));
         extraLoaders = isArray(newLoaders) ? newLoaders : [newLoaders];
     } else if (isObject(loaders)) {
         extraLoaders = [loaders];
