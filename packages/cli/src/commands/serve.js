@@ -21,6 +21,7 @@ setupWebpackCommand(command)
             packageJson = './package.json',
             loadEnv = false,
             envFile = null,
+            loaders = null,
             ...commandOptions
         } = command.opts();
 
@@ -35,6 +36,11 @@ setupWebpackCommand(command)
             ...commandOptions,
             ...envOptions,
             ...packageOptions,
+            ...(loaders !== null
+                ? {
+                      loaders: require(loaders),
+                  }
+                : null),
         };
 
         // Set environment

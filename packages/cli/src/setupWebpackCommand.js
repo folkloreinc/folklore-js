@@ -11,6 +11,7 @@ const setupWebpackCommand = (command, opts = {}) => {
         .option('--js-output-path <path>', 'Output path for javascript files')
         .option('--css-output-path <path>', 'Output path for CSS files')
         .option('--asset-output-path <path>', 'Output path for asset files')
+        .option('--loaders <path>', 'Path to loaders file')
         .option('--disable-source-map', 'Disable source map')
         .option(
             '--formatjs-id-interpolation-pattern <pattern>',

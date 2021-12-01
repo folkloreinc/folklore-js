@@ -1,4 +1,5 @@
 import path from 'path';
+import isArray from 'lodash/isArray';
 import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import getCSSModuleLocalIdent from 'react-dev-utils/getCSSModuleLocalIdent';
@@ -16,6 +17,7 @@ export default (entry, opts = {}) => {
         disableSourceMap = false,
         analyzer = false,
         formatjsIdInterpolationPattern = '[sha512:contenthash:base64:6]',
+        loaders = null,
     } = opts;
 
     const isProduction = process.env.NODE_ENV === 'production';
@@ -144,6 +146,7 @@ export default (entry, opts = {}) => {
             rules: [
                 {
                     oneOf: [
+                        ...(isArray(loaders) ? loaders : [loaders]).filter((it) => it !== null),
                         {
                             test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
                             type: 'asset',
