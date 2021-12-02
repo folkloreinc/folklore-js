@@ -405,7 +405,7 @@ export default (entry, opts = {}) => {
                     {
                         lossless: {
                             minimizerOptions: {
-                                ...imageminPresets.lossless,
+                                ...imageminPresets.losslessWebpack,
                             },
                         },
                         lossy: {
