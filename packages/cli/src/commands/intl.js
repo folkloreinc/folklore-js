@@ -3,10 +3,11 @@ import fs from 'fs';
 import fsExtra from 'fs-extra';
 import { Command } from 'commander';
 import { extractAndWrite, extract, compileAndWrite, compile } from '@formatjs/cli';
-import isArray from 'lodash/isArray';
+import { isArray } from 'lodash';
 import getPathsFromGlob from '../getPathsFromGlob';
 import POFile from '../POFile';
 import getOptionsFromPackage from '../getOptionsFromPackage';
+import getAbsolutePath from '../getAbsolutePath';
 
 const command = new Command('intl');
 
@@ -35,7 +36,8 @@ generateCommand
         } = generateCommand.opts();
 
         const packageJson = path.join(process.cwd(), './package.json');
-        const { supportedLocales = null } = getOptionsFromPackage(packageJson, ['supportedLocales']) || {};
+        const { supportedLocales = null } =
+            getOptionsFromPackage(packageJson, ['supportedLocales']) || {};
         const locales = (!isArray(locale) && locale !== null ? [locale] : locale) ||
             supportedLocales || ['en'];
         const defaultLocale = sourceLocale || (locales.length > 0 ? locales[0] : null);
@@ -138,30 +140,24 @@ compileCommand
     .option('--ast', 'Compile with ast')
     .action(async (srcPaths) => {
         const { outputPath = null, idInterpolationPattern, ast = false } = compileCommand.opts();
+        const absOutputPath = getAbsolutePath(outputPath);
         const files = getPathsFromGlob(srcPaths);
-
         if (outputPath !== null) {
             files.forEach((file) =>
-                compileAndWrite([isAbsolute(file) ? file : path.join(process.cwd(), file)], {
+                compileAndWrite([getAbsolutePath(file)], {
                     ast,
                     throws: true,
                     idInterpolationPattern,
-                    outFile: path.join(
-                        isAbsolute(outputPath) ? outputPath : path.join(process.cwd(), outputPath),
-                        path.basename(file),
-                    ),
+                    outFile: path.join(absOutputPath, path.basename(file)),
                 }),
             );
         } else {
             files.forEach(async (file) => {
-                const messages = await compile(
-                    [isAbsolute(file) ? file : path.join(process.cwd(), file)],
-                    {
-                        ast,
-                        throws: true,
-                        idInterpolationPattern,
-                    },
-                );
+                const messages = await compile([getAbsolutePath(file)], {
+                    ast,
+                    throws: true,
+                    idInterpolationPattern,
+                });
                 console.log(messages);
             });
         }
@@ -175,9 +171,11 @@ json2poCommand
     .option('--use-default-message', 'Use defaultMessage to populate the translation')
     .action(async (srcPath, destPath) => {
         const { useDefaultMessage = false } = json2poCommand.opts();
-        const messages = fsExtra.readJsonSync(srcPath);
+        const absSrcPath = getAbsolutePath(srcPath);
+        const absDestPath = getAbsolutePath(destPath);
 
-        const poFile = new POFile(destPath, {
+        const messages = fsExtra.readJsonSync(absSrcPath);
+        const poFile = new POFile(absDestPath, {
             useDefaultMessage,
         });
         poFile.update(messages);
@@ -190,13 +188,16 @@ po2jsonCommand
     .argument('<src>')
     .argument('<dest>')
     .action(async (srcPath, destPath) => {
-        const poFile = new POFile(srcPath);
-        fsExtra.outputJsonSync(destPath, poFile.toJSON(), {
+        const absSrcPath = getAbsolutePath(srcPath);
+        const absDestPath = getAbsolutePath(destPath);
+        const poFile = new POFile(absSrcPath);
+        fsExtra.outputJsonSync(absDestPath, poFile.toJSON(), {
             spaces: 4,
         });
     });
 
 command
+    .description('Tools to deal with translations and @formatjs')
     .addCommand(generateCommand, {
         isDefault: true,
     })

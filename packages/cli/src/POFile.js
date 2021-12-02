@@ -1,7 +1,7 @@
 import fs from 'fs';
 import fsExtra from 'fs-extra';
 import gettextParser from 'gettext-parser';
-import isEmpty from 'lodash/isEmpty';
+import { isEmpty } from 'lodash';
 
 class POFile {
     static parse(filePath) {
@@ -72,10 +72,13 @@ class POFile {
             charset: 'utf-8',
             headers: this.headers,
             translations: {
-                '': this.translations.reduce((map, translation) => ({
-                    ...map,
-                    [translation.msgctxt]: translation,
-                }), {}),
+                '': this.translations.reduce(
+                    (map, translation) => ({
+                        ...map,
+                        [translation.msgctxt]: translation,
+                    }),
+                    {},
+                ),
             },
         });
 

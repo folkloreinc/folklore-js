@@ -1,5 +1,5 @@
 import url from 'url';
-import isString from 'lodash/isString';
+import { isString } from 'lodash';
 import WebpackDevServer from 'webpack-dev-server';
 import createWebpackCompiler from './createWebpackCompiler';
 

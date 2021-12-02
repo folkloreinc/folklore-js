@@ -1,14 +1,12 @@
 import fsExtra from 'fs-extra';
-import path from 'path';
+import getAbsolutePath from './getAbsolutePath';
 
 const getOptionsFromPackage = (packagePath, keys = ['...build', 'proxy']) => {
-    const finalPath = path.isAbsolute(packagePath)
-        ? packagePath
-        : path.join(process.cwd(), packagePath);
-    if (!fsExtra.pathExistsSync(finalPath)) {
+    const absPackagePath = getAbsolutePath(packagePath);
+    if (!fsExtra.pathExistsSync(absPackagePath)) {
         return null;
     }
-    const data = fsExtra.readJsonSync(finalPath);
+    const data = fsExtra.readJsonSync(absPackagePath);
     return keys.reduce((options, key) => {
         const matches = key.match(/^\.\.\.(.*)$/);
         if (matches !== null) {

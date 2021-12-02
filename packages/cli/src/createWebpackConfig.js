@@ -1,7 +1,5 @@
 import path from 'path';
-import isArray from 'lodash/isArray';
-import isString from 'lodash/isString';
-import isObject from 'lodash/isObject';
+import { isArray, isString, isObject } from 'lodash';
 import { merge } from 'webpack-merge';
 import { DefinePlugin } from 'webpack';
 import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
@@ -9,7 +7,10 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import getCSSModuleLocalIdent from 'react-dev-utils/getCSSModuleLocalIdent';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
+import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
 import getAppEnv from './getAppEnv';
+import imageminPresets from './imageminPresets';
+import getAbsolutePath from './getAbsolutePath';
 
 export default (entry, opts = {}) => {
     const {
@@ -27,15 +28,16 @@ export default (entry, opts = {}) => {
         plugins = null,
         profile = false,
         defineEnv: extraDefineEnv = null,
+        disableImageOptimization = false,
+        imageOptimization = 'lossless',
+        imageDataUrlMaxSize = 5000,
     } = opts;
 
     const isProduction = process.env.NODE_ENV === 'production';
     const isDevelopment = process.env.NODE_ENV === 'development';
 
-    const absSrcPath = path.isAbsolute(srcPath) ? srcPath : path.join(process.cwd(), srcPath);
-    const absOutputPath = path.isAbsolute(outputPath)
-        ? outputPath
-        : path.resolve(process.cwd(), outputPath);
+    const absSrcPath = getAbsolutePath(srcPath);
+    const absOutputPath = getAbsolutePath(outputPath);
 
     const getStyleLoaders = (cssOptions, preProcessor) => {
         const styleLoaders = [
@@ -92,9 +94,7 @@ export default (entry, opts = {}) => {
     };
 
     const loadExtendItems = (items) => {
-        const newItems = isString(items)
-            ? require(path.isAbsolute(items) ? items : path.join(process.cwd(), items))
-            : items;
+        const newItems = isString(items) ? require(getAbsolutePath(items)) : items;
         if (isArray(newItems)) {
             return newItems;
         }
@@ -194,7 +194,7 @@ export default (entry, opts = {}) => {
                             type: 'asset',
                             parser: {
                                 dataUrlCondition: {
-                                    maxSize: 10000,
+                                    maxSize: imageDataUrlMaxSize,
                                 },
                             },
                         },
@@ -230,9 +230,7 @@ export default (entry, opts = {}) => {
                         // The preset includes JSX, Flow, TypeScript, and some ESnext features.
                         {
                             test: /\.(js|mjs|jsx|ts|tsx)$/,
-                            include: path.isAbsolute(srcPath)
-                                ? srcPath
-                                : path.join(process.cwd(), srcPath),
+                            include: absSrcPath,
                             loader: require.resolve('babel-loader'),
                             options: {
                                 presets: [
@@ -399,6 +397,21 @@ export default (entry, opts = {}) => {
                     chunkFilename: path.join(cssOutputPath, '[name].[contenthash:8].chunk.css'),
                 }),
 
+            !disableImageOptimization &&
+                isProduction &&
+                new ImageMinimizerPlugin(
+                    {
+                        lossless: {
+                            minimizerOptions: {
+                                ...imageminPresets.lossless,
+                            },
+                        },
+                        lossy: {
+                            minify: ImageMinimizerPlugin.squooshMinify,
+                        },
+                    }[imageOptimization],
+                ),
+
             ...(extraPlugins || []),
         ].filter(Boolean),
     };
@@ -406,9 +419,7 @@ export default (entry, opts = {}) => {
     // Merge config
     if (mergeConfig !== null) {
         const configToMerge = isString(mergeConfig)
-            ? require(path.isAbsolute(mergeConfig)
-                  ? mergeConfig
-                  : path.join(process.cwd(), mergeConfig))
+            ? require(getAbsolutePath(mergeConfig))
             : mergeConfig;
         return merge(baseConfig, configToMerge);
     }

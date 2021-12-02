@@ -11,6 +11,11 @@ const setupWebpackCommand = (command) => {
         .option('--asset-output-path <path>', 'Output path for asset files')
         .option('--define-env <...env>', 'Add extra environment variables to the DefinePlugin')
         .option('--disable-source-map', 'Disable source map')
+        .option('--disable-image-optimization', 'Disable images optimization')
+        .option(
+            '--image-optimization <preset>',
+            'Set images optimization preset (lossless, lossy)',
+        )
         .option('--loaders <path>', 'Path to loaders file')
         .option('--plugins <path>', 'Path to plugins file')
         .option('--merge-config <path>', 'Path to merge a config file')
