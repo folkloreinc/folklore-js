@@ -40,7 +40,10 @@ export default {
                 'svgo',
                 {
                     plugins: [
-                        { removeViewBox: false },
+                        {
+                            name: "removeViewBox",
+                            active: false,
+                          },
                         {
                             name: 'addAttributesToSVGElement',
                             params: {
