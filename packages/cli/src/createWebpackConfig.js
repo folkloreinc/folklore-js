@@ -2,6 +2,7 @@ import path from 'path';
 import isArray from 'lodash/isArray';
 import isString from 'lodash/isString';
 import isObject from 'lodash/isObject';
+import { merge } from 'webpack-merge';
 import { DefinePlugin } from 'webpack';
 import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
@@ -18,6 +19,7 @@ export default (entry, opts = {}) => {
         jsOutputPath = 'static/js',
         cssOutputPath = 'static/css',
         assetOutputPath = 'static/media',
+        mergeConfig = null,
         disableSourceMap = false,
         analyzer = false,
         formatjsIdInterpolationPattern = '[sha512:contenthash:base64:6]',
@@ -109,7 +111,7 @@ export default (entry, opts = {}) => {
         extra: extraDefineEnv,
     });
 
-    return {
+    const baseConfig = {
         target: 'browserslist',
 
         mode: isProduction ? 'production' : 'development',
@@ -400,4 +402,15 @@ export default (entry, opts = {}) => {
             ...(extraPlugins || []),
         ].filter(Boolean),
     };
+
+    // Merge config
+    if (mergeConfig !== null) {
+        const configToMerge = isString(mergeConfig)
+            ? require(path.isAbsolute(mergeConfig)
+                  ? mergeConfig
+                  : path.join(process.cwd(), mergeConfig))
+            : mergeConfig;
+        return merge(baseConfig, configToMerge);
+    }
+    return baseConfig;
 };
