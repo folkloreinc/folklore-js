@@ -9,6 +9,7 @@ export const plugins = [
     resolve({
         extensions: ['.mjs', '.js', '.jsx', '.json', '.node'],
         jail: path.join(process.cwd(), 'src'),
+        preferBuiltins: true,
     }),
     commonjs(),
     babel({
