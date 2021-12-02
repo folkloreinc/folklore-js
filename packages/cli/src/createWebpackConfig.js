@@ -125,6 +125,8 @@ export default (entry, opts = {}) => {
                 : 'cheap-module-source-map'
             : false,
 
+        ignoreWarnings: [/Failed to parse source map/],
+
         entry,
 
         output: {
