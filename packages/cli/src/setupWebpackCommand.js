@@ -12,6 +12,7 @@ const setupWebpackCommand = (command) => {
         .option('--css-output-path <path>', 'Output path for CSS files')
         .option('--asset-output-path <path>', 'Output path for asset files')
         .option('--loaders <path>', 'Path to loaders file')
+        .option('--define-env <...env>', 'Add extra environment variables to the DefinePlugin')
         .option('--disable-source-map', 'Disable source map')
         .option(
             '--formatjs-id-interpolation-pattern <pattern>',

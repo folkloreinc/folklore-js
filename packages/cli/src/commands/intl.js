@@ -2,7 +2,6 @@ import path from 'path';
 import fs from 'fs';
 import fsExtra from 'fs-extra';
 import { Command } from 'commander';
-import { sync as globSync } from 'glob';
 import { extractAndWrite, extract, compileAndWrite, compile } from '@formatjs/cli';
 import isArray from 'lodash/isArray';
 import getPathsFromGlob from '../getPathsFromGlob';

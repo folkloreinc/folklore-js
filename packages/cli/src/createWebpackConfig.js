@@ -2,11 +2,13 @@ import path from 'path';
 import isArray from 'lodash/isArray';
 import isString from 'lodash/isString';
 import isObject from 'lodash/isObject';
+import { DefinePlugin } from 'webpack';
 import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import getCSSModuleLocalIdent from 'react-dev-utils/getCSSModuleLocalIdent';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
+import getAppEnv from './getAppEnv';
 
 export default (entry, opts = {}) => {
     const {
@@ -20,10 +22,18 @@ export default (entry, opts = {}) => {
         analyzer = false,
         formatjsIdInterpolationPattern = '[sha512:contenthash:base64:6]',
         loaders = null,
+        plugins = null,
+        profile = false,
+        defineEnv: extraDefineEnv = null,
     } = opts;
 
     const isProduction = process.env.NODE_ENV === 'production';
     const isDevelopment = process.env.NODE_ENV === 'development';
+
+    const absSrcPath = path.isAbsolute(srcPath) ? srcPath : path.join(process.cwd(), srcPath);
+    const absOutputPath = path.isAbsolute(outputPath)
+        ? outputPath
+        : path.resolve(process.cwd(), outputPath);
 
     const getStyleLoaders = (cssOptions, preProcessor) => {
         const styleLoaders = [
@@ -37,14 +47,9 @@ export default (entry, opts = {}) => {
                 options: cssOptions,
             },
             {
-                // Options for PostCSS as we reference these options twice
-                // Adds vendor prefixing based on your specified browser support in
-                // package.json
                 loader: require.resolve('postcss-loader'),
                 options: {
                     postcssOptions: {
-                        // Necessary for external CSS imports to work
-                        // https://github.com/facebook/create-react-app/issues/2677
                         ident: 'postcss',
                         plugins: [
                             'postcss-flexbugs-fixes',
@@ -57,9 +62,6 @@ export default (entry, opts = {}) => {
                                     stage: 3,
                                 },
                             ],
-                            // Adds PostCSS Normalize as the reset css with default options,
-                            // so that it honors browserslist config in package.json
-                            // which in turn let's users customize the target behavior as per their needs.
                             'postcss-normalize',
                         ],
                     },
@@ -73,9 +75,7 @@ export default (entry, opts = {}) => {
                     loader: require.resolve('resolve-url-loader'),
                     options: {
                         sourceMap: !disableSourceMap,
-                        root: path.isAbsolute(srcPath)
-                            ? srcPath
-                            : path.join(process.cwd(), srcPath),
+                        root: absSrcPath,
                     },
                 },
                 {
@@ -89,17 +89,25 @@ export default (entry, opts = {}) => {
         return styleLoaders;
     };
 
-    let extraLoaders = null;
-    if (isArray(loaders)) {
-        extraLoaders = loaders;
-    } else if (isString(loaders)) {
-        const newLoaders = require(path.isAbsolute(loaders)
-            ? loaders
-            : path.join(process.cwd(), loaders));
-        extraLoaders = isArray(newLoaders) ? newLoaders : [newLoaders];
-    } else if (isObject(loaders)) {
-        extraLoaders = [loaders];
-    }
+    const loadExtendItems = (items) => {
+        const newItems = isString(items)
+            ? require(path.isAbsolute(items) ? items : path.join(process.cwd(), items))
+            : items;
+        if (isArray(newItems)) {
+            return newItems;
+        }
+        if (isObject(newItems)) {
+            return [newItems];
+        }
+        return null;
+    };
+
+    const extraLoaders = loadExtendItems(loaders);
+    const extraPlugins = loadExtendItems(plugins);
+
+    const defineEnv = getAppEnv({
+        extra: extraDefineEnv,
+    });
 
     return {
         target: 'browserslist',
@@ -118,9 +126,7 @@ export default (entry, opts = {}) => {
         entry,
 
         output: {
-            path: path.isAbsolute(outputPath)
-                ? outputPath
-                : path.resolve(process.cwd(), outputPath),
+            path: absOutputPath,
             filename: isProduction
                 ? path.join(jsOutputPath, '[name].[contenthash:8].js')
                 : path.join(jsOutputPath, 'bundle.js'),
@@ -129,6 +135,11 @@ export default (entry, opts = {}) => {
                 : path.join(jsOutputPath, '[name].chunk.js'),
             assetModuleFilename: path.join(assetOutputPath, '[name].[hash][ext]'),
             publicPath,
+            pathinfo: isDevelopment,
+            devtoolModuleFilenameTemplate: isProduction
+                ? (info) => path.relative(absSrcPath, info.absoluteResourcePath).replace(/\\/g, '/')
+                : isDevelopment &&
+                  ((info) => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')),
         },
 
         optimization: {
@@ -153,11 +164,26 @@ export default (entry, opts = {}) => {
                 '.web.jsx',
                 '.jsx',
             ],
+
+            alias: {
+                ...(profile
+                    ? {
+                          'react-dom$': 'react-dom/profiling',
+                          'scheduler/tracing': 'scheduler/tracing-profiling',
+                      }
+                    : null),
+            },
         },
 
         module: {
             strictExportPresence: true,
             rules: [
+                !disableSourceMap && {
+                    enforce: 'pre',
+                    exclude: /@babel(?:\/|\\{1,2})runtime/,
+                    test: /\.(js|mjs|jsx|ts|tsx|css)$/,
+                    loader: require.resolve('source-map-loader'),
+                },
                 {
                     oneOf: [
                         ...(extraLoaders || []),
@@ -325,15 +351,19 @@ export default (entry, opts = {}) => {
                         },
                     ],
                 },
-            ],
+            ].filter(Boolean),
         },
 
         plugins: [
-            isProduction &&
-                new MiniCssExtractPlugin({
-                    filename: path.join(cssOutputPath, '[name].[contenthash:8].css'),
-                    chunkFilename: path.join(cssOutputPath, '[name].[contenthash:8].chunk.css'),
-                }),
+            new DefinePlugin({
+                'process.env': Object.keys(defineEnv).reduce(
+                    (map, key) => ({
+                        ...map,
+                        [key]: JSON.stringify(defineEnv[key]),
+                    }),
+                    {},
+                ),
+            }),
 
             new WebpackManifestPlugin({
                 fileName: 'asset-manifest.json',
@@ -360,6 +390,14 @@ export default (entry, opts = {}) => {
             isDevelopment && new ReactRefreshWebpackPlugin(),
 
             analyzer && new BundleAnalyzerPlugin(),
+
+            isProduction &&
+                new MiniCssExtractPlugin({
+                    filename: path.join(cssOutputPath, '[name].[contenthash:8].css'),
+                    chunkFilename: path.join(cssOutputPath, '[name].[contenthash:8].chunk.css'),
+                }),
+
+            ...(extraPlugins || []),
         ].filter(Boolean),
     };
 };

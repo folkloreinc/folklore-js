@@ -12,6 +12,7 @@ const command = new Command('build');
 setupWebpackCommand(command)
     .description('Build project')
     .option('-o, --output-path <path>', 'Output path')
+    .option('--profile', 'Use React profiling production build')
     .action((entry) => {
         // Get options
         const {
