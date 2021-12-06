@@ -5,7 +5,7 @@ import createWebpackCompiler from './createWebpackCompiler';
 
 const createWebpackServer = (config, opts = {}) => {
     const compiler = createWebpackCompiler(config);
-    const { proxy = undefined, host = null, ...otherOpts } = opts;
+    const { proxy = undefined, host = null, open = true, ...otherOpts } = opts;
     const options = {
         allowedHosts: 'all',
         server: 'https',
@@ -13,7 +13,7 @@ const createWebpackServer = (config, opts = {}) => {
         client: {
             overlay: true,
         },
-        open: true,
+        open,
         port: 'auto',
         host: host || (isString(proxy) ? url.parse(proxy).hostname : undefined),
         headers: {
