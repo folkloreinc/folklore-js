@@ -15,7 +15,7 @@ const createWebpackServer = (config, opts = {}) => {
         },
         open: true,
         port: 'auto',
-        host: host || (isString(proxy) ? url.parse(proxy).hostname : null),
+        host: host || (isString(proxy) ? url.parse(proxy).hostname : undefined),
         headers: {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': '*',
