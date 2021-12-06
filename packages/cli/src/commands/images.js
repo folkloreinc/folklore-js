@@ -59,8 +59,8 @@ iconsCommand
     .description('Generate icons')
     .argument('<paths...>')
     .requiredOption('-o, --output-path <path>', 'Output path')
-    .requiredOption('--public-path <path>', 'Public path', '/')
-    .requiredOption('--meta-file <path>', 'Path to a file where meta tags will be outputed')
+    .option('--public-path <path>', 'Public path', '/')
+    .option('--meta-file <path>', 'Path to a file where meta tags will be outputed')
     .action(async (srcPaths) => {
         const { outputPath, publicPath, metaFile = null } = iconsCommand.opts();
         const absOutputPath = getAbsolutePath(outputPath);
