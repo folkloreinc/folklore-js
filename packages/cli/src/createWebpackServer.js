@@ -5,7 +5,7 @@ import createWebpackCompiler from './createWebpackCompiler';
 
 const createWebpackServer = (config, opts = {}) => {
     const compiler = createWebpackCompiler(config);
-    const { proxy = null, host = null, ...otherOpts } = opts;
+    const { proxy = undefined, host = null, ...otherOpts } = opts;
     const options = {
         allowedHosts: 'all',
         server: 'https',
