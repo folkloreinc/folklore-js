@@ -12,6 +12,7 @@ import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
 import getAppEnv from './getAppEnv';
 import imageminPresets from './imageminPresets';
 import getAbsolutePath from './getAbsolutePath';
+import { load } from 'dotenv';
 
 export default (entry, opts = {}) => {
     const {
@@ -23,6 +24,7 @@ export default (entry, opts = {}) => {
         assetOutputPath = 'static/media',
         htmlOutputPath = 'index.html',
         htmlPath = null,
+        htmlTemplateParameters: htmlTemplateParametersPath = undefined,
         mergeConfig = null,
         disableSourceMap = false,
         analyzer = false,
@@ -97,19 +99,16 @@ export default (entry, opts = {}) => {
         return styleLoaders;
     };
 
+    const loadExtend = (extend) => isString(extend) ? require(getAbsolutePath(extend)) : extend;
+
     const loadExtendItems = (items) => {
-        const newItems = isString(items) ? require(getAbsolutePath(items)) : items;
-        if (isArray(newItems)) {
-            return newItems;
-        }
-        if (isObject(newItems)) {
-            return [newItems];
-        }
-        return null;
+        const newItems = loadExtend(items);
+        return isObject(newItems) ? [newItems] : newItems;
     };
 
     const extraLoaders = loadExtendItems(loaders);
     const extraPlugins = loadExtendItems(plugins);
+    const htmlTemplateParameters = loadExtend(htmlTemplateParametersPath);
 
     const defineEnv = getAppEnv({
         extra: extraDefineEnv,
@@ -373,9 +372,10 @@ export default (entry, opts = {}) => {
 
             absHtmlPath !== null &&
                 new HtmlWebpackPlugin({
-                    inject: true,
                     template: absHtmlPath,
+                    templateParameters: htmlTemplateParameters,
                     filename: htmlOutputPath,
+                    inject: true,
                     minify: isProduction
                         ? {
                               removeComments: true,
