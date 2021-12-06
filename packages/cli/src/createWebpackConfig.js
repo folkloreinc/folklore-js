@@ -2,6 +2,7 @@ import path from 'path';
 import { isArray, isString, isObject } from 'lodash';
 import { merge } from 'webpack-merge';
 import { DefinePlugin } from 'webpack';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import getCSSModuleLocalIdent from 'react-dev-utils/getCSSModuleLocalIdent';
@@ -20,6 +21,8 @@ export default (entry, opts = {}) => {
         jsOutputPath = 'static/js',
         cssOutputPath = 'static/css',
         assetOutputPath = 'static/media',
+        htmlOutputPath = 'index.html',
+        htmlPath = null,
         mergeConfig = null,
         disableSourceMap = false,
         analyzer = false,
@@ -38,6 +41,7 @@ export default (entry, opts = {}) => {
 
     const absSrcPath = getAbsolutePath(srcPath);
     const absOutputPath = getAbsolutePath(outputPath);
+    const absHtmlPath = getAbsolutePath(htmlPath);
 
     const getStyleLoaders = (cssOptions, preProcessor) => {
         const styleLoaders = [
@@ -367,6 +371,48 @@ export default (entry, opts = {}) => {
                 ),
             }),
 
+            absHtmlPath !== null &&
+                new HtmlWebpackPlugin({
+                    inject: true,
+                    template: absHtmlPath,
+                    filename: htmlOutputPath,
+                    minify: isProduction
+                        ? {
+                              removeComments: true,
+                              collapseWhitespace: true,
+                              removeRedundantAttributes: true,
+                              useShortDoctype: true,
+                              removeEmptyAttributes: true,
+                              removeStyleLinkTypeAttributes: true,
+                              keepClosingSlash: true,
+                              minifyJS: true,
+                              minifyCSS: true,
+                              minifyURLs: true,
+                          }
+                        : false,
+                }),
+
+            isProduction &&
+                new MiniCssExtractPlugin({
+                    filename: path.join(cssOutputPath, '[name].[contenthash:8].css'),
+                    chunkFilename: path.join(cssOutputPath, '[name].[contenthash:8].chunk.css'),
+                }),
+
+            !disableImageOptimization &&
+                isProduction &&
+                new ImageMinimizerPlugin(
+                    {
+                        lossless: {
+                            minimizerOptions: {
+                                ...imageminPresets.losslessWebpack,
+                            },
+                        },
+                        lossy: {
+                            minify: ImageMinimizerPlugin.squooshMinify,
+                        },
+                    }[imageOptimization],
+                ),
+
             new WebpackManifestPlugin({
                 fileName: 'asset-manifest.json',
                 publicPath,
@@ -392,27 +438,6 @@ export default (entry, opts = {}) => {
             isDevelopment && new ReactRefreshWebpackPlugin(),
 
             analyzer && new BundleAnalyzerPlugin(),
-
-            isProduction &&
-                new MiniCssExtractPlugin({
-                    filename: path.join(cssOutputPath, '[name].[contenthash:8].css'),
-                    chunkFilename: path.join(cssOutputPath, '[name].[contenthash:8].chunk.css'),
-                }),
-
-            !disableImageOptimization &&
-                isProduction &&
-                new ImageMinimizerPlugin(
-                    {
-                        lossless: {
-                            minimizerOptions: {
-                                ...imageminPresets.losslessWebpack,
-                            },
-                        },
-                        lossy: {
-                            minify: ImageMinimizerPlugin.squooshMinify,
-                        },
-                    }[imageOptimization],
-                ),
 
             ...(extraPlugins || []),
         ].filter(Boolean),
