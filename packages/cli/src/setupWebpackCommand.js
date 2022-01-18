@@ -1,6 +1,6 @@
 const setupWebpackCommand = (command) => {
     command
-        .argument('<entry>', 'entry point')
+        .argument('<entry...>', 'entry points')
         .option('-c, --config <config>', 'Path to custom config file')
         .option('-e, --env <env>', 'Environment')
         .option('-s, --src-path <path>', 'Source path')

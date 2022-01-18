@@ -6,6 +6,7 @@ import createWebpackCompiler from '../createWebpackCompiler';
 import createWebpackConfig from '../createWebpackConfig';
 import getOptionsFromPackage from '../getOptionsFromPackage';
 import getOptionsFromEnv from '../getOptionsFromEnv';
+import getEntryFromArgs from '../getEntryFromArgs';
 
 const command = new Command('build');
 
@@ -13,7 +14,7 @@ setupWebpackCommand(command)
     .description('Build project')
     .option('-o, --output-path <path>', 'Output path')
     .option('--profile', 'Use React profiling production build')
-    .action((entry) => {
+    .action((entryArgs) => {
         // Get options
         const {
             config: customConfig = null,
@@ -27,6 +28,9 @@ setupWebpackCommand(command)
         if (loadEnv) {
             dotenv.config({ path: envFile !== null ? envFile : path.join(process.cwd(), '.env') });
         }
+
+        // Get entry
+        const entry = getEntryFromArgs(entryArgs);
 
         // Get options
         const packageOptions = getOptionsFromPackage(packageJson);
