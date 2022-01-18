@@ -1,5 +1,5 @@
 import path from 'path';
-import { isArray, isString, isObject } from 'lodash';
+import { isString, isObject } from 'lodash';
 import { merge } from 'webpack-merge';
 import { DefinePlugin } from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
@@ -12,7 +12,6 @@ import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
 import getAppEnv from './getAppEnv';
 import imageminPresets from './imageminPresets';
 import getAbsolutePath from './getAbsolutePath';
-import { load } from 'dotenv';
 
 export default (entry, opts = {}) => {
     const {
