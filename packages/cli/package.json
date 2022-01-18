@@ -43,7 +43,7 @@
         "@babel/runtime": "^7.4.3",
         "@formatjs/cli": "^4.4.0",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.2",
-        "@svgr/webpack": "^6.2.0",
+        "@svgr/webpack": "^5.5.0",
         "babel-loader": "^8.2.3",
         "babel-plugin-formatjs": "^10.3.11",
         "change-case": "^4.1.2",
