@@ -32,7 +32,7 @@ const defaultProps = {
     children: null,
 };
 
-const SocketContainer = ({
+const SocketContainer = function ({
     children,
     socket,
     autoStart,
@@ -44,7 +44,7 @@ const SocketContainer = ({
     subscribeKey,
     secretKey,
     channels: initialChannels,
-}) => {
+}) {
     const finalSocket = useMemo(
         () =>
             socket ||
@@ -101,12 +101,14 @@ const SocketContainer = ({
         [updateChannels],
     );
 
-    const subscribe = useCallback((channelsToAdd) => addToChannelsCount(channelsToAdd), [
-        addToChannelsCount,
-    ]);
-    const unsubscribe = useCallback((channelsToRemove) => removeToChannelsCount(channelsToRemove), [
-        removeToChannelsCount,
-    ]);
+    const subscribe = useCallback(
+        (channelsToAdd) => addToChannelsCount(channelsToAdd),
+        [addToChannelsCount],
+    );
+    const unsubscribe = useCallback(
+        (channelsToRemove) => removeToChannelsCount(channelsToRemove),
+        [removeToChannelsCount],
+    );
 
     useEffect(() => {
         subscribe(initialChannels);

@@ -96,7 +96,8 @@ class SocketIOSocket extends EventEmitter {
         if (this.started) {
             debug('Skipping start: Already started.');
             return;
-        } if (this.starting) {
+        }
+        if (this.starting) {
             debug('Skipping start: Already starting.');
             return;
         }
@@ -137,14 +138,14 @@ class SocketIOSocket extends EventEmitter {
         this.started = false;
         this.starting = false;
 
-        Object.values(this.sockets).forEach(socket => this.stopSocket(socket));
+        Object.values(this.sockets).forEach((socket) => this.stopSocket(socket));
 
         this.emit('stop');
     }
 
     createSocket(channel) {
         const socket = this.io.socket(`/${channel.replace(/^\//, '')}`);
-        socket.on('message', message => this.onMessage(message, channel));
+        socket.on('message', (message) => this.onMessage(message, channel));
         socket.on('connect', () => this.onConnect(channel));
         socket.open();
         return socket;
