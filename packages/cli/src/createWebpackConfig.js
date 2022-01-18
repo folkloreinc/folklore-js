@@ -98,7 +98,7 @@ export default (entry, opts = {}) => {
         return styleLoaders;
     };
 
-    const loadExtend = (extend) => isString(extend) ? require(getAbsolutePath(extend)) : extend;
+    const loadExtend = (extend) => (isString(extend) ? require(getAbsolutePath(extend)) : extend);
 
     const loadExtendItems = (items) => {
         const newItems = loadExtend(items);
@@ -233,7 +233,7 @@ export default (entry, opts = {}) => {
                         // Process application JS with Babel.
                         // The preset includes JSX, Flow, TypeScript, and some ESnext features.
                         {
-                            test: /\.(js|mjs|jsx|ts|tsx)$/,
+                            test: /\.(js|mjs|cjs|jsx|ts|tsx)$/,
                             include: absSrcPath,
                             loader: require.resolve('babel-loader'),
                             options: {
@@ -350,7 +350,13 @@ export default (entry, opts = {}) => {
                             // its runtime that would otherwise be processed through "file" loader.
                             // Also exclude `html` and `json` extensions so they get processed
                             // by webpacks internal loaders.
-                            exclude: [/^$/, /\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.html\.ejs$/, /\.json$/],
+                            exclude: [
+                                /^$/,
+                                /\.(js|mjs|cjs|jsx|ts|tsx)$/,
+                                /\.html$/,
+                                /\.html\.ejs$/,
+                                /\.json$/,
+                            ],
                             type: 'asset/resource',
                         },
                     ],
