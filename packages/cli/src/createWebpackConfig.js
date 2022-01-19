@@ -378,7 +378,7 @@ export default (entry, opts = {}) => {
             absHtmlPath !== null &&
                 new HtmlWebpackPlugin({
                     template: absHtmlPath,
-                    templateParameters: htmlTemplateParameters,
+                    templateParameters: htmlTemplateParameters || {},
                     filename: htmlOutputPath,
                     inject: true,
                     minify: isProduction
