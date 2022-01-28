@@ -6,15 +6,15 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function index(Request $request)
+    public function show(Request $request)
     {
-        return view('root');
+        return view('app');
     }
 
     public function redirect(Request $request)
     {
         $queryString = $request->getQueryString();
-        $url = route('home.'.app()->getLocale()).(!empty($queryString) ? '?'.$queryString : '');
+        $url = route(app()->getLocale().'.home').(!empty($queryString) ? '?'.$queryString : '');
         return redirect()->to($url);
     }
 }

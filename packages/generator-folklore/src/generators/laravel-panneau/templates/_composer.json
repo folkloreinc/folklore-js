@@ -1,6 +1,6 @@
 {
     "require": {
-        "folklore/laravel-mediatheque": "v1.x-dev",
-        "folklore/laravel-panneau": "v1.x-dev"
+        "folklore/laravel-mediatheque": "v1.1.x-dev",
+        "folklore/laravel-panneau": "v1.2.x-dev"
     }
 }

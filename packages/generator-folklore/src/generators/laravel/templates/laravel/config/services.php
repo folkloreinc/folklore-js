@@ -26,8 +26,9 @@ return [
         'region' => 'us-east-1',
     ],
 
-    'sparkpost' => [
-        'secret' => env('SPARKPOST_SECRET'),
+    'mailchimp' => [
+        'api_key' => env('MAILCHIMP_API_KEY'),
+        'list_id' => '',
     ],
 
     'stripe' => [

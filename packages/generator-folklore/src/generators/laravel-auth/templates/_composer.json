@@ -1,6 +1,6 @@
 {
     "require": {
-        "laravel/passport": "^7.2",
-        "spatie/laravel-permission": "^2.37"
+        "laravel/passport": "^10.0",
+        "spatie/laravel-permission": "^5.5.0"
     }
 }

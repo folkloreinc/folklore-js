@@ -31,7 +31,7 @@ module.exports = class LaravelGenerator extends Generator {
         this.option('laravel-version', {
             type: String,
             desc: 'Laravel version',
-            defaults: 'latest',
+            defaults: '8.x',
         });
 
         this.option('laravel-branch', {
@@ -154,7 +154,8 @@ module.exports = class LaravelGenerator extends Generator {
                         name: 'project-host',
                         message: 'What is the host of the project?',
                         default: (answers) => {
-                            const projectName = this.options['project-name'] || answers['project-name'];
+                            const projectName =
+                                this.options['project-name'] || answers['project-name'];
                             return projectName.match(/.[^.]+$/)
                                 ? projectName
                                 : `${projectName}.com`;
@@ -168,7 +169,8 @@ module.exports = class LaravelGenerator extends Generator {
                         name: 'db-name',
                         message: 'What is the name of the database?',
                         default: (answers) => {
-                            const projectName = this.options['project-name'] || answers['project-name'];
+                            const projectName =
+                                this.options['project-name'] || answers['project-name'];
                             return projectName.match(/^([^.]+)/)[1];
                         },
                     });
@@ -193,8 +195,8 @@ module.exports = class LaravelGenerator extends Generator {
                         choices: featuresChoices,
                         message: 'Which features?',
                         default: featuresChoices
-                            .filter(it => it.checked || false)
-                            .map(it => it.name),
+                            .filter((it) => it.checked || false)
+                            .map((it) => it.name),
                     });
                 }
 
@@ -255,6 +257,14 @@ module.exports = class LaravelGenerator extends Generator {
         });
 
         this.composeWith('folklore:editorconfig', {
+            quiet: true,
+        });
+
+        this.composeWith('folklore:eslint', {
+            quiet: true,
+        });
+
+        this.composeWith('folklore:stylelint', {
             quiet: true,
         });
 
@@ -325,9 +335,10 @@ module.exports = class LaravelGenerator extends Generator {
             laravel() {
                 const done = this.async();
 
-                const versionBranch = this.options['laravel-version'] === 'latest'
-                    ? 'master'
-                    : this.options['laravel-version'];
+                const versionBranch =
+                    this.options['laravel-version'] === 'latest'
+                        ? 'master'
+                        : this.options['laravel-version'];
                 const branch = this.options['laravel-branch'] || versionBranch;
 
                 remote('laravel', 'laravel', branch, (err, cachePath) => {

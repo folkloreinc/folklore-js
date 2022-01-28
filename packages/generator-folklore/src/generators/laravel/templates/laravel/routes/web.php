@@ -1,10 +1,27 @@
 <?php
 
-//Redirect to current langage home
-Route::get('/', 'HomeController@redirect')->name('home');
+use Illuminate\Support\Facades\Route;
 
-Route::groupWithLocales(function () {
-    Route::getLocalized('/', 'HomeController@index')->nameWithLocale('home');
-    Route::getLocalized('/test', 'HomeController@index')->nameWithLocale('test');
-    Route::getLocalized('/test/{with_param}', 'HomeController@index')->nameWithLocale('test_with_param');
-});
+// use Illuminate\Http\Request;
+// use Illuminate\Support\Facades\Http;
+
+use App\Http\Controllers\HomeController;
+
+Route::get('/', [HomeController::class, 'redirect'])
+    ->middleware('web')
+    ->name('home.redirect');
+
+foreach (config('locale.locales') as $locale) {
+    Route::get('/' . $locale . '.json', [HomeController::class, 'show'])
+        ->locale($locale)
+        ->nameWithLocale('home.json');
+}
+
+Route::groupWithLocales(
+    [
+        'middleware' => 'web',
+    ],
+    function ($locale) {
+        Route::get('/', [HomeController::class, 'show'])->nameWithLocale('home');
+    }
+);

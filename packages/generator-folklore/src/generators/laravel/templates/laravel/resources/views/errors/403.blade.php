@@ -1,12 +1,15 @@
-@extends('layouts.main')
+@extends($isPanneau ? 'panneau::layout' : 'layouts.main')
 
-@section('title', trans('meta.title_403'))
-@section('description', array_get($meta, 'description', trans('meta.description')))
-@section('thumbnail', array_get($meta, 'thumbnail', trans('meta.thumbnail')))
-@section('title_facebook', trans('meta.title_403'))
-@section('description_facebook', array_get($meta, 'description_facebook', array_get($meta, 'description', trans('meta.description'))))
+@if(isset($inWebpack) && $inWebpack)
+    @section('assets:body')
+        <script type="text/javascript" src="/static/js/bundle.js"></script>
+        <script type="text/javascript" src="/static/js/main.chunk.js"></script>
+    @endsection
+@else
+    @include('assets')
+@endif
 
-@section('body')
-    <div id="root"></div>
-    <script id="root-props" type="application/json">{!! json_encode($props) !!}</script>
+@section('content')
+    <div id="app"></div>
+    <script type="application/json" id="app-props">@json($props)</script>
 @endsection
