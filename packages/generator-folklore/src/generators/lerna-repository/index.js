@@ -97,15 +97,6 @@ module.exports = class LernaRepositoryGenerator extends Generator {
             quiet: true,
         });
 
-        this.composeWith('folklore:babel', {
-            'skip-install': this.options['skip-install'],
-            quiet: true,
-            compile: true,
-            'transform-runtime': true,
-            'hot-reload': true,
-            'react-intl': true,
-        });
-
         this.composeWith('folklore:test', {
             'skip-install': this.options['skip-install'],
             quiet: true,

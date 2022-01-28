@@ -96,7 +96,7 @@ module.exports = class AppGenerator extends Generator {
             type: String,
         });
 
-        this.buildPath = filePath => this.destinationPath(path.join(this.options.path, filePath));
+        this.buildPath = (filePath) => this.destinationPath(path.join(this.options.path, filePath));
     }
 
     get prompting() {
@@ -115,149 +115,26 @@ module.exports = class AppGenerator extends Generator {
 
     get writing() {
         return {
-            config() {
-                const templateData = {
-                    hasHtml: (this.options['html-path'] || null) !== null,
-                    hasServer: this.options.server || false,
-                    hasServerProxy: this.options['server-proxy'] || false,
-                    serverProxyHost: this.options['server-proxy-host'] || null,
-                    serverBrowserHost: this.options['server-browser-host'] || null,
-                    hasImagemin: this.options.imagemin,
-                    imageminFiles:
-                        (this.options['imagemin-files'] || null) !== null
-                        && !isArray(this.options['imagemin-files'])
-                            ? [this.options['imagemin-files']]
-                            : this.options['imagemin-files'],
-                    imageminOutputPath: this.options['imagemin-output-path'] || null,
-                };
+            // config() {
+            //     const templateData = {
+            //         hasHtml: (this.options['html-path'] || null) !== null,
+            //         hasServer: this.options.server || false,
+            //         hasServerProxy: this.options['server-proxy'] || false,
+            //         serverProxyHost: this.options['server-proxy-host'] || null,
+            //         serverBrowserHost: this.options['server-browser-host'] || null,
+            //         hasImagemin: this.options.imagemin,
+            //         imageminFiles:
+            //             (this.options['imagemin-files'] || null) !== null
+            //             && !isArray(this.options['imagemin-files'])
+            //                 ? [this.options['imagemin-files']]
+            //                 : this.options['imagemin-files'],
+            //         imageminOutputPath: this.options['imagemin-output-path'] || null,
+            //     };
 
-                const srcPath = this.templatePath('config.js');
-                const destPath = this.buildPath('config.js');
-                this.fs.copyTpl(srcPath, destPath, templateData);
-            },
-
-            env() {
-                const srcPath = this.templatePath('env.js');
-                const destPath = this.buildPath('env.js');
-                this.fs.copy(srcPath, destPath);
-            },
-
-            polyfills() {
-                const srcPath = this.templatePath('polyfills.js');
-                const destPath = this.buildPath('polyfills.js');
-                this.fs.copy(srcPath, destPath);
-            },
-
-            paths() {
-                const templateData = {
-                    entryPath: this.options['entry-path'] || null,
-                    buildPath: this.options['build-path'] || null,
-                    publicPath: this.options['public-path'] || this.options['build-path'] || null,
-                    srcPath: this.options['src-path'] || null,
-                    htmlPath: this.options['html-path'] || null,
-                    watchPaths:
-                        (this.options['watch-path'] || null) !== null
-                        && !isArray(this.options['watch-path'])
-                            ? [...this.options['watch-path'].split(',')]
-                            : this.options['watch-path'],
-                    emptyPaths:
-                        (this.options['empty-path'] || null) !== null
-                        && !isArray(this.options['empty-path'])
-                            ? [...this.options['empty-path'].split(',')]
-                            : this.options['empty-path'],
-                    copyPaths:
-                        (this.options['copy-path'] || null) !== null
-                        && !isArray(this.options['copy-path'])
-                            ? [...this.options['copy-path'].split(',')]
-                            : this.options['copy-path'],
-                };
-
-                const srcPath = this.templatePath('paths.js');
-                const destPath = this.buildPath('paths.js');
-                this.fs.copyTpl(srcPath, destPath, templateData);
-            },
-
-            utils() {
-                const srcPath = this.templatePath('utils');
-                const destPath = this.buildPath('utils');
-                this.fs.copy(srcPath, destPath);
-            },
-
-            webpack() {
-                const templateData = {};
-
-                const devSrcPath = this.templatePath('webpack.config.dev.js');
-                const devDestPath = this.buildPath('webpack.config.dev.js');
-                this.fs.copyTpl(devSrcPath, devDestPath, templateData);
-
-                const prodSrcPath = this.templatePath('webpack.config.prod.js');
-                const prodDestPath = this.buildPath('webpack.config.prod.js');
-                this.fs.copyTpl(prodSrcPath, prodDestPath, templateData);
-            },
-
-            webpackDevServer() {
-                if (!this.options.server) {
-                    return;
-                }
-                const templateData = {};
-
-                const srcPath = this.templatePath('webpackDevServer.config.js');
-                const destPath = this.buildPath('webpackDevServer.config.js');
-                this.fs.copyTpl(srcPath, destPath, templateData);
-            },
-
-            postcssConfig() {
-                const templateData = {};
-
-                const srcPath = this.templatePath('postcss.config.js');
-                const destPath = this.buildPath('postcss.config.js');
-                this.fs.copyTpl(srcPath, destPath, templateData);
-            },
-
-            imagemin() {
-                if (!this.options.imagemin) {
-                    return;
-                }
-
-                const templateData = {};
-
-                const srcPath = this.templatePath('scripts/imagemin.js');
-                const destPath = this.buildPath('scripts/imagemin.js');
-                this.fs.copyTpl(srcPath, destPath, templateData);
-            },
-
-            modernizr() {
-                if (!this.options.modernizr) {
-                    return;
-                }
-
-                const templateData = {
-                    outputPath: this.options['modernizr-output-path'] || null,
-                };
-
-                const srcPath = this.templatePath('scripts/modernizr.js');
-                const destPath = this.buildPath('scripts/modernizr.js');
-                this.fs.copyTpl(srcPath, destPath, templateData);
-            },
-
-            build() {
-                const templateData = {};
-
-                const srcPath = this.templatePath('scripts/build.js');
-                const destPath = this.buildPath('scripts/build.js');
-                this.fs.copyTpl(srcPath, destPath, templateData);
-            },
-
-            server() {
-                if (!this.options.server) {
-                    return;
-                }
-                const templateData = {};
-
-                const srcPath = this.templatePath('scripts/server.js');
-                const destPath = this.buildPath('scripts/server.js');
-                this.fs.copyTpl(srcPath, destPath, templateData);
-            },
+            //     const srcPath = this.templatePath('config.js');
+            //     const destPath = this.buildPath('config.js');
+            //     this.fs.copyTpl(srcPath, destPath, templateData);
+            // },
 
             packageJSON() {
                 const prodWebpackPath = path.join(this.options.path, 'webpack.config.prod.js');

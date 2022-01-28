@@ -70,12 +70,6 @@ module.exports = class JsGenerator extends Generator {
 
     configuring() {
         const skipInstall = this.options['skip-install'];
-        this.composeWith('folklore:babel', {
-            'react-app': !this.options['babel-compile'],
-            compile: this.options['babel-compile'],
-            'skip-install': skipInstall,
-            quiet: true,
-        });
 
         this.composeWith('folklore:eslint', {
             'skip-install': skipInstall,
@@ -90,12 +84,13 @@ module.exports = class JsGenerator extends Generator {
                 const stylesPath = this.options['styles-path'] || null;
 
                 const templateData = {
-                    getRelativeStylesPath: (from, src) => path.relative(
-                        this.destinationPath(path.dirname(path.join(jsPath, from))),
-                        this.destinationPath(
-                            path.join(stylesPath || path.join(jsPath, 'styles'), src),
+                    getRelativeStylesPath: (from, src) =>
+                        path.relative(
+                            this.destinationPath(path.dirname(path.join(jsPath, from))),
+                            this.destinationPath(
+                                path.join(stylesPath || path.join(jsPath, 'styles'), src),
+                            ),
                         ),
-                    ),
                 };
 
                 const destPath = this.destinationPath(jsPath);
@@ -116,7 +111,8 @@ module.exports = class JsGenerator extends Generator {
             styles() {
                 const templateData = {};
 
-                const stylesPath = this.options['styles-path'] || path.join(this.options.path, 'styles');
+                const stylesPath =
+                    this.options['styles-path'] || path.join(this.options.path, 'styles');
                 const srcPath = this.templatePath('styles');
                 const destPath = this.destinationPath(stylesPath);
                 this.fs.copyTpl(srcPath, destPath, templateData);

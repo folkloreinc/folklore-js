@@ -1,6 +1,13 @@
 {
-    "extends": ["airbnb", "prettier", "prettier/react"],
-    "parser": "babel-eslint",
+    "extends": [
+        "airbnb",
+        "prettier"
+    ],
+    "parser": "@babel/eslint-parser",
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "requireConfigFile": false
+    },
     "env": {
         "browser": true,
         "node": true,
@@ -8,9 +15,23 @@
         "jest": true
     },
     "rules": {
-        "react/jsx-indent": ["error", 4],
-        "react/jsx-indent-props": ["error", 4],
-        "no-console": ["error", { "allow": ["warn", "error"] }]
+        "react/jsx-indent": [
+            "error",
+            4
+        ],
+        "react/jsx-indent-props": [
+            "error",
+            4
+        ],
+        "no-console": [
+            "error",
+            {
+                "allow": [
+                    "warn",
+                    "error"
+                ]
+            }
+        ]
     },
     "globals": {
         "__DEV__": true

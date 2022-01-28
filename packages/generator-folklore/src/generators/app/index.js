@@ -83,20 +83,12 @@ module.exports = class AppGenerator extends Generator {
                                 value: 'build',
                             },
                             {
-                                name: 'Babel',
-                                value: 'babel',
-                            },
-                            {
                                 name: 'Eslint',
                                 value: 'eslint',
                             },
                             {
                                 name: 'Stylelint',
                                 value: 'stylelint',
-                            },
-                            {
-                                name: 'SASS Lint',
-                                value: 'sass-lint',
                             },
                             {
                                 name: 'Test',
@@ -122,16 +114,15 @@ module.exports = class AppGenerator extends Generator {
                     return null;
                 }
 
-                return this.prompt(prompts)
-                    .then((answers) => {
-                        if (answers.type) {
-                            this.options.type = answers.type;
-                        }
+                return this.prompt(prompts).then((answers) => {
+                    if (answers.type) {
+                        this.options.type = answers.type;
+                    }
 
-                        if (answers['project-name']) {
-                            this.options['project-name'] = answers['project-name'];
-                        }
-                    });
+                    if (answers['project-name']) {
+                        this.options['project-name'] = answers['project-name'];
+                    }
+                });
             },
         };
     }

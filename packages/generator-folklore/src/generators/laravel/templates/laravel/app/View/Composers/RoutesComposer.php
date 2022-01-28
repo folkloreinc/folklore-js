@@ -18,8 +18,6 @@ class RoutesComposer
     protected $localizedRoutes = [
         'home',
         'home.json',
-        'index',
-        'index.json',
     ];
 
     protected $localizedHandles = ['calendar', 'films', 'articles', 'search', 'tickets'];

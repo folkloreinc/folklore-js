@@ -248,6 +248,7 @@ module.exports = class LaravelGenerator extends Generator {
             project_name: this.options['project-name'],
         }).replace(/^(http)?(s)?(:\/\/)?/, 'http$2://');
 
+        // Includes eslint
         this.composeWith('folklore:js', {
             'project-name': this.options['project-name'],
             path: jsSrcPath,
@@ -257,14 +258,6 @@ module.exports = class LaravelGenerator extends Generator {
         });
 
         this.composeWith('folklore:editorconfig', {
-            quiet: true,
-        });
-
-        this.composeWith('folklore:eslint', {
-            quiet: true,
-        });
-
-        this.composeWith('folklore:stylelint', {
             quiet: true,
         });
 
@@ -504,15 +497,6 @@ module.exports = class LaravelGenerator extends Generator {
                 this.spawnCommand('chmod', ['-R', '777', 'public/files']);
             },
 
-            keyGenerate() {
-                if (this.options['skip-install']) {
-                    return;
-                }
-
-                const done = this.async();
-                this.spawnCommand('php', ['artisan', 'key:generate']).on('close', done);
-            },
-
             vendorPublish() {
                 if (this.options['skip-install']) {
                     return;
@@ -520,6 +504,15 @@ module.exports = class LaravelGenerator extends Generator {
 
                 const done = this.async();
                 this.spawnCommand('php', ['artisan', 'vendor:publish', '--all']).on('close', done);
+            },
+
+            keyGenerate() {
+                if (this.options['skip-install']) {
+                    return;
+                }
+
+                const done = this.async();
+                this.spawnCommand('php', ['artisan', 'key:generate']).on('close', done);
             },
         };
     }
