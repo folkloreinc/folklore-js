@@ -54,47 +54,32 @@ module.exports = class AppGenerator extends Generator {
             defaults: false,
         });
 
-        this.option('server-proxy-host', {
-            type: String,
-        });
+        // this.option('server-proxy-host', {
+        //     type: String,
+        // });
 
-        this.option('server-browser-host', {
-            type: String,
-        });
-
-        this.option('modernizr', {
-            type: Boolean,
-            defaults: false,
-        });
-
-        this.option('modernizr-output-path', {
-            type: String,
-            defaults: './dist/modernizr.js',
-        });
+        // this.option('server-browser-host', {
+        //     type: String,
+        // });
 
         this.option('imagemin', {
             type: Boolean,
             defaults: false,
         });
 
-        this.option('imagemin-files', {
-            type: String,
-            defaults: './src/img/**/*.{jpg,png,jpeg,gif,svg}',
-        });
-
-        this.option('imagemin-output-path', {
-            type: String,
-            defaults: './dist/img/',
-        });
-
-        this.option('copy', {
+        this.option('intl', {
             type: Boolean,
             defaults: false,
         });
 
-        this.option('copy-path', {
-            type: String,
-        });
+        // this.option('copy', {
+        //     type: Boolean,
+        //     defaults: false,
+        // });
+
+        // this.option('copy-path', {
+        //     type: String,
+        // });
 
         this.buildPath = (filePath) => this.destinationPath(path.join(this.options.path, filePath));
     }
@@ -136,15 +121,36 @@ module.exports = class AppGenerator extends Generator {
             //     this.fs.copyTpl(srcPath, destPath, templateData);
             // },
 
+            images() {
+                if (this.options.imagemin) {
+                    const srcPath = this.templatePath('scripts/images.sh');
+                    const destPath = this.destinationPath('scripts/images.sh');
+                    this.fs.copyTpl(srcPath, destPath);
+                }
+            },
+
             packageJSON() {
-                const prodWebpackPath = path.join(this.options.path, 'webpack.config.prod.js');
                 const scripts = {
-                    build: `node ./build/scripts/build.js --config ${prodWebpackPath}`,
+                    clean: 'rm -rf public/static && rm -rf public/precache-*',
+                    'build:scripts': 'flklr build --load-env ./resources/assets/js/index.js',
+                    build: 'npm run clean && npm run build:scripts && npm run build:images',
+                    server: 'flklr serve --load-env ./resources/assets/js/index.js',
+                    start: 'npm run server',
+                    // intl: "flklr intl --po --ast --output-path ./resources/lang 'resources/assets/js/**/*.{js,jsx}'",
                 };
-                if (this.options.server) {
-                    const devWebpackPath = path.join(this.options.path, 'webpack.config.dev.js');
-                    scripts.server = `node ./build/scripts/server.js --config ${devWebpackPath}`;
-                    scripts.start = 'npm run server';
+
+                if (this.options.laravel) {
+                    scripts['build:views'] = 'php artisan view:assets';
+                    scripts.build = scripts.build + ' && npm run build:views';
+                }
+
+                if (this.options.imagemin) {
+                    scripts['build:images'] = './scripts/images.sh';
+                }
+
+                if (this.options.intl) {
+                    scripts.intl =
+                        "flklr intl --po --ast --output-path ./resources/lang 'resources/assets/js/**/*.{js,jsx}'";
                 }
 
                 const destPath = this.destinationPath('package.json');
@@ -168,64 +174,18 @@ module.exports = class AppGenerator extends Generator {
                     return;
                 }
 
-                const devDependencies = [
-                    // Loaders
-                    'babel-loader@latest',
-                    'css-loader@latest',
-                    'eslint-loader@latest',
-                    'file-loader@latest',
-                    'postcss-loader@latest',
-                    'sass-loader@latest',
-                    'style-loader@latest',
-                    'url-loader@latest',
-
-                    // Plugins
-                    'html-webpack-plugin@^4.0.0-alpha.2',
-                    'webpack-manifest-plugin@latest',
-                    'case-sensitive-paths-webpack-plugin@latest',
-                    'postcss-preset-env@latest',
-                    'postcss-safe-parser@latest',
-                    'postcss-flexbugs-fixes@latest',
-                    'pnp-webpack-plugin@latest',
-                    'babel-preset-react-app@^6.1.0',
-                    'babel-plugin-named-asset-import@latest',
-                    'terser-webpack-plugin@latest',
-                    'mini-css-extract-plugin@latest',
-                    'optimize-css-assets-webpack-plugin@latest',
-                    'workbox-webpack-plugin@latest',
-
-                    // Others
-                    'autoprefixer@latest',
-                    'cssnano@latest',
-                    'chalk@latest',
-                    'dotenv@latest',
-                    'dotenv-expand@latest',
-                    'node-sass@latest',
-                    'fs-extra@latest',
-                    'glob@latest',
-                    'pretty-bytes@latest',
-                    'react-dev-utils@^10.0.0',
-                    'webpack@^4.0', // TODO: update webpack 4
-                ];
+                const devDependencies = ['@folklore/cli@latest'];
 
                 const dependencies = [
                     'whatwg-fetch',
-                    'core-js@^2.4.0',
-                    'promise',
-                    'raf',
+                    'core-js@latest',
                     'lodash@latest',
                     'object-assign',
+                    'raf',
                 ];
 
-                if (this.options.server) {
-                    devDependencies.push('webpack-dev-server@^3.1');
-                }
-
                 if (this.options.imagemin) {
-                    devDependencies.push('imagemin@latest');
-                    devDependencies.push('imagemin-mozjpeg@latest');
-                    devDependencies.push('imagemin-svgo@latest');
-                    devDependencies.push('imagemin-pngquant@latest');
+                    devDependencies.push('imagemin-cli');
                 }
 
                 this.npmInstall(dependencies, {

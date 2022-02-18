@@ -261,6 +261,7 @@ module.exports = class LaravelGenerator extends Generator {
             quiet: true,
         });
 
+        // Includes stylelint
         this.composeWith('folklore:scss', {
             'project-name': this.options['project-name'],
             path: stylesSrcPath,
@@ -269,6 +270,8 @@ module.exports = class LaravelGenerator extends Generator {
         });
 
         this.composeWith('folklore:build', {
+            laravel: true,
+            imagemin: true,
             path: buildPath,
             'src-path': assetsPath,
             'build-path': publicPath,
