@@ -48,8 +48,8 @@ module.exports = class StylelintGenerator extends Generator {
                 'stylelint',
                 'stylelint-config-property-sort-order-smacss',
                 'stylelint-config-recommended',
+                'stylelint-config-prettier',
                 'stylelint-config-sass-guidelines',
-                'stylelint-scss',
             ],
             {
                 'save-dev': true,

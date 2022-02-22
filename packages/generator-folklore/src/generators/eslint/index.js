@@ -44,7 +44,7 @@ module.exports = class EslintGenerator extends Generator {
         this.npmInstall(
             [
                 'babel-preset-airbnb@latest',
-                'babel-eslint@latest',
+                '@babel/eslint-parser@latest',
                 'eslint@latest',
                 'eslint-config-airbnb@latest',
                 'eslint-config-prettier@latest',
@@ -52,6 +52,7 @@ module.exports = class EslintGenerator extends Generator {
                 'eslint-plugin-import',
                 'eslint-plugin-jsx-a11y',
                 'eslint-plugin-react',
+                'eslint-plugin-formatjs',
             ],
             {
                 'save-dev': true,

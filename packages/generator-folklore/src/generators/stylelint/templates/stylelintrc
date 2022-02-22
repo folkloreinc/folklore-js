@@ -1,7 +1,12 @@
 {
-    "extends": ["stylelint-config-sass-guidelines", "stylelint-config-property-sort-order-smacss"],
+    "extends": [
+        "stylelint-config-sass-guidelines",
+        "stylelint-config-property-sort-order-smacss",
+        "stylelint-config-prettier"
+    ],
     "rules": {
         "indentation": 4,
+        "alpha-value-notation": "number",
         "order/properties-alphabetical-order": null,<% if (camelCase) {%>
         "selector-class-pattern": [
             "^[a-z][a-z0-9A-Z]+$",
