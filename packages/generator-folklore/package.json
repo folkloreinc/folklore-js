@@ -29,14 +29,14 @@
     },
     "homepage": "https://github.com/folkloreinc/folklore-js/tree/master/packages/generator-folklore#readme",
     "dependencies": {
-        "chalk": "^2.1.0",
-        "change-case": "^3.0.1",
-        "glob": "^7.1.2",
-        "immutable": "^3.8.1",
+        "chalk": "^4.0.0",
+        "change-case": "^4.1.2",
+        "glob": "^7.2.0",
+        "immutable": "^4.0.0",
         "is-utf8": "^0.2.1",
-        "lodash": "^4.17.4",
-        "password-generator": "^2.0.2",
-        "yeoman-generator": "^2.0.3",
+        "lodash": "^4.17.21",
+        "password-generator": "^2.3.2",
+        "yeoman-generator": "^5.6.1",
         "yeoman-remote": "^1.0.1"
     },
     "gitHead": "03cdca76413a59fe6bf04ca04e12db6f9e3aad5e"

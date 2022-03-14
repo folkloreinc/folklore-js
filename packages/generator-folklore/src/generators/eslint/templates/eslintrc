@@ -1,16 +1,12 @@
 {
-    "extends": [
-        "airbnb",
-        "prettier"
-    ],
+    "extends": ["airbnb", "prettier"],
+    "plugins": ["formatjs"],
     "parser": "@babel/eslint-parser",
     "parserOptions": {
         "ecmaVersion": "latest",
         "requireConfigFile": false,
         "babelOptions": {
-            "presets": [
-                "@babel/preset-react"
-            ]
+            "presets": ["@babel/preset-react"]
         }
     },
     "env": {
@@ -20,23 +16,27 @@
         "jest": true
     },
     "rules": {
-        "react/jsx-indent": [
+        "react/jsx-indent": ["error", 4],
+        "react/jsx-indent-props": ["error", 4],
+        "react/function-component-definition": [
             "error",
-            4
-        ],
-        "react/jsx-indent-props": [
-            "error",
-            4
+            {
+                "namedComponents": [
+                    "arrow-function",
+                    "function-declaration",
+                    "function-expression"
+                ],
+                "unnamedComponents": "function-expression"
+            }
         ],
         "no-console": [
             "error",
             {
-                "allow": [
-                    "warn",
-                    "error"
-                ]
+                "allow": ["warn", "error"]
             }
-        ]
+        ],
+        "formatjs/enforce-default-message": ["error", "literal"],
+        "formatjs/no-camel-case": ["error"]
     },
     "globals": {
         "__DEV__": true

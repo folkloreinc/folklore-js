@@ -46,10 +46,9 @@ module.exports = class StylelintGenerator extends Generator {
         this.npmInstall(
             [
                 'stylelint',
-                'stylelint-config-property-sort-order-smacss',
-                'stylelint-config-recommended',
-                'stylelint-config-prettier',
-                'stylelint-config-sass-guidelines',
+                'stylelint-config-standard-scss',
+                'stylelint-config-idiomatic-order',
+                'stylelint-config-prettier'
             ],
             {
                 'save-dev': true,
