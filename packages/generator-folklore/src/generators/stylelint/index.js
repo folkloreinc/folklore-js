@@ -38,12 +38,12 @@ module.exports = class StylelintGenerator extends Generator {
         };
     }
 
-    install() {
+    async install() {
         if (this.options['skip-install']) {
             return;
         }
 
-        this.addDevDependencies(
+        await this.addDevDependencies(
             [
                 'stylelint',
                 'stylelint-config-standard-scss',

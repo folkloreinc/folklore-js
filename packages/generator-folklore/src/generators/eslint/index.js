@@ -28,27 +28,22 @@ module.exports = class EslintGenerator extends Generator {
                 const destPath = this.destinationPath('.eslintignore');
                 this.fs.copy(srcPath, destPath);
             },
-            prettierrc() {
-                const srcPath = this.templatePath('prettierrc.json');
-                const destPath = this.destinationPath('.prettierrc.json');
-                this.fs.copy(srcPath, destPath);
-            },
         };
     }
 
-    install() {
+    async install() {
         if (this.options['skip-install']) {
             return;
         }
 
-        this.addDevDependencies(
+        await this.addDevDependencies(
             [
-                'babel-preset-airbnb@latest',
-                '@babel/eslint-parser@latest',
-                'eslint@latest',
-                'eslint-config-airbnb@latest',
-                'eslint-config-prettier@latest',
-                'eslint-plugin-prettier@latest',
+                'babel-preset-airbnb',
+                '@babel/eslint-parser',
+                'eslint',
+                'eslint-config-airbnb',
+                'eslint-config-prettier',
+                'eslint-plugin-prettier',
                 'eslint-plugin-import',
                 'eslint-plugin-jsx-a11y',
                 'eslint-plugin-react',
