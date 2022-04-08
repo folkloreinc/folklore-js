@@ -81,7 +81,7 @@ module.exports = class StorybookGenerator extends Generator {
                     return;
                 }
 
-                this.npmInstall([
+                this.addDevDependencies([
                     '@storybook/addon-actions@latest',
                     '@storybook/addon-info@latest',
                     '@storybook/addon-storyshots@latest',
@@ -89,9 +89,7 @@ module.exports = class StorybookGenerator extends Generator {
                     '@storybook/react@latest',
                     '@storybook/storybook-deployer@latest',
                     'glob-loader@latest',
-                ], {
-                    'save-dev': true,
-                });
+                ]);
             },
         };
     }

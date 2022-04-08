@@ -351,13 +351,9 @@ module.exports = class AppGenerator extends Generator {
                     devDependencies.push('imagemin-pngquant@latest');
                 }
 
-                this.npmInstall(dependencies, {
-                    save: true,
-                });
+                this.addDependencies(dependencies);
 
-                this.npmInstall(devDependencies, {
-                    'save-dev': true,
-                });
+                this.addDevDependencies(devDependencies);
             },
         };
     }

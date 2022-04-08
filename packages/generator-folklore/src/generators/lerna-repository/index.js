@@ -227,11 +227,8 @@ module.exports = class LernaRepositoryGenerator extends Generator {
                     return;
                 }
 
-                this.npmInstall(
+                this.addDevDependencies(
                     ['lerna@latest', 'glob@latest', 'mkdirp@latest', '@babel/runtime@latest'],
-                    {
-                        'save-dev': true,
-                    },
                 );
             },
 

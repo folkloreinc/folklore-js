@@ -181,12 +181,7 @@ module.exports = class JsGenerator extends Generator {
 
         const devDependencies = ['html-webpack-plugin@latest'];
 
-        this.npmInstall(dependencies, {
-            save: true,
-        });
-
-        this.npmInstall(devDependencies, {
-            'save-dev': true,
-        });
+        this.addDependencies(dependencies);
+        this.addDevDependencies(devDependencies);
     }
 };

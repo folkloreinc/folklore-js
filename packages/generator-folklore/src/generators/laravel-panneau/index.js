@@ -136,9 +136,7 @@ module.exports = class LaravelPanneauGenerator extends Generator {
                     return;
                 }
 
-                this.npmInstall(['panneau@^0.6.53'], {
-                    save: true,
-                });
+                this.addDependencies(['panneau@^0.6.53']);
             },
         };
     }

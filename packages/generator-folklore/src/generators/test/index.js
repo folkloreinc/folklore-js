@@ -54,7 +54,7 @@ module.exports = class TestGenerator extends Generator {
                     return;
                 }
 
-                this.npmInstall([
+                this.addDevDependencies([
                     'babel-jest@latest',
                     'enzyme@latest',
                     'enzyme-adapter-react-16@latest',
@@ -63,9 +63,7 @@ module.exports = class TestGenerator extends Generator {
                     'jsdom@latest',
                     'react-test-renderer@latest',
                     'sinon@latest',
-                ], {
-                    'save-dev': true,
-                });
+                ]);
             },
         };
     }

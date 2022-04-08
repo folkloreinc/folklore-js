@@ -148,15 +148,13 @@ module.exports = class BabelGenerator extends Generator {
                 }
 
                 if (dependencies.length > 0) {
-                    this.npmInstall(dependencies, {
+                    this.addDependencies(dependencies, {
                         save: true,
                     });
                 }
 
                 if (devDependencies.length > 0) {
-                    this.npmInstall(devDependencies, {
-                        'save-dev': true,
-                    });
+                    this.addDevDependencies(devDependencies);
                 }
             },
         };

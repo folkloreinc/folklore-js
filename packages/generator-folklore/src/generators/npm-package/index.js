@@ -245,17 +245,13 @@ module.exports = class NpmPackageGenerator extends Generator {
                     return;
                 }
 
-                this.npmInstall([
+                this.addDependencies([
                     '@babel/runtime@latest',
-                ], {
-                    save: true,
-                });
+                ]);
 
-                this.npmInstall([
+                this.addDevDependencies([
                     'jest@latest',
-                ], {
-                    'save-dev': true,
-                });
+                ]);
             },
         };
     }

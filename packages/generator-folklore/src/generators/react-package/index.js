@@ -176,9 +176,7 @@ module.exports = class ReactPackageGenerator extends Generator {
                     return;
                 }
 
-                this.npmInstall(['react@latest', 'prop-types@latest', 'react-dom@latest'], {
-                    save: true,
-                });
+                this.addDependencies(['react@latest', 'prop-types@latest', 'react-dom@latest']);
             },
 
             npmInstallDev() {
@@ -186,7 +184,7 @@ module.exports = class ReactPackageGenerator extends Generator {
                     return;
                 }
 
-                this.npmInstall(
+                this.addDevDependencies(
                     [
                         'domready@latest',
                         'jquery@latest',
@@ -197,9 +195,6 @@ module.exports = class ReactPackageGenerator extends Generator {
                         'extract-text-webpack-plugin@latest',
                         'html-webpack-plugin@latest',
                     ],
-                    {
-                        'save-dev': true,
-                    },
                 );
             },
         };

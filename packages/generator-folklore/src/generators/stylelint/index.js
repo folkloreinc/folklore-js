@@ -43,16 +43,13 @@ module.exports = class StylelintGenerator extends Generator {
             return;
         }
 
-        this.npmInstall(
+        this.addDevDependencies(
             [
                 'stylelint',
                 'stylelint-config-standard-scss',
                 'stylelint-config-idiomatic-order',
                 'stylelint-config-prettier'
             ],
-            {
-                'save-dev': true,
-            },
         );
     }
 };

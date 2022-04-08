@@ -138,14 +138,10 @@ module.exports = class DocsGenerator extends Generator {
                     return;
                 }
 
-                this.npmInstall(['gitbook-cli@latest'], {
-                    'save-dev': true,
-                });
+                this.addDevDependencies(['gitbook-cli@latest']);
 
                 if (this.options.language === 'js') {
-                    this.npmInstall(['jsdoc@latest', 'jsdoc-babel@latest'], {
-                        'save-dev': true,
-                    });
+                    this.addDevDependencies(['jsdoc@latest', 'jsdoc-babel@latest']);
                 }
             },
         };
