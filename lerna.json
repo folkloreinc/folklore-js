@@ -6,5 +6,8 @@
         "publish": {
             "allowBranch": ["master", "develop"]
         }
+    },
+    "publishConfig": {
+        "access": "public"
     }
 }
