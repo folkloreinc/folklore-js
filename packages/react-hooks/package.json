@@ -1,6 +1,6 @@
 {
     "name": "@folklore/react-hooks",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "React hooks",
     "keywords": [
         "javascript",
@@ -36,9 +36,6 @@
         "clean": "rm -rf dist",
         "build": "rollup --config ../../rollup.config.js",
         "prepare": "npm run clean && npm run build"
-    },
-    "dependencies": {
-
     },
     "devDependencies": {
         "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
