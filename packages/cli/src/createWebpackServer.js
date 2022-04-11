@@ -6,6 +6,7 @@ import createWebpackCompiler from './createWebpackCompiler';
 const createWebpackServer = (config, opts = {}) => {
     const compiler = createWebpackCompiler(config);
     const { proxy = undefined, host = null, open = true, ...otherOpts } = opts;
+    const { historyApiFallback = typeof proxy === 'undefined' } = opts;
     const options = {
         allowedHosts: 'all',
         server: 'https',
@@ -13,6 +14,9 @@ const createWebpackServer = (config, opts = {}) => {
         client: {
             overlay: true,
         },
+        historyApiFallback: historyApiFallback === true ? {
+            index: 'index.html',
+        } : historyApiFallback,
         open,
         port: 'auto',
         host: host || (isString(proxy) ? url.parse(proxy).hostname : undefined),
