@@ -38,12 +38,12 @@
         "prepare": "npm run clean && npm run build"
     },
     "devDependencies": {
-        "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
-        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+        "react": "^17.0.0 || ^18.0.0",
+        "react-dom": "^17.0.0 || ^18.0.0"
     },
     "peerDependencies": {
         "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
         "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
     },
-    "gitHead": "03cdca76413a59fe6bf04ca04e12db6f9e3aad5e"
+    "gitHead": "5f74c1ecec6fcc42f26e76d14955ac4e7ea48cb0"
 }
