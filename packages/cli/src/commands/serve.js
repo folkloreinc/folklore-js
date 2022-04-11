@@ -22,6 +22,7 @@ setupWebpackCommand(command)
             packageJson = './package.json',
             loadEnv = false,
             envFile = null,
+            htmlPath = null,
             ...commandOptions
         } = command.opts();
 
@@ -55,6 +56,7 @@ setupWebpackCommand(command)
             proxy,
             open,
             host,
+            indexPath: htmlPath,
         });
 
         // Start server
