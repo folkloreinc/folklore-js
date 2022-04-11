@@ -1,0 +1,52 @@
+{
+    "name": "@folklore/react-hooks",
+    "version": "0.0.1",
+    "description": "React hooks",
+    "keywords": [
+        "javascript",
+        "size",
+        "ui",
+        "utils"
+    ],
+    "homepage": "https://github.com/folkloreinc/folklore-js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/folkloreinc/folklore-js.git"
+    },
+    "author": {
+        "name": "Folklore",
+        "email": "info@folklore.email"
+    },
+    "contributors": [
+        {
+            "name": "David Mongeau-Petitpas",
+            "email": "dmp@folklore.email"
+        },
+        {
+            "name": "Nicolas Roy-Bourdages",
+            "email": "nrb@folklore.email"
+        }
+    ],
+    "main": "dist/cjs.js",
+    "module": "dist/es.js",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "clean": "rm -rf dist",
+        "build": "rollup --config ../../rollup.config.js",
+        "prepare": "npm run clean && npm run build"
+    },
+    "dependencies": {
+
+    },
+    "devDependencies": {
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+    },
+    "peerDependencies": {
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+    },
+    "gitHead": "03cdca76413a59fe6bf04ca04e12db6f9e3aad5e"
+}
