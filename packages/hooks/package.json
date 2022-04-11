@@ -1,5 +1,5 @@
 {
-    "name": "@folklore/react-hooks",
+    "name": "@folklore/hooks",
     "version": "0.0.4",
     "description": "React hooks",
     "keywords": [
@@ -45,5 +45,5 @@
         "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
         "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
     },
-    "gitHead": "4ee114645b7773667513e04f1b67e881d720add8"
+    "gitHead": "69b9d2dd43fd2d7ce87425b3d86dc08736d3c1ae"
 }
