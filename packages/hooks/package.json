@@ -1,6 +1,6 @@
 {
     "name": "@folklore/hooks",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "React hooks",
     "keywords": [
         "javascript",
@@ -50,6 +50,6 @@
     },
     "gitHead": "4434e099464ff1cf72dbaace7623c2ab6f69337b",
     "dependencies": {
-        "@folklore/events": "^0.0.2"
+        "@folklore/events": "^0.0.3"
     }
 }
