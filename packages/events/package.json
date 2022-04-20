@@ -1,7 +1,7 @@
 {
-    "name": "@folklore/hooks",
-    "version": "0.0.6",
-    "description": "React hooks",
+    "name": "@folklore/events",
+    "version": "0.0.1",
+    "description": "Events manager",
     "keywords": [
         "javascript",
         "size",
@@ -50,6 +50,7 @@
     },
     "gitHead": "4434e099464ff1cf72dbaace7623c2ab6f69337b",
     "dependencies": {
-        "@folklore/events": "^0.0.1"
+        "detect-passive-events": "^2.0.3",
+        "wolfy87-eventemitter": "^5.2.9"
     }
 }
