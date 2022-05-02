@@ -1,0 +1,55 @@
+{
+    "name": "@folklore/auth",
+    "version": "0.0.0",
+    "description": "Auth utilities",
+    "keywords": [
+        "javascript",
+        "forms",
+        "hooks",
+        "react"
+    ],
+    "homepage": "https://github.com/folkloreinc/folklore-js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/folkloreinc/folklore-js.git"
+    },
+    "author": {
+        "name": "Folklore",
+        "email": "info@folklore.email"
+    },
+    "contributors": [
+        {
+            "name": "David Mongeau-Petitpas",
+            "email": "dmp@folklore.email"
+        },
+        {
+            "name": "Nicolas Roy-Bourdages",
+            "email": "nrb@folklore.email"
+        }
+    ],
+    "main": "dist/cjs.js",
+    "module": "dist/es.js",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "clean": "rm -rf dist",
+        "build": "rollup --config ../../rollup.config.js",
+        "prepare": "npm run clean && npm run build"
+    },
+    "dependencies": {
+        "@babel/runtime": "^7.4.3",
+        "react-router": "^5.2.0"
+    },
+    "devDependencies": {
+        "prop-types": "^15.7.2",
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+    },
+    "peerDependencies": {
+        "prop-types": "^15.7.2",
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+    },
+    "gitHead": "03cdca76413a59fe6bf04ca04e12db6f9e3aad5e"
+}
