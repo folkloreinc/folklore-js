@@ -3,7 +3,7 @@ import fs from 'fs';
 import fsExtra from 'fs-extra';
 import { Command } from 'commander';
 import { extractAndWrite, extract, compileAndWrite, compile } from '@formatjs/cli';
-import { isArray } from 'lodash';
+import isArray from 'lodash/isArray';
 import getPathsFromGlob from '../getPathsFromGlob';
 import POFile from '../POFile';
 import getOptionsFromPackage from '../getOptionsFromPackage';
@@ -25,6 +25,7 @@ generateCommand
         'Pattern used to created auto-generated id',
         '[sha512:contenthash:base64:6]',
     )
+    .option('--without-id-only', 'Extract only messages without id')
     .action(async (srcPaths) => {
         const {
             outputPath,
@@ -33,6 +34,7 @@ generateCommand
             po = false,
             ast = false,
             idInterpolationPattern,
+            withoutIdOnly,
         } = generateCommand.opts();
 
         const packageJson = path.join(process.cwd(), './package.json');
@@ -41,16 +43,33 @@ generateCommand
         const locales = (!isArray(locale) && locale !== null ? [locale] : locale) ||
             supportedLocales || ['en'];
         const defaultLocale = sourceLocale || (locales.length > 0 ? locales[0] : null);
+        const generatedIdPrefix = '__GENERATED__';
+        const generatedIdPrefixRegExp = new RegExp(`^${generatedIdPrefix}(.*)$`);
 
         // Get extracted messages
         const files = getPathsFromGlob(srcPaths);
-        const extractedMessages = JSON.parse(
+        let extractedMessages = JSON.parse(
             await extract(files, {
                 throws: false,
-                idInterpolationPattern,
+                idInterpolationPattern: withoutIdOnly
+                    ? `${generatedIdPrefix}${idInterpolationPattern}`
+                    : idInterpolationPattern,
                 extractFromFormatMessageCall: true,
             }),
         );
+
+        // Filter messages with generated id only
+        if (withoutIdOnly) {
+            extractedMessages = Object.keys(extractedMessages).reduce((messagesMap, key) => {
+                const matches = key.match(generatedIdPrefixRegExp);
+                return matches !== null
+                    ? {
+                          ...messagesMap,
+                          [matches[1]]: extractedMessages[key],
+                      }
+                    : messagesMap;
+            }, {});
+        }
 
         for (let i = 0; i < locales.length; i += 1) {
             const currentLocale = locales[i];
@@ -108,13 +127,14 @@ extractCommand
     )
     .action(async (srcPaths) => {
         const { outputPath = null, idInterpolationPattern } = extractCommand.opts();
+        const absOutputPath = getAbsolutePath(outputPath);
         const files = getPathsFromGlob(srcPaths);
 
         if (outputPath !== null) {
             await extractAndWrite(files, {
                 throws: false,
                 idInterpolationPattern,
-                outFile: path.join(process.cwd(), destPath),
+                outFile: absOutputPath,
                 extractFromFormatMessageCall: true,
             });
         } else {
