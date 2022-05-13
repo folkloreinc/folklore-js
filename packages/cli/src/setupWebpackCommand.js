@@ -18,6 +18,10 @@ const setupWebpackCommand = (command) => {
             '--image-optimization <preset>',
             'Set images optimization preset (lossless, lossy)',
         )
+        .option(
+            '--babel-preset-env-use-builtins <value>',
+            'Set useBuiltIns of @babel/preset-env loader',
+        )
         .option('--loaders <path>', 'Path to loaders file')
         .option('--plugins <path>', 'Path to plugins file')
         .option('--merge-config <path>', 'Path to merge a config file')

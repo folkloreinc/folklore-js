@@ -35,6 +35,7 @@ export default (entry, opts = {}) => {
         disableImageOptimization = false,
         imageOptimization = 'lossless',
         imageDataUrlMaxSize = 5000,
+        babelPresetEnvUseBuiltins = 'entry'
     } = opts;
 
     const isProduction = process.env.NODE_ENV === 'production';
@@ -243,7 +244,7 @@ export default (entry, opts = {}) => {
                                         require.resolve('@babel/preset-env'),
                                         {
                                             modules: false,
-                                            useBuiltIns: 'entry',
+                                            useBuiltIns: babelPresetEnvUseBuiltins,
                                             corejs: 3,
                                         },
                                     ],
