@@ -16,12 +16,12 @@ const loadGoogleApi = createLoader(
             callback,
         ).then(() =>
             withClient
-                ? new Promise(resolve => {
+                ? new Promise((resolve) => {
                       window.gapi.load('client', resolve);
                   })
                 : null,
         ),
-    ({ withClient = true } = {}) =>
+    (_, { withClient = true } = {}) =>
         typeof window.gapi !== 'undefined' &&
         (!withClient || typeof window.gapi.client !== 'undefined')
             ? window.gapi

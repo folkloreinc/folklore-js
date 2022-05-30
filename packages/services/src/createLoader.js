@@ -21,7 +21,7 @@ const createLoader = (loader, getLibrary = null) => {
             loader(...args).then((loadedLibrary = null) => {
                 let library = loadedLibrary;
                 if (library === null && getLibrary !== null) {
-                    library = getLibrary(...args);
+                    library = getLibrary(loadedLibrary, ...args);
                 }
                 loaded = true;
                 resolve(library);
