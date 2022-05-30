@@ -50,6 +50,8 @@
     },
     "gitHead": "4434e099464ff1cf72dbaace7623c2ab6f69337b",
     "dependencies": {
-        "@folklore/events": "^0.0.3"
+        "@folklore/events": "^0.0.3",
+        "@folklore/services": "^0.1.30",
+        "debug": "^4.3.4"
     }
 }

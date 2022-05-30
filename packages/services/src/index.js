@@ -7,6 +7,7 @@ export { default as loadSrcPlayer } from './loadSrcPlayer';
 export { default as loadStripeCheckout } from './loadStripeCheckout';
 export { default as loadTikTok } from './loadTikTok';
 export { default as loadTwitter } from './loadTwitter';
+export { default as loadVimeo } from './loadVimeo';
 export { default as loadYouTube } from './loadYouTube';
 
 export { default as createLoader } from './createLoader';

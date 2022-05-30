@@ -37,6 +37,7 @@
     },
     "dependencies": {
         "@babel/runtime": "^7.4.3",
+        "@vimeo/player": "^2.16.4",
         "es6-promise": "^4.2.2",
         "lodash": "^4.17.4",
         "query-string": "^5.0.1",
