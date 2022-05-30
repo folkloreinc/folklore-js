@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useMemo, useState, useRef, useEffect, useCallback } from 'react';
 import { loadDailymotion } from '@folklore/services';
 import createDebug from 'debug';
 import usePlayerCurrentTime from './usePlayerCurrentTime';
@@ -23,6 +23,13 @@ const useDailymotionPlayer = (id = null, params = {}) => {
         uiStartScreenInfo = true,
         timeUpdateInterval = 1000,
         onTimeUpdate: customOnTimeUpdate = null,
+        getVideoId = (url) => {
+            if (url === null || url.match(/^https?:/) === null) {
+                return null;
+            }
+            const match = url.match(/\/video\/([^/?]+)/);
+            return match !== null ? match[1] : null;
+        },
     } = params;
 
     const [apiLoaded, setApiLoaded] = useState(typeof window.DM !== 'undefined');
@@ -32,6 +39,7 @@ const useDailymotionPlayer = (id = null, params = {}) => {
     const elementRef = useRef(null);
     const playerRef = useRef(null);
     const ready = apiLoaded && playerReady;
+    const videoId = useMemo(() => getVideoId(id), [id]);
 
     const [muted, setMuted] = useState(initialMuted);
     const [volume, setVolumeState] = useState(initialMuted ? 0 : 1);
@@ -71,7 +79,7 @@ const useDailymotionPlayer = (id = null, params = {}) => {
         const { current: DM = null } = apiRef;
         const { current: currentPlayer = null } = playerRef;
         const { current: element = null } = elementRef;
-        if (!apiLoaded || id === null || element === null) {
+        if (!apiLoaded || videoId === null || element === null) {
             return;
         }
         const playerParams = {
@@ -92,7 +100,7 @@ const useDailymotionPlayer = (id = null, params = {}) => {
             });
         } else {
             player = DM.player(element, {
-                video: id,
+                video: videoId,
                 width,
                 height,
                 params: playerParams,
@@ -106,7 +114,7 @@ const useDailymotionPlayer = (id = null, params = {}) => {
     }, [
         apiLoaded,
         elementRef.current,
-        id,
+        videoId,
         width,
         height,
         autoplay,
@@ -244,7 +252,7 @@ const useDailymotionPlayer = (id = null, params = {}) => {
     }, [
         playerRef.current,
         playerReady,
-        id,
+        videoId,
         setLoaded,
         setPlayState,
         setMetadata,
@@ -284,7 +292,7 @@ const useDailymotionPlayer = (id = null, params = {}) => {
 
     const { playing } = playState;
     const currentTime = usePlayerCurrentTime(playerRef.current, {
-        id,
+        id: videoId,
         disabled: !playing || timeUpdateInterval === null,
         updateInterval: timeUpdateInterval,
         onUpdate: customOnTimeUpdate,

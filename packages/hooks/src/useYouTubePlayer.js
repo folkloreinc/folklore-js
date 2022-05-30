@@ -5,25 +5,7 @@ import usePlayerCurrentTime from './usePlayerCurrentTime';
 
 export const NO_PLAYER_ERROR = new Error('No player');
 
-const getYoutubeVideoId = (url) => {
-    const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-    const match = url.match(regExp);
-    return match && match[7].length === 11 ? match[7] : false;
-};
-
 const debug = createDebug('folklore:video:youtube');
-
-export const isVideoId = (url) => url !== null && url.match(/^https?:/) === null;
-
-const getVideoId = (url) => {
-    if (url === null) {
-        return null;
-    }
-    if (isVideoId(url)) {
-        return url;
-    }
-    return getYoutubeVideoId(url);
-};
 
 function useYouTubePlayer(
     id,
@@ -37,6 +19,14 @@ function useYouTubePlayer(
         muted: initialMuted = false,
         onVolumeChange: customOnVolumeChange = null,
         onTimeUpdate: customOnTimeUpdate = null,
+        getVideoId = (url) => {
+            if (url === null || url.match(/^https?:/) === null) {
+                return null;
+            }
+            const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+            const match = url.match(regExp);
+            return match && match[7].length === 11 ? match[7] : null;
+        },
     } = {},
 ) {
     const [apiLoaded, setApiLoaded] = useState(typeof window.YT !== 'undefined');

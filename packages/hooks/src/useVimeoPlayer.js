@@ -5,22 +5,7 @@ import usePlayerCurrentTime from './usePlayerCurrentTime';
 
 const debug = createDebug('folklore:video:vimeo');
 
-export const NO_PLAYER_ERROR = new Error('No player');
-
-export const isVideoId = (url) => url !== null && url.match(/^[0-9]+$/);
-
-const getVideoId = (url) => {
-    if (url === null) {
-        return null;
-    }
-    if (isVideoId(url)) {
-        return url;
-    }
-    const match = url.match(/\/[0-9]+/);
-    return match !== null ? match[1] : null;
-};
-
-const noPlayerError = new Error('No player');
+const NO_PLAYER_ERROR = new Error('No player');
 
 const useVimeoPlayer = (
     id,
@@ -35,6 +20,13 @@ const useVimeoPlayer = (
         initialMuted = false,
         timeUpdateInterval = 1000,
         onTimeUpdate: customOnTimeUpdate = null,
+        getVideoId = (url) => {
+            if (url === null || url.match(/^[0-9]+$/) !== null) {
+                return url;
+            }
+            const match = url.match(/\/[0-9]+/);
+            return match !== null ? match[1] : null;
+        },
     } = {},
 ) => {
     const [apiLoaded, setApiLoaded] = useState(false);
@@ -79,37 +71,37 @@ const useVimeoPlayer = (
 
     const play = useCallback(() => {
         const { current: player } = playerRef;
-        return player !== null ? player.play() : Promise.reject(noPlayerError);
+        return player !== null ? player.play() : Promise.reject(NO_PLAYER_ERROR);
     }, []);
 
     const pause = useCallback(() => {
         const { current: player } = playerRef;
-        return player !== null ? player.pause() : Promise.reject(noPlayerError);
+        return player !== null ? player.pause() : Promise.reject(NO_PLAYER_ERROR);
     }, []);
 
     const setVolume = useCallback((newVolume) => {
         const { current: player } = playerRef;
-        return player !== null ? player.setVolume(newVolume) : Promise.reject(noPlayerError);
+        return player !== null ? player.setVolume(newVolume) : Promise.reject(NO_PLAYER_ERROR);
     }, []);
 
     const mute = useCallback(() => {
         const { current: player } = playerRef;
-        return player !== null ? player.setVolume(0) : Promise.reject(noPlayerError);
+        return player !== null ? player.setVolume(0) : Promise.reject(NO_PLAYER_ERROR);
     }, []);
 
     const unmute = useCallback(() => {
         const { current: player } = playerRef;
-        return player !== null ? player.setVolume(1) : Promise.reject(noPlayerError);
+        return player !== null ? player.setVolume(1) : Promise.reject(NO_PLAYER_ERROR);
     }, []);
 
     const seek = useCallback((time) => {
         const { current: player } = playerRef;
-        return player !== null ? player.setCurrentTime(time) : Promise.reject(noPlayerError);
+        return player !== null ? player.setCurrentTime(time) : Promise.reject(NO_PLAYER_ERROR);
     }, []);
 
     const setLoop = useCallback((loop) => {
         const { current: player } = playerRef;
-        return player !== null ? player.setLoop(loop) : Promise.reject(noPlayerError);
+        return player !== null ? player.setLoop(loop) : Promise.reject(NO_PLAYER_ERROR);
     }, []);
 
     const destroyVideo = useCallback(() => {
