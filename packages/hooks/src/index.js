@@ -1,7 +1,7 @@
 export { default as useDailymotionPlayer } from './useDailymotionPlayer';
 export { default as useDocumentEvent } from './useDocumentEvent';
 export { default as useKeyboard } from './useKeyboard';
-export { default as useNativePlayer } from './useNativePlayer';
+export { default as useNativeVideoPlayer } from './useNativeVideoPlayer';
 export * from './useObserver';
 export { default as usePlayerCurrentTime } from './usePlayerCurrentTime';
 export { default as useVideoPlayer } from './useVideoPlayer';
