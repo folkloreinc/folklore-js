@@ -225,7 +225,7 @@ function useYouTubePlayer(
         }
 
         playerRef.current = player;
-    }, [apiLoaded, videoId, setPlayState, setReady, setMetadata, destroyPlayer]);
+    }, [apiLoaded, videoId, elementRef.current, setPlayState, setReady, setMetadata, destroyPlayer]);
 
     const { playing } = playState;
     const getCurrentTime = useCallback((p) => p.getCurrentTime(), []);

@@ -161,7 +161,7 @@ const useVimeoPlayer = (
         }
 
         playerRef.current = player;
-    }, [apiLoaded, videoId, setReady, destroyVideo, setLoaded]);
+    }, [apiLoaded, videoId, elementRef.current, setReady, destroyVideo, setLoaded]);
 
     // Bind player events
     useEffect(() => {
