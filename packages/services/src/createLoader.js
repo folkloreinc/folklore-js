@@ -6,7 +6,7 @@ const createLoader = (loader, getLibrary = null) => {
     const events = new EventEmitter();
     return (...args) =>
         new Promise(resolve => {
-            const existingLibrary = getLibrary !== null ? getLibrary(...args) : null;
+            const existingLibrary = getLibrary !== null ? getLibrary(null, ...args) : null;
             if (loaded || existingLibrary !== null) {
                 resolve(existingLibrary);
                 return;
