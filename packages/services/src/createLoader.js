@@ -6,7 +6,7 @@ const createLoader = (loader, getLibrary = null) => {
     const events = new EventEmitter();
     return (...args) =>
         new Promise(resolve => {
-            const existingLibrary = getLibrary !== null ? getLibrary(null, ...args) : null;
+            const existingLibrary = getLibrary !== null ? getLibrary(...args) : null;
             if (loaded || existingLibrary !== null) {
                 resolve(existingLibrary);
                 return;
@@ -21,7 +21,7 @@ const createLoader = (loader, getLibrary = null) => {
             loader(...args).then((loadedLibrary = null) => {
                 let library = loadedLibrary;
                 if (library === null && getLibrary !== null) {
-                    library = getLibrary(loadedLibrary, ...args);
+                    library = getLibrary(...args);
                 }
                 loaded = true;
                 resolve(library);
