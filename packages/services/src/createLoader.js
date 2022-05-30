@@ -3,29 +3,32 @@ import EventEmitter from 'wolfy87-eventemitter';
 const createLoader = (loader, getLibrary = null) => {
     let loading = false;
     let loaded = false;
+    let loadedLibrary = null;
     const events = new EventEmitter();
     return (...args) =>
-        new Promise(resolve => {
-            const existingLibrary = getLibrary !== null ? getLibrary(...args) : null;
-            if (loaded || existingLibrary !== null) {
-                resolve(existingLibrary);
+        new Promise((resolve) => {
+            if (loadedLibrary === null && getLibrary !== null) {
+                loadedLibrary = getLibrary(...args);
+            }
+            if (loaded || loadedLibrary !== null) {
+                resolve(loadedLibrary);
                 return;
             }
 
             if (loading) {
-                events.once('loaded', resolve);
+                events.once('loaded', () => resolve(loadedLibrary));
                 return;
             }
 
             loading = true;
-            loader(...args).then((loadedLibrary = null) => {
-                let library = loadedLibrary;
-                if (library === null && getLibrary !== null) {
-                    library = getLibrary(...args);
+            loader(...args).then((newLibrary = null) => {
+                loadedLibrary = newLibrary;
+                if (loadedLibrary === null && getLibrary !== null) {
+                    loadedLibrary = getLibrary(...args);
                 }
                 loaded = true;
-                resolve(library);
-                events.emit('loaded', library);
+                resolve(loadedLibrary);
+                events.emit('loaded', loadedLibrary);
             });
         });
 };
