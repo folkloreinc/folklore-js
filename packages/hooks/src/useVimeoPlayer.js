@@ -34,6 +34,8 @@ const useVimeoPlayer = (
     const apiRef = useRef(null);
     const elementRef = useRef(null);
     const playerRef = useRef(null);
+    const playerElementRef = useRef(elementRef.current);
+    const elementHasChanged = elementRef.current !== playerElementRef.current;
 
     const videoId = useMemo(() => getVideoId(id), [id]);
     const [ready, setReady] = useState(false);
@@ -116,14 +118,13 @@ const useVimeoPlayer = (
         }
     }, []);
 
-    const playerElementRef = useRef(elementRef.current);
     useEffect(() => {
         const { current: currentPlayer } = playerRef;
         if (playerElementRef.current !== elementRef.current && currentPlayer !== null) {
             debug('iFrame switched');
             destroyVideo();
         }
-    });
+    }, [elementHasChanged]);
 
     // Create player
     useEffect(() => {
@@ -152,7 +153,6 @@ const useVimeoPlayer = (
                 .catch((e) => {
                     debug('ERROR: %o', e);
                 });
-            playerElementRef.current = element;
         } else {
             debug('Load video [ID: %s]', videoId);
             player.loadVideo(videoId).catch((e) => {
@@ -161,7 +161,8 @@ const useVimeoPlayer = (
         }
 
         playerRef.current = player;
-    }, [apiLoaded, videoId, elementRef.current, setReady, destroyVideo, setLoaded]);
+        playerElementRef.current = element;
+    }, [apiLoaded, videoId, elementHasChanged, setReady, destroyVideo, setLoaded]);
 
     // Bind player events
     useEffect(() => {

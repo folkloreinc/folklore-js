@@ -23,7 +23,8 @@ function useYouTubePlayer(
             if (url === null || url.match(/^https?:/) === null) {
                 return url;
             }
-            const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+            const regExp =
+                /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
             const match = url.match(regExp);
             return match && match[7].length === 11 ? match[7] : null;
         },
@@ -35,6 +36,7 @@ function useYouTubePlayer(
     const elementRef = useRef(null);
     const playerRef = useRef(null);
     const playerElementRef = useRef(elementRef.current);
+    const elementHasChanged = elementRef.current !== playerElementRef.current;
 
     const videoId = useMemo(() => getVideoId(id), [id]);
 
@@ -145,7 +147,7 @@ function useYouTubePlayer(
             debug('iFrame switched');
             destroyPlayer();
         }
-    }, [playerElementRef.current, elementRef.current, playerRef.current]);
+    }, [elementHasChanged]);
 
     // Create player
     useEffect(() => {
@@ -163,7 +165,6 @@ function useYouTubePlayer(
             player.loadVideoById(videoId);
         } else {
             debug('Create player [ID: %s]', videoId);
-            const { current: iframe } = elementRef;
 
             const onReady = ({ target }) => {
                 player = target;
@@ -205,7 +206,7 @@ function useYouTubePlayer(
                 debug('onStateChange %s [ID: %s]', stateLabel, videoId);
             };
 
-            player = new YT.Player(iframe, {
+            player = new YT.Player(element, {
                 videoId,
                 playerVars: {
                     controls,
@@ -221,11 +222,11 @@ function useYouTubePlayer(
                     onStateChange,
                 },
             });
-            playerElementRef.current = iframe;
         }
 
         playerRef.current = player;
-    }, [apiLoaded, videoId, elementRef.current, setPlayState, setReady, setMetadata, destroyPlayer]);
+        playerElementRef.current = element;
+    }, [apiLoaded, videoId, elementHasChanged, setPlayState, setReady, setMetadata, destroyPlayer]);
 
     const { playing } = playState;
     const getCurrentTime = useCallback((p) => p.getCurrentTime(), []);

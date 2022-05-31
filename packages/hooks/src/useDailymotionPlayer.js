@@ -36,10 +36,13 @@ const useDailymotionPlayer = (id = null, params = {}) => {
     const [playerReady, setPlayerReady] = useState(false);
     const [loaded, setLoaded] = useState(false);
     const apiRef = useRef(typeof window.DM !== 'undefined' ? window.DM : null);
-    const elementRef = useRef(null);
-    const playerRef = useRef(null);
     const ready = apiLoaded && playerReady;
     const videoId = useMemo(() => getVideoId(id), [id]);
+
+    const elementRef = useRef(null);
+    const playerRef = useRef(null);
+    const playerElementRef = useRef(elementRef.current);
+    const elementHasChanged = elementRef.current !== playerElementRef.current;
 
     const [muted, setMuted] = useState(initialMuted);
     const [volume, setVolumeState] = useState(initialMuted ? 0 : 1);
@@ -105,15 +108,15 @@ const useDailymotionPlayer = (id = null, params = {}) => {
                 height,
                 params: playerParams,
             });
-
-            playerRef.current = player;
         }
         if (!playerReady) {
             setPlayerReady(true);
         }
+        playerRef.current = player;
+        playerElementRef.current = element;
     }, [
         apiLoaded,
-        elementRef.current,
+        elementHasChanged,
         videoId,
         width,
         height,
