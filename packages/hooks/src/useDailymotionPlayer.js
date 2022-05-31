@@ -64,6 +64,7 @@ const useDailymotionPlayer = (id = null, params = {}) => {
     useEffect(() => {
         let canceled = false;
         if (!apiLoaded && videoId !== null) {
+            debug('Load API');
             loadDailymotion().then((api) => {
                 if (!canceled) {
                     apiRef.current = api;
@@ -98,9 +99,10 @@ const useDailymotionPlayer = (id = null, params = {}) => {
         };
         let player = currentPlayer;
         if (player !== null) {
-            player.load(id, {
+            player.load(videoId, {
                 params: playerParams,
             });
+            debug('Load video [ID: %s]', videoId);
         } else {
             player = DM.player(element, {
                 video: videoId,
@@ -108,6 +110,7 @@ const useDailymotionPlayer = (id = null, params = {}) => {
                 height,
                 params: playerParams,
             });
+            debug('Create player [ID: %s]', videoId);
         }
         if (!playerReady) {
             setPlayerReady(true);
@@ -142,6 +145,7 @@ const useDailymotionPlayer = (id = null, params = {}) => {
 
         function onPlaybackReady() {
             setLoaded(true);
+            debug('onPlaybackReady [ID: %s]', videoId);
         }
 
         function onLoadedMetadata() {
@@ -150,6 +154,7 @@ const useDailymotionPlayer = (id = null, params = {}) => {
                 duration: player.duration,
             };
             setMetadata(currentMetadata);
+            debug('onLoadedMetadata [ID: %s]', videoId);
         }
 
         function onDurationChange() {
@@ -158,11 +163,13 @@ const useDailymotionPlayer = (id = null, params = {}) => {
                 duration: player.duration,
             };
             setMetadata(currentMetadata);
+            debug('onDurationChange [ID: %s]', videoId);
         }
 
         function onVolumeChange() {
             setMuted(player.muted);
             setVolumeState(player.volume);
+            debug('onVolumeChange [ID: %s]', videoId);
         }
 
         function onPlay() {
@@ -173,6 +180,7 @@ const useDailymotionPlayer = (id = null, params = {}) => {
                 ended: false,
             };
             setPlayState(currentPlayState);
+            debug('onPlay [ID: %s]', videoId);
         }
 
         function onPause() {
@@ -183,6 +191,7 @@ const useDailymotionPlayer = (id = null, params = {}) => {
                 ended: false,
             };
             setPlayState(currentPlayState);
+            debug('onPause [ID: %s]', videoId);
         }
 
         function onEnd() {
@@ -193,6 +202,7 @@ const useDailymotionPlayer = (id = null, params = {}) => {
                 ended: true,
             };
             setPlayState(currentPlayState);
+            debug('onEnd [ID: %s]', videoId);
         }
 
         function onPlaying() {
@@ -201,6 +211,7 @@ const useDailymotionPlayer = (id = null, params = {}) => {
                 buffering: false,
             };
             setPlayState(currentPlayState);
+            debug('onPlaying [ID: %s]', videoId);
         }
 
         function onWaiting() {
@@ -209,6 +220,7 @@ const useDailymotionPlayer = (id = null, params = {}) => {
                 buffering: true,
             };
             setPlayState(currentPlayState);
+            debug('onWaiting [ID: %s]', videoId);
         }
 
         function onAdStart() {
@@ -217,6 +229,7 @@ const useDailymotionPlayer = (id = null, params = {}) => {
                 adPlaying: true,
             };
             setPlayState(currentPlayState);
+            debug('onAdStart [ID: %s]', videoId);
         }
 
         function onAdEnd() {
@@ -225,6 +238,7 @@ const useDailymotionPlayer = (id = null, params = {}) => {
                 adPlaying: false,
             };
             setPlayState(currentPlayState);
+            debug('onAdEnd [ID: %s]', videoId);
         }
 
         player.addEventListener('playback_ready', onPlaybackReady);

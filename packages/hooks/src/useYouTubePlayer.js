@@ -58,6 +58,7 @@ function useYouTubePlayer(
     useEffect(() => {
         let canceled = false;
         if (!apiLoaded && videoId !== null) {
+            debug('Load API');
             loadYouTube().then((api) => {
                 if (!canceled) {
                     apiRef.current = api;

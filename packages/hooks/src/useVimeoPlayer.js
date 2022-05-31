@@ -58,6 +58,7 @@ const useVimeoPlayer = (
     useEffect(() => {
         let canceled = false;
         if (!apiLoaded && id !== null) {
+            debug('Load API');
             loadVimeo().then((api) => {
                 if (!canceled) {
                     apiRef.current = api;
@@ -222,7 +223,10 @@ const useVimeoPlayer = (
             });
             debug('onPause [ID: %s]', videoId);
         };
-        const onVolumeChange = ({ volume: newVolume }) => setVolumeState(newVolume);
+        const onVolumeChange = ({ volume: newVolume }) => {
+            setVolumeState(newVolume);
+            debug('onVolumeChange [ID: %s]', videoId);
+        };
         const onEnded = () => {
             setPlayState({
                 playing: false,
@@ -230,6 +234,7 @@ const useVimeoPlayer = (
                 ended: true,
                 buffering: false,
             });
+            debug('onEnded [ID: %s]', videoId);
         };
         const onBufferStart = () => {
             setPlayState({
