@@ -158,7 +158,7 @@ function useYouTubePlayer(
         }
         let player = currentPlayer;
 
-        if (player !== null) {
+        if (player !== null && typeof player.loadVideoById !== 'undefined') {
             debug('Switch video [ID: %s]', videoId);
             player.loadVideoById(videoId);
         } else {
