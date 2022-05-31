@@ -1,16 +1,16 @@
 import { useEffect } from 'react';
 import EventsManager from '@folklore/events';
 
-export const eventsManager = typeof window !== 'undefined' ? new EventsManager(window) : null;
+export const windowEventsManager = typeof window !== 'undefined' ? new EventsManager(window) : null;
 
 const useWindowEvent = (event, callback) => {
     useEffect(() => {
-        if (eventsManager !== null && callback !== null) {
-            eventsManager.subscribe(event, callback);
+        if (windowEventsManager !== null && callback !== null) {
+            windowEventsManager.subscribe(event, callback);
         }
         return () => {
-            if (eventsManager !== null && callback !== null) {
-                eventsManager.unsubscribe(event, callback);
+            if (windowEventsManager !== null && callback !== null) {
+                windowEventsManager.unsubscribe(event, callback);
             }
         };
     }, [event, callback]);
