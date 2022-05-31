@@ -145,7 +145,7 @@ function useYouTubePlayer(
             debug('iFrame switched');
             destroyPlayer();
         }
-    });
+    }, [playerElementRef.current, elementRef.current, playerRef.current]);
 
     // Create player
     useEffect(() => {
