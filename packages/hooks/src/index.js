@@ -7,4 +7,6 @@ export { default as usePlayerCurrentTime } from './usePlayerCurrentTime';
 export { default as useVideoPlayer } from './useVideoPlayer';
 export { default as useVimeoPlayer } from './useVimeoPlayer';
 export * from './useWindowEvent';
+export { default as useWindowScroll } from './useWindowScroll';
+export { default as useWindowSize } from './useWindowSize';
 export { default as useYouTubePlayer } from './useYouTubePlayer';

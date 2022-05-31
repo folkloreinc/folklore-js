@@ -32,6 +32,7 @@
         "@rollup/plugin-commonjs": "^21.0.1",
         "@rollup/plugin-json": "^4.1.0",
         "@rollup/plugin-node-resolve": "^13.0.6",
+        "@trivago/prettier-plugin-sort-imports": "^3.2.0",
         "babel-eslint": "^10.1.0",
         "eslint": "^8.3.0",
         "eslint-config-airbnb": "^19.0.0",
