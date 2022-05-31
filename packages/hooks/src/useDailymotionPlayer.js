@@ -25,7 +25,7 @@ const useDailymotionPlayer = (id = null, params = {}) => {
         onTimeUpdate: customOnTimeUpdate = null,
         getVideoId = (url) => {
             if (url === null || url.match(/^https?:/) === null) {
-                return null;
+                return url;
             }
             const match = url.match(/\/video\/([^/?]+)/);
             return match !== null ? match[1] : null;
