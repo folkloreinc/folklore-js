@@ -21,7 +21,7 @@ function useYouTubePlayer(
         onTimeUpdate: customOnTimeUpdate = null,
         getVideoId = (url) => {
             if (url === null || url.match(/^https?:/) === null) {
-                return null;
+                return url;
             }
             const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
             const match = url.match(regExp);
