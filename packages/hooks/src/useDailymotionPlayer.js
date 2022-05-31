@@ -5,7 +5,7 @@ import usePlayerCurrentTime from './usePlayerCurrentTime';
 
 const noPlayerError = new Error('No player');
 
-const debug = createDebug('folklore:video:youtube');
+const debug = createDebug('folklore:video:dailymotion');
 
 const useDailymotionPlayer = (id = null, params = {}) => {
     const {
@@ -60,7 +60,7 @@ const useDailymotionPlayer = (id = null, params = {}) => {
     // Load SDK
     useEffect(() => {
         let canceled = false;
-        if (!apiLoaded && id !== null) {
+        if (!apiLoaded && videoId !== null) {
             loadDailymotion().then((api) => {
                 if (!canceled) {
                     apiRef.current = api;
@@ -72,7 +72,7 @@ const useDailymotionPlayer = (id = null, params = {}) => {
         return () => {
             canceled = true;
         };
-    }, [id]);
+    }, [videoId, apiLoaded, setApiLoaded]);
 
     // Create or update player
     useEffect(() => {
