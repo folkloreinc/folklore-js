@@ -82,7 +82,7 @@
         "invariant": "^2.2.4",
         "jest": "^24.7.1",
         "jquery-slim": "^3.0.0",
-        "jsdom": "^13.2.0",
+        "jsdom": "^16.5.0",
         "json-loader": "^0.5.7",
         "lerna": "^3.13.3",
         "lodash": "^4.17.11",
