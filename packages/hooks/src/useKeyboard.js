@@ -1,13 +1,20 @@
 import { useCallback } from 'react';
+
 import useWindowEvent from './useWindowEvent';
 
 function useKeyboard(keyMap = null) {
     const onKeyDown = useCallback(
         (event) => {
             const { key } = event;
-            const callback =
-                (typeof keyMap[key] === 'function' ? keyMap[key] : (keyMap[key] || {}).down) ||
-                null;
+            let callback = null;
+            if (typeof keyMap === 'function') {
+                callback = keyMap;
+            } else if (typeof keyMap[key] !== 'undefined') {
+                callback =
+                    typeof keyMap[key] === 'function'
+                        ? keyMap[key]
+                        : (keyMap[key] || {}).down || null;
+            }
             if (callback !== null) {
                 callback(event);
             }
@@ -17,10 +24,15 @@ function useKeyboard(keyMap = null) {
     const onKeyUp = useCallback(
         (event) => {
             const { key } = event;
-            const callback =
-                (typeof keyMap[key] !== 'undefined' && typeof keyMap[key] !== 'function'
-                    ? (keyMap[key] || {}).up
-                    : null) || null;
+            let callback = null;
+            if (typeof keyMap === 'function') {
+                callback = keyMap;
+            } else if (typeof keyMap[key] !== 'undefined') {
+                callback =
+                    typeof keyMap[key] === 'function'
+                        ? keyMap[key]
+                        : (keyMap[key] || {}).up || null;
+            }
             if (callback !== null) {
                 callback(event);
             }
