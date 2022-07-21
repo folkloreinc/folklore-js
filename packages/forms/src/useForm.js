@@ -1,7 +1,7 @@
-import { useState, useMemo, useCallback } from 'react';
 import { getCsrfToken, postJSON, getCSRFHeaders } from '@folklore/fetch';
-import isString from 'lodash/isString';
 import isObject from 'lodash/isObject';
+import isString from 'lodash/isString';
+import { useState, useMemo, useCallback } from 'react';
 
 // prettier-ignore
 const getFieldsPropsFromFields = (fields, {
@@ -40,6 +40,7 @@ const useForm = (opts = {}) => {
         initialValue = null,
         value: providedValue = null,
         setValue: setProvidedValue = null,
+        getFieldValue = null,
         onComplete = null,
     } = opts;
 
@@ -80,7 +81,7 @@ const useForm = (opts = {}) => {
         }
         setValue({
             ...value,
-            [fieldName]: fieldValue,
+            [fieldName]: getFieldValue !== null ? getFieldValue(fieldValue) : fieldValue,
         });
     }, fieldsKey);
     const fieldsProps = useMemo(
