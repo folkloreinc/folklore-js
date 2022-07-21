@@ -8,6 +8,7 @@ const setupWebpackCommand = (command) => {
         .option('--public-path <path>', 'Public path')
         .option('--html-path <path>', 'Path to HTML index file')
         .option('--html-template-parameters <path>', 'Path to a javascript file that will get passe as template parameters')
+        .option('--html-output-path <path>', 'Output path for HTML file')
         .option('--js-output-path <path>', 'Output path for javascript files')
         .option('--css-output-path <path>', 'Output path for CSS files')
         .option('--asset-output-path <path>', 'Output path for asset files')
