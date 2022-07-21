@@ -70,7 +70,7 @@ const useForm = (opts = {}) => {
         ? setProvidedGeneralError
         : setStateGeneralError;
 
-    const fieldsKey = [value, errors].concat(fields);
+    const fieldsKey = [value, errors, getFieldValue].concat(fields);
     const onFieldChange = useCallback((fieldName, fieldValue) => {
         const fieldErrors = errors !== null ? errors[fieldName] || null : null;
         if (fieldErrors !== null) {
