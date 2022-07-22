@@ -1,17 +1,18 @@
-import path from 'path';
-import { isString, isObject } from 'lodash';
-import { merge } from 'webpack-merge';
-import { DefinePlugin } from 'webpack';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import getCSSModuleLocalIdent from 'react-dev-utils/getCSSModuleLocalIdent';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
+import { isString, isObject } from 'lodash';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import path from 'path';
+import getCSSModuleLocalIdent from 'react-dev-utils/getCSSModuleLocalIdent';
+import { DefinePlugin } from 'webpack';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
+import { merge } from 'webpack-merge';
+
+import getAbsolutePath from './getAbsolutePath';
 import getAppEnv from './getAppEnv';
 import imageminPresets from './imageminPresets';
-import getAbsolutePath from './getAbsolutePath';
 
 export default (entry, opts = {}) => {
     const {
@@ -35,7 +36,7 @@ export default (entry, opts = {}) => {
         disableImageOptimization = false,
         imageOptimization = 'lossless',
         imageDataUrlMaxSize = 5000,
-        babelPresetEnvUseBuiltins = 'entry'
+        babelPresetEnvUseBuiltins = 'entry',
     } = opts;
 
     const isProduction = process.env.NODE_ENV === 'production';
@@ -170,7 +171,7 @@ export default (entry, opts = {}) => {
                 '.json',
                 '.web.jsx',
                 '.jsx',
-                '.cjs'
+                '.cjs',
             ],
 
             alias: {
@@ -380,7 +381,12 @@ export default (entry, opts = {}) => {
             absHtmlPath !== null &&
                 new HtmlWebpackPlugin({
                     template: absHtmlPath,
-                    templateParameters: htmlTemplateParameters || {},
+                    templateParameters: {
+                        process: {
+                            env: process.env,
+                        },
+                        ...(htmlTemplateParameters || {}),
+                    },
                     filename: htmlOutputPath,
                     inject: true,
                     minify: isProduction
