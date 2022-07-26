@@ -52,6 +52,7 @@
     "dependencies": {
         "@folklore/events": "^0.0.3",
         "@folklore/services": "^0.1.36",
-        "debug": "^4.3.4"
+        "debug": "^4.3.4",
+        "raf": "^3.4.1"
     }
 }
