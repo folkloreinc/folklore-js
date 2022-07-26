@@ -1,3 +1,4 @@
+export { default as useCounter } from './useCounter';
 export { default as useDailymotionPlayer } from './useDailymotionPlayer';
 export {
     default as useDocumentEvent,
