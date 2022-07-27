@@ -26,6 +26,7 @@ module.exports = class PrettierGenerator extends Generator {
         this.addDevDependencies([
             'prettier',
             '@prettier/plugin-php',
+            '@trivago/prettier-plugin-sort-imports',
         ]);
     }
 };

@@ -16,12 +16,6 @@ module.exports = class ScssGenerator extends Generator {
             defaults: 'src/scss',
         });
 
-        this.option('react', {
-            type: Boolean,
-            required: false,
-            defaults: false,
-        });
-
         this.stylesPath = destPath => this.destinationPath(path.join(
             this.options.path,
             destPath || '',
@@ -61,19 +55,11 @@ module.exports = class ScssGenerator extends Generator {
         };
     }
 
-    configuring() {
-        this.composeWith('folklore:stylelint', {
-            quiet: true,
-            'camel-case': this.options.react,
-        });
-    }
-
     get writing() {
         return {
-            main() {
-                const reactSuffix = this.options.react ? '.global' : '';
-                const srcPath = this.templatePath('main.scss');
-                const destPath = this.stylesPath(`main${reactSuffix}.scss`);
+            styles() {
+                const srcPath = this.templatePath('styles.scss');
+                const destPath = this.stylesPath('styles.scss');
                 this.fs.copy(srcPath, destPath);
             },
 

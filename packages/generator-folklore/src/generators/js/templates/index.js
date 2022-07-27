@@ -1,41 +1,22 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import domready from 'domready';<% if (rootPropsImport !== null) { %>
-import defaultRootProps from '<%= rootPropsImport %>';<% } %>
+import { createRoot } from 'react-dom/client';
 
-import Root from './components/Root';
+import App from './components/App';
+import shouldPolyfill from './polyfills/should';
 
-<%
-    if (rootPropsImport !== null) {
-        %>const getRootProps = () => defaultRootProps;<%
-    } else {
-        %>const getRootProps = () => {
-    const propsEl = document.getElementById('root-props');
-    return propsEl !== null ? JSON.parse(propsEl.innerHTML) || {} : {};
-};<%
-    }
-%>
+function getAppProps() {
+    return window.props || {};
+}
 
-const renderRoot = (props) => {
-    const rootEl = document.getElementById('root');
-    const root = React.createElement(Root, props);
-    ReactDOM.render(root, rootEl);
-};
+function renderApp(props) {
+    const container = document.getElementById('app');
+    const app = React.createElement(App, props);
+    const root = createRoot(container);
+    root.render(app);
+}
 
-const boot = () => {
-    const rootProps = getRootProps();
-
-    if (typeof window.Intl === 'undefined') {
-        const { locale = 'fr' } = rootProps;
-        import(`./vendor/polyfills/intl-${locale}`).then(() => renderRoot(rootProps));
-    } else {
-        renderRoot(rootProps);
-    }
-};
-
-const ready = (document.readyState || 'loading') !== 'loading';
-if (ready) {
-    boot();
+if (shouldPolyfill()) {
+    import('./polyfills/index').then(() => renderApp(getAppProps()));
 } else {
-    domready(boot);
+    renderApp(getAppProps());
 }

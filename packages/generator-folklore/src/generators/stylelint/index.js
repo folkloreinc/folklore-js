@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+
 import Generator from '../../lib/generator';
 
 module.exports = class StylelintGenerator extends Generator {
@@ -12,30 +13,22 @@ module.exports = class StylelintGenerator extends Generator {
         });
     }
 
-    get prompting() {
-        return {
-            welcome() {
-                if (this.options.quiet) {
-                    return;
-                }
+    prompting() {
+        if (this.options.quiet) {
+            return;
+        }
 
-                console.log(chalk.yellow('\n----------------------'));
-                console.log('Stylelint Generator');
-                console.log(chalk.yellow('----------------------\n'));
-            },
-        };
+        console.log(chalk.yellow('\n----------------------'));
+        console.log('Stylelint Generator');
+        console.log(chalk.yellow('----------------------\n'));
     }
 
-    get writing() {
-        return {
-            eslintrc() {
-                const srcPath = this.templatePath('stylelintrc');
-                const destPath = this.destinationPath('.stylelintrc');
-                this.fs.copyTpl(srcPath, destPath, {
-                    camelCase: this.options['camel-case'],
-                });
-            },
-        };
+    writing() {
+        const srcPath = this.templatePath('stylelintrc');
+        const destPath = this.destinationPath('.stylelintrc');
+        this.fs.copyTpl(srcPath, destPath, {
+            camelCase: this.options['camel-case'],
+        });
     }
 
     async install() {
@@ -43,13 +36,11 @@ module.exports = class StylelintGenerator extends Generator {
             return;
         }
 
-        await this.addDevDependencies(
-            [
-                'stylelint',
-                'stylelint-config-standard-scss',
-                'stylelint-config-idiomatic-order',
-                'stylelint-config-prettier'
-            ],
-        );
+        await this.addDevDependencies([
+            'stylelint',
+            'stylelint-config-standard-scss',
+            'stylelint-config-idiomatic-order',
+            'stylelint-config-prettier',
+        ]);
     }
 };

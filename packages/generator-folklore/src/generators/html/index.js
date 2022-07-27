@@ -49,7 +49,7 @@ module.exports = class HTMLGenerator extends Generator {
             defaults: 'css',
         });
 
-        this.option('scss-path', {
+        this.option('styles-path', {
             type: String,
             desc: 'Path for the scss',
             defaults: 'styles',
@@ -121,16 +121,27 @@ module.exports = class HTMLGenerator extends Generator {
         const destPath = _.get(this.options, 'dest-path');
         const buildPath = _.get(this.options, 'build-path') || `${projectPath}/build`;
         const jsPath = _.get(this.options, 'js-path');
+        const stylesPath = _.get(this.options, 'styles-path');
         const jsSrcPath = path.join(projectPath, srcPath, jsPath);
-        const scssPath = _.get(this.options, 'scss-path');
-        const scssSrcPath = path.join(projectPath, srcPath, scssPath);
+        const stylesSrcPath = path.join(projectPath, srcPath, stylesPath);
         const skipInstall = _.get(this.options, 'skip-install', false);
 
-        this.composeWith('folklore:js', {
-            'project-name': projectName,
-            'hot-reload': true,
-            path: jsSrcPath,
-            'root-props-import': './data/root',
+        this.composeWith('folklore:prettier', {
+            'skip-install': skipInstall,
+            quiet: true,
+        });
+
+        this.composeWith('folklore:eslint', {
+            'skip-install': skipInstall,
+            quiet: true,
+        });
+
+        this.composeWith('folklore:stylelint', {
+            'skip-install': skipInstall,
+            quiet: true,
+        });
+
+        this.composeWith('folklore:browserslist', {
             'skip-install': skipInstall,
             quiet: true,
         });
@@ -139,9 +150,17 @@ module.exports = class HTMLGenerator extends Generator {
             quiet: true,
         });
 
+        this.composeWith('folklore:js', {
+            'project-name': projectName,
+            path: jsSrcPath,
+            stylesPath: stylesSrcPath,
+            'skip-install': skipInstall,
+            quiet: true,
+        });
+
         this.composeWith('folklore:scss', {
             'project-name': projectName,
-            path: scssSrcPath,
+            path: stylesSrcPath,
             react: true,
             'skip-install': skipInstall,
             quiet: true,
@@ -189,18 +208,6 @@ module.exports = class HTMLGenerator extends Generator {
             img() {
                 const srcPath = this.templatePath('folklore.png');
                 const destPath = this.srcPath('img/folklore.png');
-                this.fs.copy(srcPath, destPath);
-            },
-
-            data() {
-                const srcPath = this.templatePath('root.js');
-                const destPath = this.srcPath('data/root.js');
-                this.fs.copy(srcPath, destPath);
-            },
-
-            utils() {
-                const srcPath = this.templatePath('utils.js');
-                const destPath = this.srcPath('lib/utils.js');
                 this.fs.copy(srcPath, destPath);
             },
 

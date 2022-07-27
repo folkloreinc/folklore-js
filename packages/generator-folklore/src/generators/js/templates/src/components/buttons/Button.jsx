@@ -5,9 +5,8 @@ import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 
 import * as AppPropTypes from '../../lib/PropTypes';
-import Label from '../partials/Label';
 
-import styles from '<%= getRelativeStylesPath('components/buttons/Button.jsx', 'buttons/button.scss') %>';
+import styles from '<%= getRelativeStylesPath('components/buttons/Button.jsx', 'buttons/button.module.scss') %>';
 
 const propTypes = {
     type: PropTypes.string,
@@ -75,7 +74,6 @@ const Button = ({
     labelClassName,
 }) => {
     const finalLabel = label || children;
-    const text = <Label>{finalLabel}</Label>;
     const hasChildren = label !== null && children !== null;
     const hasIcon = icon !== null;
     const hasInlineIcon = hasIcon && (iconPosition === 'inline' || text === null);
@@ -120,7 +118,7 @@ const Button = ({
                     {hasChildren ? children : null}
                 </>
             ) : null}
-            {!hasIcon ? text : null}
+            {!hasIcon ? finalLabel : null}
             {hasChildren ? children : null}
         </>
     );

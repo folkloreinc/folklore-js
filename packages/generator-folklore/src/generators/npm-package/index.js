@@ -1,10 +1,10 @@
+import chalk from 'chalk';
 import _ from 'lodash';
 import path from 'path';
-import chalk from 'chalk';
+
 import Generator from '../../lib/generator';
 
 module.exports = class NpmPackageGenerator extends Generator {
-
     constructor(...args) {
         super(...args);
 
@@ -124,12 +124,11 @@ module.exports = class NpmPackageGenerator extends Generator {
                     return null;
                 }
 
-                return this.prompt(prompts)
-                    .then((answers) => {
-                        if (answers['package-name']) {
-                            this.options['package-name'] = answers['package-name'];
-                        }
-                    });
+                return this.prompt(prompts).then((answers) => {
+                    if (answers['package-name']) {
+                        this.options['package-name'] = answers['package-name'];
+                    }
+                });
             },
         };
     }
@@ -147,9 +146,12 @@ module.exports = class NpmPackageGenerator extends Generator {
         const webpackDevContext = _.get(this.options, 'webpack-dev-context', null);
         const webpackDevEntries = _.get(this.options, 'webpack-dev-entries', null);
         const webpackDistEntries = _.get(this.options, 'webpack-dist-entries', null);
-        const webpackEntries = webpackDevEntries !== null && webpackDistEntries !== null ? null : {
-            [this.options['package-name']]: './index',
-        };
+        const webpackEntries =
+            webpackDevEntries !== null && webpackDistEntries !== null
+                ? null
+                : {
+                      [this.options['package-name']]: './index',
+                  };
         const browserSyncBaseDir = _.get(this.options, 'browsersync-base-dir') || [
             tmpPath,
             srcPath,
@@ -211,7 +213,7 @@ module.exports = class NpmPackageGenerator extends Generator {
                 }
                 const srcPath = this.templatePath('src');
                 const destPath = this.destinationPath('src');
-                /* this.directory */this.fs.copyTpl(srcPath, destPath, this);
+                /* this.directory */ this.fs.copyTpl(srcPath, destPath, this);
             },
 
             gitignore() {
@@ -228,12 +230,9 @@ module.exports = class NpmPackageGenerator extends Generator {
 
             packageJSON() {
                 const srcPath = this.templatePath('_package.json');
-                const destPath = this.destinationPath('package.json');
                 const packageJSON = this.fs.readJSON(srcPath);
                 packageJSON.name = this.options['package-name'];
-                const currentPackageJSON = this.fs.exists(destPath) ?
-                    this.fs.readJSON(destPath) : {};
-                this.fs.writeJSON(destPath, _.merge(packageJSON, currentPackageJSON));
+                this.packageJson.merge(packageJSON);
             },
         };
     }
@@ -245,13 +244,9 @@ module.exports = class NpmPackageGenerator extends Generator {
                     return;
                 }
 
-                this.addDependencies([
-                    '@babel/runtime@latest',
-                ]);
+                this.addDependencies(['@babel/runtime@latest']);
 
-                this.addDevDependencies([
-                    'jest@latest',
-                ]);
+                this.addDevDependencies(['jest@latest']);
             },
         };
     }

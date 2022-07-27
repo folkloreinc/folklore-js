@@ -1,6 +1,7 @@
+import chalk from 'chalk';
 import _ from 'lodash';
 import path from 'path';
-import chalk from 'chalk';
+
 import Generator from '../../lib/generator';
 
 module.exports = class JsGenerator extends Generator {
@@ -13,21 +14,12 @@ module.exports = class JsGenerator extends Generator {
             required: false,
         });
 
-        this.option('babel-compile', {
-            type: Boolean,
-            defaults: false,
-        });
-
         this.option('path', {
             type: String,
             defaults: 'src/js',
         });
 
         this.option('styles-path', {
-            type: String,
-        });
-
-        this.option('root-props-import', {
             type: String,
         });
     }
@@ -68,21 +60,6 @@ module.exports = class JsGenerator extends Generator {
         };
     }
 
-    configuring() {
-        const skipInstall = this.options['skip-install'];
-        this.composeWith('folklore:babel', {
-            'react-app': !this.options['babel-compile'],
-            compile: this.options['babel-compile'],
-            'skip-install': skipInstall,
-            quiet: true,
-        });
-
-        this.composeWith('folklore:eslint', {
-            'skip-install': skipInstall,
-            quiet: true,
-        });
-    }
-
     get writing() {
         return {
             directory() {
@@ -90,12 +67,13 @@ module.exports = class JsGenerator extends Generator {
                 const stylesPath = this.options['styles-path'] || null;
 
                 const templateData = {
-                    getRelativeStylesPath: (from, src) => path.relative(
-                        this.destinationPath(path.dirname(path.join(jsPath, from))),
-                        this.destinationPath(
-                            path.join(stylesPath || path.join(jsPath, 'styles'), src),
+                    getRelativeStylesPath: (from, src) =>
+                        path.relative(
+                            this.destinationPath(path.dirname(path.join(jsPath, from))),
+                            this.destinationPath(
+                                path.join(stylesPath || path.join(jsPath, 'styles'), src),
+                            ),
                         ),
-                    ),
                 };
 
                 const destPath = this.destinationPath(jsPath);
@@ -105,34 +83,20 @@ module.exports = class JsGenerator extends Generator {
 
             index() {
                 const jsPath = this.options.path;
-                const rootPropsImport = this.options['root-props-import'] || null;
                 this.fs.copyTpl(
                     this.templatePath('index.js'),
                     this.destinationPath(path.join(jsPath, 'index.js')),
-                    { rootPropsImport },
                 );
             },
 
             styles() {
                 const templateData = {};
 
-                const stylesPath = this.options['styles-path'] || path.join(this.options.path, 'styles');
+                const stylesPath =
+                    this.options['styles-path'] || path.join(this.options.path, 'styles');
                 const srcPath = this.templatePath('styles');
                 const destPath = this.destinationPath(stylesPath);
                 this.fs.copyTpl(srcPath, destPath, templateData);
-            },
-
-            config() {
-                const jsPath = _.get(this.options, 'path');
-                const srcPath = this.templatePath('config.js');
-                const destPath = this.destinationPath(path.join(jsPath, 'config.js'));
-                this.fs.copy(srcPath, destPath);
-            },
-
-            browserslistrc() {
-                const srcPath = this.templatePath('browserslistrc');
-                const destPath = this.destinationPath('.browserslistrc');
-                this.fs.copy(srcPath, destPath);
             },
 
             packageJSON() {
@@ -140,48 +104,45 @@ module.exports = class JsGenerator extends Generator {
                 const destPath = this.destinationPath('package.json');
 
                 const packageJSON = this.fs.readJSON(srcPath);
-                packageJSON.name = this.options['project-name'];
-                const currentPackageJSON = this.fs.exists(destPath)
-                    ? this.fs.readJSON(destPath)
-                    : {};
-                this.fs.writeJSON(destPath, _.merge(packageJSON, currentPackageJSON));
+                this.packageJson.merge({
+                    ...packageJSON,
+                    name: this.options['project-name'],
+                });
             },
         };
     }
 
-    install() {
+    async install() {
         if (this.options['skip-install']) {
             return;
         }
 
         const dependencies = [
-            'domready@latest',
-            'fastclick@latest',
-            'keymirror@latest',
-            'lodash@latest',
-            'react@latest',
-            'prop-types@latest',
-            'react-dom@latest',
-            'react-redux@latest',
-            'react-intl@latest',
-            'react-router@^5.0.1',
-            'react-router-dom@latest',
-            'connected-react-router@latest',
-            'react-helmet@latest',
-            'node-polyglot@latest',
-            'classnames@latest',
-            '@folklore/react-container@latest',
-            '@folklore/fonts@latest',
-            '@folklore/forms@latest',
-            '@folklore/tracking@latest',
-            'react-loadable@latest',
-            'webfontloader@latest',
-            'intl@latest',
+
+            'react',
+            'react-dom',
+            'prop-types',
+            'react-intl',
+            'react-router',
+            'react-router-dom',
+            'react-helmet',
+            'classnames',
+
+            '@folklore/routes',
+            '@folklore/fonts',
+            '@folklore/forms',
+            '@folklore/fetch',
+            '@folklore/hooks',
+            '@folklore/tracking',
+
+            // Polyfills
+            'intl',
+            '@formatjs/intl-locale',
+            '@formatjs/intl-pluralrules',
+            'intersection-observer',
+            'resize-observer-polyfill',
         ];
 
-        const devDependencies = ['html-webpack-plugin@latest'];
-
-        this.addDependencies(dependencies);
-        this.addDevDependencies(devDependencies);
+        await this.addDependencies(dependencies);
     }
 };

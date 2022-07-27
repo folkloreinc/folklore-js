@@ -162,7 +162,6 @@ module.exports = class LernaPackageGenerator extends Generator {
             packageJSON() {
                 const { type } = this.options;
                 const srcPath = this.templatePath('_package.json');
-                const destPath = this.packagePath('package.json');
                 const packageJSON = this.fs.readJSON(srcPath);
                 packageJSON.name = this.options['package-name'];
                 if (type === 'react') {
@@ -177,10 +176,7 @@ module.exports = class LernaPackageGenerator extends Generator {
                         'react-dom': '>=15.0.0 || ^16.0.0',
                     };
                 }
-                const currentPackageJSON = this.fs.exists(destPath)
-                    ? this.fs.readJSON(destPath)
-                    : {};
-                this.fs.writeJSON(destPath, _.merge(packageJSON, currentPackageJSON));
+                this.packageJson.merge(packageJSON);
             },
 
             webpackConfig() {

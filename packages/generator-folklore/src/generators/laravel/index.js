@@ -383,11 +383,12 @@ module.exports = class LaravelGenerator extends Generator {
             },
 
             packageJSON() {
-                const jsonPath = this.destinationPath('package.json');
                 const packageJSON = this.fs.exists(jsonPath) ? this.fs.readJSON(jsonPath) : {};
-                packageJSON.scripts = {};
-                packageJSON.devDependencies = {};
-                this.fs.writeJSON(jsonPath, packageJSON);
+                this.packageJson.merge({
+                    ...packageJSON,
+                    scripts: {},
+                    devDependencies: {}
+                });
             },
 
             composerJSON() {

@@ -120,13 +120,12 @@ module.exports = class DocsGenerator extends Generator {
                     'build:docs': 'npm run docs:prepare && npm run docs:api',
                 };
 
-                const destPath = this.destinationPath('package.json');
                 const packageJSON = this.fs.exists(destPath) ? this.fs.readJSON(destPath) : {};
                 packageJSON.scripts = {
                     ...packageJSON.scripts,
                     ...scripts,
                 };
-                this.fs.writeJSON(destPath, packageJSON);
+                this.packageJson.merge(packageJSON);
             },
         };
     }

@@ -58,10 +58,6 @@ module.exports = class StorybookGenerator extends Generator {
             },
 
             packageJSON() {
-                const destPath = this.destinationPath('package.json');
-                if (!this.fs.exists(destPath)) {
-                    return;
-                }
                 const packageJSON = this.fs.exists(destPath) ?
                     this.fs.readJSON(destPath) : {};
                 packageJSON['storybook-deployer'] = {
@@ -69,7 +65,7 @@ module.exports = class StorybookGenerator extends Generator {
                     gitEmail: 'info@folklore.email',
                     commitMessage: 'Deploy Storybook to GitHub Pages',
                 };
-                this.fs.writeJSON(destPath, packageJSON);
+                this.packageJson.merge(packageJSON);
             },
         };
     }

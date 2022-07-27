@@ -167,13 +167,9 @@ module.exports = class LernaRepositoryGenerator extends Generator {
 
             packageJSON() {
                 const srcPath = this.templatePath('_package.json');
-                const destPath = this.destinationPath('package.json');
                 const packageJSON = this.fs.readJSON(srcPath);
                 packageJSON.name = this.options['project-name'];
-                const currentPackageJSON = this.fs.exists(destPath)
-                    ? this.fs.readJSON(destPath)
-                    : {};
-                this.fs.writeJSON(destPath, _.merge(packageJSON, currentPackageJSON));
+                this.packageJson.merge(packageJSON);
             },
 
             jest() {

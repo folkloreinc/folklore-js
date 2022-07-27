@@ -1,52 +1,40 @@
-import React, { useEffect } from 'react';
+import { RoutesProvider } from '@folklore/routes';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Route, Switch, useHistory } from 'react-router';
-import { useUrlGenerator } from '@folklore/react-container';
+import React from 'react';
+import { IntlProvider } from 'react-intl';
+import { BrowserRouter } from 'react-router-dom';
 
 // import * as AppPropTypes from '../lib/PropTypes';
-import { resetRequest as resetRequestAction } from '../actions/SiteActions';
-import MainLayout from './layouts/Main';
-import HomePage from './pages/Home';
-import ErrorPage from './pages/Error';
-
-import '<%= getRelativeStylesPath('components/App.jsx', 'main.global.scss') %>';
+import Routes from './Routes';
 
 const propTypes = {
-    resetRequest: PropTypes.func.isRequired,
+    locale: PropTypes.string,
+    messages: PropTypes.oneOfType([
+        PropTypes.objectOf(PropTypes.objectOf(PropTypes.string)),
+        PropTypes.objectOf(PropTypes.string),
+    ]),
+    routes: PropTypes.objectOf(PropTypes.string),
 };
 
-const defaultProps = {};
+const defaultProps = {
+    locale: 'fr',
+    messages: {},
+    routes: {},
+};
 
-const App = ({ resetRequest }) => {
-    const history = useHistory();
-    const urlGenerator = useUrlGenerator();
-
-    // Reset request on history change
-    useEffect(() => {
-        const unlisten = history.listen(() => resetRequest());
-        return () => {
-            unlisten();
-        };
-    }, [history]);
-
+const App = ({ locale, messages, routes, statusCode, googleApiKey }) => {
     return (
-        <MainLayout>
-            <Switch>
-                <Route exact path={urlGenerator.route('home')} component={HomePage} />
-                <Route path="*" component={ErrorPage} />
-            </Switch>
-        </MainLayout>
+        <IntlProvider locale={locale} messages={messages[locale] || messages}>
+            <BrowserRouter>
+                <RoutesProvider routes={routes}>
+                    <App />
+                </RoutesProvider>
+            </BrowserRouter>
+        </IntlProvider>
     );
 };
 
 App.propTypes = propTypes;
 App.defaultProps = defaultProps;
 
-const WithStateContainer = connect(
-    null,
-    dispatch => ({
-        resetRequest: () => dispatch(resetRequestAction()),
-    }),
-)(App);
-export default WithStateContainer;
+export default App;

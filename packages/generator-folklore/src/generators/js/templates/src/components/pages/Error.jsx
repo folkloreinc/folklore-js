@@ -10,7 +10,7 @@ import { useUrlGenerator } from '@folklore/react-container';
 import PageMeta from '../partials/PageMeta';
 import Label from '../partials/Label';
 
-import styles from '<%= getRelativeStylesPath('components/pages/Error.jsx', 'pages/error.scss') %>';
+import styles from '<%= getRelativeStylesPath('components/pages/Error.jsx', 'pages/error.module.scss') %>';
 
 export const messages = defineMessages({
     metaTitle401: {

@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import * as AppPropTypes from '../../lib/PropTypes';
 import Label from '../partials/Label';
 
-import styles from '<%= getRelativeStylesPath('components/menus/Menu.jsx', 'menus/menu.scss') %>';
+import styles from '<%= getRelativeStylesPath('components/menus/Menu.jsx', 'menus/menu.module.scss') %>';
 
 const propTypes = {
     items: AppPropTypes.menuItems,

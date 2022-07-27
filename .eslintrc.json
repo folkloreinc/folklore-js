@@ -1,6 +1,13 @@
 {
     "extends": ["airbnb", "prettier"],
     "parser": "@babel/eslint-parser",
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "requireConfigFile": false,
+        "babelOptions": {
+            "presets": ["@babel/preset-react"]
+        }
+    },
     "env": {
         "browser": true,
         "node": true,
