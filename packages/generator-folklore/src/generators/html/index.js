@@ -1,6 +1,7 @@
+import chalk from 'chalk';
 import _ from 'lodash';
 import path from 'path';
-import chalk from 'chalk';
+
 import Generator from '../../lib/generator';
 
 module.exports = class HTMLGenerator extends Generator {
@@ -76,9 +77,16 @@ module.exports = class HTMLGenerator extends Generator {
         this.option('server-path', {
             type: String,
             desc: 'Path for the node.js server',
+            defaults: '',
         });
 
-        this.srcPath = filePath => this.destinationPath(path.join(this.options['src-path'], filePath));
+        this.option('server-filename', {
+            type: String,
+            desc: 'Filename for the node.js server',
+        });
+
+        this.srcPath = (filePath) =>
+            this.destinationPath(path.join(this.options['src-path'], filePath));
     }
 
     get prompting() {
@@ -104,27 +112,29 @@ module.exports = class HTMLGenerator extends Generator {
                     return null;
                 }
 
-                return this.prompt(prompts)
-                    .then((answers) => {
-                        if (answers['project-name']) {
-                            this.options['project-name'] = answers['project-name'];
-                        }
-                    });
+                return this.prompt(prompts).then((answers) => {
+                    if (answers['project-name']) {
+                        this.options['project-name'] = answers['project-name'];
+                    }
+                });
             },
         };
     }
 
     configuring() {
-        const projectName = _.get(this.options, 'project-name');
+        const {
+            'project-name': projectName,
+            'src-path': srcPath,
+            'dest-path': destPath,
+            'js-path': jsPath,
+            'styles-path': stylesPath,
+            'server-path': serverPath,
+            'server-filename': serverFilename,
+        } = this.options;
         const projectPath = this.destinationPath();
-        const srcPath = _.get(this.options, 'src-path');
-        const destPath = _.get(this.options, 'dest-path');
-        const buildPath = _.get(this.options, 'build-path') || `${projectPath}/build`;
-        const jsPath = _.get(this.options, 'js-path');
-        const stylesPath = _.get(this.options, 'styles-path');
         const jsSrcPath = path.join(projectPath, srcPath, jsPath);
         const stylesSrcPath = path.join(projectPath, srcPath, stylesPath);
-        const skipInstall = _.get(this.options, 'skip-install', false);
+        const serverSrcPath = path.join(projectPath, srcPath, serverPath);
 
         this.composeWith('folklore:prettier', {
             'skip-install': true,
@@ -142,7 +152,7 @@ module.exports = class HTMLGenerator extends Generator {
         });
 
         this.composeWith('folklore:browserslist', {
-            'skip-install': skipInstall,
+            'skip-install': true,
             quiet: true,
         });
 
@@ -168,15 +178,14 @@ module.exports = class HTMLGenerator extends Generator {
 
         if (this.options.server) {
             this.composeWith('folklore:server', {
-                'project-name': projectName,
-                path: _.get(this.options, 'server-path') || `${projectPath}/server`,
+                path: serverSrcPath,
+                filename: serverFilename,
                 'skip-install': true,
                 quiet: true,
             });
         }
 
         this.composeWith('folklore:build', {
-            path: buildPath,
             'src-path': srcPath,
             'entry-path': path.join(jsSrcPath, 'index.js'),
             'html-path': path.join(srcPath, 'index.html.ejs'),

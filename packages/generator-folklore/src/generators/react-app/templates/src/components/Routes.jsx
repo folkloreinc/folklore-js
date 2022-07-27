@@ -16,10 +16,23 @@ function Routes() {
     // const urlGenerator = useUrlGenerator();
     return (
         <Switch>
-            <Route path="/" element={<MainLayout />}>
-                <Route index element={<HomePage />} />
-                <Route path="*" element={<ErrorPage />} />
-            </Route>
+            <Route
+                path="/"
+                exact
+                element={
+                    <MainLayout>
+                        <HomePage />
+                    </MainLayout>
+                }
+            />
+            <Route
+                path="*"
+                element={
+                    <MainLayout>
+                        <ErrorPage />
+                    </MainLayout>
+                }
+            />
         </Switch>
     );
 }

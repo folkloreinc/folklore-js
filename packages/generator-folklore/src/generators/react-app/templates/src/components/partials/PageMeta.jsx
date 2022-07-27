@@ -3,7 +3,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { defineMessages, useIntl } from 'react-intl';
 
-// import * as AppPropTypes from '../../lib/PropTypes';
+import * as AppPropTypes from '../../lib/PropTypes';
 import { isMessage } from '../../lib/utils';
 
 const messages = defineMessages({

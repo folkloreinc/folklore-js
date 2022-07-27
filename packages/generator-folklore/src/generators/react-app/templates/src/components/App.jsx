@@ -29,7 +29,7 @@ function App({ locale, messages, routes, statusCode, googleApiKey }) {
         <IntlProvider locale={locale} messages={messages[locale] || messages}>
             <BrowserRouter>
                 <RoutesProvider routes={routes}>
-                    <App />
+                    <Routes />
                 </RoutesProvider>
             </BrowserRouter>
         </IntlProvider>
