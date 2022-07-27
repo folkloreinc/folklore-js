@@ -24,7 +24,7 @@ const defaultProps = {
     routes: {},
 };
 
-const App = ({ locale, messages, routes, statusCode, googleApiKey }) => {
+function App({ locale, messages, routes, statusCode, googleApiKey }) {
     return (
         <IntlProvider locale={locale} messages={messages[locale] || messages}>
             <BrowserRouter>

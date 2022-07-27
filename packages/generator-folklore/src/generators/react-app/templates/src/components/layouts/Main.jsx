@@ -11,7 +11,7 @@ const defaultProps = {
 
 };
 
-const MainLayout = ({ children }) => {
+function MainLayout({ children }) {
     return (
         <div className={styles.container}>
             <div className={styles.inner}>

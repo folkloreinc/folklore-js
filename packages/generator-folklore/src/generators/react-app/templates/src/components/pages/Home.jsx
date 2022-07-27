@@ -1,6 +1,6 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
-import { defineMessages, injectIntl } from 'react-intl';
+import { defineMessages } from 'react-intl';
 
 // import * as AppPropTypes from '../../lib/PropTypes';
 import PageMeta from '../partials/PageMeta';
@@ -9,8 +9,8 @@ import styles from '<%= getRelativeStylesPath('components/pages/Home.jsx', 'page
 
 const messages = defineMessages({
     metaTitle: {
-        id: 'meta.title',
-        defaultMessage: 'Title',
+        defaultMessage: 'Home',
+        description: 'Page title'
     },
 });
 
@@ -18,15 +18,15 @@ const propTypes = {
     // intl: AppPropTypes.intl.isRequired,
 };
 
-const HomePage = () => (
-    <div className={styles.container}>
-        <PageMeta title={messages.metaTitle} />
-        <div className={styles.logo} />
-    </div>
-);
+function HomePage () {
+    return (
+        <div className={styles.container}>
+            <PageMeta title={messages.metaTitle} />
+            <div className={styles.logo} />
+        </div>
+    );
+}
 
 HomePage.propTypes = propTypes;
 
-const WithIntlContainer = injectIntl(HomePage);
-
-export default WithIntlContainer;
+export default HomePage;

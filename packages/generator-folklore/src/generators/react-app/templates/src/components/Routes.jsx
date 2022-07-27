@@ -1,19 +1,18 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
-import { Route, Routes as Switch } from 'react-router';
-// import { useUrlGenerator } from '@folklore/routes';
+import { Route, Routes as Switch } from 'react-router-dom';
 
+// import { useUrlGenerator } from '@folklore/routes';
 // import * as AppPropTypes from '../lib/PropTypes';
 import MainLayout from './layouts/Main';
-import HomePage from './pages/Home';
 import ErrorPage from './pages/Error';
+import HomePage from './pages/Home';
 
-const propTypes = {
-};
+const propTypes = {};
 
 const defaultProps = {};
 
-const Routes = () => {
+function Routes() {
     // const urlGenerator = useUrlGenerator();
     return (
         <Switch>
@@ -23,7 +22,7 @@ const Routes = () => {
             </Route>
         </Switch>
     );
-};
+}
 
 Routes.propTypes = propTypes;
 Routes.defaultProps = defaultProps;

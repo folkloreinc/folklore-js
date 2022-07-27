@@ -21,9 +21,6 @@ const propTypes = {
     disabled: PropTypes.bool,
     loading: PropTypes.bool,
     disableOnLoading: PropTypes.bool,
-    small: PropTypes.bool,
-    big: PropTypes.bool,
-    withShadow: PropTypes.bool,
     className: PropTypes.string,
     iconClassName: PropTypes.string,
     labelClassName: PropTypes.string,
@@ -43,16 +40,13 @@ const defaultProps = {
     disabled: false,
     loading: false,
     disableOnLoading: true,
-    small: false,
-    big: false,
-    withShadow: false,
     className: null,
     iconClassName: null,
     labelClassName: null,
     onClick: null,
 };
 
-const Button = ({
+function Button({
     type,
     href,
     external,
@@ -65,14 +59,11 @@ const Button = ({
     disabled,
     loading,
     disableOnLoading,
-    small,
-    big,
-    withShadow,
     onClick,
     className,
     iconClassName,
     labelClassName,
-}) => {
+}) {
     const finalLabel = label || children;
     const hasChildren = label !== null && children !== null;
     const hasIcon = icon !== null;
@@ -129,9 +120,6 @@ const Button = ({
             [styles.withIcon]: hasIcon,
             [styles.withIconColumns]: hasIconColumns,
             [styles.withText]: text !== null,
-            [styles.withShadow]: withShadow,
-            [styles.isSmall]: small,
-            [styles.isBig]: big,
             [styles.isLink]: href !== null,
             [styles.isDisabled]: disabled,
             [styles.isLoading]: loading,
