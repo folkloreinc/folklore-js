@@ -127,17 +127,17 @@ module.exports = class HTMLGenerator extends Generator {
         const skipInstall = _.get(this.options, 'skip-install', false);
 
         this.composeWith('folklore:prettier', {
-            'skip-install': skipInstall,
+            'skip-install': true,
             quiet: true,
         });
 
         this.composeWith('folklore:eslint', {
-            'skip-install': skipInstall,
+            'skip-install': true,
             quiet: true,
         });
 
         this.composeWith('folklore:stylelint', {
-            'skip-install': skipInstall,
+            'skip-install': true,
             quiet: true,
         });
 
@@ -150,11 +150,11 @@ module.exports = class HTMLGenerator extends Generator {
             quiet: true,
         });
 
-        this.composeWith('folklore:js', {
+        this.composeWith('folklore:react-app', {
             'project-name': projectName,
             path: jsSrcPath,
             stylesPath: stylesSrcPath,
-            'skip-install': skipInstall,
+            'skip-install': true,
             quiet: true,
         });
 
@@ -162,7 +162,7 @@ module.exports = class HTMLGenerator extends Generator {
             'project-name': projectName,
             path: stylesSrcPath,
             react: true,
-            'skip-install': skipInstall,
+            'skip-install': true,
             quiet: true,
         });
 
@@ -170,7 +170,7 @@ module.exports = class HTMLGenerator extends Generator {
             this.composeWith('folklore:server', {
                 'project-name': projectName,
                 path: _.get(this.options, 'server-path') || `${projectPath}/server`,
-                'skip-install': skipInstall,
+                'skip-install': true,
                 quiet: true,
             });
         }
@@ -178,13 +178,13 @@ module.exports = class HTMLGenerator extends Generator {
         this.composeWith('folklore:build', {
             path: buildPath,
             'src-path': srcPath,
-            'entry-path': path.join(srcPath, 'index'),
+            'entry-path': path.join(jsSrcPath, 'index.js'),
             'html-path': path.join(srcPath, 'index.html.ejs'),
             'build-path': destPath,
             'empty-path': destPath,
             copy: true,
             'copy-path': path.join(srcPath, '*.{html,ico,txt,png}'),
-            'skip-install': skipInstall,
+            'skip-install': true,
             quiet: true,
         });
     }
@@ -217,5 +217,13 @@ module.exports = class HTMLGenerator extends Generator {
                 this.fs.copy(srcPath, destPath);
             },
         };
+    }
+
+    async install() {
+        if (this.options['skip-install']) {
+            return;
+        }
+
+        await this.spawnCommand('npm', ['install']);
     }
 };

@@ -59,33 +59,42 @@ module.exports = class AppGenerator extends Generator {
         console.log(chalk.yellow('----------------------\n'));
     }
 
-    writing() {
-        const {
-            'entry-path': entryPath,
-            'src-path': srcPath,
-            'build-path': buildPath,
-            'public-path': publicPath,
-            'html-path': htmlPath,
-            server,
-        } = this.options;
-        const scripts = {
-            build: `flklr build --load-env ${entryPath}`,
-        };
-        if (server) {
-            scripts.server = `flklr serve --load-env ${entryPath}`;
-            scripts.start = 'npm run server';
+    get writing() {
+        return {
+            packageJSON() {
+                const {
+                    'entry-path': entryPath,
+                    'src-path': srcPath,
+                    'build-path': buildPath,
+                    'public-path': publicPath,
+                    'html-path': htmlPath,
+                    server,
+                } = this.options;
+                const scripts = {
+                    build: `flklr build --load-env ${entryPath}`,
+                };
+                if (server) {
+                    scripts.server = `flklr serve --load-env ${entryPath}`;
+                    scripts.start = 'npm run server';
+                }
+
+                this.packageJson.merge({
+                    scripts,
+                    build: {
+                        outputPath: buildPath,
+                        srcPath,
+                        htmlPath,
+                        publicPath,
+                        disableImageOptimization: true,
+                    },
+                });
+            },
+
+            dependencies() {
+                this.addDevDependencies(['@folklore/cli'])
+            }
         }
 
-        this.packageJson.merge({
-            scripts,
-            build: {
-                outputPath: buildPath,
-                srcPath,
-                htmlPath,
-                publicPath,
-                disableImageOptimization: true,
-            },
-        });
     }
 
     async install() {
@@ -93,6 +102,6 @@ module.exports = class AppGenerator extends Generator {
             return;
         }
 
-        await this.addDevDependencies(['@folklore/cli']);
+        await this.spawnCommand('npm', ['install']);
     }
 };

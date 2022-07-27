@@ -16,17 +16,30 @@ module.exports = class PrettierGenerator extends Generator {
         };
     }
 
-    writing() {
-        const srcPath = this.templatePath('prettierrc.json');
-        const destPath = this.destinationPath('.prettierrc.json');
-        this.fs.copy(srcPath, destPath);
+    get writing() {
+        return {
+            prettierrc() {
+                const srcPath = this.templatePath('prettierrc.json');
+                const destPath = this.destinationPath('.prettierrc.json');
+                this.fs.copy(srcPath, destPath);
+            },
+
+            dependencies() {
+                this.addDevDependencies([
+                    'prettier',
+                    '@prettier/plugin-php',
+                    '@trivago/prettier-plugin-sort-imports',
+                ]);
+            }
+        }
+
     }
 
-    install() {
-        this.addDevDependencies([
-            'prettier',
-            '@prettier/plugin-php',
-            '@trivago/prettier-plugin-sort-imports',
-        ]);
+    async install() {
+        if (this.options['skip-install']) {
+            return;
+        }
+
+        await this.spawnCommand('npm', ['install']);
     }
 };

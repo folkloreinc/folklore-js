@@ -23,12 +23,25 @@ module.exports = class StylelintGenerator extends Generator {
         console.log(chalk.yellow('----------------------\n'));
     }
 
-    writing() {
-        const srcPath = this.templatePath('stylelintrc');
-        const destPath = this.destinationPath('.stylelintrc');
-        this.fs.copyTpl(srcPath, destPath, {
-            camelCase: this.options['camel-case'],
-        });
+    get writing() {
+        return {
+            stylelintrc() {
+                const srcPath = this.templatePath('stylelintrc');
+                const destPath = this.destinationPath('.stylelintrc');
+                this.fs.copyTpl(srcPath, destPath, {
+                    camelCase: this.options['camel-case'],
+                });
+            },
+
+            dependencies() {
+                this.addDevDependencies([
+                    'stylelint',
+                    'stylelint-config-standard-scss',
+                    'stylelint-config-idiomatic-order',
+                    'stylelint-config-prettier',
+                ]);
+            },
+        };
     }
 
     async install() {
@@ -36,11 +49,6 @@ module.exports = class StylelintGenerator extends Generator {
             return;
         }
 
-        await this.addDevDependencies([
-            'stylelint',
-            'stylelint-config-standard-scss',
-            'stylelint-config-idiomatic-order',
-            'stylelint-config-prettier',
-        ]);
+        await this.spawnCommand('npm', ['install']);
     }
 };

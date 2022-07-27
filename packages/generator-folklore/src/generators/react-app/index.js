@@ -4,7 +4,7 @@ import path from 'path';
 
 import Generator from '../../lib/generator';
 
-module.exports = class JsGenerator extends Generator {
+module.exports = class ReactAppGenerator extends Generator {
     // The name `constructor` is important here
     constructor(...args) {
         super(...args);
@@ -16,7 +16,7 @@ module.exports = class JsGenerator extends Generator {
 
         this.option('path', {
             type: String,
-            defaults: 'src/js',
+            defaults: 'src',
         });
 
         this.option('styles-path', {
@@ -36,7 +36,7 @@ module.exports = class JsGenerator extends Generator {
                 }
 
                 console.log(chalk.yellow('\n----------------------'));
-                console.log('Javascript Generator');
+                console.log('React App Generator');
                 console.log(chalk.yellow('----------------------\n'));
             },
 
@@ -109,6 +109,33 @@ module.exports = class JsGenerator extends Generator {
                     name: this.options['project-name'],
                 });
             },
+
+            dependencies() {
+                this.addDependencies([
+                    'react',
+                    'react-dom',
+                    'prop-types',
+                    'react-intl',
+                    'react-router',
+                    'react-router-dom',
+                    'react-helmet',
+                    'classnames',
+
+                    '@folklore/routes',
+                    '@folklore/fonts',
+                    '@folklore/forms',
+                    '@folklore/fetch',
+                    '@folklore/hooks',
+                    '@folklore/tracking',
+
+                    // Polyfills
+                    'intl',
+                    '@formatjs/intl-locale',
+                    '@formatjs/intl-pluralrules',
+                    'intersection-observer',
+                    'resize-observer-polyfill',
+                ]);
+            },
         };
     }
 
@@ -117,32 +144,6 @@ module.exports = class JsGenerator extends Generator {
             return;
         }
 
-        const dependencies = [
-
-            'react',
-            'react-dom',
-            'prop-types',
-            'react-intl',
-            'react-router',
-            'react-router-dom',
-            'react-helmet',
-            'classnames',
-
-            '@folklore/routes',
-            '@folklore/fonts',
-            '@folklore/forms',
-            '@folklore/fetch',
-            '@folklore/hooks',
-            '@folklore/tracking',
-
-            // Polyfills
-            'intl',
-            '@formatjs/intl-locale',
-            '@formatjs/intl-pluralrules',
-            'intersection-observer',
-            'resize-observer-polyfill',
-        ];
-
-        await this.addDependencies(dependencies);
+        await this.spawnCommand('npm', ['install']);
     }
 };

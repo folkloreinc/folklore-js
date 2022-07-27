@@ -246,7 +246,7 @@ module.exports = class LaravelGenerator extends Generator {
             project_name: this.options['project-name'],
         }).replace(/^(http)?(s)?(:\/\/)?/, 'http$2://');
 
-        this.composeWith('folklore:js', {
+        this.composeWith('folklore:react-app', {
             'project-name': this.options['project-name'],
             path: jsSrcPath,
             'styles-path': stylesSrcPath,

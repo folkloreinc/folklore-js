@@ -29,6 +29,17 @@ module.exports = class RollupGenerator extends Generator {
                 const destPath = this.destinationPath('rollup.config.js');
                 this.fs.copyTpl(srcPath, destPath);
             },
+
+            dependencies() {
+                this.addDevDependencies([
+                    '@rollup/plugin-babel',
+                    '@rollup/plugin-commonjs',
+                    '@rollup/plugin-json',
+                    '@rollup/plugin-node-resolve',
+                    '@rollup/plugin-replace',
+                    'rollup',
+                ]);
+            },
         };
     }
 
@@ -37,13 +48,6 @@ module.exports = class RollupGenerator extends Generator {
             return;
         }
 
-        await this.addDevDependencies([
-            '@rollup/plugin-babel',
-            '@rollup/plugin-commonjs',
-            '@rollup/plugin-json',
-            '@rollup/plugin-node-resolve',
-            '@rollup/plugin-replace',
-            'rollup',
-        ]);
+        await this.spawnCommand('npm', ['install']);
     }
 };

@@ -36,20 +36,35 @@ module.exports = class BabelGenerator extends Generator {
         console.log(chalk.yellow('----------------------\n'));
     }
 
-    writing() {
-        const {
-            react,
-            'transform-runtime': transformRuntime,
-            'react-intl': reactIntl,
-        } = this.options;
+    get writing() {
+        return {
+            config() {
+                const {
+                    react,
+                    'transform-runtime': transformRuntime,
+                    'react-intl': reactIntl,
+                } = this.options;
 
-        const srcPath = this.templatePath('config');
-        const destPath = this.destinationPath('babel.config.js');
-        this.fs.copyTpl(srcPath, destPath, {
-            react,
-            transformRuntime,
-            reactIntl,
-        });
+                const srcPath = this.templatePath('config');
+                const destPath = this.destinationPath('babel.config.js');
+                this.fs.copyTpl(srcPath, destPath, {
+                    react,
+                    transformRuntime,
+                    reactIntl,
+                });
+            },
+
+            dependencies() {
+                this.addDevDependencies([
+                    '@babel/cli',
+                    '@babel/core',
+                    '@babel/node',
+                    '@babel/plugin-transform-runtime',
+                    '@babel/preset-env',
+                    '@babel/preset-react',
+                ]);
+            },
+        };
     }
 
     async install() {
@@ -57,13 +72,6 @@ module.exports = class BabelGenerator extends Generator {
             return;
         }
 
-        await this.addDevDependencies([
-            '@babel/cli',
-            '@babel/core',
-            '@babel/node',
-            '@babel/plugin-transform-runtime',
-            '@babel/preset-env',
-            '@babel/preset-react',
-        ]);
+        await this.spawnCommand('npm', ['install']);
     }
 };

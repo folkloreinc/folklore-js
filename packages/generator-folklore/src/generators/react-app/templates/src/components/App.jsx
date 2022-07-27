@@ -7,6 +7,8 @@ import { BrowserRouter } from 'react-router-dom';
 // import * as AppPropTypes from '../lib/PropTypes';
 import Routes from './Routes';
 
+import '<%= getRelativeStylesPath('components/App.jsx', 'styles.scss') %>';
+
 const propTypes = {
     locale: PropTypes.string,
     messages: PropTypes.oneOfType([
