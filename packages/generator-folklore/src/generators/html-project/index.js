@@ -4,7 +4,7 @@ import path from 'path';
 
 import Generator from '../../lib/generator';
 
-module.exports = class HTMLGenerator extends Generator {
+module.exports = class HTMLProjectGenerator extends Generator {
     // The name `constructor` is important here
     constructor(...args) {
         super(...args);
@@ -14,22 +14,10 @@ module.exports = class HTMLGenerator extends Generator {
             required: false,
         });
 
-        this.option('path', {
-            type: String,
-            desc: 'Path for the html project',
-            defaults: './',
-        });
-
         this.option('src-path', {
             type: String,
             desc: 'Path for source',
             defaults: './src',
-        });
-
-        this.option('tmp-path', {
-            type: String,
-            desc: 'Path for temp files',
-            defaults: './.tmp',
         });
 
         this.option('dest-path', {
@@ -44,28 +32,10 @@ module.exports = class HTMLGenerator extends Generator {
             defaults: '',
         });
 
-        this.option('css-path', {
-            type: String,
-            desc: 'Path for the css',
-            defaults: 'css',
-        });
-
         this.option('styles-path', {
             type: String,
             desc: 'Path for the scss',
             defaults: 'styles',
-        });
-
-        this.option('images-path', {
-            type: String,
-            desc: 'Path for the images',
-            defaults: 'img',
-        });
-
-        this.option('build-path', {
-            type: String,
-            desc: 'Path for the build tools',
-            defaults: 'build',
         });
 
         this.option('server', {
@@ -97,7 +67,7 @@ module.exports = class HTMLGenerator extends Generator {
                 }
 
                 console.log(chalk.yellow('\n----------------------'));
-                console.log('HTML Generator');
+                console.log('HTML Project Generator');
                 console.log(chalk.yellow('----------------------\n'));
             },
 
@@ -131,10 +101,9 @@ module.exports = class HTMLGenerator extends Generator {
             'server-path': serverPath,
             'server-filename': serverFilename,
         } = this.options;
-        const projectPath = this.destinationPath();
-        const jsSrcPath = path.join(projectPath, srcPath, jsPath);
-        const stylesSrcPath = path.join(projectPath, srcPath, stylesPath);
-        const serverSrcPath = path.join(projectPath, srcPath, serverPath);
+        const jsSrcPath = path.join(srcPath, jsPath);
+        const stylesSrcPath = path.join(srcPath, stylesPath);
+        const serverSrcPath = path.join(srcPath, serverPath);
 
         this.composeWith('folklore:prettier', {
             'skip-install': true,
@@ -184,6 +153,8 @@ module.exports = class HTMLGenerator extends Generator {
                 quiet: true,
             });
         }
+
+        console.log(srcPath, jsSrcPath, path.join(jsSrcPath, 'index.js'), path.join(srcPath, 'index.html.ejs'));
 
         this.composeWith('folklore:build', {
             'src-path': srcPath,

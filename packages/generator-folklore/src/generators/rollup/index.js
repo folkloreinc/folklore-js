@@ -25,7 +25,7 @@ module.exports = class RollupGenerator extends Generator {
     get writing() {
         return {
             config() {
-                const srcPath = this.templatePath('config');
+                const srcPath = this.templatePath('config.js');
                 const destPath = this.destinationPath('rollup.config.js');
                 this.fs.copyTpl(srcPath, destPath);
             },

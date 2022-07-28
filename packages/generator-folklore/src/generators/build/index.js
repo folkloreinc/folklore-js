@@ -1,7 +1,9 @@
-import path from 'path';
 import chalk from 'chalk';
 import isArray from 'lodash/isArray';
+import path from 'path';
+
 import Generator from '../../lib/generator';
+import { ensureLeadingDotSlash } from '../../lib/utils';
 
 module.exports = class AppGenerator extends Generator {
     // The name `constructor` is important here
@@ -45,8 +47,10 @@ module.exports = class AppGenerator extends Generator {
             defaults: true,
         });
 
-        this.scriptsPath = (filePath) =>
-            this.destinationPath(path.join(this.options.scriptsPath, filePath));
+        this.ensureLeadingDotSlash = (filePath) =>
+            !path.isAbsolute(filePath) && filePath.match(/^\./) === null
+                ? `./${filePath}`
+                : filePath;
     }
 
     prompting() {
@@ -71,30 +75,29 @@ module.exports = class AppGenerator extends Generator {
                     server,
                 } = this.options;
                 const scripts = {
-                    build: `flklr build --load-env ${entryPath}`,
+                    build: `flklr build --load-env ${ensureLeadingDotSlash(entryPath)}`,
                 };
                 if (server) {
-                    scripts.server = `flklr serve --load-env ${entryPath}`;
+                    scripts.server = `flklr serve --load-env ${ensureLeadingDotSlash(entryPath)}`;
                     scripts.start = 'npm run server';
                 }
 
                 this.packageJson.merge({
                     scripts,
                     build: {
-                        outputPath: buildPath,
-                        srcPath,
-                        htmlPath,
-                        publicPath,
+                        outputPath: ensureLeadingDotSlash(buildPath),
+                        srcPath: ensureLeadingDotSlash(srcPath),
+                        htmlPath: ensureLeadingDotSlash(htmlPath),
+                        publicPath: ensureLeadingDotSlash(publicPath),
                         disableImageOptimization: true,
                     },
                 });
             },
 
             dependencies() {
-                this.addDevDependencies(['@folklore/cli'])
-            }
-        }
-
+                this.addDevDependencies(['@folklore/cli']);
+            },
+        };
     }
 
     async install() {

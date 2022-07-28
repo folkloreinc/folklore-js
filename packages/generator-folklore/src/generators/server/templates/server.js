@@ -34,14 +34,12 @@ app.use(express.static(webPath));
 
 app.get('/', async (req, res) =>
     res.render('index.html.ejs', {
-        counter,
         fromServer: true,
     }),
 );
 
 app.get('*', async (req, res) => {
     return res.render('index.html.ejs', {
-        counter,
         fromServer: true,
     });
 });<% if (socketIo) { %>

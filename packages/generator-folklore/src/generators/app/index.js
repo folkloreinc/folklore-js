@@ -44,75 +44,11 @@ module.exports = class AppGenerator extends Generator {
                         choices: [
                             {
                                 name: 'HTML',
-                                value: 'html',
+                                value: 'html-project',
                             },
                             {
-                                name: 'Laravel',
-                                value: 'laravel',
-                            },
-                            {
-                                name: 'Javascript',
-                                value: 'js',
-                            },
-                            {
-                                name: 'SCSS',
-                                value: 'scss',
-                            },
-                            {
-                                name: 'NPM Package',
-                                value: 'npm-package',
-                            },
-                            {
-                                name: 'React Package',
-                                value: 'react-package',
-                            },
-                            {
-                                name: 'Laravel Package',
-                                value: 'laravel-package',
-                            },
-                            {
-                                name: 'Lerna repository',
-                                value: 'lerna-repository',
-                            },
-                            {
-                                name: 'Lerna package',
-                                value: 'lerna-package',
-                            },
-                            {
-                                name: 'Build tools',
-                                value: 'build',
-                            },
-                            {
-                                name: 'Babel',
-                                value: 'babel',
-                            },
-                            {
-                                name: 'Eslint',
-                                value: 'eslint',
-                            },
-                            {
-                                name: 'Stylelint',
-                                value: 'stylelint',
-                            },
-                            {
-                                name: 'SASS Lint',
-                                value: 'sass-lint',
-                            },
-                            {
-                                name: 'Test',
-                                value: 'test',
-                            },
-                            {
-                                name: 'Storybook',
-                                value: 'storybook',
-                            },
-                            {
-                                name: 'Editorconfig',
-                                value: 'editorconfig',
-                            },
-                            {
-                                name: 'Documentation',
-                                value: 'docs',
+                                name: 'Node',
+                                value: 'node-project',
                             },
                         ],
                     });
