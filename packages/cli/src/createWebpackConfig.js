@@ -103,8 +103,8 @@ export default (entry, opts = {}) => {
     const loadExtend = (extend) => (isString(extend) ? require(getAbsolutePath(extend)) : extend);
 
     const loadExtendItems = (items) => {
-        const newItems = loadExtend(items);
-        return !isArray(newItems) ? [newItems] : newItems;
+        const newItems = loadExtend(items) || null;
+        return !isArray(newItems) && newItems !== null ? [newItems] : newItems;
     };
 
     const extraLoaders = loadExtendItems(loaders);
