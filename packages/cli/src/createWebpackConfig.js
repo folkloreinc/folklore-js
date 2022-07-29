@@ -1,7 +1,7 @@
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
-import { isString, isObject } from 'lodash';
+import { isString, isArray } from 'lodash';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import getCSSModuleLocalIdent from 'react-dev-utils/getCSSModuleLocalIdent';
@@ -104,7 +104,7 @@ export default (entry, opts = {}) => {
 
     const loadExtendItems = (items) => {
         const newItems = loadExtend(items);
-        return isObject(newItems) ? [newItems] : newItems;
+        return !isArray(newItems) ? [newItems] : newItems;
     };
 
     const extraLoaders = loadExtendItems(loaders);
