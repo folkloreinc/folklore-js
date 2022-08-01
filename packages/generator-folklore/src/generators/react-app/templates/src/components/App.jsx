@@ -1,6 +1,6 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
-import { Route, App as Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 // import { useUrlGenerator } from '@folklore/routes';
 // import * as AppPropTypes from '../lib/PropTypes';
@@ -17,7 +17,7 @@ const defaultProps = {};
 function App() {
     // const urlGenerator = useUrlGenerator();
     return (
-        <Switch>
+        <Routes>
             <Route
                 path="/"
                 exact
@@ -35,7 +35,7 @@ function App() {
                     </MainLayout>
                 }
             />
-        </Switch>
+        </Routes>
     );
 }
 
