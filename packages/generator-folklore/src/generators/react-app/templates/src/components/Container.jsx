@@ -32,7 +32,7 @@ function Container({ locale, messages, routes }) {
             </BrowserRouter>
         </IntlProvider>
     );
-};
+}
 
 Container.propTypes = propTypes;
 Container.defaultProps = defaultProps;

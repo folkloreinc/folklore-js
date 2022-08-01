@@ -1,9 +1,9 @@
-import path from 'path';
 import babel from '@rollup/plugin-babel';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
+import path from 'path';
 
 export const plugins = [
     json(),
@@ -20,9 +20,12 @@ export const plugins = [
         babelHelpers: 'runtime',
     }),
     replace({
-        'process.env.NODE_ENV': JSON.stringify('production'),
-        __buildDate__: () => JSON.stringify(new Date()),
-        __buildVersion: 15,
+        values: {
+            'process.env.NODE_ENV': JSON.stringify('production'),
+            __buildDate__: () => JSON.stringify(new Date()),
+            __buildVersion: 15,
+        },
+        preventAssignment: false,
     }),
 ];
 

@@ -45,7 +45,7 @@ module.exports = class BabelGenerator extends Generator {
                     'react-intl': reactIntl,
                 } = this.options;
 
-                const srcPath = this.templatePath('config');
+                const srcPath = this.templatePath('config.js');
                 const destPath = this.destinationPath('babel.config.js');
                 this.fs.copyTpl(srcPath, destPath, {
                     react,
