@@ -1,40 +1,43 @@
-import { RoutesProvider } from '@folklore/routes';
-import PropTypes from 'prop-types';
 import React from 'react';
-import { IntlProvider } from 'react-intl';
-import { BrowserRouter } from 'react-router-dom';
+// import PropTypes from 'prop-types';
+import { Route, App as Switch } from 'react-router-dom';
 
+// import { useUrlGenerator } from '@folklore/routes';
 // import * as AppPropTypes from '../lib/PropTypes';
-import Routes from './Routes';
+import MainLayout from './layouts/Main';
+import ErrorPage from './pages/Error';
+import HomePage from './pages/Home';
 
 import '<%= getRelativeStylesPath('components/App.jsx', 'styles.scss') %>';
 
-const propTypes = {
-    locale: PropTypes.string,
-    messages: PropTypes.oneOfType([
-        PropTypes.objectOf(PropTypes.objectOf(PropTypes.string)),
-        PropTypes.objectOf(PropTypes.string),
-    ]),
-    routes: PropTypes.objectOf(PropTypes.string),
-};
+const propTypes = {};
 
-const defaultProps = {
-    locale: 'fr',
-    messages: {},
-    routes: {},
-};
+const defaultProps = {};
 
-function App({ locale, messages, routes, statusCode, googleApiKey }) {
+function App() {
+    // const urlGenerator = useUrlGenerator();
     return (
-        <IntlProvider locale={locale} messages={messages[locale] || messages}>
-            <BrowserRouter>
-                <RoutesProvider routes={routes}>
-                    <Routes />
-                </RoutesProvider>
-            </BrowserRouter>
-        </IntlProvider>
+        <Switch>
+            <Route
+                path="/"
+                exact
+                element={
+                    <MainLayout>
+                        <HomePage />
+                    </MainLayout>
+                }
+            />
+            <Route
+                path="*"
+                element={
+                    <MainLayout>
+                        <ErrorPage />
+                    </MainLayout>
+                }
+            />
+        </Switch>
     );
-};
+}
 
 App.propTypes = propTypes;
 App.defaultProps = defaultProps;

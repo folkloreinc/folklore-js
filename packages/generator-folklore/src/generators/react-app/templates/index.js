@@ -1,7 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
-import App from './components/App';
+import Container from './components/Container';
 import shouldPolyfill from './polyfills/should';
 
 function getAppProps() {
@@ -9,10 +9,11 @@ function getAppProps() {
 }
 
 function renderApp(props) {
-    const container = document.getElementById('app');
-    const app = React.createElement(App, props);
-    const root = createRoot(container);
-    root.render(app);
+    const element = document.getElementById('app');
+    const container = React.createElement(Container, props);
+    const strictMode = React.createElement(React.StrictMode, {}, container);
+    const root = createRoot(element);
+    root.render(strictMode);
 }
 
 if (shouldPolyfill()) {

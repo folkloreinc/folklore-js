@@ -30,7 +30,7 @@ function Menu({ items, className }) {
             ])}
         >
             <ul className={styles.items}>
-                {items.map(({ label, url, active = false, external = false }, index) => (
+                {items.map(({ label, url, active = false, external = false, target = '_blank' }, index) => (
                     <li
                         className={classNames([
                             styles.item,
@@ -41,7 +41,7 @@ function Menu({ items, className }) {
                         key={`item-${index}`}
                     >
                         {external ? (
-                            <a href={url} className={styles.link}>
+                            <a href={url} target={target} className={styles.link}>
                                 <Label>{label}</Label>
                             </a>
                         ) : (
