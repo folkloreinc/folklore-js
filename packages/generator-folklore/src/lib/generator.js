@@ -24,11 +24,21 @@ class Generator extends BaseGenerator {
     constructor(args, options) {
         super(args, options);
 
+        this._composerJson = null;
+
         this.option('quiet', {
             type: Boolean,
             defaults: false,
         });
     }
+
+    get composerJson() {
+        if (!this._composerJson) {
+          this._composerJson = this.createStorage('composer.json');
+        }
+
+        return this._composerJson;
+      }
 
     getConfig() {
         const configPath = Generator.getConfigPath();
