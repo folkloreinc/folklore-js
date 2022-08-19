@@ -269,7 +269,6 @@ module.exports = class LaravelProjectGenerator extends Generator {
             'src-path': assetsPath,
             'entry-path': path.join(jsSrcPath, 'index.js'),
             'build-path': publicPath,
-            'empty-path': destPath,
             quiet: true,
             'skip-install': true,
         });
@@ -301,14 +300,15 @@ module.exports = class LaravelProjectGenerator extends Generator {
         return {
             laravel() {
                 const done = this.async();
-
+                const {
+                    'laravel-version': laravelVersion = null,
+                    'laravel-branch': laravelBranch = null,
+                } = this.options;
                 const versionBranch =
-                    this.options['laravel-version'] === 'latest'
-                        ? 'master'
-                        : this.options['laravel-version'];
-                const branch = this.options['laravel-branch'] || versionBranch;
+                    laravelVersion !== 'latest' ? laravelVersion : null;
+                const branch = laravelBranch || versionBranch;
 
-                remote('laravel', 'laravel', branch, (err, cachePath) => {
+                const remoteCallback = (err, cachePath) => {
                     const destinationPath = this.destinationPath();
                     const files = glob.sync('**', {
                         dot: true,
@@ -327,7 +327,14 @@ module.exports = class LaravelProjectGenerator extends Generator {
                     });
 
                     done();
-                });
+                };
+
+                if (branch !== null) {
+                    remote('laravel', 'laravel', branch, remoteCallback);
+                } else {
+                    remote('laravel', 'laravel', remoteCallback);
+                }
+
             },
 
             removeFiles() {
@@ -456,8 +463,7 @@ module.exports = class LaravelProjectGenerator extends Generator {
                     return;
                 }
 
-                const done = this.async();
-                this.spawnCommand('composer', ['install']).on('close', done);
+                await this.spawnCommand('composer', ['install']);
             },
 
             async keyGenerate() {
@@ -465,8 +471,7 @@ module.exports = class LaravelProjectGenerator extends Generator {
                     return;
                 }
 
-                const done = this.async();
-                this.spawnCommand('php', ['artisan', 'key:generate']).on('close', done);
+                await this.spawnCommand('php', ['artisan', 'key:generate']);
             },
 
             async vendorPublish() {
@@ -474,8 +479,19 @@ module.exports = class LaravelProjectGenerator extends Generator {
                     return;
                 }
 
-                const done = this.async();
-                this.spawnCommand('php', ['artisan', 'vendor:publish', '--all']).on('close', done);
+                await this.spawnCommand('php', ['artisan', 'vendor:publish', '--all']);
+            },
+
+            async valet() {
+                if (this.options['skip-install']) {
+                    return;
+                }
+
+                await this.spawnCommand('valet', [
+                    'link',
+                    '--secure',
+                    this.options['project-host'],
+                ]);
             },
         };
     }
