@@ -13,10 +13,6 @@ class RoutesComposer extends BaseRoutesComposer
 
     protected $routesLocalized = [
         'home',
-        'sections.show',
-        'prizes.show',
-        'prizes.show.json',
-        'prizes.redeem',
     ];
 
     protected $withoutParametersPatterns = true;

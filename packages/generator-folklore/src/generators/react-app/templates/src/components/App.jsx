@@ -1,6 +1,7 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 import { Route, Routes } from 'react-router-dom';
+import { useRoutes } from '@folklore/routes';
 
 // import { useUrlGenerator } from '@folklore/routes';
 // import * as AppPropTypes from '../lib/PropTypes';
@@ -15,11 +16,11 @@ const propTypes = {};
 const defaultProps = {};
 
 function App() {
-    // const urlGenerator = useUrlGenerator();
+    const routes = useRoutes() || {};
     return (
         <Routes>
             <Route
-                path="/"
+                path={routes.home || '/'}
                 exact
                 element={
                     <MainLayout>

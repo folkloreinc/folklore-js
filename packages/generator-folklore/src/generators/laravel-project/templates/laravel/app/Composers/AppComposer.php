@@ -35,25 +35,14 @@ class AppComposer
      */
     public function compose(View $view)
     {
+        $site = $this->request->site();
         $user = $this->request->user();
-
-        $storyLink = $view->storyLink;
-
-        // Meta
-
-        $view->title = trans('app.title');
-        $view->description = trans('app.description');
-        $view->image = asset(trans('app.facebook_image_path'));
-        $view->url = $this->request->url();
 
         $view->props = [
             'routes' => $view->routes,
             'intl' => $view->intl,
             'user' => !is_null($user) ? new UserResource($user) : null,
-            'site' => $view->site,
-            'pubnubNamespace' => config('broadcasting.connections.pubnub.namespace'),
-            'pubnubPublishKey' => config('services.pubnub.publish_key'),
-            'pubnubSubscribeKey' => config('services.pubnub.subscribe_key'),
+            'site' => $site,
         ];
     }
 }

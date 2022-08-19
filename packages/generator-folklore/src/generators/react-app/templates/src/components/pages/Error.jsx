@@ -78,7 +78,7 @@ const defaultProps = {
 };
 
 function ErrorPage({ statusCode }) {
-    const urlGenerator = useUrlGenerator();
+    const url = useUrlGenerator();
     return (
         <div className={styles.container}>
             <PageMeta title={messages[`metaTitle${statusCode || 404}`]} />
@@ -90,7 +90,7 @@ function ErrorPage({ statusCode }) {
                     <FormattedMessage {...messages[`description${statusCode || 404}`]} />
                 </p>
                 <div className={styles.actions}>
-                    <Link to={urlGenerator.route('home')}>
+                    <Link to={url('home')}>
                         <FormattedMessage {...messages.gotoHome} />
                     </Link>
                 </div>

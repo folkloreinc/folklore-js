@@ -32,7 +32,7 @@ module.exports = class LaravelProjectGenerator extends Generator {
         this.option('laravel-version', {
             type: String,
             desc: 'Laravel version',
-            defaults: 'latest',
+            defaults: '9',
         });
 
         this.option('laravel-branch', {
@@ -273,6 +273,13 @@ module.exports = class LaravelProjectGenerator extends Generator {
             'skip-install': true,
         });
 
+        this.composeWith('folklore:intl', {
+            'translations-path': path.join(jsSrcPath, '**/*.{js,jsx}'),
+            'output-path': './resources/lang',
+            quiet: true,
+            'skip-install': true,
+        });
+
         // if (this.options.panneau) {
         //     this.composeWith('folklore:laravel-panneau', {
         //         'project-name': this.options['project-name'],
@@ -305,7 +312,13 @@ module.exports = class LaravelProjectGenerator extends Generator {
                     'laravel-branch': laravelBranch = null,
                 } = this.options;
                 const versionBranch =
-                    laravelVersion !== 'latest' ? laravelVersion : null;
+                    laravelVersion !== 'latest' && laravelVersion !== null
+                        ? `${
+                              laravelVersion.indexOf('.') !== -1
+                                  ? laravelVersion
+                                  : `${laravelVersion}.x`
+                          }`
+                        : null;
                 const branch = laravelBranch || versionBranch;
 
                 const remoteCallback = (err, cachePath) => {
@@ -334,31 +347,19 @@ module.exports = class LaravelProjectGenerator extends Generator {
                 } else {
                     remote('laravel', 'laravel', remoteCallback);
                 }
-
             },
 
             removeFiles() {
                 const files = [
-                    'gulpfile.js',
                     'package.json',
-                    'webpack.mix.js',
                     'config/app.php',
                     'routes/web.php',
-                    'public/css/app.css',
-                    'public/js/app.js',
-                    'app/Exceptions/Handler.php',
-                    'app/Providers/AppServiceProvider.php',
-                    'resources/sass/**',
-                    'resources/js/**',
-                    'resources/sass',
+                    'vite.config.js',
+                    'resources/css',
                     'resources/js',
-                    'resources/assets/sass/**',
-                    'resources/assets/js/**',
-                    'resources/assets/sass',
-                    'resources/assets/js',
                     'resources/views/welcome.blade.php',
-                    'resources/views/errors/404.blade.php',
-                    'resources/views/errors/500.blade.php',
+                    'app/Http/Controllers/HomeController.php',
+                    'app/Http/Middleware/TrustProxies.php'
                 ];
 
                 files.forEach((file) => {
@@ -373,6 +374,19 @@ module.exports = class LaravelProjectGenerator extends Generator {
                         'folklore/laravel-folklore': 'v1.x-dev',
                         'folklore/laravel-locale': 'v8.x-dev',
                         'folklore/laravel-panneau': 'v1.2.x-dev',
+                    },
+                });
+            },
+
+            packageJSON() {
+                this.packageJson.merge({
+                    scripts: {
+                        clean: 'rm -rf public/static && rm -rf public/precache-*',
+                        'build:scripts': 'flklr build --load-env ./resources/assets/js/index.js',
+                        'build:views': 'php artisan assets:view',
+                        build: 'npm run clean && npm run build:scripts && npm run build:views',
+                        start: 'npm run server',
+                        server: 'flklr serve --load-env ./resources/assets/js/index.js',
                     },
                 });
             },
