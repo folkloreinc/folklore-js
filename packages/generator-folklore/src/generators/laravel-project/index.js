@@ -111,6 +111,12 @@ module.exports = class LaravelProjectGenerator extends Generator {
             defaults: false,
         });
 
+        this.option('mediatheque', {
+            type: Boolean,
+            desc: 'Add mediatheque',
+            defaults: false,
+        });
+
         this.option('auth', {
             type: Boolean,
             desc: 'Add auth',
@@ -166,15 +172,20 @@ module.exports = class LaravelProjectGenerator extends Generator {
                 }
 
                 const featuresChoices = [
+                    !this.options.mediatheque && {
+                        name: 'Mediatheque',
+                        value: 'mediatheque',
+                        checked: true,
+                    },
                     !this.options.panneau && {
                         name: 'Panneau',
                         value: 'panneau',
-                        checked: true,
+                        checked: false,
                     },
                     !this.options.auth && {
                         name: 'Auth',
                         value: 'auth',
-                        checked: true,
+                        checked: false,
                     },
                 ].filter(Boolean);
                 if (featuresChoices.length) {
@@ -210,6 +221,9 @@ module.exports = class LaravelProjectGenerator extends Generator {
                     }
                     if (features.indexOf('auth') !== -1) {
                         this.options.auth = true;
+                    }
+                    if (features.indexOf('mediatheque') !== -1) {
+                        this.options.mediatheque = true;
                     }
                 });
             },
@@ -374,9 +388,26 @@ module.exports = class LaravelProjectGenerator extends Generator {
                     require: {
                         'folklore/laravel-folklore': 'v1.x-dev',
                         'folklore/laravel-locale': 'v8.x-dev',
-                        'folklore/laravel-panneau': 'v1.2.x-dev',
+                        'folklore/laravel-image': 'v1.x-dev',
                     },
                 });
+
+                if (this.options.mediatheque) {
+                    this.composerJson.merge({
+                        require: {
+                            'folklore/laravel-mediatheque': 'v1.1.x-dev',
+                        },
+                    });
+                }
+
+                if (this.options.panneau) {
+                    this.composerJson.merge({
+                        require: {
+                            'folklore/laravel-mediatheque': 'v1.1.x-dev',
+                            'folklore/laravel-panneau': 'v1.2.x-dev',
+                        },
+                    });
+                }
             },
 
             packageJSON() {
