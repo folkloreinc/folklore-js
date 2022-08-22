@@ -31,5 +31,6 @@ class ViewServiceProvider extends ServiceProvider
         $view->composer('app', \App\Composers\IntlComposer::class);
         $view->composer('app', \App\Composers\RoutesComposer::class);
         $view->composer('app', \App\Composers\AppComposer::class);
+        $view->composer('meta.*', \App\Composers\MetaComposer::class);
     }
 }

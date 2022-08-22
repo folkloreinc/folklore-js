@@ -10,4 +10,9 @@ class HomeController extends Controller
     {
         return view('app');
     }
+
+    public function redirect(Request $request)
+    {
+        return redirect()->to(app('url')->routeWithLocale('home'));
+    }
 }

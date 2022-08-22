@@ -275,7 +275,8 @@ module.exports = class LaravelProjectGenerator extends Generator {
 
         this.composeWith('folklore:intl', {
             'translations-path': path.join(jsSrcPath, '**/*.{js,jsx}'),
-            'output-path': './resources/lang',
+            'output-path': './lang',
+            'without-id-only': true,
             quiet: true,
             'skip-install': true,
         });
@@ -359,7 +360,7 @@ module.exports = class LaravelProjectGenerator extends Generator {
                     'resources/js',
                     'resources/views/welcome.blade.php',
                     'app/Http/Controllers/HomeController.php',
-                    'app/Http/Middleware/TrustProxies.php'
+                    'app/Http/Middleware/TrustProxies.php',
                 ];
 
                 files.forEach((file) => {
@@ -486,14 +487,6 @@ module.exports = class LaravelProjectGenerator extends Generator {
                 }
 
                 await this.spawnCommand('php', ['artisan', 'key:generate']);
-            },
-
-            async vendorPublish() {
-                if (this.options['skip-install']) {
-                    return;
-                }
-
-                await this.spawnCommand('php', ['artisan', 'vendor:publish', '--all']);
             },
 
             async valet() {
