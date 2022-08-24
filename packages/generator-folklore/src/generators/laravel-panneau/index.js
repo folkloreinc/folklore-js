@@ -1,7 +1,8 @@
-import _ from 'lodash';
 import chalk from 'chalk';
 import glob from 'glob';
+import _ from 'lodash';
 import path from 'path';
+
 import Generator from '../../lib/generator';
 
 module.exports = class LaravelPanneauGenerator extends Generator {
@@ -11,12 +12,6 @@ module.exports = class LaravelPanneauGenerator extends Generator {
         this.argument('project-name', {
             type: String,
             required: false,
-        });
-
-        this.option('install-npm', {
-            type: Boolean,
-            desc: 'Install NPM dependencies',
-            defaults: false,
         });
     }
 
@@ -43,12 +38,11 @@ module.exports = class LaravelPanneauGenerator extends Generator {
                     return null;
                 }
 
-                return this.prompt(prompts)
-                    .then((answers) => {
-                        if (answers['project-name']) {
-                            this.options['project-name'] = answers['project-name'];
-                        }
-                    });
+                return this.prompt(prompts).then((answers) => {
+                    if (answers['project-name']) {
+                        this.options['project-name'] = answers['project-name'];
+                    }
+                });
             },
         };
     }
@@ -56,30 +50,25 @@ module.exports = class LaravelPanneauGenerator extends Generator {
     get writing() {
         return {
             composerJSON() {
-                const srcPath = this.templatePath('_composer.json');
-                const destPath = this.destinationPath('composer.json');
-
-                const newJson = this.fs.readJSON(srcPath);
-                const currentJson = this.fs.exists(destPath)
-                    ? this.fs.readJSON(destPath)
-                    : {};
-                this.fs.writeJSON(destPath, _.merge(currentJson, newJson));
+                this.composerJson.merge({
+                    require: {
+                        'folklore/laravel-panneau': 'v1.2.x-dev',
+                    },
+                });
             },
 
             packageJSON() {
-                const srcPath = this.templatePath('_package.json');
-                const destPath = this.destinationPath('package.json');
-
-                const newJson = this.fs.readJSON(srcPath);
-                const currentJson = this.fs.exists(destPath)
-                    ? this.fs.readJSON(destPath)
-                    : {};
-                this.fs.writeJSON(destPath, _.merge(currentJson, newJson));
+                this.addDependencies([
+                    '@panneau/app@^1.0.0-alpha.193',
+                    '@panneau/core@^1.0.0-alpha.193',
+                ]);
             },
 
             layout() {
                 const source = this.templatePath('layout.blade.php');
-                const destination = this.destinationPath('resources/views/vendor/panneau/index.blade.php');
+                const destination = this.destinationPath(
+                    'resources/views/vendor/panneau/index.blade.php',
+                );
                 if (this.fs.exists(destination)) {
                     this.fs.delete(destination);
                 }
@@ -87,7 +76,7 @@ module.exports = class LaravelPanneauGenerator extends Generator {
             },
 
             files() {
-                const folders = ['app', 'resources'];
+                const folders = ['app'];
                 folders.forEach((folder) => {
                     const templatePath = this.templatePath(folder);
                     const destinationPath = this.destinationPath(folder);

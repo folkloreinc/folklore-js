@@ -32,6 +32,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->registerRepositories();
+    }
+
+    protected function registerRepositories()
+    {
+        $this->app->bind(
+            \Folklore\Contracts\Repositories\Users::class,
+            \App\Repositories\Users::class
+        );
     }
 }

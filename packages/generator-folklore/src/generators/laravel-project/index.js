@@ -368,6 +368,7 @@ module.exports = class LaravelProjectGenerator extends Generator {
                 const files = [
                     'package.json',
                     'config/app.php',
+                    'config/auth.php',
                     'routes/web.php',
                     'vite.config.js',
                     'resources/css',
@@ -375,6 +376,7 @@ module.exports = class LaravelProjectGenerator extends Generator {
                     'resources/views/welcome.blade.php',
                     'app/Http/Controllers/HomeController.php',
                     'app/Http/Middleware/TrustProxies.php',
+                    'app/Models/User.php',
                 ];
 
                 files.forEach((file) => {
@@ -396,15 +398,6 @@ module.exports = class LaravelProjectGenerator extends Generator {
                     this.composerJson.merge({
                         require: {
                             'folklore/laravel-mediatheque': 'v1.1.x-dev',
-                        },
-                    });
-                }
-
-                if (this.options.panneau) {
-                    this.composerJson.merge({
-                        require: {
-                            'folklore/laravel-mediatheque': 'v1.1.x-dev',
-                            'folklore/laravel-panneau': 'v1.2.x-dev',
                         },
                     });
                 }
@@ -518,6 +511,35 @@ module.exports = class LaravelProjectGenerator extends Generator {
                 }
 
                 await this.spawnCommand('php', ['artisan', 'key:generate']);
+            },
+
+            async vendorPublish() {
+                if (this.options['skip-install']) {
+                    return;
+                }
+
+                await this.spawnCommand('php', [
+                    'artisan',
+                    'vendor:publish',
+                    '--provider=Folklore\\ServiceProvider',
+                ]);
+                await this.spawnCommand('php', [
+                    'artisan',
+                    'vendor:publish',
+                    '--provider=Folklore\\Locale\\LocaleServiceProvider',
+                ]);
+                await this.spawnCommand('php', [
+                    'artisan',
+                    'vendor:publish',
+                    '--provider=Folklore\\Image\\ServiceProvider',
+                ]);
+                if (this.options.mediatheque) {
+                    await this.spawnCommand('php', [
+                        'artisan',
+                        'vendor:publish',
+                        '--provider=Folklore\\Mediatheque\\ServiceProvider',
+                    ]);
+                }
             },
 
             async valet() {
