@@ -5,13 +5,25 @@ import path from 'path';
 
 import Generator from '../../lib/generator';
 
-module.exports = class LaravelPanneauGenerator extends Generator {
+module.exports = class LaravelMediathequeGenerator extends Generator {
     constructor(...args) {
         super(...args);
 
         this.argument('project-name', {
             type: String,
             required: false,
+        });
+
+        this.argument('overrides', {
+            type: Boolean,
+            required: false,
+            default: false,
+        });
+
+        this.argument('skip-publish', {
+            type: Boolean,
+            required: false,
+            default: false,
         });
     }
 
@@ -23,7 +35,7 @@ module.exports = class LaravelPanneauGenerator extends Generator {
                 }
 
                 console.log(chalk.yellow('\n----------------------'));
-                console.log('Laravel Panneau Generator');
+                console.log('Laravel Mediatheque Generator');
                 console.log(chalk.yellow('----------------------\n'));
             },
 
@@ -52,50 +64,17 @@ module.exports = class LaravelPanneauGenerator extends Generator {
             composerJSON() {
                 this.composerJson.merge({
                     require: {
-                        'folklore/laravel-panneau': 'v1.2.x-dev',
+                        'folklore/laravel-folklore': 'v1.x-dev',
+                        'folklore/laravel-mediatheque': 'v1.1.x-dev',
                     },
                 });
             },
 
-            packageJSON() {
-                this.addDependencies([
-                    '@panneau/app@^1.0.0-alpha.193',
-                    '@panneau/core@^1.0.0-alpha.193',
-                ]);
-            },
-
-            routes() {
-                const source = this.templatePath('routes.php');
-                const destination = this.destinationPath('routes/panneau.php');
-                if (this.fs.exists(destination)) {
-                    this.fs.delete(destination);
-                }
-                this.fs.copyTpl(source, destination, {});
-            },
-
-            layout() {
-                const source = this.templatePath('layout.blade.php');
-                const destination = this.destinationPath(
-                    'resources/views/vendor/panneau/layout.blade.php',
-                );
-                if (this.fs.exists(destination)) {
-                    this.fs.delete(destination);
-                }
-                this.fs.copyTpl(source, destination, {});
-            },
-
-            npmDependencies() {
-                this.addDependencies([
-                    '@panneau/app@^1.0.0-alpha.193',
-                    '@panneau/core@^1.0.0-alpha.193',
-                    '@panneau/data@^1.0.0-alpha.193',
-                    '@panneau/field-text@^1.0.0-alpha.193',
-                    '@panneau/field-localized@^1.0.0-alpha.193',
-                ]);
-            },
-
             files() {
-                const folders = ['app', 'resources', 'lang'];
+                if (!this.options.overrides) {
+                    return
+                }
+                const folders = ['app'];
                 folders.forEach((folder) => {
                     const templatePath = this.templatePath(folder);
                     const destinationPath = this.destinationPath(folder);
@@ -121,31 +100,24 @@ module.exports = class LaravelPanneauGenerator extends Generator {
 
     get install() {
         return {
-            async npm() {
+            composer() {
                 if (this.options['skip-install']) {
                     return;
                 }
 
-                await this.spawnCommand('npm', ['install']);
-            },
-
-            async composer() {
-                if (this.options['skip-install']) {
-                    return;
-                }
-
-                await this.spawnCommand('composer', ['install']);
+                const done = this.async();
+                this.spawnCommand('composer', ['install']).on('close', done);
             },
 
             async vendorPublish() {
-                if (this.options['skip-install']) {
+                if (this.options['skip-publish']) {
                     return;
                 }
 
                 await this.spawnCommand('php', [
                     'artisan',
                     'vendor:publish',
-                    '--provider=Panneau\\ServiceProvider',
+                    '--provider=Folklore\\Mediatheque\\ServiceProvider',
                 ]);
             },
         };

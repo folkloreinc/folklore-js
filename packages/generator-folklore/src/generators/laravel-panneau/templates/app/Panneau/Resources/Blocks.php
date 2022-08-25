@@ -16,13 +16,11 @@ class Blocks extends Resource
         'hideInNavbar' => true,
     ];
 
-    public static $types = [
-        \App\Panneau\Resources\Blocks\TextBlock::class,
-    ];
+    public static $types = [\App\Panneau\Resources\Blocks\TextBlock::class];
 
     public function name(): string
     {
-        return trans('panneau.blocks');
+        return trans('panneau.blocks.name');
     }
 
     public function index(): ?array

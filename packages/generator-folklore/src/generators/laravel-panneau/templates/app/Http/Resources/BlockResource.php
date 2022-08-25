@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Panneau\Http\Resources;
+namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Contracts\Resources\HasBlocks;
@@ -18,7 +18,7 @@ class BlockResource extends JsonResource
     public function toArray($request)
     {
         $type = $this->type();
-
+        $locale = $request->locale();
         return [
             'id' => $this->id(),
             'type' => $type,
@@ -27,11 +27,9 @@ class BlockResource extends JsonResource
                 return !is_null($blocks) ? new BlocksCollection($blocks) : [];
             }),
 
-            $this->mergeWhen($this->resource instanceof TextBlock, function () {
+            $this->mergeWhen($this->resource instanceof TextBlock, function () use ($locale) {
                 return [
-                    'body' => new LocalizedResource(function ($locale) {
-                        return $this->body($locale);
-                    }),
+                    'body' => $this->body($locale),
                 ];
             }),
         ];

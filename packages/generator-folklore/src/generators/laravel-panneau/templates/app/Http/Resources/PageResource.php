@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Panneau\Http\Resources;
+namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Medias\ImageResource;
 use App\Contracts\Resources\Page;
 use App\Contracts\Resources\HasBlocks;
-use Folklore\Http\Resources\LocalizedResource;
 use App\Contracts\Resources\Pages\Home as HomePage;
 
 class PageResource extends JsonResource
@@ -20,21 +19,13 @@ class PageResource extends JsonResource
     public function toArray($request)
     {
         $locale = $request->locale();
-        $isPanneauIndex = $request->isPanneauIndex();
-
         return [
             'id' => $this->id(),
             'type' => $this->type(),
             'published' => $this->published(),
-            'title' => new LocalizedResource(function ($locale) {
-                return $this->title($locale);
-            }),
-            'description' => new LocalizedResource(function ($locale) {
-                return $this->description($locale);
-            }),
-            'slug' => new LocalizedResource(function ($locale) {
-                return $this->slug($locale);
-            }),
+            'title' => $this->title($locale),
+            'description' => $this->description($locale),
+            'slug' => $this->slug($locale),
             'image' => !is_null($image) ? new ImageResource($image) : null,
             'parent' =>
                 !is_null($parent) && $parent instanceof Page

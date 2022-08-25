@@ -17,9 +17,7 @@ class Pages extends Resource
 
     public static $jsonCollection = \App\Panneau\Http\Resources\PagesCollection::class;
 
-    public static $types = [
-        \App\Panneau\Resources\Pages\Page::class,
-    ];
+    public static $types = [\App\Panneau\Resources\Pages\Page::class];
 
     public static $settings = [
         'hideInNavbar' => false,
@@ -37,7 +35,7 @@ class Pages extends Resource
         return [
             'columns' => [
                 [
-                    'label' => trans('panneau.fields.title'),
+                    'label' => trans('panneau.columns.title'),
                     'component' => 'text-localized',
                     'path' => 'title',
                 ],
@@ -45,20 +43,15 @@ class Pages extends Resource
                     'id' => 'type',
                     'label' => 'Type',
                     'component' => 'label',
-                    'labels' => [
-                        'page' => trans('panneau.pages_page'),
-                        'home' => trans('panneau.pages_home'),
-                        'about' => trans('panneau.pages_about'),
-                        'contact' => trans('panneau.pages_contact'),
-                        'news' => trans('panneau.pages_news'),
-                        'index' => trans('panneau.pages_index'),
-                        'section' => trans('panneau.pages_section'),
-                        'media' => trans('panneau.pages_media'),
-                    ],
+                    'labels' => $this->getTypes()->mapWithKeys(function ($type) {
+                        return [
+                            $type->id() => $type->name(),
+                        ];
+                    }),
                 ],
                 [
                     'id' => 'parent',
-                    'label' => trans('panneau.page_parent'),
+                    'label' => trans('panneau.columns.parent_page'),
                     'path' => 'parent.title.fr',
                 ],
                 'published',
@@ -90,11 +83,9 @@ class Pages extends Resource
             TextLocalized::make('description')
                 ->isRequired()
                 ->isTextarea()
-                ->withTransHelpText('panneau.help_texts.description_short')
                 ->withTransLabel('panneau.fields.description_short'),
             ImageLocalized::make('image')
                 ->withTransLabel('panneau.fields.image')
-                ->withTransHelpText('panneau.help_texts.page_image')
                 ->withButton(),
         ];
     }

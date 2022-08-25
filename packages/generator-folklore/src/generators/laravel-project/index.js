@@ -295,6 +295,13 @@ module.exports = class LaravelProjectGenerator extends Generator {
             'skip-install': true,
         });
 
+        if (this.options.mediatheque) {
+            this.composeWith('folklore:laravel-mediatheque', {
+                'project-name': this.options['project-name'],
+                'skip-install': true,
+            });
+        }
+
         // if (this.options.panneau) {
         //     this.composeWith('folklore:laravel-panneau', {
         //         'project-name': this.options['project-name'],
@@ -393,14 +400,6 @@ module.exports = class LaravelProjectGenerator extends Generator {
                         'folklore/laravel-image': 'v1.x-dev',
                     },
                 });
-
-                if (this.options.mediatheque) {
-                    this.composerJson.merge({
-                        require: {
-                            'folklore/laravel-mediatheque': 'v1.1.x-dev',
-                        },
-                    });
-                }
             },
 
             packageJSON() {
@@ -533,13 +532,6 @@ module.exports = class LaravelProjectGenerator extends Generator {
                     'vendor:publish',
                     '--provider=Folklore\\Image\\ServiceProvider',
                 ]);
-                if (this.options.mediatheque) {
-                    await this.spawnCommand('php', [
-                        'artisan',
-                        'vendor:publish',
-                        '--provider=Folklore\\Mediatheque\\ServiceProvider',
-                    ]);
-                }
             },
 
             async valet() {
