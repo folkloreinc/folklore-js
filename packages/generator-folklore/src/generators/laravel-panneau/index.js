@@ -84,6 +84,25 @@ module.exports = class LaravelPanneauGenerator extends Generator {
                 this.fs.copyTpl(source, destination, {});
             },
 
+            app() {
+                const source = this.templatePath('app.blade.php');
+                const destination = this.destinationPath(
+                    'resources/views/vendor/panneau/app.blade.php',
+                );
+                if (this.fs.exists(destination)) {
+                    this.fs.delete(destination);
+                }
+                this.fs.copyTpl(source, destination, {});
+            },
+
+            indexJs() {
+                const source = this.templatePath('index.js');
+                const destination = this.destinationPath(
+                    'resources/assets/js/index.js',
+                );
+                this.fs.copyTpl(source, destination, {});
+            },
+
             npmDependencies() {
                 this.addDependencies([
                     '@panneau/app@^1.0.0-alpha.193',
