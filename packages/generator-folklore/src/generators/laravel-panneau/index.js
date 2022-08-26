@@ -59,8 +59,11 @@ module.exports = class LaravelPanneauGenerator extends Generator {
 
             packageJSON() {
                 this.addDependencies([
-                    '@panneau/app@^1.0.3-alpha.193',
-                    '@panneau/core@^1.0.3-alpha.193',
+                    '@panneau/app@^1.0.3-alpha.1',
+                    '@panneau/core@^1.0.3-alpha.1',
+                    '@panneau/data@^1.0.3-alpha.1',
+                    '@panneau/field-text@^1.0.3-alpha.1',
+                    '@panneau/field-localized@^1.0.3-alpha.1',
                 ]);
             },
 
@@ -110,16 +113,6 @@ module.exports = class LaravelPanneauGenerator extends Generator {
                     'resources/assets/js/index.js',
                 );
                 this.fs.copyTpl(source, destination, {});
-            },
-
-            npmDependencies() {
-                this.addDependencies([
-                    '@panneau/app@^1.0.0-alpha.193',
-                    '@panneau/core@^1.0.0-alpha.193',
-                    '@panneau/data@^1.0.0-alpha.193',
-                    '@panneau/field-text@^1.0.0-alpha.193',
-                    '@panneau/field-localized@^1.0.0-alpha.193',
-                ]);
             },
 
             files() {

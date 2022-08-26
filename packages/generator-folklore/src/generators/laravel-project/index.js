@@ -299,19 +299,17 @@ module.exports = class LaravelProjectGenerator extends Generator {
             this.composeWith('folklore:laravel-mediatheque', {
                 'project-name': this.options['project-name'],
                 'skip-install': true,
+                quiet: true,
             });
         }
 
-        // if (this.options.panneau) {
-        //     this.composeWith('folklore:laravel-panneau', {
-        //         'project-name': this.options['project-name'],
-        //         'js-path': jsSrcPath,
-        //         'styles-path': stylesSrcPath,
-        //         'skip-install': skipInstall,
-        //         'install-npm': true,
-        //         quiet: true,
-        //     });
-        // }
+        if (this.options.panneau) {
+            this.composeWith('folklore:laravel-panneau', {
+                'project-name': this.options['project-name'],
+                'skip-install': skipInstall,
+                quiet: true,
+            });
+        }
 
         // if (this.options.auth) {
         //     this.composeWith('folklore:laravel-auth', {
@@ -398,6 +396,14 @@ module.exports = class LaravelProjectGenerator extends Generator {
                         'folklore/laravel-folklore': 'v1.x-dev',
                         'folklore/laravel-locale': 'v8.x-dev',
                         'folklore/laravel-image': 'v1.x-dev',
+                    },
+                    'require-dev': {
+                        'laravel/telescope': '^4.0.0',
+                    },
+                    extra: {
+                        laravel: {
+                            'dont-discover': ['laravel/telescope'],
+                        },
                     },
                 });
             },
@@ -531,6 +537,17 @@ module.exports = class LaravelProjectGenerator extends Generator {
                     'artisan',
                     'vendor:publish',
                     '--provider=Folklore\\Image\\ServiceProvider',
+                ]);
+            },
+
+            async telescope() {
+                if (this.options['skip-install']) {
+                    return;
+                }
+
+                await this.spawnCommand('php', [
+                    'artisan',
+                    'telescope:install',
                 ]);
             },
 

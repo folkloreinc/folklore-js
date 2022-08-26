@@ -7,7 +7,7 @@ use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Support\Facades\Gate;
 use Panneau\Fields\Upload as UploadField;
 use Panneau\Support\LocalizedField;
-use Folklore\Panneau\Fields\PageSlugField;
+use Folklore\Panneau\Fields\PageSlug as PageSlugField;
 use Panneau\Support\Facade as Panneau;
 
 class PanneauServiceProvider extends BaseServiceProvider

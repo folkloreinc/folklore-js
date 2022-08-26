@@ -194,8 +194,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        App\Providers\ViewServiceProvider::class,
-
+        App\Providers\ViewServiceProvider::class,<% if (options.panneau) { %>
+        App\Panneau\PanneauServiceProvider::class,<% } %>
     ],
 
     /*
