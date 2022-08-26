@@ -9,9 +9,7 @@ interface Users extends BaseUsers
 {
     public function findById(string $id): ?UserResource;
 
-    public function findByHandle(string $handle): ?UserResource;
-
-    public function findBySlug(string $slug, string $locale = null): ?UserResource;
+    public function findByEmail(string $email): ?UserResource;
 
     public function create($data): UserResource;
 
