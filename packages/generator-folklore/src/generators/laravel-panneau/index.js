@@ -59,8 +59,8 @@ module.exports = class LaravelPanneauGenerator extends Generator {
 
             packageJSON() {
                 this.addDependencies([
-                    '@panneau/app@^1.0.0-alpha.193',
-                    '@panneau/core@^1.0.0-alpha.193',
+                    '@panneau/app@^1.0.3-alpha.193',
+                    '@panneau/core@^1.0.3-alpha.193',
                 ]);
             },
 
