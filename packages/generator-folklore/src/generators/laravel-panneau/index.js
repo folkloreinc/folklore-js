@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import { highlight } from 'cli-highlight';
 import glob from 'glob';
 import _ from 'lodash';
 import path from 'path';
@@ -44,6 +45,19 @@ module.exports = class LaravelPanneauGenerator extends Generator {
                     }
                 });
             },
+
+            instructions() {
+                if (this.options.quiet) {
+                    return;
+                }
+
+                console.log('\n\n');
+                console.log(chalk.yellow('\n----------------------'));
+                console.log('Instructions');
+                console.log(chalk.yellow('----------------------\n'));
+                console.log(`Add to ${chalk.yellow('app/Providers/AppServiceProvider.php')}:`)
+                console.log(highlight(serviceProvider, { language: 'php', ignoreIllegals: true }));
+            },
         };
     }
 
@@ -52,7 +66,7 @@ module.exports = class LaravelPanneauGenerator extends Generator {
             composerJSON() {
                 this.composerJson.merge({
                     require: {
-                        'folklore/laravel-panneau': 'v1.2.x-dev'
+                        'folklore/laravel-panneau': 'v1.2.x-dev',
                     },
                 });
             },
@@ -109,9 +123,7 @@ module.exports = class LaravelPanneauGenerator extends Generator {
 
             indexJs() {
                 const source = this.templatePath('index.js');
-                const destination = this.destinationPath(
-                    'resources/assets/js/index.js',
-                );
+                const destination = this.destinationPath('resources/assets/js/index.js');
                 this.fs.copyTpl(source, destination, {});
             },
 

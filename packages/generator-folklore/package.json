@@ -31,6 +31,7 @@
     "dependencies": {
         "chalk": "^4.0.0",
         "change-case": "^4.1.2",
+        "cli-highlight": "^2.1.11",
         "glob": "^7.2.0",
         "immutable": "^4.0.0",
         "is-utf8": "^0.2.1",
