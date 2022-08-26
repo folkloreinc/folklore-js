@@ -39,7 +39,7 @@
     },
     "dependencies": {
         "@babel/runtime": "^7.4.3",
-        "react-router": "^5.2.0"
+        "react-router": "^6.0.0"
     },
     "devDependencies": {
         "prop-types": "^15.7.2",
