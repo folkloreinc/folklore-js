@@ -41,5 +41,10 @@ class AppServiceProvider extends ServiceProvider
             \Folklore\Contracts\Repositories\Users::class,
             \App\Repositories\Users::class
         );
+
+        $this->app->bind(
+            \App\Contracts\Repositories\Users::class,
+            \App\Repositories\Users::class
+        );
     }
 }

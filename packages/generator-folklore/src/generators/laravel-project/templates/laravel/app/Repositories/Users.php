@@ -24,12 +24,12 @@ class Users extends BaseUsers
         return parent::findByEmail($email);
     }
 
-    public function create(array $data): UserContract
+    public function create($data): UserContract
     {
         return parent::create($data);
     }
 
-    public function update(string $id, array $data): ?UserContract
+    public function update(string $id, $data): ?UserContract
     {
         return parent::update($id, $data);
     }

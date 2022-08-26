@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Resources\Pages;
+namespace App\Resources\Blocks;
 
 use Folklore\Resources\Block;
 use App\Contracts\Resources\Blocks\Text as TextBlockContract;

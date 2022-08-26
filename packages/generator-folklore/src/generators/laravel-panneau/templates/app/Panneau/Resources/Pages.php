@@ -1,9 +1,9 @@
 <?php
 namespace App\Panneau\Resources;
 
-use App\Panneau\Fields\ImageLocalized;
 use App\Panneau\Fields\PageSlugLocalized;
 use Panneau\Fields\TextLocalized;
+use Panneau\Fields\ImageLocalized;
 use Panneau\Fields\Toggle;
 use Panneau\Support\Resource;
 

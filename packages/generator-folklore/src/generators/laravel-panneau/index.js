@@ -52,7 +52,7 @@ module.exports = class LaravelPanneauGenerator extends Generator {
             composerJSON() {
                 this.composerJson.merge({
                     require: {
-                        'folklore/laravel-panneau': 'v1.2.x-dev',
+                        'folklore/laravel-panneau': 'v1.2.x-dev'
                     },
                 });
             },
@@ -62,6 +62,15 @@ module.exports = class LaravelPanneauGenerator extends Generator {
                     '@panneau/app@^1.0.0-alpha.193',
                     '@panneau/core@^1.0.0-alpha.193',
                 ]);
+            },
+
+            config() {
+                const source = this.templatePath('config.php');
+                const destination = this.destinationPath('config/panneau.php');
+                if (this.fs.exists(destination)) {
+                    this.fs.delete(destination);
+                }
+                this.fs.copyTpl(source, destination, {});
             },
 
             routes() {

@@ -30,12 +30,12 @@ class Pages extends BasePages implements PagesContract
         return parent::findBySlug($slug, $locale);
     }
 
-    public function create(array $data): PageContract
+    public function create($data): PageContract
     {
         return parent::create($data);
     }
 
-    public function update(string $id, array $data): ?PageContract
+    public function update(string $id, $data): ?PageContract
     {
         return parent::update($id, $data);
     }

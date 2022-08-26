@@ -5,6 +5,7 @@ namespace App\Panneau;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Support\Facades\Gate;
+use Panneau\Fields\Upload as UploadField;
 use Panneau\Support\LocalizedField;
 use Panneau\Support\Facade as Panneau;
 
@@ -27,11 +28,19 @@ class PanneauServiceProvider extends BaseServiceProvider
      */
     public function boot()
     {
-        LocalizedField::setLocalesResolver(function () {
-            return config('locale.locales');
-        });
-
+        $this->bootFields();
         $this->bootViews();
+    }
+
+    protected function bootFields()
+    {
+        $this->app->booted(function () {
+            LocalizedField::setLocalesResolver(function () {
+                return config('locale.locales');
+            });
+
+            UploadField::setEndpoint(route('panneau.upload'));
+        });
     }
 
     protected function bootViews()
@@ -42,6 +51,8 @@ class PanneauServiceProvider extends BaseServiceProvider
         $view->composer('panneau::app', \App\Panneau\Composers\AppComposer::class);
 
         Panneau::serving(function () use ($view) {
+            $view->composer('errors::*', \Panneau\Composers\PanneauComposer::class);
+            $view->composer('errors::*', \Panneau\Composers\AppComposer::class);
             $view->composer('errors::*', \App\Panneau\Composers\AppComposer::class);
         });
     }
