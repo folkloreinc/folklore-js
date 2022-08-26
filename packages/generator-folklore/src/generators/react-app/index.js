@@ -112,28 +112,28 @@ module.exports = class ReactAppGenerator extends Generator {
 
             dependencies() {
                 this.addDependencies([
-                    'react',
-                    'react-dom',
-                    'prop-types',
-                    'react-intl',
-                    'react-router',
-                    'react-router-dom',
-                    'react-helmet',
-                    'classnames',
+                    'react@^18.0.0',
+                    'react-dom@^18.0.0',
+                    'prop-types@^15.0.0',
+                    'react-intl@^6.0.0',
+                    'react-router@^6.0.0',
+                    'react-router-dom@^6.0.0',
+                    'react-helmet@^6.0.0',
+                    'classnames@^2.0.0',
 
-                    '@folklore/routes',
-                    '@folklore/fonts',
-                    '@folklore/forms',
-                    '@folklore/fetch',
-                    '@folklore/hooks',
-                    '@folklore/tracking',
+                    '@folklore/routes@^0.1.0',
+                    '@folklore/fonts@^0.0.1',
+                    '@folklore/forms@^0.0.1',
+                    '@folklore/fetch@^0.1.0',
+                    '@folklore/hooks@^0.0.1',
+                    '@folklore/tracking@^0.0.1',
 
                     // Polyfills
-                    'intl',
-                    '@formatjs/intl-locale',
-                    '@formatjs/intl-pluralrules',
-                    'intersection-observer',
-                    'resize-observer-polyfill',
+                    'intl@^1.0.0',
+                    '@formatjs/intl-locale@^3.0.0',
+                    '@formatjs/intl-pluralrules@^5.0.0',
+                    'intersection-observer@^0.12.0',
+                    'resize-observer-polyfill@1.0.0',
                 ]);
             },
         };

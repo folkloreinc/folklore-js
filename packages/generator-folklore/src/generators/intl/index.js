@@ -78,7 +78,7 @@ module.exports = class IntlGenerator extends Generator {
             },
 
             dependencies() {
-                this.addDevDependencies(['@folklore/cli']);
+                this.addDevDependencies(['@folklore/cli@^0.0.47']);
             },
         };
     }
