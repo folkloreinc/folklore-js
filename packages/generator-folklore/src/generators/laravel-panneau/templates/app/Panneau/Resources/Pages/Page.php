@@ -3,8 +3,8 @@
 namespace App\Panneau\Resources\Pages;
 
 use Panneau\Support\ResourceType;
-use App\Panneau\Fields\Blocks;
-use App\Panneau\Fields\Page as PageField;
+use Folklore\Panneau\Fields\Blocks;
+use Folklore\Panneau\Fields\Page as PageField;
 
 class Page extends ResourceType
 {

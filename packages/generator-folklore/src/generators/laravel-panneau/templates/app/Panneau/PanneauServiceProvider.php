@@ -7,6 +7,7 @@ use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Support\Facades\Gate;
 use Panneau\Fields\Upload as UploadField;
 use Panneau\Support\LocalizedField;
+use Folklore\Panneau\Fields\PageSlugField;
 use Panneau\Support\Facade as Panneau;
 
 class PanneauServiceProvider extends BaseServiceProvider
@@ -40,6 +41,20 @@ class PanneauServiceProvider extends BaseServiceProvider
             });
 
             UploadField::setEndpoint(route('panneau.upload'));
+
+            PageSlugField::setRoutesResolver(function ($locale) {
+                return [
+                    'page' => url()->routeForReactRouter($locale . '.page', [
+                        'withoutPatterns' => config('panneau.routes.without_patterns', true),
+                    ]),
+                    'page_with_parent' => url()->routeForReactRouter(
+                        $locale . '.page_with_parent',
+                        [
+                            'withoutPatterns' => config('panneau.routes.without_patterns', true),
+                        ]
+                    ),
+                ];
+            });
         });
     }
 

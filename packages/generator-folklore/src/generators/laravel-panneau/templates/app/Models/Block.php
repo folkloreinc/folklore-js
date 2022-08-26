@@ -8,5 +8,6 @@ class Block extends BaseBlock
 {
     protected $typeResources = [
         'text' => \App\Resources\Blocks\TextBlock::class,
+        'image' => \App\Resources\Blocks\ImageBlock::class,
     ];
 }

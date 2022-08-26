@@ -6,6 +6,8 @@ return [
         'url' => 'Address',
         'published' => 'Published',
         'description_short' => 'Short description',
+        'caption' => 'Caption',
+        'credits' => 'Credits',
         'name' => 'Name',
         'email' => 'Email',
         'password' => 'Password',
@@ -13,6 +15,7 @@ return [
         'body' => 'Text',
         'parent' => 'Parent',
         'blocks' => 'Blocks',
+        'role' => 'Role',
 
         'page' => 'Page',
         'pages' => 'Pages',
@@ -30,6 +33,7 @@ return [
         'blocks' => 'Blocks',
         'no_blocks' => 'No blocks',
         'add_block' => 'Add a block',
+        'select_block' => 'Select a block...',
     ],
 
     'filters' => [

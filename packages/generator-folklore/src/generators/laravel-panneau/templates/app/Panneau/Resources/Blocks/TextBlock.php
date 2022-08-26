@@ -3,6 +3,7 @@
 namespace App\Panneau\Resources\Blocks;
 
 use Panneau\Support\ResourceType;
+use Panneau\Fields\TextLocalized;
 use Panneau\Fields\HtmlLocalized;
 
 class TextBlock extends ResourceType
@@ -20,8 +21,8 @@ class TextBlock extends ResourceType
     public function fields(): array
     {
         return [
-            HtmlLocalized::make('body')
-                ->withTransLabel('panneau.fields.body'),
+            TextLocalized::make('title')->withTransLabel('panneau.fields.title'),
+            HtmlLocalized::make('body')->withTransLabel('panneau.fields.body'),
         ];
     }
 }
