@@ -1,5 +1,6 @@
 import chalk from 'chalk';
 import { highlight } from 'cli-highlight';
+import fs from 'fs';
 import glob from 'glob';
 import _ from 'lodash';
 import path from 'path';
@@ -55,8 +56,12 @@ module.exports = class LaravelPanneauGenerator extends Generator {
                 console.log(chalk.yellow('\n----------------------'));
                 console.log('Instructions');
                 console.log(chalk.yellow('----------------------\n'));
-                console.log(`Add to ${chalk.yellow('app/Providers/AppServiceProvider.php')}:`)
-                console.log(highlight(serviceProvider, { language: 'php', ignoreIllegals: true }));
+                console.log(`Add to ${chalk.yellow('app/Providers/AppServiceProvider.php')}:`);
+                console.log(path.join(__dirname, './instructions/ServiceProvider.txt'));
+                const serviceProvider = fs.readFileSync(
+                    path.join(__dirname, './instructions/ServiceProvider.txt'),
+                );
+                console.log(highlight(serviceProvider.toString('utf-8'), { language: 'php', ignoreIllegals: true }));
             },
         };
     }
