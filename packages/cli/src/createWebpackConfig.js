@@ -184,6 +184,7 @@ export default (entry, opts = {}) => {
                 stream: false,
                 crypto: false,
                 path: false,
+                os: false,
             },
 
             alias: {
