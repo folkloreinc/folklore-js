@@ -174,6 +174,18 @@ export default (entry, opts = {}) => {
                 '.cjs',
             ],
 
+            fallback: {
+                fs: false,
+                tls: false,
+                net: false,
+                zlib: false,
+                http: false,
+                https: false,
+                stream: false,
+                crypto: false,
+                path: require.resolve('path-browserify'),
+            },
+
             alias: {
                 ...(profile
                     ? {

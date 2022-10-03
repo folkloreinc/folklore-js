@@ -1,7 +1,8 @@
+<?php
+
 class AppServiceProvider extends ServiceProvider
 {
     //...
-
     protected function registerRepositories()
     {
         //...
@@ -16,6 +17,5 @@ class AppServiceProvider extends ServiceProvider
             \App\Repositories\Pages::class
         );
     }
-
     //...
 }

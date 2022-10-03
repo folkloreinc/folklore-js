@@ -46,23 +46,6 @@ module.exports = class LaravelPanneauGenerator extends Generator {
                     }
                 });
             },
-
-            instructions() {
-                if (this.options.quiet) {
-                    return;
-                }
-
-                console.log('\n\n');
-                console.log(chalk.yellow('\n----------------------'));
-                console.log('Instructions');
-                console.log(chalk.yellow('----------------------\n'));
-                console.log(`Add to ${chalk.yellow('app/Providers/AppServiceProvider.php')}:`);
-                console.log(path.join(__dirname, './instructions/ServiceProvider.txt'));
-                const serviceProvider = fs.readFileSync(
-                    path.join(__dirname, './instructions/ServiceProvider.txt'),
-                );
-                console.log(highlight(serviceProvider.toString('utf-8'), { language: 'php', ignoreIllegals: true }));
-            },
         };
     }
 
@@ -187,5 +170,40 @@ module.exports = class LaravelPanneauGenerator extends Generator {
                 ]);
             },
         };
+    }
+
+    end() {
+        if (this.options.quiet) {
+            return;
+        }
+
+        console.log('\n\n');
+        console.log(chalk.yellow('\n----------------------'));
+        console.log(chalk.bold('Instructions'));
+        console.log(chalk.yellow('----------------------\n\n'));
+
+        console.log(`1. Add to ${chalk.bold.yellow('app/Providers/AppServiceProvider.php')}:`);
+        const serviceProvider = fs.readFileSync(
+            path.join(__dirname, './instructions/ServiceProvider.php'),
+        );
+        console.log('---');
+        console.log(
+            highlight(serviceProvider.toString('utf-8'), {
+                language: 'php',
+                ignoreIllegals: true,
+            }),
+        );
+
+        console.log(`\n2. Add to ${chalk.bold.yellow('config/app.php')}:`);
+        const config = fs.readFileSync(
+            path.join(__dirname, './instructions/config.php'),
+        );
+        console.log('---');
+        console.log(
+            highlight(config.toString('utf-8'), {
+                language: 'php',
+                ignoreIllegals: true,
+            }),
+        );
     }
 };

@@ -122,4 +122,27 @@ module.exports = class LaravelMediathequeGenerator extends Generator {
             },
         };
     }
+
+    end() {
+        if (this.options.quiet) {
+            return;
+        }
+
+        console.log('\n\n');
+        console.log(chalk.yellow('\n----------------------'));
+        console.log(chalk.bold('Instructions'));
+        console.log(chalk.yellow('----------------------\n\n'));
+
+        console.log(`1. Add to ${chalk.bold.yellow('app/Providers/AppServiceProvider.php')}:`);
+        const serviceProvider = fs.readFileSync(
+            path.join(__dirname, './instructions/ServiceProvider.php'),
+        );
+        console.log('---');
+        console.log(
+            highlight(serviceProvider.toString('utf-8'), {
+                language: 'php',
+                ignoreIllegals: true,
+            }),
+        );
+    }
 };
