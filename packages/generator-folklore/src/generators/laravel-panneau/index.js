@@ -60,13 +60,13 @@ module.exports = class LaravelPanneauGenerator extends Generator {
             },
 
             packageJSON() {
-                this.addDependencies([
-                    '@panneau/app@^1.0.3-alpha.1',
-                    '@panneau/core@^1.0.3-alpha.1',
-                    '@panneau/data@^1.0.3-alpha.1',
-                    '@panneau/field-text@^1.0.3-alpha.1',
-                    '@panneau/field-localized@^1.0.3-alpha.1',
-                ]);
+                this.addDependencies({
+                    '@panneau/app': '^1.0.3-alpha.1',
+                    '@panneau/core': '^1.0.3-alpha.1',
+                    '@panneau/data': '^1.0.3-alpha.1',
+                    '@panneau/field-text': '^1.0.3-alpha.1',
+                    '@panneau/field-localized': '^1.0.3-alpha.1',
+                });
             },
 
             config() {
@@ -195,9 +195,7 @@ module.exports = class LaravelPanneauGenerator extends Generator {
         );
 
         console.log(`\n2. Add to ${chalk.bold.yellow('config/app.php')}:`);
-        const config = fs.readFileSync(
-            path.join(__dirname, './instructions/config.php'),
-        );
+        const config = fs.readFileSync(path.join(__dirname, './instructions/config.php'));
         console.log('---');
         console.log(
             highlight(config.toString('utf-8'), {

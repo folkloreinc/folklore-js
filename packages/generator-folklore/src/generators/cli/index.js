@@ -71,7 +71,10 @@ module.exports = class CliGenerator extends Generator {
             },
 
             dependencies() {
-                this.addDependencies(['commander', 'debug']);
+                this.addDependencies({
+                    'commander': 'latest',
+                    'debug': 'latest',
+                });
             },
         };
     }

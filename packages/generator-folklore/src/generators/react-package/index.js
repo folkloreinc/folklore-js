@@ -1,7 +1,8 @@
-import _ from 'lodash';
-import path from 'path';
 import chalk from 'chalk';
 import { pascal } from 'change-case';
+import _ from 'lodash';
+import path from 'path';
+
 import Generator from '../../lib/generator';
 
 module.exports = class ReactPackageGenerator extends Generator {
@@ -184,18 +185,16 @@ module.exports = class ReactPackageGenerator extends Generator {
                     return;
                 }
 
-                this.addDevDependencies(
-                    [
-                        'domready@latest',
-                        'jquery@latest',
-                        'enzyme@latest',
-                        'react-test-renderer@latest',
-                        '@storybook/react@latest',
-                        '@storybook/addon-actions@latest',
-                        'extract-text-webpack-plugin@latest',
-                        'html-webpack-plugin@latest',
-                    ],
-                );
+                this.addDevDependencies({
+                    domready: 'latest',
+                    jquery: 'latest',
+                    enzyme: 'latest',
+                    'react-test-renderer': 'latest',
+                    '@storybook/react': 'latest',
+                    '@storybook/addon-actions': 'latest',
+                    'extract-text-webpack-plugin': 'latest',
+                    'html-webpack-plugin': 'latest',
+                });
             },
         };
     }

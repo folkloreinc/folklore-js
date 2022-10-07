@@ -244,9 +244,13 @@ module.exports = class NpmPackageGenerator extends Generator {
                     return;
                 }
 
-                this.addDependencies(['@babel/runtime@latest']);
+                this.addDependencies({
+                    '@babel/runtime': 'latest',
+                });
 
-                this.addDevDependencies(['jest@latest']);
+                this.addDevDependencies({
+                    jest: 'latest',
+                });
             },
         };
     }

@@ -48,15 +48,20 @@ module.exports = class ServerGenerator extends Generator {
                     this.destinationPath(path.join(serverPath, filename)),
                     {
                         socketIo,
-                    }
+                    },
                 );
             },
 
             dependencies() {
                 const { 'socket-io': socketIo } = this.options;
-                this.addDependencies(['commander', 'debug', 'ejs', 'express']);
+                this.addDependencies({
+                    commander: 'latest',
+                    debug: 'latest',
+                    ejs: 'latest',
+                    express: 'latest',
+                });
                 if (socketIo) {
-                    this.addDependencies(['socket.io']);
+                    this.addDependencies({ 'socket.io': 'latest' });
                 }
             },
         };

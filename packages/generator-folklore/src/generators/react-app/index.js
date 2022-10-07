@@ -111,30 +111,30 @@ module.exports = class ReactAppGenerator extends Generator {
             },
 
             dependencies() {
-                this.addDependencies([
-                    'react@^18.0.0',
-                    'react-dom@^18.0.0',
-                    'prop-types@^15.0.0',
-                    'react-intl@^6.0.0',
-                    'react-router@^6.0.0',
-                    'react-router-dom@^6.0.0',
-                    'react-helmet@^6.0.0',
-                    'classnames@^2.0.0',
+                this.addDependencies({
+                    react: '^18.0.0',
+                    'react-dom': '^18.0.0',
+                    'prop-types': '^15.0.0',
+                    'react-intl': '^6.0.0',
+                    'react-router': '^6.0.0',
+                    'react-router-dom': '^6.0.0',
+                    'react-helmet': '^6.0.0',
+                    classnames: '^2.0.0',
 
-                    '@folklore/routes@^0.1.0',
-                    '@folklore/fonts@^0.0.1',
-                    '@folklore/forms@^0.0.1',
-                    '@folklore/fetch@^0.1.0',
-                    '@folklore/hooks@^0.0.1',
-                    '@folklore/tracking@^0.0.1',
+                    '@folklore/routes': '^0.1.1',
+                    '@folklore/fonts': '^0.0.11',
+                    '@folklore/forms': '^0.0.19',
+                    '@folklore/fetch': '^0.1.15',
+                    '@folklore/hooks': '^0.0.27',
+                    '@folklore/tracking': '^0.0.14',
 
                     // Polyfills
-                    'intl@^1.0.0',
-                    '@formatjs/intl-locale@^3.0.0',
-                    '@formatjs/intl-pluralrules@^5.0.0',
-                    'intersection-observer@^0.12.0',
-                    'resize-observer-polyfill@1.0.0',
-                ]);
+                    intl: '^1.0.0',
+                    '@formatjs/intl-locale': '^3.0.0',
+                    '@formatjs/intl-pluralrules': '^5.0.0',
+                    'intersection-observer': '^0.12.0',
+                    'resize-observer-polyfill': '^1.0.0',
+                });
             },
         };
     }
