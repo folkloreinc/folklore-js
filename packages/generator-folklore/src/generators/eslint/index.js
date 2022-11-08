@@ -28,19 +28,19 @@ module.exports = class EslintGenerator extends Generator {
             },
 
             dependencies() {
-                this.addDevDependencies([
-                    'babel-preset-airbnb@^5.0.0',
-                    '@babel/eslint-parser@^7.0.0',
-                    'eslint@^8.0.0',
-                    'eslint-config-airbnb@^19.0.0',
-                    'eslint-config-prettier@^8.0.0',
-                    'eslint-plugin-prettier@^4.0.0',
-                    'eslint-plugin-import@^2.0.0',
-                    'eslint-plugin-jsx-a11y@^6.0.0',
-                    'eslint-plugin-react@^7.0.0',
-                    'eslint-plugin-formatjs@^4.0.0',
-                ])
-            }
+                this.addDevDependencies({
+                    'babel-preset-airbnb': 'latest',
+                    '@babel/eslint-parser': 'latest',
+                    eslint: '^8.0.0',
+                    'eslint-config-airbnb': 'latest',
+                    'eslint-config-prettier': 'latest',
+                    'eslint-plugin-prettier': 'latest',
+                    'eslint-plugin-import': 'latest',
+                    'eslint-plugin-jsx-a11y': 'latest',
+                    'eslint-plugin-react': 'latest',
+                    'eslint-plugin-formatjs': 'latest',
+                });
+            },
         };
     }
 

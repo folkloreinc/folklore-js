@@ -34,7 +34,7 @@ module.exports = class IntlGenerator extends Generator {
             type: String,
             desc: 'Extract only messages without id',
             defaults: false,
-        })
+        });
     }
 
     get prompting() {
@@ -61,7 +61,9 @@ module.exports = class IntlGenerator extends Generator {
                     'without-id-only': withoutIdOnly = false,
                     locales,
                 } = this.options;
-                const intlCommand = `flklr intl --po${withoutIdOnly ? ' --without-id-only' : ''} --output-path$ '${outputPath}' '${translationsPath}'`;
+                const intlCommand = `flklr intl --po${
+                    withoutIdOnly ? ' --without-id-only' : ''
+                } --output-path$ '${outputPath}' '${translationsPath}'`;
                 this.packageJson.merge({
                     scripts:
                         jsonPath !== null
@@ -78,7 +80,7 @@ module.exports = class IntlGenerator extends Generator {
             },
 
             dependencies() {
-                this.addDevDependencies(['@folklore/cli@^0.0.47']);
+                this.addDevDependencies({ '@folklore/cli': '^0.0.47' });
             },
         };
     }

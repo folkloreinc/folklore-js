@@ -1,6 +1,7 @@
+import chalk from 'chalk';
 import _ from 'lodash';
 import path from 'path';
-import chalk from 'chalk';
+
 import Generator from '../../lib/generator';
 
 module.exports = class LernaRepositoryGenerator extends Generator {
@@ -223,9 +224,12 @@ module.exports = class LernaRepositoryGenerator extends Generator {
                     return;
                 }
 
-                this.addDevDependencies(
-                    ['lerna@latest', 'glob@latest', 'mkdirp@latest', '@babel/runtime@latest'],
-                );
+                this.addDevDependencies({
+                    lerna: 'latest',
+                    glob: 'latest',
+                    mkdirp: 'latest',
+                    '@babel/runtime': 'latest',
+                });
             },
 
             bootstrap() {

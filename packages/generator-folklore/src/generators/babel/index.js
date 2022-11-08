@@ -55,14 +55,14 @@ module.exports = class BabelGenerator extends Generator {
             },
 
             dependencies() {
-                this.addDevDependencies([
-                    '@babel/cli',
-                    '@babel/core',
-                    '@babel/node',
-                    '@babel/plugin-transform-runtime',
-                    '@babel/preset-env',
-                    '@babel/preset-react',
-                ]);
+                this.addDevDependencies({
+                    '@babel/core': '^7.19.3',
+                    '@babel/cli': 'latest',
+                    '@babel/node': 'latest',
+                    '@babel/plugin-transform-runtime': 'latest',
+                    '@babel/preset-env': 'latest',
+                    '@babel/preset-react': 'latest',
+                });
             },
         };
     }

@@ -1,6 +1,7 @@
+import chalk from 'chalk';
 import _ from 'lodash';
 import path from 'path';
-import chalk from 'chalk';
+
 import Generator from '../../lib/generator';
 
 module.exports = class DocsGenerator extends Generator {
@@ -18,7 +19,7 @@ module.exports = class DocsGenerator extends Generator {
             required: false,
         });
 
-        this.docsPath = destPath =>
+        this.docsPath = (destPath) =>
             this.destinationPath(path.join(this.options['docs-path'], destPath || ''));
     }
 
@@ -43,7 +44,7 @@ module.exports = class DocsGenerator extends Generator {
                         name: 'type',
                         message: 'What language is used?',
                         defaults: () =>
-                            (this.fs.exists(this.destinationPath('composer.json')) ? 'php' : 'js'),
+                            this.fs.exists(this.destinationPath('composer.json')) ? 'php' : 'js',
                         choices: [
                             {
                                 name: 'Javascript',
@@ -137,10 +138,10 @@ module.exports = class DocsGenerator extends Generator {
                     return;
                 }
 
-                this.addDevDependencies(['gitbook-cli@latest']);
+                this.addDevDependencies({ 'gitbook-cli': 'latest' });
 
                 if (this.options.language === 'js') {
-                    this.addDevDependencies(['jsdoc@latest', 'jsdoc-babel@latest']);
+                    this.addDevDependencies({ jsdoc: 'latest', 'jsdoc-babel': 'latest' });
                 }
             },
         };

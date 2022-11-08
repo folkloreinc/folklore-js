@@ -119,7 +119,7 @@ module.exports = class ReactAppGenerator extends Generator {
                     'react-router': '^6.0.0',
                     'react-router-dom': '^6.0.0',
                     'react-helmet': '^6.0.0',
-                    classnames: '^2.0.0',
+                    classnames: 'latest',
 
                     '@folklore/routes': '^0.1.1',
                     '@folklore/fonts': '^0.0.11',
@@ -129,11 +129,11 @@ module.exports = class ReactAppGenerator extends Generator {
                     '@folklore/tracking': '^0.0.14',
 
                     // Polyfills
-                    intl: '^1.0.0',
-                    '@formatjs/intl-locale': '^3.0.0',
-                    '@formatjs/intl-pluralrules': '^5.0.0',
-                    'intersection-observer': '^0.12.0',
-                    'resize-observer-polyfill': '^1.0.0',
+                    intl: 'latest',
+                    '@formatjs/intl-locale': 'latest',
+                    '@formatjs/intl-pluralrules': 'latest',
+                    'intersection-observer': 'latest',
+                    'resize-observer-polyfill': 'latest',
                 });
             },
         };

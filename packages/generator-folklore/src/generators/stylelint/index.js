@@ -34,12 +34,12 @@ module.exports = class StylelintGenerator extends Generator {
             },
 
             dependencies() {
-                this.addDevDependencies([
-                    'stylelint@^14.0.0',
-                    'stylelint-config-standard-scss@^5.0.0',
-                    'stylelint-config-idiomatic-order@^8.0.0',
-                    'stylelint-config-prettier@^9.0.0',
-                ]);
+                this.addDevDependencies({
+                    stylelint: '^14.0.0',
+                    'stylelint-config-standard-scss': 'latest',
+                    'stylelint-config-idiomatic-order': 'latest',
+                    'stylelint-config-prettier': 'latest',
+                });
             },
         };
     }

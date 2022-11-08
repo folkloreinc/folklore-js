@@ -31,14 +31,14 @@ module.exports = class RollupGenerator extends Generator {
             },
 
             dependencies() {
-                this.addDevDependencies([
-                    '@rollup/plugin-babel',
-                    '@rollup/plugin-commonjs',
-                    '@rollup/plugin-json',
-                    '@rollup/plugin-node-resolve',
-                    '@rollup/plugin-replace',
-                    'rollup',
-                ]);
+                this.addDevDependencies({
+                    '@rollup/plugin-babel': 'latest',
+                    '@rollup/plugin-commonjs': 'latest',
+                    '@rollup/plugin-json': 'latest',
+                    '@rollup/plugin-node-resolve': 'latest',
+                    '@rollup/plugin-replace': 'latest',
+                    rollup: '^2.79.1',
+                });
             },
         };
     }

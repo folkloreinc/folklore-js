@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+
 import Generator from '../../lib/generator';
 
 module.exports = class TestGenerator extends Generator {
@@ -54,16 +55,16 @@ module.exports = class TestGenerator extends Generator {
                     return;
                 }
 
-                this.addDevDependencies([
-                    'babel-jest@latest',
-                    'enzyme@latest',
-                    'enzyme-adapter-react-16@latest',
-                    'eslint-plugin-jest@latest',
-                    'jest@latest',
-                    'jsdom@latest',
-                    'react-test-renderer@latest',
-                    'sinon@latest',
-                ]);
+                this.addDevDependencies({
+                    'babel-jest': 'latest',
+                    enzyme: 'latest',
+                    'enzyme-adapter-react-16': 'latest',
+                    'eslint-plugin-jest': 'latest',
+                    jest: 'latest',
+                    jsdom: 'latest',
+                    'react-test-renderer': 'latest',
+                    sinon: 'latest',
+                });
             },
         };
     }

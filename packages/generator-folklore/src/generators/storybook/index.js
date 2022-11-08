@@ -1,5 +1,6 @@
 import chalk from 'chalk';
 import path from 'path';
+
 import Generator from '../../lib/generator';
 
 module.exports = class StorybookGenerator extends Generator {
@@ -18,10 +19,8 @@ module.exports = class StorybookGenerator extends Generator {
             defaults: '../src/__stories__/*.story.jsx',
         });
 
-        this.storybookPath = destPath => this.destinationPath(path.join(
-            this.options.path,
-            destPath,
-        ));
+        this.storybookPath = (destPath) =>
+            this.destinationPath(path.join(this.options.path, destPath));
     }
 
     get prompting() {
@@ -46,20 +45,32 @@ module.exports = class StorybookGenerator extends Generator {
                 this.fs.copy(this.templatePath('addons.js'), this.storybookPath('addons.js'));
                 this.fs.copy(this.templatePath('config.js'), this.storybookPath('config.js'));
                 this.fs.copy(this.templatePath('imports.js'), this.storybookPath('imports.js'));
-                this.fs.copy(this.templatePath('KeepValue.jsx'), this.storybookPath('KeepValue.jsx'));
-                this.fs.copy(this.templatePath('preview-head.html'), this.storybookPath('preview-head.html'));
-                this.fs.copy(this.templatePath('storiesOf.jsx'), this.storybookPath('storiesOf.jsx'));
+                this.fs.copy(
+                    this.templatePath('KeepValue.jsx'),
+                    this.storybookPath('KeepValue.jsx'),
+                );
+                this.fs.copy(
+                    this.templatePath('preview-head.html'),
+                    this.storybookPath('preview-head.html'),
+                );
+                this.fs.copy(
+                    this.templatePath('storiesOf.jsx'),
+                    this.storybookPath('storiesOf.jsx'),
+                );
             },
 
             storiesPattern() {
-                this.fs.copyTpl(this.templatePath('stories.pattern'), this.storybookPath('stories.pattern'), {
-                    pattern: this.options.pattern,
-                });
+                this.fs.copyTpl(
+                    this.templatePath('stories.pattern'),
+                    this.storybookPath('stories.pattern'),
+                    {
+                        pattern: this.options.pattern,
+                    },
+                );
             },
 
             packageJSON() {
-                const packageJSON = this.fs.exists(destPath) ?
-                    this.fs.readJSON(destPath) : {};
+                const packageJSON = this.fs.exists(destPath) ? this.fs.readJSON(destPath) : {};
                 packageJSON['storybook-deployer'] = {
                     gitUsername: 'Folklore',
                     gitEmail: 'info@folklore.email',
@@ -77,15 +88,15 @@ module.exports = class StorybookGenerator extends Generator {
                     return;
                 }
 
-                this.addDevDependencies([
-                    '@storybook/addon-actions@latest',
-                    '@storybook/addon-info@latest',
-                    '@storybook/addon-storyshots@latest',
-                    '@storybook/addons@latest',
-                    '@storybook/react@latest',
-                    '@storybook/storybook-deployer@latest',
-                    'glob-loader@latest',
-                ]);
+                this.addDevDependencies({
+                    '@storybook/addon-actions': 'latest',
+                    '@storybook/addon-info': 'latest',
+                    '@storybook/addon-storyshots': 'latest',
+                    '@storybook/addons': 'latest',
+                    '@storybook/react': 'latest',
+                    '@storybook/storybook-deployer': 'latest',
+                    'glob-loader': 'latest',
+                });
             },
         };
     }

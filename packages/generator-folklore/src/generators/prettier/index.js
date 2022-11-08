@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+
 import Generator from '../../lib/generator';
 
 module.exports = class PrettierGenerator extends Generator {
@@ -25,14 +26,13 @@ module.exports = class PrettierGenerator extends Generator {
             },
 
             dependencies() {
-                this.addDevDependencies([
-                    'prettier@^2.0.0',
-                    '@prettier/plugin-php@^0.18.0',
-                    '@trivago/prettier-plugin-sort-imports@^3.0.0',
-                ]);
-            }
-        }
-
+                this.addDevDependencies({
+                    prettier: 'latest',
+                    '@prettier/plugin-php': 'latest',
+                    '@trivago/prettier-plugin-sort-imports': 'latest',
+                });
+            },
+        };
     }
 
     async install() {
