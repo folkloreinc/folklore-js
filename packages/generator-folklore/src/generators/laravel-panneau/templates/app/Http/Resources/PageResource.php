@@ -3,10 +3,10 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\Medias\ImageResource;
 use App\Contracts\Resources\Page;
-use App\Contracts\Resources\HasBlocks;
 use App\Contracts\Resources\Pages\Home as HomePage;
+use Folklore\Http\Resources\MediaResource;
+use Folklore\Contracts\Resources\HasBlocks;
 
 class PageResource extends JsonResource
 {
@@ -19,6 +19,8 @@ class PageResource extends JsonResource
     public function toArray($request)
     {
         $locale = $request->locale();
+        $image = $this->image();
+        $parent = $this->parent();
         return [
             'id' => $this->id(),
             'type' => $this->type(),
@@ -26,10 +28,10 @@ class PageResource extends JsonResource
             'title' => $this->title($locale),
             'description' => $this->description($locale),
             'slug' => $this->slug($locale),
-            'image' => !is_null($image) ? new ImageResource($image) : null,
+            'image' => !is_null($image) ? new MediaResource($image) : null,
             'parent' =>
                 !is_null($parent) && $parent instanceof Page
-                    ? new ParentPageResource($parent)
+                    ? new PageResource($parent)
                     : null,
 
             $this->mergeWhen($this->resource instanceof HasBlocks, function () {

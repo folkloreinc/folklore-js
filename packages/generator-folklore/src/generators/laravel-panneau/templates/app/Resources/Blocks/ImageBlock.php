@@ -2,7 +2,7 @@
 
 namespace App\Resources\Blocks;
 
-use Folklore\Resources\Block;
+use App\Resources\Block;
 use App\Contracts\Resources\Blocks\Text as TextBlockContract;
 use Folklore\Contracts\Resources\Image as ImageContract;
 use Folklore\Resources\Image;

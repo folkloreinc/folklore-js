@@ -3,7 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Contracts\Resources\HasBlocks;
+use Folklore\Contracts\Resources\HasBlocks;
 use Folklore\Http\Resources\LocalizedResource;
 use App\Contracts\Resources\Blocks\Text as TextBlock;
 

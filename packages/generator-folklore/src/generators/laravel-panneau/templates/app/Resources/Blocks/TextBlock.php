@@ -2,7 +2,7 @@
 
 namespace App\Resources\Blocks;
 
-use Folklore\Resources\Block;
+use App\Resources\Block;
 use App\Contracts\Resources\Blocks\Text as TextBlockContract;
 
 class TextBlock extends Block implements TextBlockContract
