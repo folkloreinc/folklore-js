@@ -185,6 +185,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Folklore\ServiceProvider::class,
 
         /*
          * Application Service Providers...

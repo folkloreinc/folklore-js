@@ -402,7 +402,7 @@ module.exports = class LaravelProjectGenerator extends Generator {
                     },
                     extra: {
                         laravel: {
-                            'dont-discover': ['laravel/telescope'],
+                            'dont-discover': ['laravel/telescope', 'folklore/laravel-folklore'],
                         },
                     },
                 });
