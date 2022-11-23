@@ -5,6 +5,7 @@ export {
     eventsManager as documentEventsManager,
 } from './useDocumentEvent';
 export { default as useKeyboard } from './useKeyboard';
+export * from './useItems';
 export { default as useNativeVideoPlayer } from './useNativeVideoPlayer';
 export * from './useObserver';
 export { default as usePlayerCurrentTime } from './usePlayerCurrentTime';

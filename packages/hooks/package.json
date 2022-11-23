@@ -52,7 +52,9 @@
     "dependencies": {
         "@folklore/events": "^0.0.3",
         "@folklore/services": "^0.1.36",
+        "cancelable-promise": "^4.3.1",
         "debug": "^4.3.4",
+        "lodash": "^4.17.21",
         "raf": "^3.4.1"
     }
 }
