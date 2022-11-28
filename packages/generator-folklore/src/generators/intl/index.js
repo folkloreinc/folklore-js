@@ -63,7 +63,7 @@ module.exports = class IntlGenerator extends Generator {
                 } = this.options;
                 const intlCommand = `flklr intl --po${
                     withoutIdOnly ? ' --without-id-only' : ''
-                } --output-path$ '${outputPath}' '${translationsPath}'`;
+                } --output-path '${outputPath}' '${translationsPath}'`;
                 this.packageJson.merge({
                     scripts:
                         jsonPath !== null
