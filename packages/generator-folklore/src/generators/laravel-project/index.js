@@ -306,7 +306,7 @@ module.exports = class LaravelProjectGenerator extends Generator {
         if (this.options.panneau) {
             this.composeWith('folklore:laravel-panneau', {
                 'project-name': this.options['project-name'],
-                'skip-install': skipInstall,
+                'skip-install': true,
                 quiet: true,
             });
         }
@@ -316,7 +316,7 @@ module.exports = class LaravelProjectGenerator extends Generator {
         //         'project-name': this.options['project-name'],
         //         'js-path': jsSrcPath,
         //         'styles-path': stylesSrcPath,
-        //         'skip-install': skipInstall,
+        //         'skip-install': true,
         //         'install-npm': true,
         //         quiet: true,
         //     });
@@ -545,10 +545,7 @@ module.exports = class LaravelProjectGenerator extends Generator {
                     return;
                 }
 
-                await this.spawnCommand('php', [
-                    'artisan',
-                    'telescope:install',
-                ]);
+                await this.spawnCommand('php', ['artisan', 'telescope:install']);
             },
 
             async valet() {
