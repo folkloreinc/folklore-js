@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 Route::groupWithLocales(function ($locale) {
     // Authentication Routes...
     Route::getLocalized('login', 'LoginController@showLoginForm')->nameWithLocale('auth.login');
