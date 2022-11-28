@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+
 import Generator from '../../lib/generator';
 
 module.exports = class AppGenerator extends Generator {
@@ -47,6 +48,10 @@ module.exports = class AppGenerator extends Generator {
                                 value: 'html-project',
                             },
                             {
+                                name: 'Laravel',
+                                value: 'laravel-project',
+                            },
+                            {
                                 name: 'Node',
                                 value: 'node-project',
                             },
@@ -58,16 +63,15 @@ module.exports = class AppGenerator extends Generator {
                     return null;
                 }
 
-                return this.prompt(prompts)
-                    .then((answers) => {
-                        if (answers.type) {
-                            this.options.type = answers.type;
-                        }
+                return this.prompt(prompts).then((answers) => {
+                    if (answers.type) {
+                        this.options.type = answers.type;
+                    }
 
-                        if (answers['project-name']) {
-                            this.options['project-name'] = answers['project-name'];
-                        }
-                    });
+                    if (answers['project-name']) {
+                        this.options['project-name'] = answers['project-name'];
+                    }
+                });
             },
         };
     }
