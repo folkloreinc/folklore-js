@@ -10,6 +10,11 @@ use Panneau\Support\LocalizedField;
 use Folklore\Panneau\Fields\PageSlug as PageSlugField;
 use Panneau\Support\Facade as Panneau;
 
+use Illuminate\Http\Request;
+use Laravel\Fortify\Fortify;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+
 class PanneauServiceProvider extends BaseServiceProvider
 {
     /**
@@ -31,6 +36,7 @@ class PanneauServiceProvider extends BaseServiceProvider
     {
         $this->bootFields();
         $this->bootViews();
+        $this->bootAuth();
     }
 
     protected function bootFields()
@@ -69,6 +75,16 @@ class PanneauServiceProvider extends BaseServiceProvider
             $view->composer('errors::*', \Panneau\Composers\PanneauComposer::class);
             $view->composer('errors::*', \Panneau\Composers\AppComposer::class);
             $view->composer('errors::*', \App\Panneau\Composers\AppComposer::class);
+        });
+    }
+
+    protected function bootAuth()
+    {
+        Fortify::authenticateUsing(function (Request $request) {
+            $user = User::where('email', $request->email)->first();
+            if (!is_null($user) && Hash::check($request->password, $user->password)) {
+                return $user;
+            }
         });
     }
 }

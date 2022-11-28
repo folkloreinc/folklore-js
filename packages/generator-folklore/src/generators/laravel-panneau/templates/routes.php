@@ -10,7 +10,9 @@ Panneau::router()->group(function () {
         return app('tus-server')->serve();
     })->where('any', '.*');
 
-    Panneau::router()->auth();
+    Route::middleware(['web'])->group(function () {
+        Panneau::router()->auth();
+    });
 
     Route::namespace('\App\Panneau\Http\Controllers')
         ->middleware(['web', 'auth', 'can:view,' . \Panneau\Panneau::class])
