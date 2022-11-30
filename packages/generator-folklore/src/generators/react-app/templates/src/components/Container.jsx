@@ -8,21 +8,23 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 
 const propTypes = {
-    locale: PropTypes.string,
-    messages: PropTypes.oneOfType([
-        PropTypes.objectOf(PropTypes.objectOf(PropTypes.string)),
-        PropTypes.objectOf(PropTypes.string),
-    ]),
+    intl: PropTypes.shape({
+        locale: PropTypes.string,
+        messages: PropTypes.oneOfType([
+            PropTypes.objectOf(PropTypes.objectOf(PropTypes.string)),
+            PropTypes.objectOf(PropTypes.string),
+        ]),
+    }),
     routes: PropTypes.objectOf(PropTypes.string),
 };
 
 const defaultProps = {
-    locale: 'fr',
-    messages: {},
+    intl: null,
     routes: {},
 };
 
-function Container({ locale, messages, routes }) {
+function Container({ intl, routes }) {
+    const { locale = null, messages = null } = intl || {};
     return (
         <IntlProvider locale={locale} messages={messages[locale] || messages}>
             <BrowserRouter>
