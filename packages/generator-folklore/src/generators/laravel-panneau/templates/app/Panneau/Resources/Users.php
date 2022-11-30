@@ -51,7 +51,8 @@ class Users extends Resource
                     ],
                 ])
                 ->withoutReset()
-                ->withDefaultValue('guest'),
+                ->withDefaultValue('admin')
+                ->isRequired(),
         ];
     }
 }
