@@ -1,6 +1,6 @@
 {
     "name": "@folklore/pixi",
-    "version": "0.1.40",
+    "version": "0.1.41",
     "description": "Pixi.js utilities",
     "keywords": [
         "javascript",
@@ -39,7 +39,7 @@
     },
     "dependencies": {
         "@babel/runtime": "^7.4.3",
-        "@folklore/size": "^0.1.20",
+        "@folklore/size": "^0.1.21",
         "color": "^2.0.1",
         "es6-promise": "^4.2.2",
         "gsap": "^1.20.3",
