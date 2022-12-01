@@ -9,7 +9,7 @@ module.exports = class StylelintGenerator extends Generator {
         this.option('camel-case', {
             type: Boolean,
             required: false,
-            defaults: false,
+            defaults: true,
         });
     }
 

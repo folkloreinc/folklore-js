@@ -1,12 +1,15 @@
 # Folklore Generator
+
 Yeoman generator to start projects at Folklore
 
 ## Install
+
 ```
 npm install -g generator-folklore
 ```
 
 ## Usage
+
 ```
 yo folklore
 ```
@@ -14,20 +17,23 @@ yo folklore
 ## Sub-Generators
 
 ```
-yo folklore:laravel
+yo folklore:laravel-project
 ```
-Laravel 5 project, JS, Sass, and miscellaneous Laravel boilerplate.
+
+Laravel boilerplate.
 
 --
 
 ```
-yo folklore:html
+yo folklore:html-project
 ```
+
 HTML static application
 
 --
 
 ```
-yo folklore:npm-package
+yo folklore:node-project
 ```
-NPM package
+
+Node package
