@@ -2,14 +2,14 @@ import getSizeInPixel from './getSizeInPixel';
 import getSizeWithinBounds from './getSizeWithinBounds';
 
 const getSizeFromString = (size, width, height, maxWidth, maxHeight, opts) => {
-    const options = Object.assign(
-        {
-            force: false,
-            autoIsNull: true,
-            round: false,
-        },
-        opts,
-    );
+    const {
+        force = false,
+        autoIsNull = true,
+        round = false,
+        cover = false,
+    } = {
+        ...opts,
+    };
 
     let returnSize = {
         width: maxWidth,
@@ -30,17 +30,19 @@ const getSizeFromString = (size, width, height, maxWidth, maxHeight, opts) => {
         const widthPixel = getSizeInPixel(sizeWidth, maxWidth);
         const heightPixel = getSizeInPixel(sizeHeight, maxHeight);
         if (widthPixel !== null && heightPixel !== null) {
-            returnSize = options.force
+            returnSize = force
                 ? {
-                    width: widthPixel,
-                    height: heightPixel,
-                }
-                : getSizeWithinBounds(width, height, widthPixel, heightPixel);
+                      width: widthPixel,
+                      height: heightPixel,
+                  }
+                : getSizeWithinBounds(width, height, widthPixel, heightPixel, {
+                      cover,
+                  });
         } else if (widthPixel !== null) {
             returnSize.width = widthPixel;
             if (sizeHeight === 'auto') {
                 const relativeHeight = ratio !== 0 ? returnSize.width / ratio : 0;
-                returnSize.height = !options.autoIsNull ? relativeHeight : null;
+                returnSize.height = !autoIsNull ? relativeHeight : null;
             } else {
                 returnSize.height = sizeHeight;
             }
@@ -48,29 +50,29 @@ const getSizeFromString = (size, width, height, maxWidth, maxHeight, opts) => {
             returnSize.height = heightPixel;
             if (sizeWidth === 'auto') {
                 const relativeWidth = ratio !== 0 ? returnSize.height * ratio : 0;
-                returnSize.width = !options.autoIsNull ? relativeWidth : null;
+                returnSize.width = !autoIsNull ? relativeWidth : null;
             } else {
                 returnSize.width = sizeWidth;
             }
         } else {
             if (sizeWidth === 'auto') {
-                returnSize.width = !options.autoIsNull ? width : null;
+                returnSize.width = !autoIsNull ? width : null;
             } else {
                 returnSize.width = sizeWidth;
             }
             if (sizeHeight === 'auto') {
-                returnSize.height = !options.autoIsNull ? height : null;
+                returnSize.height = !autoIsNull ? height : null;
             } else {
                 returnSize.height = sizeHeight;
             }
         }
     }
 
-    if (returnSize.width !== null && options.round) {
+    if (returnSize.width !== null && round) {
         returnSize.width = Math.round(returnSize.width);
     }
 
-    if (returnSize.height !== null && options.round) {
+    if (returnSize.height !== null && round) {
         returnSize.height = Math.round(returnSize.height);
     }
 
