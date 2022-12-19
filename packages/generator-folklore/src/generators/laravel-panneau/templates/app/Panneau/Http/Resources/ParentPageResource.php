@@ -5,11 +5,9 @@ namespace App\Panneau\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Folklore\Http\Resources\MediaResource;
 use App\Contracts\Resources\Page;
-use Folklore\Contracts\Resources\HasBlocks;
 use Folklore\Http\Resources\LocalizedResource;
-use App\Contracts\Resources\Pages\Home as HomePage;
 
-class PageResource extends JsonResource
+class ParentPageResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -40,17 +38,6 @@ class PageResource extends JsonResource
                 !is_null($parent) && $parent instanceof Page
                     ? new ParentPageResource($parent)
                     : null,
-
-            $this->mergeWhen($this->resource instanceof HasBlocks, function () {
-                $blocks = $this->blocks();
-                return [
-                    'blocks' => !is_null($blocks) ? new BlocksCollection($blocks) : [],
-                ];
-            }),
-
-            $this->mergeWhen($this->resource instanceof HomePage, function () {
-                return [];
-            }),
         ];
     }
 }
