@@ -30,9 +30,7 @@ class PageResource extends JsonResource
             'slug' => $this->slug($locale),
             'image' => !is_null($image) ? new MediaResource($image) : null,
             'parent' =>
-                !is_null($parent) && $parent instanceof Page
-                    ? new PageResource($parent)
-                    : null,
+                !is_null($parent) && $parent instanceof Page ? new PageResource($parent) : null,
 
             $this->mergeWhen($this->resource instanceof HasBlocks, function () {
                 $blocks = $this->blocks();

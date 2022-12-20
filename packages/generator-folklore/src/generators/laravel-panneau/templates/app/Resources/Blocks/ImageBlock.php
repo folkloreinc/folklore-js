@@ -3,11 +3,11 @@
 namespace App\Resources\Blocks;
 
 use App\Resources\Block;
-use App\Contracts\Resources\Blocks\Text as TextBlockContract;
+use App\Contracts\Resources\Blocks\Image as ImageBlockContract;
 use Folklore\Contracts\Resources\Image as ImageContract;
 use Folklore\Resources\Image;
 
-class ImageBlock extends Block implements TextBlockContract
+class ImageBlock extends Block implements ImageBlockContract
 {
     public function image(): ?ImageContract
     {

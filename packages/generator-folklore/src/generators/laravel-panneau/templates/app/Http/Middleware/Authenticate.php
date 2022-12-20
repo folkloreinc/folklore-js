@@ -16,7 +16,7 @@ class Authenticate extends Middleware
     {
         if (!$request->expectsJson()) {
             $routeWithLocale =
-                route_with_locale('login') .
+                route('panneau.auth.login') .
                 '?' .
                 http_build_query([
                     'next' => $request->fullUrl(),
