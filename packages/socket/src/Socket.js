@@ -209,6 +209,13 @@ class Socket extends EventEmitter {
     }
 
     init() {
+        if (this.adapter !== null) {
+            debug('Already initialized');
+            return;
+        }
+
+        debug('Init');
+
         const { adapter: adapterKey, channels, ...adapterOptions } = this.options;
         const SocketAdapter = Socket.getAdapter(adapterKey);
 
