@@ -76,12 +76,15 @@ class PubNubSocket extends EventEmitter {
         if (this.pubnub !== null) {
             return;
         }
+        debug('Init');
+
         this.destroyed = false;
         const loadPubnub = this.PubNub !== null ? Promise.resolve() : this.loadPubNub();
         loadPubnub.then(() => this.createPubNub()).then(() => this.onReady());
     }
 
     loadPubNub() {
+        debug('Load PubNub');
         return import('pubnub').then(({ default: PubNub }) => {
             this.PubNub = PubNub;
         });
