@@ -18,6 +18,7 @@ class PubNubSocket extends EventEmitter {
         this.onStatus = this.onStatus.bind(this);
         this.onMessage = this.onMessage.bind(this);
 
+        this.destroyed = false;
         this.ready = false;
         this.shouldStart = false;
         this.started = false;
@@ -32,6 +33,9 @@ class PubNubSocket extends EventEmitter {
     }
 
     onReady() {
+        if (this.destroyed) {
+            return;
+        }
         this.ready = true;
         this.emit('ready');
     }
@@ -69,15 +73,28 @@ class PubNubSocket extends EventEmitter {
     }
 
     init() {
-        import('pubnub')
-            .then(({ default: PubNub }) => {
-                this.PubNub = PubNub;
-            })
-            .then(() => this.createPubNub())
-            .then(() => this.onReady());
+        if (this.pubnub !== null) {
+            return;
+        }
+        debug('Init');
+
+        this.destroyed = false;
+        const loadPubnub = this.PubNub !== null ? Promise.resolve() : this.loadPubNub();
+        loadPubnub.then(() => this.createPubNub()).then(() => this.onReady());
+    }
+
+    loadPubNub() {
+        debug('Load PubNub');
+        return import('pubnub').then(({ default: PubNub }) => {
+            this.PubNub = PubNub;
+        });
     }
 
     createPubNub() {
+        if (this.destroyed) {
+            return;
+        }
+
         const { PubNub } = this;
         const pubnubOptions = {
             publishKey: this.options.publishKey,
@@ -99,12 +116,16 @@ class PubNubSocket extends EventEmitter {
     }
 
     destroy() {
+        this.destroyed = true;
+
         this.stop();
 
         if (this.pubnubListener) {
             this.pubnub.removeListener(this.pubnubListener);
             this.pubnubListener = null;
         }
+
+        this.pubnub = null;
 
         this.ready = false;
 
@@ -115,7 +136,8 @@ class PubNubSocket extends EventEmitter {
         if (this.started) {
             debug('Skipping start: Already started.');
             return;
-        } if (this.starting) {
+        }
+        if (this.starting) {
             debug('Skipping start: Already starting.');
             return;
         }

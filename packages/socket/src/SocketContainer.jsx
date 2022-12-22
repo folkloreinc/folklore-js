@@ -118,6 +118,8 @@ const SocketContainer = function ({
     }, [initialChannels, subscribe, unsubscribe]);
 
     useEffect(() => {
+        finalSocket.init();
+
         if (autoStart) {
             finalSocket.start();
         }
