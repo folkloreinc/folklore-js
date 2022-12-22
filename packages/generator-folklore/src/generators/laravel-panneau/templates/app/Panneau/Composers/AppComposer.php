@@ -42,6 +42,8 @@ class AppComposer
             'user' => !is_null($user) ? new UserResource($user) : null,
             'isPanneau' => true,
             'statusCode' => $view->statusCode,
+            'baseUrl' => config('app.url'),
+            'tusUrl' => null,
             'pubnubNamespace' => config('services.pubnub.namespace'),
             'pubnubPublishKey' => config('services.pubnub.publish_key'),
             'pubnubSubscribeKey' => config('services.pubnub.subscribe_key'),
