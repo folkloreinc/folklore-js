@@ -4,10 +4,12 @@ namespace App\Panneau\Http\Controllers;
 
 use App\Panneau\Http\Requests\UploadRequest;
 use Folklore\Contracts\Repositories\Medias as MediasRepository;
-use Folklore\Http\Resources\Medias\MediaResource;
+use Folklore\Http\Resources\MediaResource;
 
 class UploadController extends Controller
 {
+    protected $medias;
+
     public function __construct(MediasRepository $medias)
     {
         $this->medias = $medias;
