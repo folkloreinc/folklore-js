@@ -142,6 +142,7 @@ export const useObserver = (Observer, opts = {}, initialEntry = {}) => {
 /**
  * Intersection Observer
  */
+const defaultThreshold = [0, 1.0];
 const intersectionObserverInitialEntry = {
     target: null,
     time: null,
@@ -155,7 +156,7 @@ const intersectionObserverInitialEntry = {
 export const useIntersectionObserver = ({
     root = null,
     rootMargin = '0px',
-    threshold = [0, 1.0],
+    threshold = defaultThreshold,
     disabled = false,
 } = {}) =>
     useObserver(
