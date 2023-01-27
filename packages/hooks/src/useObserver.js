@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 
 const observersCache = new Map();
 
@@ -101,8 +101,14 @@ export const getObserver = (Observer, options = {}) => {
 };
 
 export const useObserver = (Observer, opts = {}, initialEntry = {}) => {
-    const { root = null, rootMargin = null, threshold = null, disabled = false } = opts;
+    const {
+        root = null,
+        rootMargin = null,
+        threshold: defaultThreshold = null,
+        disabled = false,
+    } = opts;
     const [entry, setEntry] = useState(initialEntry);
+    const threshold = useMemo(() => defaultThreshold, [defaultThreshold]);
     const nodeRef = useRef(null);
     const currentElement = useRef(null);
     const elementChanged = nodeRef.current !== currentElement.current;
