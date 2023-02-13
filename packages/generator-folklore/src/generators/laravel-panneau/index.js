@@ -54,7 +54,7 @@ module.exports = class LaravelPanneauGenerator extends Generator {
             composerJSON() {
                 this.composerJson.merge({
                     require: {
-                        'folklore/laravel-panneau': 'v1.2.x-dev',
+                        'folklore/laravel-panneau': 'v1.3.x-dev',
                     },
                 });
             },
