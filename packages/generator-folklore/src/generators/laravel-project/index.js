@@ -398,7 +398,7 @@ module.exports = class LaravelProjectGenerator extends Generator {
                         'folklore/laravel-image': 'v1.x-dev',
                     },
                     'require-dev': {
-                        'laravel/telescope': '^4.0.0',
+                        'laravel/telescope': '^4.12.0',
                     },
                     extra: {
                         laravel: {
