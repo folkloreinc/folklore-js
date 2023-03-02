@@ -35,10 +35,10 @@ module.exports = class StylelintGenerator extends Generator {
 
             dependencies() {
                 this.addDevDependencies({
-                    stylelint: '^14.0.0',
+                    stylelint: '^15.0.0',
                     'stylelint-config-standard-scss': 'latest',
                     'stylelint-config-idiomatic-order': 'latest',
-                    'stylelint-config-prettier': 'latest',
+                    'stylelint-config-standard': 'latest',
                 });
             },
         };
