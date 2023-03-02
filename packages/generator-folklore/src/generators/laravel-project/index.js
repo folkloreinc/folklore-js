@@ -32,7 +32,7 @@ module.exports = class LaravelProjectGenerator extends Generator {
         this.option('laravel-version', {
             type: String,
             desc: 'Laravel version',
-            defaults: '9',
+            defaults: '10',
         });
 
         this.option('laravel-branch', {
