@@ -180,12 +180,12 @@ module.exports = class LaravelProjectGenerator extends Generator {
                     !this.options.panneau && {
                         name: 'Panneau',
                         value: 'panneau',
-                        checked: false,
+                        checked: true,
                     },
                     !this.options.auth && {
                         name: 'Auth',
                         value: 'auth',
-                        checked: false,
+                        checked: true,
                     },
                 ].filter(Boolean);
                 if (featuresChoices.length) {
@@ -405,6 +405,8 @@ module.exports = class LaravelProjectGenerator extends Generator {
                             'dont-discover': ['laravel/telescope', 'folklore/laravel-folklore'],
                         },
                     },
+                    'minimum-stability': 'dev',
+                    'prefer-stable': true,
                 });
             },
 
