@@ -80,6 +80,8 @@ class POFile {
                     {},
                 ),
             },
+        }, {
+            foldLength: false,
         });
 
         fsExtra.outputFileSync(this.path, outputBuf);
