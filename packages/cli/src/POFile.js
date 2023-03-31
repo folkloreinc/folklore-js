@@ -5,8 +5,10 @@ import { isEmpty } from 'lodash';
 
 class POFile {
     static parse(filePath) {
-        const input = fs.readFileSync(filePath);
-        const po = gettextParser.po.parse(input);
+        const input = fs.readFileSync(filePath, {
+            encoding: 'utf-8',
+        });
+        const po = gettextParser.po.parse(input, 'utf-8');
         return Object.keys(po.translations).reduce(
             (allTranslations, ctx) =>
                 Object.keys(po.translations[ctx]).reduce((currentTranslations, msg) => {
@@ -68,21 +70,24 @@ class POFile {
     }
 
     save() {
-        const outputBuf = gettextParser.po.compile({
-            charset: 'utf-8',
-            headers: this.headers,
-            translations: {
-                '': this.translations.reduce(
-                    (map, translation) => ({
-                        ...map,
-                        [translation.msgctxt]: translation,
-                    }),
-                    {},
-                ),
+        const outputBuf = gettextParser.po.compile(
+            {
+                charset: 'utf-8',
+                headers: this.headers,
+                translations: {
+                    '': this.translations.reduce(
+                        (map, translation) => ({
+                            ...map,
+                            [translation.msgctxt]: translation,
+                        }),
+                        {},
+                    ),
+                },
             },
-        }, {
-            foldLength: false,
-        });
+            {
+                foldLength: false,
+            },
+        );
 
         fsExtra.outputFileSync(this.path, outputBuf);
     }
