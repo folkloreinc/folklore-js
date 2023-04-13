@@ -196,6 +196,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\ViewServiceProvider::class,<% if (options.panneau) { %>
+        App\Providers\FortifyServiceProvider::class,
         App\Panneau\PanneauServiceProvider::class,<% } %>
     ],
 
