@@ -5,7 +5,7 @@ import createWebpackCompiler from './createWebpackCompiler';
 
 const createWebpackServer = (config, opts = {}) => {
     const compiler = createWebpackCompiler(config);
-    const { proxy = undefined, host = null, open = true, indexPath, ...otherOpts } = opts;
+    const { proxy = undefined, host = null, open = true, indexPath = '/index.html', ...otherOpts } = opts;
     const {
         historyApiFallback = typeof proxy === 'undefined'
             ? {
