@@ -23,6 +23,14 @@ const setupWebpackCommand = (command) => {
             '--babel-preset-env-use-builtins <value>',
             'Set useBuiltIns of @babel/preset-env loader',
         )
+        .option(
+            '--babel-config-file <value>',
+            'Set configFile option for babel loader',
+        )
+        .option(
+            '--babel-rc <value>',
+            'Set babelrc option for babel loader',
+        )
         .option('--loaders <path>', 'Path to loaders file')
         .option('--plugins <path>', 'Path to plugins file')
         .option('--merge-config <path>', 'Path to merge a config file')

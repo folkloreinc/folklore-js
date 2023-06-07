@@ -32,6 +32,8 @@ export default (entry, opts = {}) => {
         loaders = null,
         plugins = null,
         profile = false,
+        babelRc = false,
+        babelConfigFile = null,
         defineEnv: extraDefineEnv = null,
         disableImageOptimization = false,
         imageOptimization = 'lossless',
@@ -281,9 +283,13 @@ export default (entry, opts = {}) => {
                                         },
                                     ],
                                 ].filter(Boolean),
+                                babelrc: babelRc,
                                 cacheDirectory: true,
                                 cacheCompression: false,
                                 compact: isProduction,
+                                ...(babelConfigFile !== null ? {
+                                    configFile: babelConfigFile,
+                                } : {}),
                             },
                         },
 
