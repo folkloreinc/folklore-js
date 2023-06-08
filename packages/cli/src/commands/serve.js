@@ -1,18 +1,20 @@
 import { Command } from 'commander';
-import path from 'path';
 import dotenv from 'dotenv';
-import setupWebpackCommand from '../setupWebpackCommand';
-import createWebpackServer from '../createWebpackServer';
+import path from 'path';
+
 import createWebpackConfig from '../createWebpackConfig';
-import getOptionsFromPackage from '../getOptionsFromPackage';
-import getOptionsFromEnv from '../getOptionsFromEnv';
+import createWebpackServer from '../createWebpackServer';
 import getEntryFromArgs from '../getEntryFromArgs';
+import getOptionsFromEnv from '../getOptionsFromEnv';
+import getOptionsFromPackage from '../getOptionsFromPackage';
+import setupWebpackCommand from '../setupWebpackCommand';
 
 const command = new Command('serve');
 
 setupWebpackCommand(command)
     .description('Start development server')
     .option('-p, --proxy <host>', 'Host to proxy')
+    .option('--setup-middlewares <path>', 'Setup middlewares in webpack dev server')
     .option('-o, --open <url>', 'Url to open')
     .action(async (entryArgs) => {
         // Get options
@@ -22,6 +24,7 @@ setupWebpackCommand(command)
             packageJson = './package.json',
             loadEnv = false,
             envFile = null,
+            setupMiddlewares = null,
             ...commandOptions
         } = command.opts();
 
@@ -55,6 +58,7 @@ setupWebpackCommand(command)
             proxy,
             open,
             host,
+            setupMiddlewares,
         });
 
         // Start server

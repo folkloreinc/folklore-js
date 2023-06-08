@@ -1,11 +1,20 @@
-import url from 'url';
 import { isString } from 'lodash';
+import url from 'url';
 import WebpackDevServer from 'webpack-dev-server';
+
 import createWebpackCompiler from './createWebpackCompiler';
+import getAbsolutePath from './getAbsolutePath';
 
 const createWebpackServer = (config, opts = {}) => {
     const compiler = createWebpackCompiler(config);
-    const { proxy = undefined, host = null, open = true, indexPath = '/index.html', ...otherOpts } = opts;
+    const {
+        proxy = undefined,
+        host = null,
+        open = true,
+        indexPath = '/index.html',
+        setupMiddlewares = null,
+        ...otherOpts
+    } = opts;
     const {
         historyApiFallback = typeof proxy === 'undefined'
             ? {
@@ -13,6 +22,10 @@ const createWebpackServer = (config, opts = {}) => {
               }
             : undefined,
     } = opts;
+    const finalSetupMiddlewares = isString(setupMiddlewares)
+        ? require(getAbsolutePath(setupMiddlewares))
+        : setupMiddlewares;
+
     const options = {
         allowedHosts: 'all',
         server: 'https',
@@ -48,6 +61,11 @@ const createWebpackServer = (config, opts = {}) => {
             : {
                   proxy,
               }),
+        ...(finalSetupMiddlewares !== null
+            ? {
+                  setupMiddlewares: finalSetupMiddlewares,
+              }
+            : {}),
         ...otherOpts,
     };
     const server = new WebpackDevServer(options, compiler);
