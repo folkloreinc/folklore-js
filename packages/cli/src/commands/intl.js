@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import fsExtra from 'fs-extra';
 import { Command } from 'commander';
-import { extractAndWrite, extract, compileAndWrite, compile } from '@formatjs/cli';
+import { extractAndWrite, extract, compileAndWrite, compile } from '@formatjs/cli-lib';
 import isArray from 'lodash/isArray';
 import getPathsFromGlob from '../getPathsFromGlob';
 import POFile from '../POFile';

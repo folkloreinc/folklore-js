@@ -41,7 +41,7 @@
         "@babel/preset-env": "^7.22.5",
         "@babel/preset-react": "^7.22.5",
         "@babel/runtime": "^7.22.5",
-        "@formatjs/cli": "^6.1.2",
+        "@formatjs/cli-lib": "^6.1.2",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
         "@svgr/webpack": "^8.0.1",
         "babel-loader": "^9.1.2",
