@@ -31,6 +31,10 @@ const setupWebpackCommand = (command) => {
             '--babel-rc <value>',
             'Set babelrc option for babel loader',
         )
+        .option(
+            '--postcss-config-file [value]',
+            'Set postcss config file option',
+        )
         .option('--loaders <path>', 'Path to loaders file')
         .option('--plugins <path>', 'Path to plugins file')
         .option('--merge-config <path>', 'Path to merge a config file')

@@ -39,6 +39,7 @@ export default (entry, opts = {}) => {
         imageOptimization = 'lossless',
         imageDataUrlMaxSize = 5000,
         babelPresetEnvUseBuiltins = 'entry',
+        postcssConfigFile = null,
     } = opts;
 
     const isProduction = process.env.NODE_ENV === 'production';
@@ -47,6 +48,9 @@ export default (entry, opts = {}) => {
     const absSrcPath = getAbsolutePath(srcPath);
     const absOutputPath = getAbsolutePath(outputPath);
     const absHtmlPath = getAbsolutePath(htmlPath);
+    const absPostcssConfigFile = isString(postcssConfigFile)
+        ? getAbsolutePath(postcssConfigFile)
+        : postcssConfigFile;
 
     const getStyleLoaders = (cssOptions, preProcessor) => {
         const styleLoaders = [
@@ -62,22 +66,27 @@ export default (entry, opts = {}) => {
             {
                 loader: require.resolve('postcss-loader'),
                 options: {
-                    postcssOptions: {
-                        ident: 'postcss',
-                        plugins: [
-                            'postcss-flexbugs-fixes',
-                            [
-                                'postcss-preset-env',
-                                {
-                                    autoprefixer: {
-                                        flexbox: 'no-2009',
-                                    },
-                                    stage: 3,
-                                },
-                            ],
-                            'postcss-normalize',
-                        ],
-                    },
+                    postcssOptions:
+                        absPostcssConfigFile !== null
+                            ? {
+                                  config: absPostcssConfigFile,
+                              }
+                            : {
+                                  ident: 'postcss',
+                                  plugins: [
+                                      'postcss-flexbugs-fixes',
+                                      [
+                                          'postcss-preset-env',
+                                          {
+                                              autoprefixer: {
+                                                  flexbox: 'no-2009',
+                                              },
+                                              stage: 3,
+                                          },
+                                      ],
+                                      'postcss-normalize',
+                                  ],
+                              },
                     sourceMap: !disableSourceMap,
                 },
             },
@@ -287,9 +296,11 @@ export default (entry, opts = {}) => {
                                 cacheDirectory: true,
                                 cacheCompression: false,
                                 compact: isProduction,
-                                ...(babelConfigFile !== null ? {
-                                    configFile: babelConfigFile,
-                                } : {}),
+                                ...(babelConfigFile !== null
+                                    ? {
+                                          configFile: babelConfigFile,
+                                      }
+                                    : {}),
                             },
                         },
 
