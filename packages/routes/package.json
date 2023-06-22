@@ -29,27 +29,40 @@
     ],
     "main": "dist/cjs.js",
     "module": "dist/es.js",
+    "exports": {
+        ".": "./dist/cjs.js",
+        "./wouter": "./dist/wouter.cjs.js"
+    },
+    "browser": {
+        ".": "./dist/es.js",
+        "./wouter": "./dist/wouter.es.js"
+    },
     "files": [
         "dist"
     ],
     "scripts": {
         "clean": "rm -rf dist",
-        "build": "rollup --config ../../rollup.config.js",
+        "build": "rollup --config ./rollup.config.js",
         "prepare": "npm run clean && npm run build"
     },
     "dependencies": {
-        "@babel/runtime": "^7.4.3",
-        "react-router": "^6.0.0"
+        "@babel/runtime": "^7.4.3"
     },
     "devDependencies": {
         "prop-types": "^15.7.2",
         "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
-        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0",
+        "path-to-regexp": "^6.2.1",
+        "react-router": "^6.0.0",
+        "wouter": "^2.11.0"
     },
     "peerDependencies": {
         "prop-types": "^15.7.2",
         "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
-        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0",
+        "path-to-regexp": "^6.2.1",
+        "react-router": "^6.0.0",
+        "wouter": "^2.11.0"
     },
     "gitHead": "03cdca76413a59fe6bf04ca04e12db6f9e3aad5e"
 }
