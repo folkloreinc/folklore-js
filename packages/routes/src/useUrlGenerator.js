@@ -6,9 +6,9 @@ import generatePath from './generatePath';
 const useUrlGeneratorPathToRepexp = () => {
     const { routes, basePath } = useRoutesContext();
     const urlGenerator = useCallback(
-        (key, data) => {
+        (key, data, opts) => {
             const path = routes[key];
-            const url = generatePath(path, data);
+            const url = generatePath(path, data, opts);
             return basePath !== null
                 ? `${basePath.replace(/\/$/, '')}/${url.replace(/^\//, '')}`
                 : url;
