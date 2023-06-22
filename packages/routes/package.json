@@ -42,27 +42,24 @@
     ],
     "scripts": {
         "clean": "rm -rf dist",
-        "build": "rollup --config ./rollup.config.js",
+        "build": "rollup --config ../../rollup.config.js",
         "prepare": "npm run clean && npm run build"
     },
     "dependencies": {
-        "@babel/runtime": "^7.4.3"
+        "@babel/runtime": "^7.4.3",
+        "path-to-regexp": "^6.2.1",
+        "wouter": "^2.11.0"
     },
     "devDependencies": {
-        "path-to-regexp": "^6.2.1",
         "prop-types": "^15.7.2",
         "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
-        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0",
-        "react-router": "^6.0.0",
-        "wouter": "^2.11.0"
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
     },
     "peerDependencies": {
         "path-to-regexp": "^6.2.1",
         "prop-types": "^15.7.2",
         "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
-        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0",
-        "react-router": "^6.0.0",
-        "wouter": "^2.11.0"
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
     },
     "gitHead": "03cdca76413a59fe6bf04ca04e12db6f9e3aad5e"
 }

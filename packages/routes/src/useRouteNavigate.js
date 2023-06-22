@@ -1,15 +1,15 @@
 import { useCallback } from 'react';
-import { useNavigate } from 'react-router';
+import { useLocation } from 'wouter';
 
-import useUrlGenerator from './useUrlGenerator';
+import useUrlGeneratorPathToRegexp from './useUrlGenerator';
 
 const useRouteNavigate = () => {
-    const url = useUrlGenerator();
-    const navigate = useNavigate();
-    const routeNavigate = useCallback((route, data, ...args) => navigate(url(route, data), ...args), [
-        navigate,
-        url,
-    ]);
+    const url = useUrlGeneratorPathToRegexp();
+    const [setLocation] = useLocation();
+    const routeNavigate = useCallback(
+        (route, data, ...args) => setLocation(url(route, data), ...args),
+        [setLocation, url],
+    );
     return routeNavigate;
 };
 
