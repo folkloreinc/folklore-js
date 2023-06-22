@@ -1,6 +1,6 @@
 {
     "name": "@folklore/routes",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Routes utilities",
     "keywords": [
         "javascript",
@@ -49,18 +49,18 @@
         "@babel/runtime": "^7.4.3"
     },
     "devDependencies": {
+        "path-to-regexp": "^6.2.1",
         "prop-types": "^15.7.2",
         "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
         "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0",
-        "path-to-regexp": "^6.2.1",
         "react-router": "^6.0.0",
         "wouter": "^2.11.0"
     },
     "peerDependencies": {
+        "path-to-regexp": "^6.2.1",
         "prop-types": "^15.7.2",
         "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
         "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0",
-        "path-to-regexp": "^6.2.1",
         "react-router": "^6.0.0",
         "wouter": "^2.11.0"
     },
