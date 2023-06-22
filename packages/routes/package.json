@@ -29,14 +29,6 @@
     ],
     "main": "dist/cjs.js",
     "module": "dist/es.js",
-    "exports": {
-        ".": "./dist/cjs.js",
-        "./wouter": "./dist/wouter.cjs.js"
-    },
-    "browser": {
-        ".": "./dist/es.js",
-        "./wouter": "./dist/wouter.es.js"
-    },
     "files": [
         "dist"
     ],
