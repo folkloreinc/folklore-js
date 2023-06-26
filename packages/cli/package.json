@@ -58,13 +58,6 @@
         "glob": "^10.2.7",
         "html-webpack-plugin": "^5.5.0",
         "image-minimizer-webpack-plugin": "^3.8.2",
-        "imagemin": "^7.0.1",
-        "imagemin-gifsicle": "^7.0.0",
-        "imagemin-jpegtran": "^7.0.0",
-        "imagemin-mozjpeg": "^9.0.0",
-        "imagemin-optipng": "^8.0.0",
-        "imagemin-pngquant": "^9.0.2",
-        "imagemin-svgo": "^9.0.0",
         "lodash": "^4.17.21",
         "mini-css-extract-plugin": "^2.4.5",
         "mkdirp": "^3.0.1",
@@ -85,6 +78,15 @@
         "webpack-dev-server": "^4.5.0",
         "webpack-manifest-plugin": "^5.0.0",
         "webpack-merge": "^5.8.0"
+    },
+    "peerDependencies": {
+        "imagemin": "^7.0.1",
+        "imagemin-gifsicle": "^7.0.0",
+        "imagemin-jpegtran": "^7.0.0",
+        "imagemin-mozjpeg": "^9.0.0",
+        "imagemin-optipng": "^8.0.0",
+        "imagemin-pngquant": "^9.0.2",
+        "imagemin-svgo": "^9.0.0"
     },
     "gitHead": "03cdca76413a59fe6bf04ca04e12db6f9e3aad5e"
 }
