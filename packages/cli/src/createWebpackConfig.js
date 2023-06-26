@@ -157,8 +157,7 @@ export default (entry, opts = {}) => {
             pathinfo: isDevelopment,
             devtoolModuleFilenameTemplate: isProduction
                 ? (info) => path.relative(absSrcPath, info.absoluteResourcePath).replace(/\\/g, '/')
-                : isDevelopment &&
-                  ((info) => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')),
+                : ((info) => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')),
         },
 
         optimization: {
