@@ -1,5 +1,6 @@
 import { pathToRegexp } from 'path-to-regexp';
 import makeCachedMatcher from 'wouter/matcher';
+import parseLocation from './parseLocation';
 
 export default function createPathToRegexpMatcher(opts) {
     const convertPathToRegexp = (path) => {
@@ -14,7 +15,7 @@ export default function createPathToRegexpMatcher(opts) {
 
     const pathToRegexpMatcher = makeCachedMatcher(convertPathToRegexp);
     return (pattern, path) => {
-        const { pathname } = new URL(path, `${window.location.protocol}//${window.location.host}`);
+        const { pathname } = parseLocation(path);
         return pathToRegexpMatcher(pattern, pathname);
     };
 }
