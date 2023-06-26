@@ -32,10 +32,10 @@ const useDailymotionPlayer = (id = null, params = {}) => {
         },
     } = params;
 
-    const [apiLoaded, setApiLoaded] = useState(typeof window.DM !== 'undefined');
+    const [apiLoaded, setApiLoaded] = useState(typeof window !== 'undefined' && typeof window.DM !== 'undefined');
     const [playerReady, setPlayerReady] = useState(false);
     const [loaded, setLoaded] = useState(false);
-    const apiRef = useRef(typeof window.DM !== 'undefined' ? window.DM : null);
+    const apiRef = useRef(typeof window !== 'undefined' && typeof window.DM !== 'undefined' ? window.DM : null);
     const ready = apiLoaded && playerReady;
     const videoId = useMemo(() => getVideoId(id), [id]);
 

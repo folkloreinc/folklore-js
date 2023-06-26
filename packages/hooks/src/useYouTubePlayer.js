@@ -30,8 +30,8 @@ function useYouTubePlayer(
         },
     } = {},
 ) {
-    const [apiLoaded, setApiLoaded] = useState(typeof window.YT !== 'undefined');
-    const apiRef = useRef(typeof window.YT !== 'undefined' ? window.YT : null);
+    const [apiLoaded, setApiLoaded] = useState(typeof window !== 'undefined' && typeof window.YT !== 'undefined');
+    const apiRef = useRef(typeof window !== 'undefined' && typeof window.YT !== 'undefined' ? window.YT : null);
 
     const elementRef = useRef(null);
     const playerRef = useRef(null);

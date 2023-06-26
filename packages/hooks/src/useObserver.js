@@ -87,7 +87,14 @@ const createObserver = (Observer, options = {}) => {
     };
 };
 
-export const getObserver = (Observer, options = {}) => {
+export const getObserver = (Observer = null, options = {}) => {
+    if (Observer === null) {
+        return {
+            observer: null,
+            subscribe: () => {},
+            unsubscribe: () => {},
+        };
+    }
     const observerKey = getOptionsKey(options);
     if (!observersCache.has(Observer)) {
         observersCache.set(Observer, {});
@@ -166,7 +173,7 @@ export const useIntersectionObserver = ({
     disabled = false,
 } = {}) =>
     useObserver(
-        IntersectionObserver,
+        typeof IntersectionObserver !== 'undefined' ? IntersectionObserver : null,
         {
             root,
             rootMargin,
@@ -186,4 +193,8 @@ const resizeObserverInitialEntry = {
     borderBoxSize: null,
 };
 export const useResizeObserver = ({ disabled = false } = {}) =>
-    useObserver(ResizeObserver, { disabled }, resizeObserverInitialEntry);
+    useObserver(
+        typeof ResizeObserver !== 'undefined' ? ResizeObserver : null,
+        { disabled },
+        resizeObserverInitialEntry,
+    );
