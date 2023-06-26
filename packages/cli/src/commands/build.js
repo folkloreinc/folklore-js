@@ -18,7 +18,7 @@ setupWebpackCommand(command)
         // Get options
         const {
             config: customConfig = null,
-            env = 'production',
+            env = process.env.NODE_ENV || 'production',
             packageJson = './package.json',
             loadEnv = false,
             envFile = null,

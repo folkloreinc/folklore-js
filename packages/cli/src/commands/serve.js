@@ -20,7 +20,7 @@ setupWebpackCommand(command)
         // Get options
         const {
             config: customConfig = null,
-            env = 'development',
+            env = process.env.NODE_ENV || 'development',
             packageJson = './package.json',
             loadEnv = false,
             envFile = null,
