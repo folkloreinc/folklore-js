@@ -1,16 +1,13 @@
-import { useRef, useCallback, useEffect, useState } from 'react';
 import createDebug from 'debug';
-import usePlayerCurrentTime from './usePlayerCurrentTime';
+import { useRef, useCallback, useEffect, useState, useMemo } from 'react';
 
-const debug = createDebug('folklore:video:native');
+import usePlayerCurrentTime from './usePlayerCurrentTime';
 
 export const NO_PLAYER_ERROR = new Error('No player');
 
 export const isVideoId = (url) => url !== null && url.match(/^[0-9]+$/);
 
-const noPlayerError = new Error('No player');
-
-const useNativeVideoPlayer = (
+export default function useNativeVideoPlayer(
     url,
     {
         width = 0,
@@ -20,7 +17,9 @@ const useNativeVideoPlayer = (
         timeUpdateInterval = 1000,
         onTimeUpdate: customOnTimeUpdate = null,
     } = {},
-) => {
+) {
+    const debug = useMemo(() => createDebug('folklore:video:native'), []);
+
     const elementRef = useRef(null);
 
     const [loaded, setLoaded] = useState(false);
@@ -40,12 +39,12 @@ const useNativeVideoPlayer = (
 
     const play = useCallback(() => {
         const { current: player } = elementRef;
-        return player !== null ? player.play() : Promise.reject(noPlayerError);
+        return player !== null ? player.play() : Promise.reject(NO_PLAYER_ERROR);
     }, []);
 
     const pause = useCallback(() => {
         const { current: player } = elementRef;
-        return player !== null ? player.pause() : Promise.reject(noPlayerError);
+        return player !== null ? player.pause() : Promise.reject(NO_PLAYER_ERROR);
     }, []);
 
     const setVolume = useCallback((newVolume) => {
@@ -54,7 +53,7 @@ const useNativeVideoPlayer = (
             player.volume = newVolume;
             return Promise.resolve(newVolume);
         }
-        return Promise.reject(noPlayerError);
+        return Promise.reject(NO_PLAYER_ERROR);
     }, []);
 
     const mute = useCallback(() => {
@@ -63,7 +62,7 @@ const useNativeVideoPlayer = (
             player.muted = true;
             return Promise.resolve(true);
         }
-        return Promise.reject(noPlayerError);
+        return Promise.reject(NO_PLAYER_ERROR);
     }, []);
 
     const unmute = useCallback(() => {
@@ -72,7 +71,7 @@ const useNativeVideoPlayer = (
             player.muted = false;
             return Promise.resolve(false);
         }
-        return Promise.reject(noPlayerError);
+        return Promise.reject(NO_PLAYER_ERROR);
     }, []);
 
     const seek = useCallback((newTime) => {
@@ -81,7 +80,7 @@ const useNativeVideoPlayer = (
             player.currentTime = newTime;
             return Promise.resolve(newTime);
         }
-        return Promise.reject(noPlayerError);
+        return Promise.reject(NO_PLAYER_ERROR);
     }, []);
 
     const setLoop = useCallback((newLoop) => {
@@ -90,7 +89,7 @@ const useNativeVideoPlayer = (
             player.loop = newLoop;
             return Promise.resolve(newLoop);
         }
-        return Promise.reject(noPlayerError);
+        return Promise.reject(NO_PLAYER_ERROR);
     }, []);
 
     // Bind player events
@@ -184,6 +183,4 @@ const useNativeVideoPlayer = (
         ...metadata,
         ...playState,
     };
-};
-
-export default useNativeVideoPlayer;
+}

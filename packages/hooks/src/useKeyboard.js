@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import useWindowEvent from './useWindowEvent';
 
-function useKeyboard(keyMap = null) {
+export default function useKeyboard(keyMap = null) {
     const onKeyDown = useCallback(
         (event) => {
             const { key } = event;
@@ -43,5 +43,3 @@ function useKeyboard(keyMap = null) {
     useWindowEvent('keydown', keyMap !== null ? onKeyDown : null);
     useWindowEvent('keyup', keyMap !== null ? onKeyUp : null);
 }
-
-export default useKeyboard;

@@ -32,6 +32,7 @@
     "files": [
         "dist"
     ],
+    "sideEffects": false,
     "scripts": {
         "clean": "rm -rf dist",
         "build": "rollup --config ../../rollup.config.js",

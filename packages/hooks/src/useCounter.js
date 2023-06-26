@@ -1,7 +1,7 @@
 import raf from 'raf';
 import { useState, useEffect } from 'react';
 
-function useCounter(desiredValue, { maxDuration = 2000, speed = 1 / 10 }) {
+export default function useCounter(desiredValue, { maxDuration = 2000, speed = 1 / 10 }) {
     const [currentValue, setCurrentValue] = useState(desiredValue);
     useEffect(() => {
         let animationFrame = null;
@@ -40,5 +40,3 @@ function useCounter(desiredValue, { maxDuration = 2000, speed = 1 / 10 }) {
     }, [desiredValue]);
     return currentValue;
 }
-
-export default useCounter;

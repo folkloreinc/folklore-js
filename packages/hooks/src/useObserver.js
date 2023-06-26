@@ -2,10 +2,11 @@ import { useEffect, useState, useRef, useMemo } from 'react';
 
 const observersCache = new Map();
 
-const getOptionsKey = ({ root = null, rootMargin, threshold = null }) =>
-    `root_${root}_rootMargin_${rootMargin || null}_threshold_${threshold}`;
+function getOptionsKey({ root = null, rootMargin, threshold = null }) {
+    return `root_${root}_rootMargin_${rootMargin || null}_threshold_${threshold}`;
+}
 
-const createObserver = (Observer, options = {}) => {
+function createObserver(Observer, options = {}) {
     let subscribers = [];
 
     const addSubscriber = (element, callback) => {
@@ -85,9 +86,9 @@ const createObserver = (Observer, options = {}) => {
         unsubscribe,
         observer,
     };
-};
+}
 
-export const getObserver = (Observer = null, options = {}) => {
+export function getObserver(Observer = null, options = {}) {
     if (Observer === null) {
         return {
             observer: null,
@@ -105,9 +106,9 @@ export const getObserver = (Observer = null, options = {}) => {
         observersCache.set(Observer, observers);
     }
     return observers[observerKey];
-};
+}
 
-export const useObserver = (Observer, opts = {}, initialEntry = {}) => {
+export function useObserver(Observer, opts = {}, initialEntry = {}) {
     const {
         root = null,
         rootMargin = null,
@@ -150,7 +151,7 @@ export const useObserver = (Observer, opts = {}, initialEntry = {}) => {
         ref: nodeRef,
         entry,
     };
-};
+}
 
 /**
  * Intersection Observer
@@ -166,13 +167,13 @@ const intersectionObserverInitialEntry = {
     boundingClientRect: null,
     rootBounds: null,
 };
-export const useIntersectionObserver = ({
+export function useIntersectionObserver({
     root = null,
     rootMargin = '0px',
     threshold = defaultThreshold,
     disabled = false,
-} = {}) =>
-    useObserver(
+} = {}) {
+    return useObserver(
         typeof IntersectionObserver !== 'undefined' ? IntersectionObserver : null,
         {
             root,
@@ -182,6 +183,7 @@ export const useIntersectionObserver = ({
         },
         intersectionObserverInitialEntry,
     );
+}
 
 /**
  * Resize Observer
@@ -192,9 +194,10 @@ const resizeObserverInitialEntry = {
     contentBoxSize: null,
     borderBoxSize: null,
 };
-export const useResizeObserver = ({ disabled = false } = {}) =>
-    useObserver(
+export function useResizeObserver({ disabled = false } = {}) {
+    return useObserver(
         typeof ResizeObserver !== 'undefined' ? ResizeObserver : null,
         { disabled },
         resizeObserverInitialEntry,
     );
+}

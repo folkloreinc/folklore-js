@@ -9,7 +9,7 @@ export const getWindowSize = () => ({
 
 let currentSize = getWindowSize();
 
-function useWindowSize({ onChange = null } = {}) {
+export default function useWindowSize({ onChange = null } = {}) {
     const [size, setSize] = useState(currentSize);
 
     const updateSize = useCallback(() => {
@@ -37,5 +37,3 @@ function useWindowSize({ onChange = null } = {}) {
 
     return size;
 }
-
-export default useWindowSize;

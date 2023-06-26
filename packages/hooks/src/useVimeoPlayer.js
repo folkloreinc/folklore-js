@@ -1,13 +1,12 @@
-import { useMemo, useRef, useCallback, useEffect, useState } from 'react';
 import { loadVimeo } from '@folklore/services';
 import createDebug from 'debug';
+import { useMemo, useRef, useCallback, useEffect, useState } from 'react';
+
 import usePlayerCurrentTime from './usePlayerCurrentTime';
 
-const debug = createDebug('folklore:video:vimeo');
+export const NO_PLAYER_ERROR = new Error('No player');
 
-const NO_PLAYER_ERROR = new Error('No player');
-
-const useVimeoPlayer = (
+export default function useVimeoPlayer(
     id,
     {
         width = 0,
@@ -28,7 +27,9 @@ const useVimeoPlayer = (
             return match !== null ? match[1] : null;
         },
     } = {},
-) => {
+) {
+    const debug = useMemo(() => createDebug('folklore:video:vimeo'), []);
+
     const [apiLoaded, setApiLoaded] = useState(false);
 
     const apiRef = useRef(null);
@@ -305,6 +306,4 @@ const useVimeoPlayer = (
         ...metadata,
         ...playState,
     };
-};
-
-export default useVimeoPlayer;
+}

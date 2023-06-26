@@ -2,7 +2,7 @@ import { cancelable } from 'cancelable-promise';
 import isNumber from 'lodash/isNumber';
 import { useEffect, useState, useMemo, useRef } from 'react';
 
-const useItems = (
+export default function useItems(
     loader,
     {
         items: providedItems = null,
@@ -10,7 +10,7 @@ const useItems = (
         onLoaded = null,
         onError = null,
     },
-) => {
+) {
     const lastState = useRef(null);
     const initialState = useMemo(
         () => ({
@@ -91,7 +91,7 @@ const useItems = (
         loading,
         reload: loadItems,
     };
-};
+}
 
 export const useItemsPaginated = (
     loader,
@@ -307,5 +307,3 @@ export const useItemsPaginated = (
         loadPage,
     };
 };
-
-export default useItems;

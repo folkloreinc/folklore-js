@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-function usePlayerCurrentTime(
+export default function usePlayerCurrentTime(
     player,
     {
         id = null,
@@ -53,5 +53,3 @@ function usePlayerCurrentTime(
 
     return realCurrentTime.current;
 }
-
-export default usePlayerCurrentTime;

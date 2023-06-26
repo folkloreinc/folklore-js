@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
-import useDailymotionPlayer from './useDailymotionPlayer';
-import useYouTubePlayer from './useYouTubePlayer';
-import useVimeoPlayer from './useVimeoPlayer';
-import useNativeVideoPlayer from './useNativeVideoPlayer';
 
-function useVideoPlayer(params) {
+import useDailymotionPlayer from './useDailymotionPlayer';
+import useNativeVideoPlayer from './useNativeVideoPlayer';
+import useVimeoPlayer from './useVimeoPlayer';
+import useYouTubePlayer from './useYouTubePlayer';
+
+export default function useVideoPlayer(params) {
     const {
         service = null,
         videoId = null,
@@ -92,5 +93,3 @@ function useVideoPlayer(params) {
 
     return player;
 }
-
-export default useVideoPlayer;

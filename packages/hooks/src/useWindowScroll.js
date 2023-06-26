@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
+
 import useWindowEvent from './useWindowEvent';
 
 const getWindowScroll = () => ({
@@ -8,7 +9,7 @@ const getWindowScroll = () => ({
 
 const currentScroll = getWindowScroll();
 
-const useWindowScroll = (opts = {}) => {
+export default function useWindowScroll(opts = {}) {
     const { onChange = null } = opts;
     const [scroll, setScroll] = useState(currentScroll);
 
@@ -37,6 +38,4 @@ const useWindowScroll = (opts = {}) => {
     }, []);
 
     return scroll;
-};
-
-export default useWindowScroll;
+}

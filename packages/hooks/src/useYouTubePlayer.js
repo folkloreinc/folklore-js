@@ -1,13 +1,12 @@
-import { useMemo, useRef, useCallback, useEffect, useState } from 'react';
 import { loadYouTube } from '@folklore/services';
 import createDebug from 'debug';
+import { useMemo, useRef, useCallback, useEffect, useState } from 'react';
+
 import usePlayerCurrentTime from './usePlayerCurrentTime';
 
 export const NO_PLAYER_ERROR = new Error('No player');
 
-const debug = createDebug('folklore:video:youtube');
-
-function useYouTubePlayer(
+export default function useYouTubePlayer(
     id,
     {
         width = 0,
@@ -30,8 +29,14 @@ function useYouTubePlayer(
         },
     } = {},
 ) {
-    const [apiLoaded, setApiLoaded] = useState(typeof window !== 'undefined' && typeof window.YT !== 'undefined');
-    const apiRef = useRef(typeof window !== 'undefined' && typeof window.YT !== 'undefined' ? window.YT : null);
+    const debug = useMemo(() => createDebug('folklore:video:youtube'), []);
+
+    const [apiLoaded, setApiLoaded] = useState(
+        typeof window !== 'undefined' && typeof window.YT !== 'undefined',
+    );
+    const apiRef = useRef(
+        typeof window !== 'undefined' && typeof window.YT !== 'undefined' ? window.YT : null,
+    );
 
     const elementRef = useRef(null);
     const playerRef = useRef(null);
@@ -257,5 +262,3 @@ function useYouTubePlayer(
         ...playState,
     };
 }
-
-export default useYouTubePlayer;

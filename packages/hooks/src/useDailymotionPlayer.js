@@ -3,11 +3,9 @@ import { loadDailymotion } from '@folklore/services';
 import createDebug from 'debug';
 import usePlayerCurrentTime from './usePlayerCurrentTime';
 
-const noPlayerError = new Error('No player');
+export const NO_PLAYER_ERROR = new Error('No player');
 
-const debug = createDebug('folklore:video:dailymotion');
-
-const useDailymotionPlayer = (id = null, params = {}) => {
+export default function useDailymotionPlayer(id = null, params = {}) {
     const {
         width = 0,
         height = 0,
@@ -31,6 +29,8 @@ const useDailymotionPlayer = (id = null, params = {}) => {
             return match !== null ? match[1] : null;
         },
     } = params;
+
+    const debug = useMemo(() => createDebug('folklore:video:dailymotion'), []);
 
     const [apiLoaded, setApiLoaded] = useState(typeof window !== 'undefined' && typeof window.DM !== 'undefined');
     const [playerReady, setPlayerReady] = useState(false);
@@ -279,32 +279,32 @@ const useDailymotionPlayer = (id = null, params = {}) => {
 
     const play = useCallback(() => {
         const { current: player } = playerRef;
-        return player !== null ? player.play() : Promise.reject(noPlayerError);
+        return player !== null ? player.play() : Promise.reject(NO_PLAYER_ERROR);
     }, []);
 
     const pause = useCallback(() => {
         const { current: player } = playerRef;
-        return player !== null ? player.pause() : Promise.reject(noPlayerError);
+        return player !== null ? player.pause() : Promise.reject(NO_PLAYER_ERROR);
     }, []);
 
     const setVolume = useCallback((newVolume) => {
         const { current: player } = playerRef;
-        return player !== null ? player.setVolume(newVolume) : Promise.reject(noPlayerError);
+        return player !== null ? player.setVolume(newVolume) : Promise.reject(NO_PLAYER_ERROR);
     }, []);
 
     const mute = useCallback(() => {
         const { current: player } = playerRef;
-        return player !== null ? player.setMute(true) : Promise.reject(noPlayerError);
+        return player !== null ? player.setMute(true) : Promise.reject(NO_PLAYER_ERROR);
     }, []);
 
     const unmute = useCallback(() => {
         const { current: player } = playerRef;
-        return player !== null ? player.setMute(false) : Promise.reject(noPlayerError);
+        return player !== null ? player.setMute(false) : Promise.reject(NO_PLAYER_ERROR);
     }, []);
 
     const seek = useCallback((time) => {
         const { current: player } = playerRef;
-        return player !== null ? player.seek(time) : Promise.reject(noPlayerError);
+        return player !== null ? player.seek(time) : Promise.reject(NO_PLAYER_ERROR);
     }, []);
 
     const { playing } = playState;
@@ -334,5 +334,3 @@ const useDailymotionPlayer = (id = null, params = {}) => {
         ...playState,
     };
 };
-
-export default useDailymotionPlayer;
