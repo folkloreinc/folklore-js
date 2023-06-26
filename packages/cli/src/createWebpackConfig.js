@@ -43,6 +43,7 @@ export default (entry, opts = {}) => {
     } = opts;
 
     const isProduction = process.env.NODE_ENV === 'production';
+    const isTesting = process.env.NODE_ENV === 'test';
     const isDevelopment = process.env.NODE_ENV === 'development';
 
     const absSrcPath = getAbsolutePath(srcPath);
@@ -154,7 +155,7 @@ export default (entry, opts = {}) => {
                 : path.join(jsOutputPath, '[name].chunk.js'),
             assetModuleFilename: path.join(assetOutputPath, '[name].[hash][ext]'),
             publicPath,
-            pathinfo: isDevelopment,
+            pathinfo: isDevelopment || isTesting,
             devtoolModuleFilenameTemplate: isProduction
                 ? (info) => path.relative(absSrcPath, info.absoluteResourcePath).replace(/\\/g, '/')
                 : ((info) => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')),
