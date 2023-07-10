@@ -158,7 +158,7 @@ export default (entry, opts = {}) => {
             pathinfo: isDevelopment || isTesting,
             devtoolModuleFilenameTemplate: isProduction
                 ? (info) => path.relative(absSrcPath, info.absoluteResourcePath).replace(/\\/g, '/')
-                : ((info) => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')),
+                : (info) => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/'),
         },
 
         optimization: {
@@ -239,7 +239,17 @@ export default (entry, opts = {}) => {
                                         prettier: false,
                                         // svgo: false,
                                         svgoConfig: {
-                                            plugins: [{ removeViewBox: false }],
+                                            plugins: [
+                                                {
+                                                    name: 'preset-default',
+                                                    params: {
+                                                        overrides: {
+                                                            // disable plugins
+                                                            removeViewBox: false,
+                                                        },
+                                                    },
+                                                },
+                                            ],
                                         },
                                         titleProp: true,
                                         ref: true,
