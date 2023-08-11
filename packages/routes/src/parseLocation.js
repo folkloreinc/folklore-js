@@ -1,9 +1,9 @@
-export default function parseLocation(location) {
-    const [pathname, search = null] = (location || '').split('?', 2);
-    const [searchWithoutHash, hash = null] = (search || '').split('#', 2);
+export default function parseLocation(location, search = null, hash = null) {
+    const [pathname, searchFromPath = null] = (location || '').split('?', 2);
+    const [searchWithoutHash, hashFromPath = null] = (searchFromPath || '').split('#', 2);
     return {
         pathname: pathname !== '' ? pathname : '/',
-        search: searchWithoutHash,
-        hash,
+        search: search || searchWithoutHash || null,
+        hash: hash || hashFromPath || null,
     };
 }
