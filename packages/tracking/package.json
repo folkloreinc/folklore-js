@@ -29,6 +29,7 @@
     ],
     "main": "dist/cjs.js",
     "module": "dist/es.js",
+    "sideEffects": false,
     "files": [
         "dist"
     ],
