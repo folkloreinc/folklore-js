@@ -4,10 +4,13 @@ import { useRoutesContext } from './RoutesContext';
 import generatePath from './generatePath';
 
 const useUrlGeneratorPathToRepexp = () => {
-    const { routes, basePath } = useRoutesContext();
+    const { routes = null, basePath = null } = useRoutesContext() || {};
     const urlGenerator = useCallback(
         (key, data, opts) => {
-            const path = routes[key];
+            const path = routes !== null ? routes[key] || null : null;
+            if (path === null) {
+                return null;
+            }
             const url = generatePath(path, data, opts);
             return basePath !== null
                 ? `${basePath.replace(/\/$/, '')}/${url.replace(/^\//, '')}`
