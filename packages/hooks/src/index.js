@@ -4,6 +4,7 @@ export {
     default as useDocumentEvent,
     eventsManager as documentEventsManager,
 } from './useDocumentEvent';
+export { default as useIsVisible } from './useIsVisible';
 export { default as useKeyboard } from './useKeyboard';
 export * from './useItems';
 export { default as useNativeVideoPlayer } from './useNativeVideoPlayer';
