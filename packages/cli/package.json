@@ -1,6 +1,6 @@
 {
     "name": "@folklore/cli",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "description": "Command lines to build and serve javascript projects",
     "homepage": "https://github.com/folkloreinc/folklore-js",
     "repository": {
