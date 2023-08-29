@@ -42,6 +42,10 @@ const setupWebpackCommand = (command) => {
             '--formatjs-id-interpolation-pattern <pattern>',
             'FormatJS id interpolation pattern',
         )
+        .option(
+            '--without-formatjs',
+            'Without FormatJS bable plugin',
+        )
         .option('--analyzer', 'Start analyzer')
         .option('--load-env', 'Load environment file')
         .option('--env-file [path]', 'Path to environment file');

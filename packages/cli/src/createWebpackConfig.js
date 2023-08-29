@@ -34,6 +34,7 @@ export default (entry, opts = {}) => {
         profile = false,
         babelRc = false,
         babelConfigFile = null,
+        withoutFormatjs = false,
         defineEnv: extraDefineEnv = null,
         disableImageOptimization = false,
         imageOptimization = 'lossless',
@@ -293,7 +294,7 @@ export default (entry, opts = {}) => {
                                 ],
                                 plugins: [
                                     isDevelopment && require.resolve('react-refresh/babel'),
-                                    [
+                                    !withoutFormatjs && [
                                         require.resolve('babel-plugin-formatjs'),
                                         {
                                             idInterpolationPattern: formatjsIdInterpolationPattern,
