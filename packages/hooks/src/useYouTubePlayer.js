@@ -41,6 +41,10 @@ export default function useYouTubePlayer(
     const elementRef = useRef(null);
     const playerRef = useRef(null);
     const playerElementRef = useRef(elementRef.current);
+
+    if (elementRef.current !== null && playerElementRef.current !== null) {
+        playerElementRef.current = elementRef.current;
+    }
     const elementHasChanged = elementRef.current !== playerElementRef.current;
 
     const videoId = useMemo(() => getVideoId(id), [id]);
