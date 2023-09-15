@@ -42,7 +42,7 @@ export default function useYouTubePlayer(
     const playerRef = useRef(null);
     const playerElementRef = useRef(elementRef.current);
 
-    if (elementRef.current !== null && playerElementRef.current !== null) {
+    if (elementRef.current !== null && playerElementRef.current === null) {
         playerElementRef.current = elementRef.current;
     }
     const elementHasChanged = elementRef.current !== playerElementRef.current;
