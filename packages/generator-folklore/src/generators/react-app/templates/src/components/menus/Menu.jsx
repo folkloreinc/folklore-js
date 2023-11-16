@@ -5,7 +5,6 @@ import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 
 import * as AppPropTypes from '../../lib/PropTypes';
-import Label from '../partials/Label';
 
 import styles from '<%= getRelativeStylesPath('components/menus/Menu.jsx', 'menus/menu.module.scss') %>';
 
@@ -42,11 +41,11 @@ function Menu({ items, className }) {
                     >
                         {external ? (
                             <a href={url} target={target} className={styles.link}>
-                                <Label>{label}</Label>
+                                {label}
                             </a>
                         ) : (
                             <Link to={url} className={styles.link}>
-                                <Label>{label}</Label>
+                                {label}
                             </Link>
                         )}
                     </li>

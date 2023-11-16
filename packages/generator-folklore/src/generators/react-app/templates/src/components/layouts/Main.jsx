@@ -7,9 +7,7 @@ const propTypes = {
     children: PropTypes.node.isRequired,
 };
 
-const defaultProps = {
-
-};
+const defaultProps = {};
 
 function MainLayout({ children }) {
     return (
