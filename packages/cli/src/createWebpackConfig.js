@@ -27,6 +27,7 @@ export default (entry, opts = {}) => {
         cssChunkOutputFilename = '[name].[contenthash:8].chunk.css',
         assetOutputPath = 'static/media',
         assetOutputFilename = '[name].[hash][ext]',
+        manifestRemoveKeyHash = /([a-f0-9]{16,32}\.)/gi,
         htmlOutputPath = 'index.html',
         htmlPath = null,
         htmlTemplateParameters: htmlTemplateParametersPath = undefined,
@@ -475,6 +476,7 @@ export default (entry, opts = {}) => {
             new WebpackManifestPlugin({
                 fileName: 'asset-manifest.json',
                 publicPath,
+                removeKeyHash: manifestRemoveKeyHash,
                 generate: (seed, files, entrypoints) => {
                     const manifestFiles = files.reduce(
                         (manifest, file) => ({
