@@ -1,42 +1,38 @@
+import { RoutesProvider } from '@folklore/routes';
+import PropTypes from 'prop-types';
 import React from 'react';
-// import PropTypes from 'prop-types';
-import { Route, Routes } from 'react-router-dom';
-import { useRoutes } from '@folklore/routes';
+import { IntlProvider } from 'react-intl';
+import { BrowserRouter } from 'react-router-dom';
 
-// import { useUrlGenerator } from '@folklore/routes';
 // import * as AppPropTypes from '../lib/PropTypes';
-import MainLayout from './layouts/Main';
-import ErrorPage from './pages/Error';
-import HomePage from './pages/Home';
+import Routes from './Routes';
 
-import '<%= getRelativeStylesPath('components/App.jsx', 'styles.scss') %>';
+const propTypes = {
+    intl: PropTypes.shape({
+        locale: PropTypes.string,
+        messages: PropTypes.oneOfType([
+            PropTypes.objectOf(PropTypes.objectOf(PropTypes.string)),
+            PropTypes.objectOf(PropTypes.string),
+        ]),
+    }),
+    routes: PropTypes.objectOf(PropTypes.string),
+};
 
-const propTypes = {};
+const defaultProps = {
+    intl: null,
+    routes: {},
+};
 
-const defaultProps = {};
-
-function App() {
-    const routes = useRoutes() || {};
+function App({ intl, routes }) {
+    const { locale = 'fr', messages = {} } = intl || {};
     return (
-        <Routes>
-            <Route
-                path={routes.home || '/'}
-                exact
-                element={
-                    <MainLayout>
-                        <HomePage />
-                    </MainLayout>
-                }
-            />
-            <Route
-                path="*"
-                element={
-                    <MainLayout>
-                        <ErrorPage />
-                    </MainLayout>
-                }
-            />
-        </Routes>
+        <IntlProvider locale={locale} messages={messages[locale] || messages}>
+            <BrowserRouter>
+                <RoutesProvider routes={routes}>
+                    <Routes />
+                </RoutesProvider>
+            </BrowserRouter>
+        </IntlProvider>
     );
 }
 

@@ -9,6 +9,7 @@ import * as AppPropTypes from '../../lib/PropTypes';
 import styles from '<%= getRelativeStylesPath('components/buttons/Button.jsx', 'buttons/button.module.scss') %>';
 
 const propTypes = {
+    text: PropTypes.string,
     type: PropTypes.string,
     href: PropTypes.string,
     external: PropTypes.bool,
@@ -28,6 +29,7 @@ const propTypes = {
 };
 
 const defaultProps = {
+    text: null,
     type: 'button',
     href: null,
     external: false,
@@ -47,6 +49,7 @@ const defaultProps = {
 };
 
 function Button({
+    text,
     type,
     href,
     external,
