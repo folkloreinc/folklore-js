@@ -20,8 +20,13 @@ export default (entry, opts = {}) => {
         publicPath = '/',
         outputPath = 'dist',
         jsOutputPath = 'static/js',
+        jsOutputFilename = '[name].[contenthash:8].js',
+        jsChunkOutputFilename = '[name].[contenthash:8].chunk.js',
         cssOutputPath = 'static/css',
+        cssOutputFilename = '[name].[contenthash:8].css',
+        cssChunkOutputFilename = '[name].[contenthash:8].chunk.css',
         assetOutputPath = 'static/media',
+        assetOutputFilename = '[name].[hash][ext]',
         htmlOutputPath = 'index.html',
         htmlPath = null,
         htmlTemplateParameters: htmlTemplateParametersPath = undefined,
@@ -149,12 +154,12 @@ export default (entry, opts = {}) => {
         output: {
             path: absOutputPath,
             filename: isProduction
-                ? path.join(jsOutputPath, '[name].[contenthash:8].js')
+                ? path.join(jsOutputPath, jsOutputFilename)
                 : path.join(jsOutputPath, 'bundle.js'),
             chunkFilename: isProduction
-                ? path.join(jsOutputPath, '[name].[contenthash:8].chunk.js')
+                ? path.join(jsOutputPath, jsChunkOutputFilename)
                 : path.join(jsOutputPath, '[name].chunk.js'),
-            assetModuleFilename: path.join(assetOutputPath, '[name].[hash][ext]'),
+            assetModuleFilename: path.join(assetOutputPath, assetOutputFilename),
             publicPath,
             pathinfo: isDevelopment || isTesting,
             devtoolModuleFilenameTemplate: isProduction
@@ -448,8 +453,8 @@ export default (entry, opts = {}) => {
 
             isProduction &&
                 new MiniCssExtractPlugin({
-                    filename: path.join(cssOutputPath, '[name].[contenthash:8].css'),
-                    chunkFilename: path.join(cssOutputPath, '[name].[contenthash:8].chunk.css'),
+                    filename: path.join(cssOutputPath, cssOutputFilename),
+                    chunkFilename: path.join(cssOutputPath, cssChunkOutputFilename),
                 }),
 
             !disableImageOptimization &&
