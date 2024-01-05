@@ -58,13 +58,13 @@ export default function useVideoPlayer(params) {
         if (playing && customOnPlay !== null) {
             customOnPlay();
         }
-    }, [playing, customOnPlay]);
+    }, [playing/* , customOnPlay */]);
 
     useEffect(() => {
         if (paused && customOnPause !== null) {
             customOnPause();
         }
-    }, [paused, customOnPause]);
+    }, [paused/* , customOnPause */]);
 
     useEffect(() => {
         if (buffering && customOnBufferStart !== null) {
@@ -72,13 +72,13 @@ export default function useVideoPlayer(params) {
         } else if (!buffering && customOnBufferEnded !== null) {
             customOnBufferEnded();
         }
-    }, [buffering, customOnBufferStart, customOnBufferEnded]);
+    }, [buffering/* , customOnBufferStart, customOnBufferEnded */]);
 
     useEffect(() => {
         if (ended && customOnEnd !== null) {
             customOnEnd();
         }
-    }, [ended, customOnEnd]);
+    }, [ended/* , customOnEnd */]);
 
     useEffect(() => {
         const hasMetadata = metaWidth !== null || metaHeight !== null || metaDuration !== null;
