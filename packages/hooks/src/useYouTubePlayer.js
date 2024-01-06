@@ -189,6 +189,10 @@ export default function useYouTubePlayer(
                 }
 
                 debug('onReady [ID: %s]', videoId);
+
+                if (muted) {
+                    player.mute();
+                }
             };
 
             const onStateChange = ({ data: state }) => {
