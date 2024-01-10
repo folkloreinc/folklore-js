@@ -120,6 +120,11 @@ module.exports = class HTMLProjectGenerator extends Generator {
             quiet: true,
         });
 
+        this.composeWith('folklore:svgo', {
+            quiet: true,
+            'skip-install': true,
+        });
+
         this.composeWith('folklore:browserslist', {
             'skip-install': true,
             quiet: true,
