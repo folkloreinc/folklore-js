@@ -1,0 +1,61 @@
+{
+    "name": "@folklore/ads",
+    "version": "0.0.1",
+    "description": "Ads library",
+    "keywords": [
+        "javascript",
+        "size",
+        "ui",
+        "utils"
+    ],
+    "homepage": "https://github.com/folkloreinc/folklore-js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/folkloreinc/folklore-js.git"
+    },
+    "author": {
+        "name": "Folklore",
+        "email": "info@folklore.email"
+    },
+    "contributors": [
+        {
+            "name": "David Mongeau-Petitpas",
+            "email": "dmp@folklore.email"
+        },
+        {
+            "name": "Nicolas Roy-Bourdages",
+            "email": "nrb@folklore.email"
+        }
+    ],
+    "main": "dist/cjs.js",
+    "module": "dist/es.js",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "clean": "rm -rf dist",
+        "build": "rollup --config ../../rollup.config.js",
+        "prepare": "npm run clean && npm run build"
+    },
+    "devDependencies": {
+        "prop-types": "^15.7.2",
+        "react": "^17.0.0 || ^18.0.0",
+        "react-dom": "^17.0.0 || ^18.0.0"
+    },
+    "peerDependencies": {
+        "prop-types": "^15.7.2",
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "gitHead": "534183c15f9eaa4c9f542dcc823797d1078835eb",
+    "dependencies": {
+        "@folklore/hooks": "^0.0.41",
+        "@folklore/tracking": "^0.0.16",
+        "debug": "^4.3.4",
+        "lodash": "^4.17.21",
+        "wolfy87-eventemitter": "^5.2.9"
+    }
+}
