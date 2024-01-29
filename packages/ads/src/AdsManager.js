@@ -6,7 +6,7 @@ import isArray from 'lodash/isArray';
 // import loadGPT from './loadGPT';
 import AdSlot from './AdSlot';
 
-const debug = createDebug('site:ads');
+const debug = createDebug('folklore:ads');
 
 class AdsManager extends EventEmitter {
     static index = 0;
