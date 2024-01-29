@@ -54,6 +54,7 @@
     "dependencies": {
         "@folklore/hooks": "^0.0.41",
         "@folklore/tracking": "^0.0.16",
+        "classnames": "^2.5.1",
         "debug": "^4.3.4",
         "lodash": "^4.17.21",
         "wolfy87-eventemitter": "^5.2.9"
