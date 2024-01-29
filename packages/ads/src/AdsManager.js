@@ -83,7 +83,7 @@ class AdsManager extends EventEmitter {
         this.personnalizedAdsDisabled = this.options.disablePersonnalizedAds;
         this.ready = false;
         this.enabled = false;
-        this.googletag = window.googletag;
+        this.googletag = typeof window !== 'undefined' ? window.googletag : { cmd: [] };
         this.slots = [];
 
         if (this.options.autoInit) {
@@ -152,7 +152,7 @@ class AdsManager extends EventEmitter {
             renderSlot.setRenderEvent(event);
         }
 
-        const lineItems = window.refreshDisabledLineItems || [];
+        const lineItems = typeof window !== 'undefined' ? window.refreshDisabledLineItems || [] : [];
 
         if (isArray(lineItems) && lineItems.indexOf(lineItemId) > -1) {
             renderSlot.setRefreshDisabled();

@@ -162,24 +162,8 @@ function Ad({
                 },
             ])}
             ref={refObserver}
-            style={
-                isEmpty && !keepSize
-                    ? {
-                          height: 0,
-                          paddingBottom: 0,
-                          overflow: 'hidden',
-                          opacity: 0,
-                      }
-                    : null
-            }
         >
-            <div
-                className={adClassName}
-                style={{
-                    ...sizeStyle,
-                    margin: 'auto',
-                }}
-            >
+            <div className={adClassName} style={sizeStyle}>
                 <div id={id} />
             </div>
         </div>
