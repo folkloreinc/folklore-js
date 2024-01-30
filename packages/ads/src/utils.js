@@ -40,7 +40,7 @@ export const getSortedViewports = viewports =>
             name,
             size: viewports[name],
         })),
-        viewport => viewport.size[0],
+        [viewport => viewport.size[0]],
     ).reverse();
 
 export const buildSizeMappingFromViewports = (sizeMapping, viewports) =>
