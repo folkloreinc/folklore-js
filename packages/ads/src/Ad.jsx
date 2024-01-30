@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { useMemo, useRef } from 'react';
 
-import { getMinimumAdSize, getSizeMappingFromPosition } from './utils';
+import { getMinimumAdSize, getSizeMappingFromSlot } from './utils';
 
 import { useAdsContext } from './AdsContext';
 import { useAdsTargeting } from './AdsTargetingContext';
@@ -10,8 +10,7 @@ import * as AppPropTypes from './propTypes';
 import useAd from './useAd';
 
 const propTypes = {
-    position: PropTypes.string.isRequired,
-    slot: PropTypes.string,
+    slot: PropTypes.string.isRequired,
     path: AppPropTypes.adPath,
     size: AppPropTypes.adSize,
     sizeMapping: AppPropTypes.adSizeMapping,
@@ -27,7 +26,6 @@ const propTypes = {
 
 const defaultProps = {
     path: null,
-    slot: 'default',
     size: null,
     sizeMapping: null,
     targeting: null,
@@ -41,7 +39,6 @@ const defaultProps = {
 };
 
 function Ad({
-    position: positionName,
     slot: slotName,
     path,
     size,
@@ -55,32 +52,29 @@ function Ad({
     adClassName,
     onRender,
 }) {
-    const { viewports, positions, slotsPath } = useAdsContext();
-    const position = positionName !== null ? positions[positionName] || null : null;
-    const finalPath =
-        path ||
-        (slotName !== null ? slotsPath[slotName] : null) ||
-        (positionName !== null ? slotsPath[positionName] : null);
-    const finalSize = size !== null ? size : position.size;
+    const { viewports, slots, slotsPath } = useAdsContext();
+    const slot = slotName !== null ? slots[slotName] || null : null;
+    const finalPath = path || (slotName !== null ? slotsPath[slotName] : null) || slotsPath.default;
+    const finalSize = size !== null ? size : slot.size;
 
     // Targeting
     const contextTargeting = useAdsTargeting();
     const finalSizeMapping = useMemo(
         () =>
-            sizeMapping !== null ? sizeMapping : getSizeMappingFromPosition(position, viewports),
-        [sizeMapping, position, viewports],
+            sizeMapping !== null ? sizeMapping : getSizeMappingFromSlot(slot, viewports),
+        [sizeMapping, slot, viewports],
     );
 
     const allTargeting = useMemo(
         () =>
-            contextTargeting !== null || targeting !== null || positionName !== null
+            contextTargeting !== null || targeting !== null || slotName !== null
                 ? {
-                      position: positionName,
+                      slot: slotName,
                       ...contextTargeting,
                       ...targeting,
                   }
                 : null,
-        [contextTargeting, targeting, positionName],
+        [contextTargeting, targeting, slotName],
     );
 
     const finalAdTargeting = useMemo(() => {

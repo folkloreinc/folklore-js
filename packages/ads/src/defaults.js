@@ -5,7 +5,7 @@ export const viewports = {
     laptop: [1400, 700],
 };
 
-export const positions = {
+export const slots = {
     top: {
         size: [
             [320, 50],

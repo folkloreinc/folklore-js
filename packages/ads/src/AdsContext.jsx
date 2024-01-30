@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React, { useState, useContext, useEffect, useMemo, useRef } from 'react';
 
 import AdsManager from './AdsManager';
-import { viewports as defaultViewports, positions as defaultPositions } from './defaults';
+import { viewports as defaultViewports, slots as defaultSlots } from './defaults';
 import * as AdPropTypes from './propTypes';
 
 const AdsContext = React.createContext(null);
@@ -19,7 +19,7 @@ const propTypes = {
     autoInit: PropTypes.bool,
     resizeDebounceDelay: PropTypes.number,
     refreshOnResize: PropTypes.bool,
-    positions: AdPropTypes.adViewports,
+    slots: AdPropTypes.adSlots,
     viewports: AdPropTypes.adViewports,
 };
 
@@ -30,7 +30,7 @@ const defaultProps = {
     autoInit: true,
     resizeDebounceDelay: 500,
     refreshOnResize: false,
-    positions: defaultPositions,
+    slots: defaultSlots,
     viewports: defaultViewports,
 };
 
@@ -43,7 +43,7 @@ export function AdsProvider({
     resizeDebounceDelay,
     refreshOnResize,
     viewports,
-    positions,
+    slots,
 }) {
     const [ready, setReady] = useState(false);
     const adsRef = useRef(null);
@@ -96,7 +96,7 @@ export function AdsProvider({
             ready,
             ads,
             viewports,
-            positions,
+            slots,
             slotsPath:
                 defaultSlotPath !== null
                     ? {
@@ -107,7 +107,7 @@ export function AdsProvider({
                           ...slotsPath,
                       },
         }),
-        [ready, ads, viewports, positions, slotsPath, defaultSlotPath],
+        [ready, ads, viewports, slots, slotsPath, defaultSlotPath],
     );
 
     return <AdsContext.Provider value={value}>{children}</AdsContext.Provider>;

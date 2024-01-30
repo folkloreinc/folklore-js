@@ -60,7 +60,7 @@ export const buildSizeMappingFromSizes = (sizes, viewports) =>
         ),
     ]);
 
-export const getSizeMappingFromPosition = ({ size: allSizes = [], sizeMapping = null }, viewports) => {
+export const getSizeMappingFromSlot = ({ size: allSizes = [], sizeMapping = null }, viewports) => {
     if (sizeMapping === true) {
         return buildSizeMappingFromSizes(allSizes, viewports);
     }

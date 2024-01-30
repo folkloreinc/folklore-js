@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 
 export const adPath = PropTypes.string;
+
 export const adSize = PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.number),
     PropTypes.arrayOf(PropTypes.string),
@@ -13,18 +14,19 @@ export const adSize = PropTypes.oneOfType([
         ]),
     ),
 ]);
+
 export const adSizeMapping = PropTypes.arrayOf(
     PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), adSize])),
 );
 
-export const adPosition = PropTypes.shape({
+export const adViewports = PropTypes.objectOf(PropTypes.arrayOf(PropTypes.number));
+
+export const adSlot = PropTypes.shape({
     size: adSize,
     sizeMapping: PropTypes.objectOf(adSize),
 });
 
-export const adPositions = PropTypes.objectOf(adPosition);
-
-export const adViewports = PropTypes.objectOf(PropTypes.arrayOf(PropTypes.number));
+export const adSlots = PropTypes.objectOf(adSlot);
 
 export const adTargeting = PropTypes.shape({
     domain: PropTypes.string,
