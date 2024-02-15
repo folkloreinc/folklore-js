@@ -123,15 +123,19 @@ function useAd(
             return () => {};
         }
         const onSlotRender = (event) => {
-            setRenderEvent(event);
+            const newRenderEvent = {
+                ...event,
+                ...(slot !== null ? slot.getRenderedSize() : null),
+            };
+            setRenderEvent(newRenderEvent);
             if (onRender !== null) {
-                onRender(event);
+                onRender(newRenderEvent, slot);
             }
-            const { isEmpty = true } = event || {};
+            const { isEmpty = true } = newRenderEvent || {};
             if (isEmpty) {
                 track('Empty', slot);
             } else {
-                track('Render', slot, event);
+                track('Render', slot, newRenderEvent);
             }
         };
         slot.on('render', onSlotRender);
@@ -151,6 +155,7 @@ function useAd(
 
     return {
         refObserver,
+        slot,
         disabled: adsManager.isDisabled(),
         id: slot !== null ? slot.getElementId() : null,
         isRendered: slot !== null && slot.isRendered(),

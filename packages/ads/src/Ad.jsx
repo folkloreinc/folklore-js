@@ -1,8 +1,8 @@
 import classNames from 'classnames';
+import isFunction from 'lodash/isFunction';
+import isObject from 'lodash/isObject';
 import PropTypes from 'prop-types';
-import React, { useMemo, useRef } from 'react';
-
-import { getMinimumAdSize, getSizeMappingFromSlot } from './utils';
+import React, { useMemo } from 'react';
 
 import { useAdsContext } from './AdsContext';
 import { useAdsTargeting } from './AdsTargetingContext';
@@ -22,6 +22,7 @@ const propTypes = {
     emptyClassName: PropTypes.string,
     adClassName: PropTypes.string,
     onRender: PropTypes.func,
+    slotRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 };
 
 const defaultProps = {
@@ -36,6 +37,7 @@ const defaultProps = {
     emptyClassName: null,
     adClassName: null,
     onRender: null,
+    slotRef: null,
 };
 
 function Ad({
@@ -51,19 +53,21 @@ function Ad({
     emptyClassName,
     adClassName,
     onRender,
+    slotRef,
 }) {
-    const { viewports, slots, slotsPath } = useAdsContext();
-    const slot = slotName !== null ? slots[slotName] || null : null;
-    const finalPath = path || (slotName !== null ? slotsPath[slotName] : null) || slotsPath.default;
-    const finalSize = size !== null ? size : slot.size;
+    const { slots = null, slotsPath = {} } = useAdsContext();
+    const slot = slotName !== null && slots !== null ? slots[slotName] || null : null;
+    const finalPath =
+        path ||
+        (slot !== null ? slot.path || null : null) ||
+        (slotName !== null ? slotsPath[slotName] : null) ||
+        slotsPath.default ||
+        null;
+    const finalSize = size || (slot !== null ? slot.size || null : null);
+    const finalSizeMapping = sizeMapping || (slot !== null ? slot.sizeMapping || null : null);
 
     // Targeting
     const contextTargeting = useAdsTargeting();
-    const finalSizeMapping = useMemo(
-        () =>
-            sizeMapping !== null ? sizeMapping : getSizeMappingFromSlot(slot, viewports),
-        [sizeMapping, slot, viewports],
-    );
 
     const allTargeting = useMemo(
         () =>
@@ -93,8 +97,8 @@ function Ad({
         width,
         height,
         isEmpty,
-        isRendered,
         refObserver,
+        slot: slotObject = null,
     } = useAd(finalPath, finalSize, {
         sizeMapping: finalSizeMapping,
         targeting: finalAdTargeting.targeting,
@@ -104,45 +108,16 @@ function Ad({
         disabled,
     });
 
-    // Get size
-    const lastRenderedSize = useRef(null);
-    const wasDisabled = useRef(disabled);
-    const waitingNextRender = useMemo(() => {
-        if (disabled) {
-            wasDisabled.current = true;
-        } else if (!disabled && isRendered) {
-            wasDisabled.current = false;
-        }
-        return wasDisabled.current && !isRendered;
-    }, [isRendered]);
-    const sizeStyle = useMemo(() => {
-        if (disabled || waitingNextRender) {
-            return lastRenderedSize.current;
-        }
-        const { width: minimumWidth, height: minimumHeight } = getMinimumAdSize(
-            finalSizeMapping !== null
-                ? finalSizeMapping.reduce(
-                      (allSizes, sizeMap) => [...allSizes, sizeMap[1]],
-                      [finalSize],
-                  )
-                : finalSize,
-        );
-        if (isRendered) {
-            lastRenderedSize.current = !isEmpty
-                ? {
-                      width,
-                      height,
-                  }
-                : null;
-        }
-        return {
-            width: isRendered ? width : minimumWidth,
-            height: isRendered ? height : minimumHeight,
-        };
-    }, [id, disabled, finalSize, finalSizeMapping, width, height, isRendered, isEmpty]);
-    const keepSize = (disabled || waitingNextRender) && lastRenderedSize.current !== null;
+    if (slotRef !== null && isFunction(slotRef)) {
+        slotRef(slotObject);
+    } else if (slotRef !== null && isObject(slotRef)) {
+        // eslint-disable-next-line no-param-reassign
+        slotRef.current = slotObject;
+    }
 
-    if (id === null && !keepSize) {
+    // Get size
+
+    if (id === null) {
         return null;
     }
 
@@ -152,12 +127,26 @@ function Ad({
             className={classNames([
                 className,
                 {
-                    [emptyClassName]: emptyClassName !== null && isEmpty && !keepSize,
+                    [emptyClassName]: emptyClassName !== null && isEmpty,
                 },
             ])}
+            style={
+                adsDisabled
+                    ? {
+                          display: 'none',
+                          visibility: 'hidden',
+                      }
+                    : null
+            }
             ref={refObserver}
         >
-            <div className={adClassName} style={sizeStyle}>
+            <div
+                className={adClassName}
+                style={{
+                    width,
+                    height,
+                }}
+            >
                 <div id={id} />
             </div>
         </div>

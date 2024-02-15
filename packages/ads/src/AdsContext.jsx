@@ -3,6 +3,8 @@ import debounce from 'lodash/debounce';
 import PropTypes from 'prop-types';
 import React, { useState, useContext, useEffect, useMemo, useRef } from 'react';
 
+import { getSizeMappingFromSlot } from './utils';
+
 import AdsManager from './AdsManager';
 import { viewports as defaultViewports, slots as defaultSlots } from './defaults';
 import * as AdPropTypes from './propTypes';
@@ -96,7 +98,10 @@ export function AdsProvider({
             ready,
             ads,
             viewports,
-            slots,
+            slots: (slots || []).map((slot) => ({
+                sizeMapping: getSizeMappingFromSlot(slot, viewports),
+                ...slot,
+            })),
             slotsPath:
                 defaultSlotPath !== null
                     ? {
