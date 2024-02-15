@@ -38,6 +38,7 @@ const setupWebpackCommand = (command) => {
         // Images
         .option('--disable-image-optimization', 'Disable images optimization')
         .option('--image-optimization <preset>', 'Set images optimization preset (lossless, lossy)')
+        .option('--image-data-url-max-size <size>', 'Maximum size for data url images')
         // HTML
         .option(
             '--html-template-parameters <path>',
