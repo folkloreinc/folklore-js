@@ -45,7 +45,7 @@ export const getSortedViewports = (viewports) =>
     ).reverse();
 
 export const buildSizeMappingFromViewports = (sizeMapping, viewports) =>
-    isObject(sizeMapping)
+    isObject(sizeMapping) && !isArray(sizeMapping)
         ? getSortedViewports(viewports).reduce(
               (newSizeMapping, { name, size: viewPortSize }) =>
                   typeof sizeMapping[name] !== 'undefined'
