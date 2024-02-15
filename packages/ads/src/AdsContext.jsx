@@ -98,10 +98,16 @@ export function AdsProvider({
             ready,
             ads,
             viewports,
-            slots: (slots || []).map((slot) => ({
-                sizeMapping: getSizeMappingFromSlot(slot, viewports),
-                ...slot,
-            })),
+            slots: Object.keys(slots || {}).reduce(
+                (map, key) => ({
+                    ...map,
+                    [key]: {
+                        sizeMapping: getSizeMappingFromSlot(slots[key], viewports),
+                        ...slots[key],
+                    },
+                }),
+                {},
+            ),
             slotsPath:
                 defaultSlotPath !== null
                     ? {
