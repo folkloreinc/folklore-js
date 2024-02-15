@@ -102,8 +102,8 @@ export function AdsProvider({
                 (map, key) => ({
                     ...map,
                     [key]: {
-                        sizeMapping: getSizeMappingFromSlot(slots[key], viewports),
                         ...slots[key],
+                        sizeMapping: getSizeMappingFromSlot(slots[key], viewports),
                     },
                 }),
                 {},
