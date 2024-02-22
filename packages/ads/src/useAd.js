@@ -126,10 +126,11 @@ function useAd(
             const newRenderEvent = {
                 ...event,
                 ...(slot !== null ? slot.getRenderedSize() : null),
+                slot,
             };
             setRenderEvent(newRenderEvent);
             if (onRender !== null) {
-                onRender(newRenderEvent, slot);
+                onRender(newRenderEvent);
             }
             const { isEmpty = true } = newRenderEvent || {};
             if (isEmpty) {
