@@ -41,7 +41,7 @@
     "dependencies": {
         "@babel/runtime": "^7.4.3",
         "path-to-regexp": "^6.2.1",
-        "wouter": "^2.11.0"
+        "wouter": "^3.0.0"
     },
     "devDependencies": {
         "prop-types": "^15.7.2",
