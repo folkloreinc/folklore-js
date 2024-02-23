@@ -38,8 +38,7 @@
         "prepare": "npm run clean && npm run build"
     },
     "dependencies": {
-        "@babel/runtime": "^7.4.3",
-        "react-router": "^5.2.0"
+        "@babel/runtime": "^7.4.3"
     },
     "devDependencies": {
         "prop-types": "^15.7.2",
