@@ -44,7 +44,7 @@ export default function useMemoryRouter({
         useSyncExternalStore(subscribe, () => currentPath.pathname),
         navigate,
     ];
-    const searchHook = () => [useSyncExternalStore(subscribe, () => currentPath.search), navigate];
+    const searchHook = () => useSyncExternalStore(subscribe, () => currentPath.search);
 
     return {
         hook: locationHook,
