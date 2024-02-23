@@ -1,6 +1,6 @@
 {
     "name": "@folklore/routes",
-    "version": "0.2.14",
+    "version": "0.2.15",
     "description": "Routes utilities",
     "keywords": [
         "javascript",
@@ -40,9 +40,9 @@
     },
     "dependencies": {
         "@babel/runtime": "^7.4.3",
+        "mitt": "^3.0.1",
         "path-to-regexp": "^6.2.1",
-        "wouter": "^3.0.0",
-        "mitt": "^3.0.1"
+        "wouter": "^3.0.0"
     },
     "devDependencies": {
         "prop-types": "^15.7.2",
