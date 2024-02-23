@@ -120,6 +120,9 @@ function useAd(
     // Listen to render event
     useEffect(() => {
         if (slot === null) {
+            if (renderEvent !== null) {
+                setRenderEvent(null);
+            }
             return () => {};
         }
         const onSlotRender = (event) => {

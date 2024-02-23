@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import isFunction from 'lodash/isFunction';
 import isObject from 'lodash/isObject';
 import PropTypes from 'prop-types';
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { getMinimumAdSize } from './utils';
 
@@ -141,6 +141,19 @@ function Ad({
         },
         [onRender, shouldKeepSize, disabled],
     );
+
+    useEffect(() => {
+        if (!disabled) {
+            return;
+        }
+        const keepSize = shouldKeepSize && lastRenderedSize.current !== null;
+        if (onRender !== null) {
+            onRender({
+                isEmpty: true,
+                keepSize,
+            });
+        }
+    }, [disabled]);
 
     // Create ad
     const {
