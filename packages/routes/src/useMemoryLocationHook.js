@@ -1,21 +1,6 @@
-import { useCallback, useRef, useState } from 'react';
-import { useLocationProperty } from 'wouter/use-location';
+import { memoryLocation } from 'wouter/memory-location';
 
-export default function useMemoryLocationHook() {
-    const memoryLocationRef = useRef(null);
-    const [, setMemoryLocation] = useState(null);
-    const memoryHook = useCallback(() => {
-        const location = useLocationProperty(() => {
-            const newLocation = memoryLocationRef.current || '/';
-            return newLocation;
-        });
-        return [
-            location,
-            (newLocation) => {
-                memoryLocationRef.current = newLocation;
-                setMemoryLocation(newLocation);
-            },
-        ];
-    }, [setMemoryLocation]);
-    return memoryHook;
+export default function useMemoryLocationHook(opts = {}) {
+    const { hook } = memoryLocation(opts);
+    return hook;
 }
