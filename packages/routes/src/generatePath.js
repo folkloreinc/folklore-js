@@ -1,11 +1,11 @@
-export default function generatePath(path, data) {
-    const RGX = /(\/|^)([:*][^/]*?)(\?)?(?=[/.]|$)/g;
+import { compile } from 'path-to-regexp';
 
-    return path.replace(RGX, (x, lead, key, optional) => {
-        const newX = data[key === '*' ? key : key.replace(/^:([^(]+)(?=\()?.*$/, '$1')] || null;
-        if (newX !== null) {
-            return `/${newX}`;
-        }
-        return optional || key === '*' ? '' : `/${key}`;
-    });
+const compilers = {};
+
+export default function generatePath(path, data, opts = {}) {
+    if (typeof compilers[path] === 'undefined') {
+        compilers[path] = compile(path, opts);
+    }
+    const compiler = compilers[path];
+    return compiler(data);
 }

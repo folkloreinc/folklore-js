@@ -3,7 +3,7 @@ import { pathToRegexp } from 'path-to-regexp';
 export default function createPathToRegexpParser(opts) {
     return (path, loose) => {
         const keys = [];
-        const pattern = pathToRegexp(path, keys, { strict: false, end: !loose, ...opts });
+        const pattern = pathToRegexp(path, keys, { end: !loose, ...opts });
 
         return {
             pattern,
