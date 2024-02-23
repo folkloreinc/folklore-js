@@ -1,5 +1,5 @@
 import mitt from 'mitt';
-import { useSyncExternalStore } from 'wouter/react-deps';
+import { useSyncExternalStore } from 'react';
 
 import parseLocation from './parseLocation';
 

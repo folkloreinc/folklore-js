@@ -1,11 +1,5 @@
-import { compile } from 'path-to-regexp';
+import { inject } from 'regexparam';
 
-const compilers = {};
-
-export default function generatePath(path, data, opts = {}) {
-    if (typeof compilers[path] === 'undefined') {
-        compilers[path] = compile(path, opts);
-    }
-    const compiler = compilers[path];
-    return compiler(data);
+export default function generatePath(path, data) {
+    return inject(path, data);
 }
