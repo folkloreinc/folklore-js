@@ -3,7 +3,11 @@ import { pathToRegexp } from 'path-to-regexp';
 export default function createPathToRegexpParser(opts) {
     return (path, loose) => {
         const keys = [];
-        const pattern = pathToRegexp(path === '*' ? '/*' : path, keys, { end: !loose, ...opts });
+        const isWildcard = path.match(/(\/|^)\*$/) !== null;
+        const pattern = pathToRegexp(isWildcard ? path.replace(/(\/|^)\*$/, '$1(.*)') : path, keys, {
+            end: !loose && !isWildcard,
+            ...opts,
+        });
 
         return {
             pattern,
