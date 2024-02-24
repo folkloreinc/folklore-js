@@ -117,26 +117,23 @@ function Ad({
     const wasDisabled = useRef(disabled);
     const onAdRender = useCallback(
         (event) => {
-            const { isEmpty: newIsEmpty = true } = event || {};
-            const newIsRendered = !newIsEmpty;
+            const { isEmpty: newIsEmpty = true, width: newWidth, height: newHeight } = event || {};
 
             if (disabled) {
                 wasDisabled.current = true;
-            } else if (!disabled && newIsRendered) {
+            } else if (!disabled && !newIsEmpty) {
                 wasDisabled.current = false;
             }
 
-            const waitingNextRender = wasDisabled.current && !newIsRendered;
-            const keepSize =
-                shouldKeepSize &&
-                (disabled || waitingNextRender) &&
-                lastRenderedSize.current !== null;
+            lastRenderedSize.current = !newIsEmpty
+                ? {
+                      width: newWidth,
+                      height: newHeight,
+                  }
+                : null;
 
             if (onRender !== null) {
-                onRender({
-                    ...event,
-                    keepSize,
-                });
+                onRender(event);
             }
         },
         [onRender, shouldKeepSize, disabled],
@@ -179,13 +176,6 @@ function Ad({
     } else if (slotRef !== null && isObject(slotRef)) {
         // eslint-disable-next-line no-param-reassign
         slotRef.current = slotObject;
-    }
-
-    if (isRendered && !isEmpty) {
-        lastRenderedSize.current = {
-            width,
-            height,
-        };
     }
 
     if (disabled) {
