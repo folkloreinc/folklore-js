@@ -198,7 +198,7 @@ function Ad({
     const keepSize =
         shouldKeepSize && (disabled || waitingNextRender) && lastRenderedSize.current !== null;
 
-    if (id === null) {
+    if (id === null && !keepSize) {
         return null;
     }
 
