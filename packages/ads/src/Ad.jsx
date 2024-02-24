@@ -139,18 +139,18 @@ function Ad({
         [onRender, shouldKeepSize, disabled],
     );
 
-    useEffect(() => {
-        if (!disabled) {
-            return;
-        }
-        const keepSize = shouldKeepSize && lastRenderedSize.current !== null;
-        if (onRender !== null) {
-            onRender({
-                isEmpty: true,
-                keepSize,
-            });
-        }
-    }, [disabled]);
+    // useEffect(() => {
+    //     if (!disabled) {
+    //         return;
+    //     }
+    //     const keepSize = shouldKeepSize && lastRenderedSize.current !== null;
+    //     if (onRender !== null) {
+    //         onRender({
+    //             isEmpty: true,
+    //             keepSize,
+    //         });
+    //     }
+    // }, [disabled]);
 
     // Create ad
     const {
