@@ -181,7 +181,7 @@ function Ad({
         slotRef.current = slotObject;
     }
 
-    if (isRendered) {
+    if (isRendered && !isEmpty) {
         lastRenderedSize.current = {
             width,
             height,
