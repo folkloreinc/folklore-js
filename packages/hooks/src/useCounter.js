@@ -1,14 +1,28 @@
 import raf from 'raf';
 import { useState, useEffect } from 'react';
 
-export default function useCounter(desiredValue, { maxDuration = 2000, speed = 1 / 10 }) {
-    const [currentValue, setCurrentValue] = useState(desiredValue);
+export default function useCounter(
+    desiredValue,
+    { disabled = false, maxDuration = 2000, speed = 1 / 10, initialValue = null },
+) {
+    const [currentValue, setCurrentValue] = useState(
+        initialValue !== null ? initialValue : desiredValue,
+    );
+
     useEffect(() => {
+        if (initialValue !== null && !disabled) {
+            setCurrentValue(initialValue);
+        }
+    }, [initialValue, disabled]);
+
+    useEffect(() => {
+        const finalCurrentValue = disabled ? desiredValue : currentValue;
+
         let animationFrame = null;
         let startTime = null;
         let duration = 0;
         let canceled = false;
-        const startValue = currentValue;
+        const startValue = finalCurrentValue;
         const delta = desiredValue - startValue;
 
         function loop() {
@@ -29,6 +43,8 @@ export default function useCounter(desiredValue, { maxDuration = 2000, speed = 1
             duration = Math.min(maxDuration, Math.abs(delta) * speed * 1000);
             startTime = Date.now();
             animationFrame = raf(loop);
+        } else if (disabled) {
+            setCurrentValue(desiredValue);
         }
 
         return () => {
@@ -37,6 +53,6 @@ export default function useCounter(desiredValue, { maxDuration = 2000, speed = 1
                 raf.cancel(animationFrame);
             }
         };
-    }, [desiredValue]);
+    }, [desiredValue, disabled, initialValue, maxDuration, speed]);
     return currentValue;
 }
