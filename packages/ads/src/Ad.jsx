@@ -93,14 +93,11 @@ function Ad({
     const contextTargeting = useAdsTargeting();
 
     const allTargeting = useMemo(
-        () =>
-            contextTargeting !== null || targeting !== null || slotName !== null
-                ? {
-                      slot: slotName,
-                      ...contextTargeting,
-                      ...targeting,
-                  }
-                : null,
+        () => ({
+            ...(slotName !== null ? { slot: slotName } : null),
+            ...contextTargeting,
+            ...targeting,
+        }),
         [contextTargeting, targeting, slotName],
     );
 
