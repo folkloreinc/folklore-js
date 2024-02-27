@@ -1,8 +1,15 @@
 {
+    "plugins": ["@prettier/plugin-php", "@trivago/prettier-plugin-sort-imports"],
     "printWidth": 100,
     "singleQuote": true,
     "trailingComma": "all",
     "tabWidth": 4,
-    "importOrder": ["<THIRD_PARTY_MODULES>", "^[./](.*)?\/(utils|hooks|lib)", "^[./].*(?<!(\\.[a-z]+))$", "\\.scss$", "\\.[a-z]+$"],
+    "importOrder": [
+        "<THIRD_PARTY_MODULES>",
+        "^[./](.*)?/(utils|hooks|lib)",
+        "^[./].*(?<!(\\.[a-z]+))$",
+        "\\.scss$",
+        "\\.[a-z]+$"
+    ],
     "importOrderSeparation": true
 }
