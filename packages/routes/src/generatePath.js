@@ -2,10 +2,13 @@ import { compile } from 'path-to-regexp';
 
 const compilers = {};
 
-export default function generatePath(path, data, opts = {}) {
-    if (typeof compilers[path] === 'undefined') {
-        compilers[path] = compile(path, opts);
+export default function generatePath(fullPath, data, opts = {}) {
+    const fullUrlMatches = fullPath.match(/^(https?:\/\/[^/]+)\//);
+    if (typeof compilers[fullPath] === 'undefined') {
+        compilers[fullPath] = compile(fullPath.replace(/^(https?:\/\/[^/]+)\//, '/'), opts);
     }
-    const compiler = compilers[path];
-    return compiler(data);
+    const compiler = compilers[fullPath];
+    return fullUrlMatches !== null
+        ? `${fullUrlMatches[1].substr(0, -1)}${compiler(data)}`
+        : compiler(data);
 }
