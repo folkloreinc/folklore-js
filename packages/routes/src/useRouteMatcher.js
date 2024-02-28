@@ -23,7 +23,7 @@ export default function useRouteMatcher() {
                       // ["foo"], ["bar"] → { foo: "bar" }
                       Object.fromEntries(keys.map((key, i) => [key, matches[i]])),
                   ]
-                : [false, null];
+                : [false];
         },
         [router, location],
     );
