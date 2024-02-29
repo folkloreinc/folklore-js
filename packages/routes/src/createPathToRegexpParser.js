@@ -2,7 +2,7 @@ import { pathToRegexp } from 'path-to-regexp';
 
 export default function createPathToRegexpParser(opts) {
     return (fullPath, loose) => {
-        const path = fullPath.replace(/^(https?:\/\/[^/]+)\//, '/');
+        const path = fullPath.replace(/^(https?:\/\/[^/]+)\/?/, '/');
         const keys = [];
         const isWildcard = path.match(/(\/|^)\*$/) !== null;
         const pattern = pathToRegexp(isWildcard ? path.replace(/(\/|^)\*$/, '$1(.*)') : path, keys, {
