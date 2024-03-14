@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Link } from 'react-router-dom';
+import { Link } from 'wouter';
 
 import * as AppPropTypes from '../../lib/PropTypes';
 
@@ -44,7 +44,7 @@ function Menu({ items, className }) {
                                 {label}
                             </a>
                         ) : (
-                            <Link to={url} className={styles.link}>
+                            <Link href={url} className={styles.link}>
                                 {label}
                             </Link>
                         )}

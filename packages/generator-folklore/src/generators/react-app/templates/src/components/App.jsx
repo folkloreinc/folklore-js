@@ -2,7 +2,7 @@ import { RoutesProvider } from '@folklore/routes';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { IntlProvider } from 'react-intl';
-import { BrowserRouter } from 'react-router-dom';
+import { Router } from 'wouter';
 
 // import * as AppPropTypes from '../lib/PropTypes';
 import Routes from './Routes';
@@ -20,18 +20,20 @@ const propTypes = {
 
 const defaultProps = {
     intl: null,
-    routes: {},
+    routes: {
+        home: '/'
+    },
 };
 
 function App({ intl, routes }) {
     const { locale = 'fr', messages = {} } = intl || {};
     return (
         <IntlProvider locale={locale} messages={messages[locale] || messages}>
-            <BrowserRouter>
+            <Router>
                 <RoutesProvider routes={routes}>
                     <Routes />
                 </RoutesProvider>
-            </BrowserRouter>
+            </Router>
         </IntlProvider>
     );
 }

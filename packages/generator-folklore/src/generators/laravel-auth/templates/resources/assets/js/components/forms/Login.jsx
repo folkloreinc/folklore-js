@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import { Link } from 'react-router-dom';
+import { Link } from 'wouter';
 import classNames from 'classnames';
 import { withUrlGenerator } from '@folklore/react-container';
 import { useForm } from '@folklore/forms';
@@ -71,7 +71,7 @@ const LoginForm = ({
                     helpText={(
                         <div className={styles.forgot}>
                             <Link
-                                to={urlGenerator.route('auth.password.request')}
+                                href={urlGenerator.route('auth.password.request')}
                                 className={styles.link}
                             >
                                 <FormattedMessage {...messages.forgotPassword} />

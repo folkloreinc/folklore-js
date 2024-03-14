@@ -95,7 +95,7 @@ module.exports = class AppGenerator extends Generator {
             },
 
             dependencies() {
-                this.addDevDependencies({ '@folklore/cli': '^0.0.50' });
+                this.addDevDependencies({ '@folklore/cli': '^0.1.9' });
             },
         };
     }

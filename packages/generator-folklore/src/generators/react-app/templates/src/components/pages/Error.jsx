@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link } from 'wouter';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useUrlGenerator } from '@folklore/routes';
 
@@ -90,7 +90,7 @@ function ErrorPage({ statusCode }) {
                     <FormattedMessage {...messages[`description${statusCode || 404}`]} />
                 </p>
                 <div className={styles.actions}>
-                    <Link to={url('home')}>
+                    <Link href={url('home')}>
                         <FormattedMessage {...messages.gotoHome} />
                     </Link>
                 </div>

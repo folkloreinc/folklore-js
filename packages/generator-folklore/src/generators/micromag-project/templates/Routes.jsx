@@ -19,14 +19,9 @@ function Routes() {
     const routes = useRoutes() || {};
     return (
         <Switch>
-            <Route path={routes.home || '/'}>
-                <MainLayout>
-                    <HomePage />
-                </MainLayout>
-            </Route>
             <Route>
                 <MainLayout>
-                    <ErrorPage />
+                    <HomePage />
                 </MainLayout>
             </Route>
         </Switch>

@@ -1,6 +1,6 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
-import { Route, Switch } from 'react-router';
+import { Route, Switch } from 'wouter';
 import { withUrlGenerator } from '@folklore/react-container';
 
 import * as AppPropTypes from '../lib/PropTypes';

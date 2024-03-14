@@ -4,7 +4,7 @@ import TextField from '@panneau/field-text';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { generatePath } from 'react-router';
+import { generatePath } from '@folklore/routes';
 
 const propTypes = {
     fieldLocale: PropTypes.string,

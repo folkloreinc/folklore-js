@@ -1,0 +1,38 @@
+{
+    "components": [
+        {
+            "id": "screen1",
+            "type": "text-title",
+            "background": {
+                "color": { "color": "#ffcc00", "alpha": 1 },
+                "image": null,
+                "fit": "contain",
+                "repeat": true
+            },
+            "layout": "middle",
+            "title": {
+                "body": "<h1>Écran 1</h1>"
+            },
+            "text": {
+                "body": "<p>Texte</p>"
+            }
+        },
+        {
+            "id": "screen2",
+            "type": "text-title",
+            "background": {
+                "color": { "color": "#cc0000", "alpha": 1 },
+                "image": null,
+                "fit": "contain",
+                "repeat": true
+            },
+            "layout": "middle",
+            "title": {
+                "body": "<h1>Écran 2</h1>"
+            },
+            "text": {
+                "body": "<p>Texte</p>"
+            }
+        }
+    ]
+}
