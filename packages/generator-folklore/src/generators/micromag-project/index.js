@@ -141,7 +141,7 @@ module.exports = class MicromagProjectGenerator extends Generator {
 
             dependencies() {
                 this.addDependencies({
-                    '@micromag/viewer': '^0.3.488',
+                    '@micromag/viewer': '^0.3.492',
                     '@micromag/intl': '^0.3.488',
                 });
             },

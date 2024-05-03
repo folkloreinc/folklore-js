@@ -225,6 +225,12 @@ export default (entry, opts = {}) => {
                     loader: require.resolve('source-map-loader'),
                 },
                 {
+                    test: /\.m?js$/,
+                    resolve: {
+                        fullySpecified: false,
+                    },
+                },
+                {
                     oneOf: [
                         ...(extraLoaders || []),
                         {
