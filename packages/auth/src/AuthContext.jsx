@@ -19,15 +19,15 @@ const defaultProps = {
     user: null,
 };
 
-export function AuthProvider({ user: initialUser, children }) {
-    const [user, setUser] = useState(initialUser);
+export function AuthProvider({ user: providedUser,  children }) {
+    const [stateUser, setUser] = useState(null);
 
     const value = useMemo(
         () => ({
-            user,
+            user: stateUser || providedUser,
             setUser,
         }),
-        [user, setUser],
+        [stateUser, providedUser, setUser],
     );
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
