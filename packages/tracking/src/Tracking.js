@@ -4,13 +4,14 @@ class Tracking {
     constructor(opts = {}) {
         this.options = {
             dataLayer: typeof window !== 'undefined' ? window.dataLayer || null : null,
+            disabled: false,
             ...opts,
         };
     }
 
     push(...args) {
-        const { dataLayer } = this.options;
-        if (dataLayer === null) {
+        const { disabled = false, dataLayer } = this.options;
+        if (dataLayer === null || disabled) {
             return;
         }
         dataLayer.push(...args);
@@ -36,7 +37,9 @@ class Tracking {
     }
 
     getSocialTarget() {
-        return typeof window !== 'undefined' ? `${window.location.protocol}//${window.location.host}` : null;
+        return typeof window !== 'undefined'
+            ? `${window.location.protocol}//${window.location.host}`
+            : null;
     }
 }
 
