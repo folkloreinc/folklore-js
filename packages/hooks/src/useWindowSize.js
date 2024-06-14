@@ -16,18 +16,20 @@ export default function useWindowSize({ onChange = null } = {}) {
         const newSize = getWindowSize();
         if (currentSize.width !== newSize.width || currentSize.height !== newSize.height) {
             currentSize = newSize;
+        }
+        if (size.width !== newSize.width || size.height !== newSize.height) {
             setSize(newSize);
             return newSize;
         }
         return null;
-    }, [setSize]);
+    }, [size, setSize]);
 
     const onResize = useCallback(() => {
         const newSize = updateSize();
         if (newSize !== null && onChange !== null) {
             onChange(newSize);
         }
-    }, [onChange]);
+    }, [onChange, updateSize]);
 
     useWindowEvent('resize', onResize);
 
