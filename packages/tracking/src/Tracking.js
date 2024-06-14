@@ -50,7 +50,7 @@ class Tracking {
     }
 
     pushNow(...args) {
-        const { dataLayer } = this.options;
+        const { dataLayer = null } = this.options;
         if (dataLayer === null || this.disabled) {
             return;
         }
@@ -58,11 +58,11 @@ class Tracking {
     }
 
     push(...args) {
-        const { paused = false, disabled = false, dataLayer } = this.options;
-        if (dataLayer === null || disabled) {
+        const { dataLayer = null } = this.options;
+        if (dataLayer === null || this.disabled) {
             return;
         }
-        if (paused) {
+        if (this.paused) {
             this.pending.push(...args);
             return;
         }
