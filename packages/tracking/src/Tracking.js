@@ -5,13 +5,19 @@ class Tracking {
         this.options = {
             dataLayer: typeof window !== 'undefined' ? window.dataLayer || null : null,
             disabled: false,
+            paused: false,
             variables: null,
             ...opts,
         };
 
+        const { disabled = false, paused = false, variables = null } = this.options;
+
+        this.disabled = disabled;
+        this.paused = paused;
         this.variables = null;
 
-        const { variables = null } = this.options;
+        this.pending = [];
+
         if (variables !== null) {
             this.setVariables(variables);
         }
@@ -20,7 +26,7 @@ class Tracking {
     setVariables(variables) {
         this.variables = variables;
         if (variables !== null) {
-            this.push(variables);
+            this.pushNow(variables);
         }
     }
 
@@ -28,9 +34,36 @@ class Tracking {
         return this.variables;
     }
 
+    setDisabled(disabled) {
+        this.disabled = disabled;
+        if (disabled) {
+            this.pending = [];
+        }
+    }
+
+    setPaused(paused) {
+        this.paused = paused;
+        if (!paused && this.pending.length > 0) {
+            this.push(...this.pending);
+            this.pending = [];
+        }
+    }
+
+    pushNow(...args) {
+        const { dataLayer } = this.options;
+        if (dataLayer === null || this.disabled) {
+            return;
+        }
+        dataLayer.push(...args);
+    }
+
     push(...args) {
-        const { disabled = false, dataLayer } = this.options;
+        const { paused = false, disabled = false, dataLayer } = this.options;
         if (dataLayer === null || disabled) {
+            return;
+        }
+        if (paused) {
+            this.pending.push(...args);
             return;
         }
         dataLayer.push(...args);
