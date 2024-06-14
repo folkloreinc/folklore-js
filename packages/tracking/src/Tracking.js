@@ -5,8 +5,27 @@ class Tracking {
         this.options = {
             dataLayer: typeof window !== 'undefined' ? window.dataLayer || null : null,
             disabled: false,
+            variables: null,
             ...opts,
         };
+
+        this.variables = null;
+
+        const { variables = null } = this.options;
+        if (variables !== null) {
+            this.setVariables(variables);
+        }
+    }
+
+    setVariables(variables) {
+        this.variables = variables;
+        if (variables !== null) {
+            this.push(variables);
+        }
+    }
+
+    getVariables() {
+        return this.variables;
     }
 
     push(...args) {
