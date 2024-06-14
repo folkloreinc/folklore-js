@@ -15,20 +15,24 @@ function useAd(
         alwaysRender = false,
         onRender = null,
         disabled = false,
-        trackEvents = true,
+        trackingDisabled = false,
         rootMargin = '300px',
     } = {},
 ) {
-    const { ads: adsManager, ready: adsReady } = useAdsContext();
+    const {
+        ads: adsManager,
+        ready: adsReady,
+        trackingDisabled: globalTrackingDisabled = false,
+    } = useAdsContext();
 
     const trackAd = useAdsTracking();
     const track = useCallback(
         (...args) => {
-            if (trackEvents) {
+            if (!trackingDisabled && !globalTrackingDisabled) {
                 trackAd(...args);
             }
         },
-        [trackEvents, trackAd],
+        [trackingDisabled, globalTrackingDisabled, trackAd],
     );
 
     // Check for visibility

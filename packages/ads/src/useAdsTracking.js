@@ -1,7 +1,7 @@
 import { useTracking } from '@folklore/tracking';
 import { useCallback } from 'react';
 
-export default function useTrackAd() {
+export default function useAdsTracking() {
     const tracking = useTracking() || null;
     const trackEvent = useCallback(
         (action, slot, renderEvent) => {

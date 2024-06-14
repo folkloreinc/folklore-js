@@ -23,6 +23,7 @@ const propTypes = {
     refreshOnResize: PropTypes.bool,
     slots: AdPropTypes.adSlots,
     viewports: AdPropTypes.adViewports,
+    trackingDisabled: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -34,6 +35,7 @@ const defaultProps = {
     refreshOnResize: false,
     slots: defaultSlots,
     viewports: defaultViewports,
+    trackingDisabled: false,
 };
 
 export function AdsProvider({
@@ -46,6 +48,7 @@ export function AdsProvider({
     refreshOnResize,
     viewports,
     slots,
+    trackingDisabled,
 }) {
     const [ready, setReady] = useState(false);
     const adsRef = useRef(null);
@@ -117,8 +120,9 @@ export function AdsProvider({
                     : {
                           ...slotsPath,
                       },
+            trackingDisabled,
         }),
-        [ready, ads, viewports, slots, slotsPath, defaultSlotPath],
+        [ready, ads, viewports, slots, slotsPath, defaultSlotPath, trackingDisabled],
     );
 
     return <AdsContext.Provider value={value}>{children}</AdsContext.Provider>;

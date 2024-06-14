@@ -20,6 +20,7 @@ const propTypes = {
     refreshInterval: PropTypes.number,
     alwaysRender: PropTypes.bool,
     disabled: PropTypes.bool,
+    trackingDisabled: PropTypes.bool,
     shouldKeepSize: PropTypes.bool,
     withoutStyle: PropTypes.bool,
     withoutMinimumSize: PropTypes.bool,
@@ -38,6 +39,7 @@ const defaultProps = {
     refreshInterval: null,
     alwaysRender: true,
     disabled: false,
+    trackingDisabled: false,
     shouldKeepSize: false,
     withoutStyle: false,
     withoutMinimumSize: false,
@@ -57,6 +59,7 @@ function Ad({
     refreshInterval,
     alwaysRender,
     disabled,
+    trackingDisabled,
     shouldKeepSize,
     withoutStyle,
     withoutMinimumSize,
@@ -166,6 +169,7 @@ function Ad({
         alwaysRender,
         onRender: onAdRender,
         disabled,
+        trackingDisabled,
     });
 
     if (slotRef !== null && isFunction(slotRef)) {
