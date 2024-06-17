@@ -1,4 +1,5 @@
 /* eslint-disable class-methods-use-this */
+import { v4 as uuidv4 } from 'uuid';
 
 class Tracking {
     constructor(opts = {}) {
@@ -44,7 +45,7 @@ class Tracking {
     setPaused(paused) {
         this.paused = paused;
         if (!paused && this.pending.length > 0) {
-            this.push(...this.pending);
+            this.pushNow(...this.pending);
             this.pending = [];
         }
     }
@@ -58,20 +59,23 @@ class Tracking {
     }
 
     push(...args) {
-        const { dataLayer = null } = this.options;
-        if (dataLayer === null || this.disabled) {
-            return;
-        }
-        if (this.paused) {
+        if (this.paused && !this.disabled) {
             this.pending.push(...args);
             return;
         }
-        dataLayer.push(...args);
+        this.pushNow(...args);
+    }
+
+    pushEvent(eventName, data) {
+        this.push({
+            event: eventName,
+            eventId: uuidv4(),
+            ...data,
+        });
     }
 
     trackEvent(category, action, label = null, value = null) {
-        this.push({
-            event: 'eventInteraction',
+        this.pushEvent('eventInteraction', {
             eventCategory: category,
             eventAction: action,
             eventLabel: label,
@@ -80,11 +84,42 @@ class Tracking {
     }
 
     trackSocial(network, action, target = null) {
-        this.push({
-            event: 'socialInteraction',
+        this.pushEvent('socialInteraction', {
             socialNetwork: network,
             socialAction: action,
             socialTarget: target || this.getSocialTarget(),
+        });
+    }
+
+    trackVideo(
+        action,
+        {
+            platform = null,
+            id = null,
+            url,
+            title = null,
+            duration = null,
+            currentTime = null,
+            thumbnail = null,
+        } = {},
+    ) {
+        this.pushEvent('eventInteraction', {
+            eventCategory: 'Video',
+            eventAction: action,
+            eventLabel: `${platform !== null ? `${platform}: ` : ''}${title || document.title}${
+                id !== null ? ` (${id})` : ''
+            }`,
+            videoPlatform: platform,
+            videoId: id,
+            videoUrl: url,
+            videoTitle: title,
+            videoDuration: duration,
+            videoCurrentTime: currentTime !== null ? Math.round(currentTime) : null,
+            videoProgress:
+                currentTime !== null && duration !== null && duration > 0
+                    ? Math.round((currentTime / duration) * 100)
+                    : null,
+            videoThumbnail: thumbnail,
         });
     }
 
