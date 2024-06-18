@@ -93,7 +93,8 @@ function Ad({
     );
 
     // Targeting
-    const contextTargeting = useAdsTargeting();
+    const { disabled: targetingDisabled = false, ...contextTargeting } = useAdsTargeting();
+    const finalDisabled = disabled || targetingDisabled;
 
     const allTargeting = useMemo(
         () => ({
@@ -114,14 +115,14 @@ function Ad({
     }, [allTargeting, refreshInterval]);
 
     const lastRenderedSize = useRef(null);
-    const wasDisabled = useRef(disabled);
+    const wasDisabled = useRef(finalDisabled);
     const onAdRender = useCallback(
         (event) => {
             const { isEmpty: newIsEmpty = true, width: newWidth, height: newHeight } = event || {};
 
-            if (disabled) {
+            if (finalDisabled) {
                 wasDisabled.current = true;
-            } else if (!disabled && !newIsEmpty) {
+            } else if (!finalDisabled && !newIsEmpty) {
                 wasDisabled.current = false;
             }
 
@@ -136,7 +137,7 @@ function Ad({
                 onRender(event);
             }
         },
-        [onRender, shouldKeepSize, disabled],
+        [onRender, shouldKeepSize, finalDisabled],
     );
 
     // useEffect(() => {
@@ -168,7 +169,7 @@ function Ad({
         refreshInterval: finalAdTargeting.refreshInterval,
         alwaysRender,
         onRender: onAdRender,
-        disabled,
+        disabled: finalDisabled,
         trackingDisabled,
     });
 
@@ -179,15 +180,15 @@ function Ad({
         slotRef.current = slotObject;
     }
 
-    if (disabled) {
+    if (finalDisabled) {
         wasDisabled.current = true;
-    } else if (!disabled && isRendered) {
+    } else if (!finalDisabled && isRendered) {
         wasDisabled.current = false;
     }
 
     const waitingNextRender = wasDisabled.current && !isRendered;
     const keepSize =
-        shouldKeepSize && (disabled || waitingNextRender) && lastRenderedSize.current !== null;
+        shouldKeepSize && (finalDisabled || waitingNextRender) && lastRenderedSize.current !== null;
 
     if (id === null && !keepSize) {
         return null;
@@ -199,7 +200,7 @@ function Ad({
             width,
             height,
         };
-    } else if (shouldKeepSize && (disabled || waitingNextRender)) {
+    } else if (shouldKeepSize && (finalDisabled || waitingNextRender)) {
         adStyle = lastRenderedSize.current;
     } else if (!withoutMinimumSize) {
         adStyle = minimumSize;

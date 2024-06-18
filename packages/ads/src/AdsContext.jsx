@@ -23,6 +23,7 @@ const propTypes = {
     refreshOnResize: PropTypes.bool,
     slots: AdPropTypes.adSlots,
     viewports: AdPropTypes.adViewports,
+    disabled: PropTypes.bool,
     trackingDisabled: PropTypes.bool,
 };
 
@@ -35,6 +36,7 @@ const defaultProps = {
     refreshOnResize: false,
     slots: defaultSlots,
     viewports: defaultViewports,
+    disabled: false,
     trackingDisabled: false,
 };
 
@@ -48,6 +50,7 @@ export function AdsProvider({
     refreshOnResize,
     viewports,
     slots,
+    disabled,
     trackingDisabled,
 }) {
     const [ready, setReady] = useState(false);
@@ -57,10 +60,13 @@ export function AdsProvider({
             adsRef.current = new AdsManager({
                 enableSingleRequest,
                 autoInit,
+                disabled,
             });
+        } else {
+            adsRef.current.setDisabled(disabled);
         }
         return adsRef.current;
-    }, [enableSingleRequest, autoInit]);
+    }, [enableSingleRequest, autoInit, disabled]);
 
     useEffect(() => {
         let onReady = null;
@@ -122,7 +128,7 @@ export function AdsProvider({
                       },
             trackingDisabled,
         }),
-        [ready, ads, viewports, slots, slotsPath, defaultSlotPath, trackingDisabled],
+        [ready, ads, viewports, slots, slotsPath, defaultSlotPath, trackingDisabled, disabled],
     );
 
     return <AdsContext.Provider value={value}>{children}</AdsContext.Provider>;
