@@ -93,17 +93,18 @@ function Ad({
     );
 
     // Targeting
-    const { disabled: targetingDisabled = false, ...contextTargeting } = useAdsTargeting();
+    const contextTargeting = useAdsTargeting();
+    const { disabled: targetingDisabled = false } = contextTargeting || {};
     const finalDisabled = disabled || targetingDisabled;
 
-    const allTargeting = useMemo(
-        () => ({
+    const allTargeting = useMemo(() => {
+        const { disabled: removedDisabled, ...otherTargeting } = contextTargeting || {};
+        return {
             ...(slotName !== null ? { slot: slotName } : null),
-            ...contextTargeting,
+            ...otherTargeting,
             ...targeting,
-        }),
-        [contextTargeting, targeting, slotName],
-    );
+        };
+    }, [contextTargeting, targeting, slotName]);
 
     const finalAdTargeting = useMemo(() => {
         const { refreshAds = null, ...otherProps } = allTargeting || {};
