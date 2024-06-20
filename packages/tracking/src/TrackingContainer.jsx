@@ -29,9 +29,11 @@ function TrackingContainer({ children, tracking, disabled, paused }) {
         [tracking],
     );
     useEffect(() => {
-        finalTracking.setDisabled(disabled);
-        finalTracking.setPaused(paused);
-    }, [disabled, paused]);
+        if (tracking === null) {
+            finalTracking.setDisabled(disabled);
+            finalTracking.setPaused(paused);
+        }
+    }, [tracking, disabled, paused]);
     return <TrackingContext.Provider value={finalTracking}>{children}</TrackingContext.Provider>;
 }
 
