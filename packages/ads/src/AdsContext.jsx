@@ -9,7 +9,9 @@ import AdsManager from './AdsManager';
 import { viewports as defaultViewports, slots as defaultSlots } from './defaults';
 import * as AdPropTypes from './propTypes';
 
-const AdsContext = React.createContext(null);
+const AdsContext = React.createContext({
+    ready: false,
+});
 
 export const useAdsContext = () => useContext(AdsContext);
 
