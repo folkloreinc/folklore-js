@@ -74,8 +74,25 @@ class Tracking {
         });
     }
 
+    pushEventNow(eventName, data) {
+        this.pushNow({
+            event: eventName,
+            eventId: uuidv4(),
+            ...data,
+        });
+    }
+
     trackEvent(category, action, label = null, value = null) {
         this.pushEvent('eventInteraction', {
+            eventCategory: category,
+            eventAction: action,
+            eventLabel: label,
+            eventValue: value,
+        });
+    }
+
+    trackEventNow(category, action, label = null, value = null) {
+        this.pushEventNow('eventInteraction', {
             eventCategory: category,
             eventAction: action,
             eventLabel: label,
