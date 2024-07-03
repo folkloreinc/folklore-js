@@ -160,6 +160,7 @@ function Ad({
         id,
         width,
         height,
+        isFluid = false,
         isEmpty,
         isRendered,
         refObserver,
@@ -197,10 +198,12 @@ function Ad({
 
     let adStyle = null;
     if (isRendered) {
-        adStyle = {
-            width,
-            height,
-        };
+        adStyle = !isFluid
+            ? {
+                  width,
+                  height,
+              }
+            : null;
     } else if (shouldKeepSize && (finalDisabled || waitingNextRender)) {
         adStyle = lastRenderedSize.current;
     } else if (!withoutMinimumSize) {

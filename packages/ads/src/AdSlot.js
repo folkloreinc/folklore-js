@@ -176,6 +176,7 @@ class AdSlot extends EventEmitter {
             ? {
                   width: size[0],
                   height: size[1],
+                  isFluid: size[0] === 0 && size[1] === 0,
               }
             : null;
     }
