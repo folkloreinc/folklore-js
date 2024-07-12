@@ -19,6 +19,7 @@ const createWebpackServer = (config, opts = {}) => {
         historyApiFallback = typeof proxy === 'undefined'
             ? {
                   index: indexPath,
+                  disableDotRule: true,
               }
             : undefined,
     } = opts;
