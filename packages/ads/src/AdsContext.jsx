@@ -19,7 +19,9 @@ const propTypes = {
     children: PropTypes.node.isRequired,
     defaultSlotPath: PropTypes.string,
     slotsPath: PropTypes.objectOf(PropTypes.string),
-    enableSingleRequest: PropTypes.bool,
+    disableSingleRequest: PropTypes.bool,
+    disableVideoAds: PropTypes.bool,
+    disableLazyLoad: PropTypes.bool,
     autoInit: PropTypes.bool,
     resizeDebounceDelay: PropTypes.number,
     refreshOnResize: PropTypes.bool,
@@ -35,7 +37,9 @@ const propTypes = {
 const defaultProps = {
     defaultSlotPath: null,
     slotsPath: null,
-    enableSingleRequest: true,
+    disableSingleRequest: false,
+    disableVideoAds: false,
+    disableLazyLoad: false,
     autoInit: true,
     resizeDebounceDelay: 500,
     refreshOnResize: false,
@@ -52,7 +56,9 @@ export function AdsProvider({
     children,
     defaultSlotPath,
     slotsPath,
-    enableSingleRequest,
+    disableSingleRequest,
+    disableVideoAds,
+    disableLazyLoad,
     autoInit,
     resizeDebounceDelay,
     refreshOnResize,
@@ -69,9 +75,11 @@ export function AdsProvider({
     const ads = useMemo(() => {
         if (adsRef.current === null) {
             adsRef.current = new AdsManager({
-                enableSingleRequest,
                 autoInit,
                 disabled,
+                disableSingleRequest,
+                disableVideoAds,
+                disableLazyLoad,
                 mobileScaling,
                 renderMarginPercent,
                 fetchMarginPercent,
@@ -81,9 +89,11 @@ export function AdsProvider({
         }
         return adsRef.current;
     }, [
-        enableSingleRequest,
         autoInit,
         disabled,
+        disableSingleRequest,
+        disableVideoAds,
+        disableLazyLoad,
         mobileScaling,
         renderMarginPercent,
         fetchMarginPercent,

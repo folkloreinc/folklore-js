@@ -70,7 +70,9 @@ class AdsManager extends EventEmitter {
         this.options = {
             disabled: false,
             disablePersonnalizedAds: false,
-            enableSingleRequest: false,
+            disableSingleRequest: false,
+            disableLazyLoad: false,
+            disableVideoAds: false,
             autoInit: false,
             ...opts,
         };
@@ -100,7 +102,9 @@ class AdsManager extends EventEmitter {
         googletag.cmd.push(() => {
             const { disabled, personnalizedAdsDisabled } = this;
             const {
-                enableSingleRequest = false,
+                disableSingleRequest = false,
+                disableLazyLoad = false,
+                disableVideoAds = false,
                 mobileScaling = 1.0,
                 renderMarginPercent = 100,
                 fetchMarginPercent = 300,
@@ -111,9 +115,9 @@ class AdsManager extends EventEmitter {
                 googletag.pubads().disableInitialLoad();
             }
 
-            if (enableSingleRequest) {
+            if (!disableSingleRequest) {
                 debug('Enable single request');
-                googletag.pubads().enableSingleRequest();
+                googletag.pubads().disableSingleRequest();
             }
 
             if (personnalizedAdsDisabled) {
@@ -121,17 +125,21 @@ class AdsManager extends EventEmitter {
                 googletag.pubads().setRequestNonPersonalizedAds(1);
             }
 
-            googletag.pubads().enableLazyLoad({
-                // Fetch slots within 5 viewports.
-                fetchMarginPercent,
-                // Render slots within 2 viewports.
-                renderMarginPercent,
-                // Double the above values on mobile, where viewports are smaller
-                // and users tend to scroll faster.
-                mobileScaling,
-            });
+            if (!disableLazyLoad) {
+                googletag.pubads().enableLazyLoad({
+                    // Fetch slots within 5 viewports.
+                    fetchMarginPercent,
+                    // Render slots within 2 viewports.
+                    renderMarginPercent,
+                    // Double the above values on mobile, where viewports are smaller
+                    // and users tend to scroll faster.
+                    mobileScaling,
+                });
+            }
 
-            googletag.pubads().enableVideoAds();
+            if (!disableVideoAds) {
+                googletag.pubads().enableVideoAds();
+            }
 
             googletag.pubads().addEventListener('slotRenderEnded', this.onSlotRenderEnded);
             googletag
