@@ -31,7 +31,7 @@ const propTypes = {
     slots: AdPropTypes.adSlots,
     viewports: AdPropTypes.adViewports,
     disabled: PropTypes.bool,
-    trackingDisabled: PropTypes.bool,
+    disableTracking: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -49,7 +49,7 @@ const defaultProps = {
     slots: defaultSlots,
     viewports: defaultViewports,
     disabled: false,
-    trackingDisabled: false,
+    disableTracking: false,
 };
 
 export function AdsProvider({
@@ -68,7 +68,7 @@ export function AdsProvider({
     viewports,
     slots,
     disabled,
-    trackingDisabled,
+    disableTracking,
 }) {
     const [ready, setReady] = useState(false);
     const adsRef = useRef(null);
@@ -157,9 +157,9 @@ export function AdsProvider({
                     : {
                           ...slotsPath,
                       },
-            trackingDisabled,
+            trackingDisabled: disableTracking,
         }),
-        [ready, ads, viewports, slots, slotsPath, defaultSlotPath, trackingDisabled, disabled],
+        [ready, ads, viewports, slots, slotsPath, defaultSlotPath, disableTracking, disabled],
     );
 
     return <AdsContext.Provider value={value}>{children}</AdsContext.Provider>;

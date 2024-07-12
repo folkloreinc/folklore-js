@@ -15,7 +15,7 @@ function useAd(
         alwaysRender = false,
         onRender = null,
         disabled = false,
-        trackingDisabled = false,
+        disableTracking = false,
         rootMargin = '300px',
     } = {},
 ) {
@@ -28,11 +28,11 @@ function useAd(
     const trackAd = useAdsTracking();
     const track = useCallback(
         (...args) => {
-            if (!trackingDisabled && !globalTrackingDisabled) {
+            if (!disableTracking && !globalTrackingDisabled) {
                 trackAd(...args);
             }
         },
-        [trackingDisabled, globalTrackingDisabled, trackAd],
+        [disableTracking, globalTrackingDisabled, trackAd],
     );
 
     // Check for visibility
