@@ -117,7 +117,7 @@ class AdsManager extends EventEmitter {
 
             if (!disableSingleRequest) {
                 debug('Enable single request');
-                googletag.pubads().disableSingleRequest();
+                googletag.pubads().enableSingleRequest();
             }
 
             if (personnalizedAdsDisabled) {
