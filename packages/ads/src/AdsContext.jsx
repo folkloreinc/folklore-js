@@ -23,6 +23,9 @@ const propTypes = {
     autoInit: PropTypes.bool,
     resizeDebounceDelay: PropTypes.number,
     refreshOnResize: PropTypes.bool,
+    mobileScaling: PropTypes.number,
+    renderMarginPercent: PropTypes.number,
+    fetchMarginPercent: PropTypes.number,
     slots: AdPropTypes.adSlots,
     viewports: AdPropTypes.adViewports,
     disabled: PropTypes.bool,
@@ -36,6 +39,9 @@ const defaultProps = {
     autoInit: true,
     resizeDebounceDelay: 500,
     refreshOnResize: false,
+    mobileScaling: 1.0,
+    renderMarginPercent: 100,
+    fetchMarginPercent: 300,
     slots: defaultSlots,
     viewports: defaultViewports,
     disabled: false,
@@ -50,6 +56,9 @@ export function AdsProvider({
     autoInit,
     resizeDebounceDelay,
     refreshOnResize,
+    mobileScaling,
+    renderMarginPercent,
+    fetchMarginPercent,
     viewports,
     slots,
     disabled,
@@ -63,12 +72,22 @@ export function AdsProvider({
                 enableSingleRequest,
                 autoInit,
                 disabled,
+                mobileScaling,
+                renderMarginPercent,
+                fetchMarginPercent,
             });
         } else {
             adsRef.current.setDisabled(disabled);
         }
         return adsRef.current;
-    }, [enableSingleRequest, autoInit, disabled]);
+    }, [
+        enableSingleRequest,
+        autoInit,
+        disabled,
+        mobileScaling,
+        renderMarginPercent,
+        fetchMarginPercent,
+    ]);
 
     useEffect(() => {
         let onReady = null;

@@ -1,8 +1,9 @@
 /* globals refreshDisabledLineItems: [] */
-import EventEmitter from 'wolfy87-eventemitter';
-import isObject from 'lodash/isObject';
 import createDebug from 'debug';
 import isArray from 'lodash/isArray';
+import isObject from 'lodash/isObject';
+import EventEmitter from 'wolfy87-eventemitter';
+
 // import loadGPT from './loadGPT';
 import AdSlot from './AdSlot';
 
@@ -98,7 +99,12 @@ class AdsManager extends EventEmitter {
 
         googletag.cmd.push(() => {
             const { disabled, personnalizedAdsDisabled } = this;
-            const { enableSingleRequest } = this.options;
+            const {
+                enableSingleRequest = false,
+                mobileScaling = 1.0,
+                renderMarginPercent = 100,
+                fetchMarginPercent = 300,
+            } = this.options;
 
             if (disabled) {
                 debug('Disable initial load');
@@ -117,12 +123,12 @@ class AdsManager extends EventEmitter {
 
             googletag.pubads().enableLazyLoad({
                 // Fetch slots within 5 viewports.
-                fetchMarginPercent: 300,
+                fetchMarginPercent,
                 // Render slots within 2 viewports.
-                renderMarginPercent: 100,
+                renderMarginPercent,
                 // Double the above values on mobile, where viewports are smaller
                 // and users tend to scroll faster.
-                mobileScaling: 1.0,
+                mobileScaling,
             });
 
             googletag.pubads().enableVideoAds();
@@ -152,7 +158,8 @@ class AdsManager extends EventEmitter {
             renderSlot.setRenderEvent(event);
         }
 
-        const lineItems = typeof window !== 'undefined' ? window.refreshDisabledLineItems || [] : [];
+        const lineItems =
+            typeof window !== 'undefined' ? window.refreshDisabledLineItems || [] : [];
 
         if (isArray(lineItems) && lineItems.indexOf(lineItemId) > -1) {
             renderSlot.setRefreshDisabled();
