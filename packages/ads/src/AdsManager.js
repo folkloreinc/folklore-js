@@ -96,9 +96,10 @@ class AdsManager extends EventEmitter {
     }
 
     createAdId() {
-        const newId = `div-gpt-ad-${new Date().getTime()}-${Math.round(
-            Math.random() * (Math.random() * 1000),
-        )}-${this.index}`;
+        // const newId = `div-gpt-ad-${new Date().getTime()}-${Math.round(
+        //     Math.random() * (Math.random() * 1000),
+        // )}-${this.index}`;
+        const newId = `div-gpt-ad-${this.index}`;
         this.index += 1;
         return newId;
     }
