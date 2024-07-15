@@ -58,7 +58,7 @@ function useAd(
 
     // Create slot
     // const currentSlot = useRef(null);
-    const [slot, setSlot] = useState();
+    const [slot, setSlot] = useState(null);
     useEffect(() => {
         // if (currentSlot.current !== null) {
         //     adsManager.destroySlot(currentSlot.current);
