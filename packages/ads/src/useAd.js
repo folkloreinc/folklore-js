@@ -57,13 +57,14 @@ function useAd(
     const [renderEvent, setRenderEvent] = useState(null);
 
     // Create slot
-    const currentSlot = useRef(null);
-    const slot = useMemo(() => {
-        if (currentSlot.current !== null) {
-            adsManager.destroySlot(currentSlot.current);
-            currentSlot.current = null;
-        }
-        currentSlot.current =
+    // const currentSlot = useRef(null);
+    const [slot, setSlot] = useState();
+    useEffect(() => {
+        // if (currentSlot.current !== null) {
+        //     adsManager.destroySlot(currentSlot.current);
+        //     currentSlot.current = null;
+        // }
+        const newSlot =
             path !== null && !disabled
                 ? adsManager.createSlot(path, size, {
                       visible: isVisible,
@@ -72,25 +73,23 @@ function useAd(
                       categoryExclusions,
                   })
                 : null;
+        setSlot(newSlot);
         // if (currentSlot.current !== null && adsReady) {
         //     adsManager.defineSlot(currentSlot.current);
         // }
-        return currentSlot.current;
-    }, [
-        adsManager,
-        path,
-        disabled,
-        size,
-        sizeMapping,
-        alwaysRender,
-        categoryExclusions,
-    ]);
+        // return currentSlot.current;
+        return () => {
+            if (newSlot !== null) {
+                adsManager.destroySlot(newSlot);
+            }
+        };
+    }, [adsManager, path, disabled, size, sizeMapping, alwaysRender, categoryExclusions]);
 
     useEffect(() => {
-        if (currentSlot.current !== null) {
-            currentSlot.current.setTargeting(targeting);
+        if (slot !== null) {
+            slot.setTargeting(targeting);
         }
-    }, [targeting]);
+    }, [slot, targeting]);
 
     // Set visibility
     useEffect(() => {
@@ -156,15 +155,15 @@ function useAd(
     }, [slot, disabled, setRenderEvent, onRender, track]);
 
     // Destroy slot
-    useEffect(
-        () => () => {
-            if (slot !== null) {
-                currentSlot.current = null;
-                adsManager.destroySlot(slot);
-            }
-        },
-        [],
-    );
+    // useEffect(
+    //     () => () => {
+    //         if (slot !== null) {
+    //             // currentSlot.current = null;
+    //             adsManager.destroySlot(slot);
+    //         }
+    //     },
+    //     [],
+    // );
 
     return {
         refObserver,
