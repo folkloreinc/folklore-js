@@ -10,15 +10,15 @@ import AdSlot from './AdSlot';
 const debug = createDebug('folklore:ads');
 
 class AdsManager extends EventEmitter {
-    static index = 0;
+    // static index = 0;
 
-    static createAdId() {
-        const newId = `div-gpt-ad-${new Date().getTime()}-${Math.round(
-            Math.random() * (Math.random() * 1000),
-        )}-${AdsManager.index}`;
-        AdsManager.index += 1;
-        return newId;
-    }
+    // static createAdId() {
+    //     const newId = `div-gpt-ad-${new Date().getTime()}-${Math.round(
+    //         Math.random() * (Math.random() * 1000),
+    //     )}-${AdsManager.index}`;
+    //     AdsManager.index += 1;
+    //     return newId;
+    // }
 
     static getArticleTargeting(article) {
         if (article === null) {
@@ -88,10 +88,19 @@ class AdsManager extends EventEmitter {
         this.enabled = false;
         this.googletag = typeof window !== 'undefined' ? window.googletag : { cmd: [] };
         this.slots = [];
+        this.index = 0;
 
         if (this.options.autoInit) {
             this.init();
         }
+    }
+
+    createAdId() {
+        const newId = `div-gpt-ad-${new Date().getTime()}-${Math.round(
+            Math.random() * (Math.random() * 1000),
+        )}-${this.index}`;
+        this.index += 1;
+        return newId;
     }
 
     onGPTReady() {
@@ -253,7 +262,7 @@ class AdsManager extends EventEmitter {
 
     createSlot(path, size, opts = {}) {
         const { id: providedId = null } = opts;
-        const id = providedId || AdsManager.createAdId();
+        const id = providedId || this.createAdId();
 
         debug('Creating slot #%s(%s)...', id, path);
 
