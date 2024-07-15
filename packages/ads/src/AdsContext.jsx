@@ -133,12 +133,9 @@ export function AdsProvider({
         };
     }, [ads, resizeDebounceDelay, refreshOnResize]);
 
-    const value = useMemo(
-        () => ({
-            ready,
-            ads,
-            viewports,
-            slots: Object.keys(slots || {}).reduce(
+    const slotsWithSizeMapping = useMemo(
+        () =>
+            Object.keys(slots || {}).reduce(
                 (map, key) => ({
                     ...map,
                     [key]: {
@@ -148,18 +145,32 @@ export function AdsProvider({
                 }),
                 {},
             ),
-            slotsPath:
-                defaultSlotPath !== null
-                    ? {
-                          default: defaultSlotPath,
-                          ...slotsPath,
-                      }
-                    : {
-                          ...slotsPath,
-                      },
+        [],
+    );
+
+    const finalSlotsPath = useMemo(
+        () =>
+            defaultSlotPath !== null
+                ? {
+                      default: defaultSlotPath,
+                      ...slotsPath,
+                  }
+                : {
+                      ...slotsPath,
+                  },
+        [defaultSlotPath, slotsPath],
+    );
+
+    const value = useMemo(
+        () => ({
+            ready,
+            ads,
+            viewports,
+            slots: slotsWithSizeMapping,
+            slotsPath: finalSlotsPath,
             trackingDisabled: disableTracking,
         }),
-        [ready, ads, viewports, slots, slotsPath, defaultSlotPath, disableTracking, disabled],
+        [ready, ads, viewports, slotsWithSizeMapping, finalSlotsPath, disableTracking],
     );
 
     return <AdsContext.Provider value={value}>{children}</AdsContext.Provider>;

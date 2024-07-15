@@ -82,10 +82,15 @@ function useAd(
         disabled,
         size,
         sizeMapping,
-        targeting,
         alwaysRender,
         categoryExclusions,
     ]);
+
+    useEffect(() => {
+        if (currentSlot.current !== null) {
+            currentSlot.current.setTargeting(targeting);
+        }
+    }, [targeting]);
 
     // Set visibility
     useEffect(() => {

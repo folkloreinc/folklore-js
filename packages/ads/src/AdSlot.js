@@ -95,6 +95,14 @@ class AdSlot extends EventEmitter {
         this.refreshDisabled = true;
     }
 
+    setTargeting(targeting) {
+        if (this.adSlot !== null) {
+            this.adSlot.updateTargetingFromMap(targeting);
+        } else {
+            this.options.targeting = targeting;
+        }
+    }
+
     destroy() {
         if (this.destroyed) {
             return;
