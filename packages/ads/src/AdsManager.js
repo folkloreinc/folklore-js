@@ -77,7 +77,7 @@ class AdsManager extends EventEmitter {
             ...opts,
         };
 
-        this.onGPTReady = this.onGPTReady.bind(this);
+        this.initGpt = this.initGpt.bind(this);
         this.onSlotRenderEnded = this.onSlotRenderEnded.bind(this);
         this.onSlotImpressionViewable = this.onSlotImpressionViewable.bind(this);
         this.onSlotVisibleChange = this.onSlotVisibleChange.bind(this);
