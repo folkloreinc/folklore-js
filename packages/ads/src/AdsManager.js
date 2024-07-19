@@ -90,7 +90,7 @@ class AdsManager extends EventEmitter {
         this.slots = [];
         this.index = 0;
 
-        if (this.options.autoInit) {
+        if (this.options.autoInit && !this.disabled) {
             this.init();
         }
     }
@@ -104,68 +104,78 @@ class AdsManager extends EventEmitter {
         return newId;
     }
 
-    onGPTReady() {
+    init() {
+        const { googletag } = this;
+        googletag.cmd.push(() => {
+            if (this.disabled) {
+                return;
+            }
+            this.initGpt();
+        });
+    }
+
+    initGpt() {
         const { googletag } = this;
 
+        if (this.disabled) {
+            return;
+        }
+
+        debug('Initializing GPT...');
+
+        const { disabled, personnalizedAdsDisabled } = this;
+        const {
+            disableSingleRequest = false,
+            disableLazyLoad = false,
+            disableVideoAds = false,
+            mobileScaling = 1.0,
+            renderMarginPercent = 100,
+            fetchMarginPercent = 300,
+        } = this.options;
+
+        if (disabled) {
+            debug('Disable initial load');
+            googletag.pubads().disableInitialLoad();
+        }
+
+        if (!disableSingleRequest) {
+            debug('Enable single request');
+            googletag.pubads().enableSingleRequest();
+        }
+
+        if (personnalizedAdsDisabled) {
+            debug('Disable personalized ads');
+            googletag.pubads().setRequestNonPersonalizedAds(1);
+        }
+
+        if (!disableLazyLoad) {
+            debug('Enable lazy loading %o', {
+                fetchMarginPercent,
+                renderMarginPercent,
+                mobileScaling,
+            });
+            googletag.pubads().enableLazyLoad({
+                fetchMarginPercent,
+                renderMarginPercent,
+                mobileScaling,
+            });
+        }
+
+        if (!disableVideoAds) {
+            debug('Enable video ads');
+            googletag.pubads().enableVideoAds();
+        }
+
+        googletag.pubads().addEventListener('slotRenderEnded', this.onSlotRenderEnded);
+        googletag.pubads().addEventListener('impressionViewable', this.onSlotImpressionViewable);
+
+        googletag.enableServices();
+
+        debug('GPT is ready');
+
+        this.enabled = true;
         this.ready = true;
-
-        googletag.cmd.push(() => {
-            const { disabled, personnalizedAdsDisabled } = this;
-            const {
-                disableSingleRequest = false,
-                disableLazyLoad = false,
-                disableVideoAds = false,
-                mobileScaling = 1.0,
-                renderMarginPercent = 100,
-                fetchMarginPercent = 300,
-            } = this.options;
-
-            if (disabled) {
-                debug('Disable initial load');
-                googletag.pubads().disableInitialLoad();
-            }
-
-            if (!disableSingleRequest) {
-                debug('Enable single request');
-                googletag.pubads().enableSingleRequest();
-            }
-
-            if (personnalizedAdsDisabled) {
-                debug('Disable personalized ads');
-                googletag.pubads().setRequestNonPersonalizedAds(1);
-            }
-
-            if (!disableLazyLoad) {
-                googletag.pubads().enableLazyLoad({
-                    // Fetch slots within 5 viewports.
-                    fetchMarginPercent,
-                    // Render slots within 2 viewports.
-                    renderMarginPercent,
-                    // Double the above values on mobile, where viewports are smaller
-                    // and users tend to scroll faster.
-                    mobileScaling,
-                });
-            }
-
-            if (!disableVideoAds) {
-                googletag.pubads().enableVideoAds();
-            }
-
-            googletag.pubads().addEventListener('slotRenderEnded', this.onSlotRenderEnded);
-            googletag
-                .pubads()
-                .addEventListener('impressionViewable', this.onSlotImpressionViewable);
-
-            googletag.enableServices();
-
-            this.enabled = true;
-
-            debug('GPT is ready');
-
-            if (!disabled) {
-                this.emit('ready');
-            }
-        });
+        this.emit('ready');
     }
 
     onSlotRenderEnded(event) {
@@ -224,14 +234,6 @@ class AdsManager extends EventEmitter {
         );
     }
 
-    init() {
-        const { googletag } = this;
-        debug('Initializing ads manager...');
-        googletag.cmd.push(() => {
-            this.onGPTReady();
-        });
-    }
-
     isReady() {
         return this.ready && this.enabled && !this.disabled;
     }
@@ -241,16 +243,20 @@ class AdsManager extends EventEmitter {
     }
 
     setDisabled(disabled) {
-        const shouldRefresh = this.disabled && !disabled;
+        // const shouldRefresh = this.disabled && !disabled;
         this.disabled = disabled;
 
-        if (shouldRefresh) {
-            this.refreshAllSlots();
+        if (!this.enabled && !disabled) {
+            this.init();
         }
 
-        if (this.enabled && !disabled) {
-            this.emit('ready');
-        }
+        // if (shouldRefresh) {
+        //     this.refreshAllSlots();
+        // }
+
+        // if (this.enabled && !disabled) {
+        //     this.emit('ready');
+        // }
     }
 
     disablePersonnalizedAds(disablePersonnalizedAds) {
