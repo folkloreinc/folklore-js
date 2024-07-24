@@ -138,7 +138,7 @@ const useForm = (opts = {}) => {
 
             finalPostForm(action, {
                 ...submitValue,
-                _token: csrfToken,
+                _token: getCsrfToken(),
             })
                 .then(onSubmitSuccess)
                 .catch(onSubmitError);
