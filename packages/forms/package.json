@@ -1,6 +1,6 @@
 {
     "name": "@folklore/forms",
-    "version": "0.0.23",
+    "version": "0.0.24",
     "description": "Forms utilities",
     "keywords": [
         "javascript",
@@ -40,7 +40,7 @@
     },
     "dependencies": {
         "@babel/runtime": "^7.4.3",
-        "@folklore/fetch": "^0.1.17",
+        "@folklore/fetch": "^0.1.18",
         "lodash": "^4.17.4"
     },
     "devDependencies": {
