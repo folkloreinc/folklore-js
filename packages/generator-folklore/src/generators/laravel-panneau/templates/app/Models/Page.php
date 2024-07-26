@@ -19,4 +19,9 @@ class Page extends BasePage
     {
         return $this->toTypedResource() ?? new PageResource($this);
     }
+
+    public function blocks()
+    {
+        return $this->morphToMany(Block::class, 'blockable', 'blocks_pivot');
+    }
 }

@@ -42,7 +42,9 @@ const useForm = (opts = {}) => {
         setValue: setProvidedValue = null,
         getFieldValue = null,
         onComplete = null,
-    } = opts;
+        csrfTokenName = null,
+        xsrfTokenName = null,
+    } = opts || {};
 
     const [stateValue, setStateValue] = useState(initialValue || providedValue);
     const [stateErrors, setStateErrors] = useState(initialErrors || providedErrors);
@@ -121,9 +123,9 @@ const useForm = (opts = {}) => {
                 ? postForm(postAction, postData)
                 : postJSON(postAction, postData, {
                       credentials: 'include',
-                      headers: getCSRFHeaders(),
+                      headers: getCSRFHeaders(csrfTokenName, xsrfTokenName),
                   }),
-        [postForm, postJSON, getCSRFHeaders],
+        [postForm, postJSON, getCSRFHeaders, csrfTokenName, xsrfTokenName],
     );
 
     const submit = useCallback(

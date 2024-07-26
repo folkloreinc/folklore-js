@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import Panneau from '@panneau/app';
 import { getCSRFHeaders } from '@folklore/fetch';
-
+import Panneau from '@panneau/app';
 import { FIELDS_NAMESPACE } from '@panneau/core/contexts';
-import * as fieldsComponents from './panneau/fields';
+import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
+
 import * as AppPropTypes from '../lib/PropTypes';
+
+import * as fieldsComponents from './panneau/fields';
 
 import '../../styles/panneau.scss';
 
@@ -26,7 +27,6 @@ const defaultProps = {
 const PanneauContainer = ({ definition, user, baseUrl, uploadEndpoint, statusCode }) => {
     const { routes = {} } = definition;
     const isAuthorized = statusCode !== 401 && statusCode !== 403;
-
     const [localeLoaded, setLocaleLoaded] = useState(false);
 
     useEffect(() => {

@@ -11,7 +11,7 @@ class Block extends BaseBlock
 {
     use HasFactory;
 
-    protected $typeResources = [
+    protected $typedResources = [
         'text' => \App\Resources\Blocks\TextBlock::class,
         'image' => \App\Resources\Blocks\ImageBlock::class,
     ];
