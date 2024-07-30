@@ -168,6 +168,8 @@ const useForm = (opts = {}) => {
     return {
         value,
         setValue,
+        setErrors,
+        setGeneralError,
         csrfToken,
         submit,
         onSubmit,
