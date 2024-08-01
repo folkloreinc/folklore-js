@@ -148,7 +148,6 @@ export default function useDailymotionPlayer(id = null, params = {}) {
         width,
         height,
         autoplay,
-        muted,
         start,
         controls,
         queueAutoplayNext,
