@@ -1,6 +1,7 @@
-import { useMemo, useState, useRef, useEffect, useCallback } from 'react';
 import { loadDailymotion } from '@folklore/services';
 import createDebug from 'debug';
+import { useMemo, useState, useRef, useEffect, useCallback } from 'react';
+
 import usePlayerCurrentTime from './usePlayerCurrentTime';
 
 export const NO_PLAYER_ERROR = new Error('No player');
@@ -25,17 +26,28 @@ export default function useDailymotionPlayer(id = null, params = {}) {
             if (url === null || url.match(/^https?:/) === null) {
                 return url;
             }
-            const match = url.match(/\/video\/([^/?]+)/);
-            return match !== null ? match[1] : null;
+            let match = url.match(/\/video\/([^/?]+)/);
+            if (match !== null) {
+                return match[1];
+            }
+            match = url.match(/\/video=([^/?&]+)/);
+            if (match !== null) {
+                return match[1];
+            }
+            return null;
         },
     } = params;
 
     const debug = useMemo(() => createDebug('folklore:video:dailymotion'), []);
 
-    const [apiLoaded, setApiLoaded] = useState(typeof window !== 'undefined' && typeof window.DM !== 'undefined');
+    const [apiLoaded, setApiLoaded] = useState(
+        typeof window !== 'undefined' && typeof window.DM !== 'undefined',
+    );
     const [playerReady, setPlayerReady] = useState(false);
     const [loaded, setLoaded] = useState(false);
-    const apiRef = useRef(typeof window !== 'undefined' && typeof window.DM !== 'undefined' ? window.DM : null);
+    const apiRef = useRef(
+        typeof window !== 'undefined' && typeof window.DM !== 'undefined' ? window.DM : null,
+    );
     const ready = apiLoaded && playerReady;
     const videoId = useMemo(() => getVideoId(id), [id]);
 
@@ -333,4 +345,4 @@ export default function useDailymotionPlayer(id = null, params = {}) {
         ...metadata,
         ...playState,
     };
-};
+}
