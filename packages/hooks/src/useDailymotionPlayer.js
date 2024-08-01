@@ -30,7 +30,7 @@ export default function useDailymotionPlayer(id = null, params = {}) {
             if (match !== null) {
                 return match[1];
             }
-            match = url.match(/\/video=([^/?&]+)/);
+            match = url.match(/video=([^/?&]+)/);
             if (match !== null) {
                 return match[1];
             }
