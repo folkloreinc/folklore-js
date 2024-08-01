@@ -46,7 +46,9 @@ export default function useDailymotionPlayer(id = null, params = {}) {
     const [playerReady, setPlayerReady] = useState(false);
     const [loaded, setLoaded] = useState(false);
     const apiRef = useRef(
-        typeof window !== 'undefined' && typeof window.dailymotion !== 'undefined' ? window.dailymotion : null,
+        typeof window !== 'undefined' && typeof window.dailymotion !== 'undefined'
+            ? window.dailymotion
+            : null,
     );
     const ready = apiLoaded && playerReady;
     const videoId = useMemo(() => getVideoId(id), [id]);
@@ -166,15 +168,6 @@ export default function useDailymotionPlayer(id = null, params = {}) {
             debug('onPlaybackReady [ID: %s]', videoId);
         }
 
-        function onLoadedMetadata() {
-            currentMetadata = {
-                ...currentMetadata,
-                duration: player.duration,
-            };
-            setMetadata(currentMetadata);
-            debug('onLoadedMetadata [ID: %s]', videoId);
-        }
-
         function onDurationChange() {
             currentMetadata = {
                 ...currentMetadata,
@@ -259,30 +252,28 @@ export default function useDailymotionPlayer(id = null, params = {}) {
             debug('onAdEnd [ID: %s]', videoId);
         }
 
-        player.addEventListener('playback_ready', onPlaybackReady);
-        player.addEventListener('loadedmetadata', onLoadedMetadata);
-        player.addEventListener('durationchange', onDurationChange);
-        player.addEventListener('volumechange', onVolumeChange);
-        player.addEventListener('play', onPlay);
-        player.addEventListener('pause', onPause);
-        player.addEventListener('video_end', onEnd);
-        player.addEventListener('playing', onPlaying);
-        player.addEventListener('waiting', onWaiting);
-        player.addEventListener('ad_start', onAdStart);
-        player.addEventListener('ad_end', onAdEnd);
+        player.on('PLAYER_CRITICALPATHREADY', onPlaybackReady);
+        player.on('VIDEO_DURATIONCHANGE', onDurationChange);
+        player.on('PLAYER_VOLUMECHANGE', onVolumeChange);
+        player.on('VIDEO_PLAY', onPlay);
+        player.on('VIDEO_PAUSE', onPause);
+        player.on('VIDEO_END', onEnd);
+        player.on('VIDEO_PLAYING', onPlaying);
+        player.on('VIDEO_BUFFERING', onWaiting);
+        player.on('AD_START', onAdStart);
+        player.on('AD_END', onAdEnd);
 
         return () => {
-            player.removeEventListener('playback_ready', onPlaybackReady);
-            player.removeEventListener('loadedmetadata', onLoadedMetadata);
-            player.removeEventListener('durationchange', onDurationChange);
-            player.removeEventListener('volumechange', onVolumeChange);
-            player.removeEventListener('play', onPlay);
-            player.removeEventListener('pause', onPause);
-            player.removeEventListener('video_end', onEnd);
-            player.removeEventListener('playing', onPlaying);
-            player.removeEventListener('waiting', onWaiting);
-            player.removeEventListener('ad_start', onAdStart);
-            player.removeEventListener('ad_end', onAdEnd);
+            player.off('PLAYER_CRITICALPATHREADY', onPlaybackReady);
+            player.off('VIDEO_DURATIONCHANGE', onDurationChange);
+            player.off('PLAYER_VOLUMECHANGE', onVolumeChange);
+            player.off('VIDEO_PLAY', onPlay);
+            player.off('VIDEO_PAUSE', onPause);
+            player.off('VIDEO_END', onEnd);
+            player.off('VIDEO_PLAYING', onPlaying);
+            player.off('VIDEO_BUFFERING', onWaiting);
+            player.off('AD_START', onAdStart);
+            player.off('AD_END', onAdEnd);
         };
     }, [
         playerRef.current,
