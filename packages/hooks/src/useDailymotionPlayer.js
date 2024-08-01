@@ -119,8 +119,8 @@ export default function useDailymotionPlayer(id = null, params = {}) {
         };
         let player = currentPlayer;
         if (player !== null) {
-            player.load(videoId, {
-                params: playerParams,
+            player.loadContent({
+                video: videoId,
             });
             debug('Load video [ID: %s]', videoId);
         } else {
