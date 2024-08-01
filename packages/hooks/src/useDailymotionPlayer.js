@@ -21,6 +21,7 @@ export default function useDailymotionPlayer(id = null, params = {}) {
         uiLogo = false,
         uiStartScreenInfo = true,
         timeUpdateInterval = 1000,
+        embedPlayerId = null,
         onTimeUpdate: customOnTimeUpdate = null,
         getVideoId = (url) => {
             if (url === null || url.match(/^https?:/) === null) {
@@ -84,7 +85,10 @@ export default function useDailymotionPlayer(id = null, params = {}) {
         if (!apiLoaded && videoId !== null) {
             debug('Load API');
             loadDailymotion({
-                url: 'https://geo.dailymotion.com/libs/player.js',
+                url:
+                    embedPlayerId !== null
+                        ? `https://geo.dailymotion.com/libs/player/${embedPlayerId}.js`
+                        : 'https://geo.dailymotion.com/libs/player.js',
                 callback: null,
             }).then((api) => {
                 if (!canceled) {
@@ -97,7 +101,7 @@ export default function useDailymotionPlayer(id = null, params = {}) {
         return () => {
             canceled = true;
         };
-    }, [videoId, apiLoaded, setApiLoaded]);
+    }, [videoId, apiLoaded, setApiLoaded, embedPlayerId]);
 
     // Create or update player
     useEffect(() => {
