@@ -41,12 +41,12 @@ export default function useDailymotionPlayer(id = null, params = {}) {
     const debug = useMemo(() => createDebug('folklore:video:dailymotion'), []);
 
     const [apiLoaded, setApiLoaded] = useState(
-        typeof window !== 'undefined' && typeof window.DM !== 'undefined',
+        typeof window !== 'undefined' && typeof window.dailymotion !== 'undefined',
     );
     const [playerReady, setPlayerReady] = useState(false);
     const [loaded, setLoaded] = useState(false);
     const apiRef = useRef(
-        typeof window !== 'undefined' && typeof window.DM !== 'undefined' ? window.DM : null,
+        typeof window !== 'undefined' && typeof window.dailymotion !== 'undefined' ? window.dailymotion : null,
     );
     const ready = apiLoaded && playerReady;
     const videoId = useMemo(() => getVideoId(id), [id]);
@@ -54,6 +54,9 @@ export default function useDailymotionPlayer(id = null, params = {}) {
     const elementRef = useRef(null);
     const playerRef = useRef(null);
     const playerElementRef = useRef(elementRef.current);
+    if (elementRef.current !== null && playerElementRef.current === null) {
+        playerElementRef.current = elementRef.current;
+    }
     const elementHasChanged = elementRef.current !== playerElementRef.current;
 
     const [muted, setMuted] = useState(initialMuted);
@@ -77,7 +80,10 @@ export default function useDailymotionPlayer(id = null, params = {}) {
         let canceled = false;
         if (!apiLoaded && videoId !== null) {
             debug('Load API');
-            loadDailymotion().then((api) => {
+            loadDailymotion({
+                url: 'https://geo.dailymotion.com/libs/player.js',
+                callback: null,
+            }).then((api) => {
                 if (!canceled) {
                     apiRef.current = api;
                     setApiLoaded(true);
@@ -92,7 +98,7 @@ export default function useDailymotionPlayer(id = null, params = {}) {
 
     // Create or update player
     useEffect(() => {
-        const { current: DM = null } = apiRef;
+        const { current: dailymotion = null } = apiRef;
         const { current: currentPlayer = null } = playerRef;
         const { current: element = null } = elementRef;
         if (!apiLoaded || videoId === null || element === null) {
@@ -116,7 +122,7 @@ export default function useDailymotionPlayer(id = null, params = {}) {
             });
             debug('Load video [ID: %s]', videoId);
         } else {
-            player = DM.player(element, {
+            player = dailymotion.createPlayer(element, {
                 video: videoId,
                 width,
                 height,
