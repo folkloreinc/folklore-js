@@ -175,15 +175,15 @@ export default function useDailymotionPlayer(id = null, params = {}) {
         function onDurationChange() {
             currentMetadata = {
                 ...currentMetadata,
-                duration: player.duration,
+                duration: player.videoDuration,
             };
             setMetadata(currentMetadata);
             debug('onDurationChange [ID: %s]', videoId);
         }
 
         function onVolumeChange() {
-            setMuted(player.muted);
-            setVolumeState(player.volume);
+            setMuted(player.playerIsMuted);
+            setVolumeState(player.playerVolume);
             debug('onVolumeChange [ID: %s]', videoId);
         }
 
