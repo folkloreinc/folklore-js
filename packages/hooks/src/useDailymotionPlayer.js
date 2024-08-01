@@ -63,6 +63,7 @@ export default function useDailymotionPlayer(id = null, params = {}) {
 
     const [muted, setMuted] = useState(initialMuted);
     const [volume, setVolumeState] = useState(initialMuted ? 0 : 1);
+    const [currentTime, setCurrentTime] = useState(0);
     const [playState, setPlayState] = useState({
         playing: false,
         paused: false,
@@ -172,22 +173,24 @@ export default function useDailymotionPlayer(id = null, params = {}) {
             debug('onPlaybackReady [ID: %s]', videoId);
         }
 
-        function onDurationChange() {
+        function onDurationChange({ videoTime, videoDuration }) {
             currentMetadata = {
                 ...currentMetadata,
-                duration: player.videoDuration,
+                duration: videoDuration,
             };
             setMetadata(currentMetadata);
+            setCurrentTime(videoTime);
             debug('onDurationChange [ID: %s]', videoId);
         }
 
-        function onVolumeChange() {
-            setMuted(player.playerIsMuted);
-            setVolumeState(player.playerVolume);
+        function onVolumeChange({ playerIsMuted, playerVolume, videoTime }) {
+            setMuted(playerIsMuted);
+            setVolumeState(playerVolume);
+            setCurrentTime(videoTime);
             debug('onVolumeChange [ID: %s]', videoId);
         }
 
-        function onPlay() {
+        function onPlay({ videoTime }) {
             currentPlayState = {
                 ...currentPlayState,
                 playing: true,
@@ -195,10 +198,11 @@ export default function useDailymotionPlayer(id = null, params = {}) {
                 ended: false,
             };
             setPlayState(currentPlayState);
+            setCurrentTime(videoTime);
             debug('onPlay [ID: %s]', videoId);
         }
 
-        function onPause() {
+        function onPause({ videoTime }) {
             currentPlayState = {
                 ...currentPlayState,
                 playing: false,
@@ -206,10 +210,11 @@ export default function useDailymotionPlayer(id = null, params = {}) {
                 ended: false,
             };
             setPlayState(currentPlayState);
+            setCurrentTime(videoTime);
             debug('onPause [ID: %s]', videoId);
         }
 
-        function onEnd() {
+        function onEnd({ videoTime }) {
             currentPlayState = {
                 ...currentPlayState,
                 playing: false,
@@ -217,25 +222,32 @@ export default function useDailymotionPlayer(id = null, params = {}) {
                 ended: true,
             };
             setPlayState(currentPlayState);
+            setCurrentTime(videoTime);
             debug('onEnd [ID: %s]', videoId);
         }
 
-        function onPlaying() {
+        function onPlaying({ videoTime }) {
             currentPlayState = {
                 ...currentPlayState,
                 buffering: false,
             };
             setPlayState(currentPlayState);
+            setCurrentTime(videoTime);
             debug('onPlaying [ID: %s]', videoId);
         }
 
-        function onWaiting() {
+        function onWaiting({ videoTime }) {
             currentPlayState = {
                 ...currentPlayState,
                 buffering: true,
             };
             setPlayState(currentPlayState);
+            setCurrentTime(videoTime);
             debug('onWaiting [ID: %s]', videoId);
+        }
+
+        function onTimeChange({ videoTime }) {
+            setCurrentTime(videoTime);
         }
 
         function onAdStart() {
@@ -264,6 +276,7 @@ export default function useDailymotionPlayer(id = null, params = {}) {
         player.on(dailymotion.events.VIDEO_END, onEnd);
         player.on(dailymotion.events.VIDEO_PLAYING, onPlaying);
         player.on(dailymotion.events.VIDEO_BUFFERING, onWaiting);
+        player.on(dailymotion.events.VIDEO_TIMECHANGE, onTimeChange);
         player.on(dailymotion.events.AD_START, onAdStart);
         player.on(dailymotion.events.AD_END, onAdEnd);
 
@@ -276,6 +289,7 @@ export default function useDailymotionPlayer(id = null, params = {}) {
             player.off(dailymotion.events.VIDEO_END, onEnd);
             player.off(dailymotion.events.VIDEO_PLAYING, onPlaying);
             player.off(dailymotion.events.VIDEO_BUFFERING, onWaiting);
+            player.off(dailymotion.events.VIDEO_TIMECHANGE, onTimeChange);
             player.off(dailymotion.events.AD_START, onAdStart);
             player.off(dailymotion.events.AD_END, onAdEnd);
         };
@@ -319,16 +333,6 @@ export default function useDailymotionPlayer(id = null, params = {}) {
         const { current: player } = playerRef;
         return player !== null ? player.seek(time) : Promise.reject(NO_PLAYER_ERROR);
     }, []);
-
-    const { playing } = playState;
-    const getCurrentTime = useCallback((player) => player.videoTime || 0, []);
-    const currentTime = usePlayerCurrentTime(playerRef.current, {
-        id: videoId,
-        disabled: !playing || timeUpdateInterval === null,
-        updateInterval: timeUpdateInterval,
-        onUpdate: customOnTimeUpdate,
-        getCurrentTime,
-    });
 
     return {
         ref: elementRef,
