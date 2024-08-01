@@ -321,7 +321,7 @@ export default function useDailymotionPlayer(id = null, params = {}) {
     }, []);
 
     const { playing } = playState;
-    const getCurrentTime = useCallback((player) => player.videoTime, []);
+    const getCurrentTime = useCallback((player) => player.videoTime || 0, []);
     const currentTime = usePlayerCurrentTime(playerRef.current, {
         id: videoId,
         disabled: !playing || timeUpdateInterval === null,
