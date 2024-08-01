@@ -124,18 +124,21 @@ export default function useDailymotionPlayer(id = null, params = {}) {
             });
             debug('Load video [ID: %s]', videoId);
         } else {
-            player = dailymotion.createPlayer(element, {
-                video: videoId,
-                width,
-                height,
-                params: playerParams,
-            });
+            element.id = `dailymotion-player-${videoId}-${Date.now()}`;
+            player = dailymotion
+                .createPlayer(element.id, {
+                    video: videoId,
+                    width,
+                    height,
+                    params: playerParams,
+                })
+                .then((newPlayer) => {
+                    debug('Player ready [ID: %s]', videoId);
+                    setPlayerReady(true);
+                    playerRef.current = newPlayer;
+                });
             debug('Create player [ID: %s]', videoId);
         }
-        if (!playerReady) {
-            setPlayerReady(true);
-        }
-        playerRef.current = player;
         playerElementRef.current = element;
     }, [
         apiLoaded,
@@ -156,6 +159,7 @@ export default function useDailymotionPlayer(id = null, params = {}) {
 
     useEffect(() => {
         const { current: player = null } = playerRef;
+        const { current: dailymotion = null } = apiRef;
         if (player === null) {
             return () => {};
         }
@@ -252,28 +256,28 @@ export default function useDailymotionPlayer(id = null, params = {}) {
             debug('onAdEnd [ID: %s]', videoId);
         }
 
-        player.on('PLAYER_CRITICALPATHREADY', onPlaybackReady);
-        player.on('VIDEO_DURATIONCHANGE', onDurationChange);
-        player.on('PLAYER_VOLUMECHANGE', onVolumeChange);
-        player.on('VIDEO_PLAY', onPlay);
-        player.on('VIDEO_PAUSE', onPause);
-        player.on('VIDEO_END', onEnd);
-        player.on('VIDEO_PLAYING', onPlaying);
-        player.on('VIDEO_BUFFERING', onWaiting);
-        player.on('AD_START', onAdStart);
-        player.on('AD_END', onAdEnd);
+        player.on(dailymotion.events.PLAYER_CRITICALPATHREADY, onPlaybackReady);
+        player.on(dailymotion.events.VIDEO_DURATIONCHANGE, onDurationChange);
+        player.on(dailymotion.events.PLAYER_VOLUMECHANGE, onVolumeChange);
+        player.on(dailymotion.events.VIDEO_PLAY, onPlay);
+        player.on(dailymotion.events.VIDEO_PAUSE, onPause);
+        player.on(dailymotion.events.VIDEO_END, onEnd);
+        player.on(dailymotion.events.VIDEO_PLAYING, onPlaying);
+        player.on(dailymotion.events.VIDEO_BUFFERING, onWaiting);
+        player.on(dailymotion.events.AD_START, onAdStart);
+        player.on(dailymotion.events.AD_END, onAdEnd);
 
         return () => {
-            player.off('PLAYER_CRITICALPATHREADY', onPlaybackReady);
-            player.off('VIDEO_DURATIONCHANGE', onDurationChange);
-            player.off('PLAYER_VOLUMECHANGE', onVolumeChange);
-            player.off('VIDEO_PLAY', onPlay);
-            player.off('VIDEO_PAUSE', onPause);
-            player.off('VIDEO_END', onEnd);
-            player.off('VIDEO_PLAYING', onPlaying);
-            player.off('VIDEO_BUFFERING', onWaiting);
-            player.off('AD_START', onAdStart);
-            player.off('AD_END', onAdEnd);
+            player.off(dailymotion.events.PLAYER_CRITICALPATHREADY, onPlaybackReady);
+            player.off(dailymotion.events.VIDEO_DURATIONCHANGE, onDurationChange);
+            player.off(dailymotion.events.PLAYER_VOLUMECHANGE, onVolumeChange);
+            player.off(dailymotion.events.VIDEO_PLAY, onPlay);
+            player.off(dailymotion.events.VIDEO_PAUSE, onPause);
+            player.off(dailymotion.events.VIDEO_END, onEnd);
+            player.off(dailymotion.events.VIDEO_PLAYING, onPlaying);
+            player.off(dailymotion.events.VIDEO_BUFFERING, onWaiting);
+            player.off(dailymotion.events.AD_START, onAdStart);
+            player.off(dailymotion.events.AD_END, onAdEnd);
         };
     }, [
         playerRef.current,
