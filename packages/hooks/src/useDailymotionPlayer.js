@@ -2,8 +2,6 @@ import { loadDailymotion } from '@folklore/services';
 import createDebug from 'debug';
 import { useMemo, useState, useRef, useEffect, useCallback } from 'react';
 
-import usePlayerCurrentTime from './usePlayerCurrentTime';
-
 export const NO_PLAYER_ERROR = new Error('No player');
 
 export default function useDailymotionPlayer(id = null, params = {}) {
@@ -20,7 +18,6 @@ export default function useDailymotionPlayer(id = null, params = {}) {
         sharingEnable = false,
         uiLogo = false,
         uiStartScreenInfo = true,
-        timeUpdateInterval = 1000,
         embedPlayerId = null,
         onTimeUpdate: customOnTimeUpdate = null,
         getVideoId = (url) => {
@@ -336,6 +333,12 @@ export default function useDailymotionPlayer(id = null, params = {}) {
         const { current: player } = playerRef;
         return player !== null ? player.seek(time) : Promise.reject(NO_PLAYER_ERROR);
     }, []);
+
+    useEffect(() => {
+        if (customOnTimeUpdate !== null) {
+            customOnTimeUpdate(currentTime);
+        }
+    }, [currentTime, customOnTimeUpdate]);
 
     return {
         ref: elementRef,
