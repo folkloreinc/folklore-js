@@ -9,15 +9,8 @@ export default function useDailymotionPlayer(id = null, params = {}) {
         width = 0,
         height = 0,
         duration = 0,
-        autoplay = false,
         muted: initialMuted = false,
         start = 0,
-        controls = true,
-        queueAutoplayNext = false,
-        queueEnable = false,
-        sharingEnable = false,
-        uiLogo = false,
-        uiStartScreenInfo = true,
         embedPlayerId = null,
         onTimeUpdate: customOnTimeUpdate = null,
         getVideoId = (url) => {
@@ -109,16 +102,8 @@ export default function useDailymotionPlayer(id = null, params = {}) {
             return;
         }
         const playerParams = {
-            'autoplay-d': autoplay,
-            // muted,
             startTime: start,
-            controls,
             aspectRatio: 'inherit',
-            'queue-autoplay-next': queueAutoplayNext,
-            'queue-enable': queueEnable,
-            'sharing-enable': sharingEnable,
-            'ui-logo': uiLogo,
-            'ui-start-screen-info': uiStartScreenInfo,
         };
         let player = currentPlayer;
         if (player !== null) {
@@ -149,14 +134,7 @@ export default function useDailymotionPlayer(id = null, params = {}) {
         videoId,
         width,
         height,
-        autoplay,
         start,
-        controls,
-        queueAutoplayNext,
-        queueEnable,
-        sharingEnable,
-        uiLogo,
-        uiStartScreenInfo,
     ]);
 
     useEffect(() => {
