@@ -111,8 +111,9 @@ export default function useDailymotionPlayer(id = null, params = {}) {
         const playerParams = {
             'autoplay-d': autoplay,
             // muted,
-            start,
+            startTime: start,
             controls,
+            aspectRatio: 'inherit',
             'queue-autoplay-next': queueAutoplayNext,
             'queue-enable': queueEnable,
             'sharing-enable': sharingEnable,
