@@ -347,6 +347,8 @@ class AdsManager extends EventEmitter {
                 googletag.destroySlots([adSlot]);
             });
         }
+
+        this.emit('destroy:slot', slot);
     }
 
     refreshSlot(id) {

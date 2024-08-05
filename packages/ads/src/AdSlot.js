@@ -113,6 +113,8 @@ class AdSlot extends EventEmitter {
         this.displayed = false;
         this.renderEvent = null;
         this.destroyed = true;
+
+        this.emit('destroy', this);
     }
 
     getElementId() {

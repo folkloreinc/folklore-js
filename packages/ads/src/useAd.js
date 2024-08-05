@@ -14,6 +14,7 @@ function useAd(
         refreshInterval = null,
         alwaysRender = false,
         onRender = null,
+        onDestroy = null,
         disabled = false,
         disableTracking = false,
         rootMargin = '300px',
@@ -153,6 +154,20 @@ function useAd(
         slot.on('render', onSlotRender);
         return () => slot.off('render', onSlotRender);
     }, [slot, disabled, setRenderEvent, onRender, track]);
+
+    // Listen to destroy event
+    useEffect(() => {
+        if (slot === null) {
+            return () => {};
+        }
+        const onSlotDestroy = (destroySlot) => {
+            if (onDestroy !== null) {
+                onDestroy(destroySlot);
+            }
+        };
+        slot.on('destroy', onSlotDestroy);
+        return () => slot.off('destroy', onSlotDestroy);
+    }, [slot, onDestroy]);
 
     // Destroy slot
     // useEffect(

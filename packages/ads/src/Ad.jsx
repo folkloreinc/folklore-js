@@ -28,6 +28,7 @@ const propTypes = {
     emptyClassName: PropTypes.string,
     adClassName: PropTypes.string,
     onRender: PropTypes.func,
+    onDestroy: PropTypes.func,
     slotRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 };
 
@@ -47,6 +48,7 @@ const defaultProps = {
     emptyClassName: null,
     adClassName: null,
     onRender: null,
+    onDestroy: null,
     slotRef: null,
 };
 
@@ -67,6 +69,7 @@ function Ad({
     emptyClassName,
     adClassName,
     onRender,
+    onDestroy,
     slotRef,
 }) {
     const { slots = null, slotsPath = {} } = useAdsContext();
@@ -171,6 +174,7 @@ function Ad({
         refreshInterval: finalAdTargeting.refreshInterval,
         alwaysRender,
         onRender: onAdRender,
+        onDestroy,
         disabled: finalDisabled,
         disableTracking,
     });
