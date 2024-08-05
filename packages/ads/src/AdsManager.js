@@ -20,6 +20,8 @@ class AdsManager extends EventEmitter {
     //     return newId;
     // }
 
+    static ID_PREFIX = 'div-gpt-ad-';
+
     static getArticleTargeting(article) {
         if (article === null) {
             return null;
@@ -99,7 +101,7 @@ class AdsManager extends EventEmitter {
         // const newId = `div-gpt-ad-${new Date().getTime()}-${Math.round(
         //     Math.random() * (Math.random() * 1000),
         // )}-${this.index}`;
-        const newId = `div-gpt-ad-${this.index}`;
+        const newId = `${AdsManager.ID_PREFIX}${this.index}`;
         this.index += 1;
         return newId;
     }
