@@ -1,8 +1,8 @@
 import Cookies from 'js-cookie';
 
-export const getXSRFToken = (xsrfName = null) => {
+export const getXSRFToken = (cookieName = null) => {
     const cookies = Cookies.get();
-    return (xsrfName !== null ? cookies[xsrfName] : null) || cookies['XSRF-TOKEN'] || null;
+    return (cookieName !== null ? cookies[cookieName] : null) || cookies['XSRF-TOKEN'] || null;
 };
 
 export const getCsrfToken = (name = null) => {
@@ -18,14 +18,14 @@ export const getCsrfToken = (name = null) => {
     );
 };
 
-export const getCSRFHeaders = (csrfName = null, xsrfName = null) => {
-    const XSRF = getXSRFToken(xsrfName);
+export const getCSRFHeaders = ({ csrfMetaName = null, xsrfCookieName = null } = {}) => {
+    const XSRF = getXSRFToken(xsrfCookieName);
     if (XSRF !== null) {
         return {
             'X-XSRF-TOKEN': XSRF,
         };
     }
-    const CSRF = getCsrfToken(csrfName);
+    const CSRF = getCsrfToken(csrfMetaName);
     if (CSRF !== null) {
         return {
             'X-CSRF-TOKEN': CSRF,
