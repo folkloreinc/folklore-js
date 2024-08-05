@@ -107,6 +107,8 @@ class AdSlot extends EventEmitter {
         if (this.destroyed) {
             return;
         }
+        this.emit('destroy', this);
+
         this.removeAllListeners();
         this.adSlot = null;
         this.rendered = false;
@@ -114,7 +116,6 @@ class AdSlot extends EventEmitter {
         this.renderEvent = null;
         this.destroyed = true;
 
-        this.emit('destroy', this);
     }
 
     getElementId() {
