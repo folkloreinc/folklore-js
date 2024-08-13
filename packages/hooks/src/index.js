@@ -12,7 +12,10 @@ export * from './useObserver';
 export { default as usePlayerCurrentTime } from './usePlayerCurrentTime';
 export { default as useVideoPlayer } from './useVideoPlayer';
 export { default as useVimeoPlayer } from './useVimeoPlayer';
-export { default as useVisualViewportSize } from './useVisualViewportSize';
+export {
+    default as useVisualViewport,
+    default as useVisualViewportSize,
+} from './useVisualViewport';
 export { default as useWindowEvent, eventsManager as windowEventsManager } from './useWindowEvent';
 export { default as useWindowScroll } from './useWindowScroll';
 export { default as useWindowSize } from './useWindowSize';
