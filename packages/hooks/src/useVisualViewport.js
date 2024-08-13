@@ -5,30 +5,35 @@ import useWindowSize from './useWindowSize';
 export default function useVisualViewport() {
     const { width: windowWidth, height: windowHeight } = useWindowSize();
 
-    const [
-        {
-            width: viewportWidth,
-            height: viewportHeight,
-            offsetTop = 0,
-            offsetLeft = 0,
-            pageLeft = 0,
-            pageTop = 0,
-        },
-        setViewport,
-    ] = useState({
+    const [{ width: viewportWidth, height: viewportHeight, ...viewport }, setViewport] = useState({
         width: windowWidth,
         height: windowHeight,
     });
 
     const updateViewport = useCallback(
         (viewPort = null) => {
-            setViewport(viewPort || window.visualViewport || {});
+            const {
+                width: newWidth = 0,
+                height: newHeight = 0,
+                offsetTop: newOffsetTop = 0,
+                offsetLeft: newOffsetLeft = 0,
+                pageLeft: newPageLeft = 0,
+                pageTop: newPageTop = 0,
+            } = viewPort || window.visualViewport || {};
+            setViewport({
+                width: newWidth,
+                height: newHeight,
+                offsetTop: newOffsetTop,
+                offsetLeft: newOffsetLeft,
+                pageLeft: newPageLeft,
+                pageTop: newPageTop,
+            });
         },
         [setViewport],
     );
 
     useEffect(() => {
-        if (typeof window === 'undefined' || (window.visualViewport || null) === null) {
+        if (typeof window.visualViewport === 'undefined') {
             return () => {};
         }
 
@@ -41,17 +46,14 @@ export default function useVisualViewport() {
         window.visualViewport.addEventListener('scroll', onUpdate);
         return () => {
             window.visualViewport.removeEventListener('resize', onUpdate);
-            window.visualViewport.addEventListener('scroll', onUpdate);
+            window.visualViewport.removeEventListener('scroll', onUpdate);
         };
     }, [updateViewport]);
 
     return {
         width: viewportWidth || windowWidth,
         height: viewportHeight || windowHeight,
-        offsetTop,
-        offsetLeft,
-        pageLeft,
-        pageTop,
+        ...viewport,
         updateViewport,
     };
 }
