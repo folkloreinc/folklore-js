@@ -1,12 +1,13 @@
 {
-    "name": "@folklore/ads",
-    "version": "0.0.64",
-    "description": "Ads library",
+    "name": "@folklore/utils",
+    "version": "0.1.0",
+    "description": "Utilities",
     "keywords": [
         "javascript",
         "size",
         "ui",
-        "utils"
+        "utils",
+        "gesture"
     ],
     "homepage": "https://github.com/folkloreinc/folklore-js",
     "repository": {
@@ -37,27 +38,10 @@
         "build": "rollup --config ../../rollup.config.js",
         "prepare": "npm run clean && npm run build"
     },
-    "devDependencies": {
-        "prop-types": "^15.7.2",
-        "react": "^17.0.0 || ^18.0.0",
-        "react-dom": "^17.0.0 || ^18.0.0"
-    },
-    "peerDependencies": {
-        "prop-types": "^15.7.2",
-        "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
-        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
-    },
-    "publishConfig": {
-        "access": "public"
-    },
-    "gitHead": "534183c15f9eaa4c9f542dcc823797d1078835eb",
     "dependencies": {
-        "@folklore/hooks": "^0.0.58",
-        "@folklore/tracking": "^0.0.23",
-        "@folklore/utils": "^0.1.0",
-        "classnames": "^2.5.1",
-        "debug": "^4.3.4",
-        "lodash": "^4.17.21",
-        "wolfy87-eventemitter": "^5.2.9"
-    }
+        "@babel/runtime": "^7.4.3",
+        "lodash": "^4.17.4",
+        "pascal-case": "^3.1.2"
+    },
+    "gitHead": "03cdca76413a59fe6bf04ca04e12db6f9e3aad5e"
 }

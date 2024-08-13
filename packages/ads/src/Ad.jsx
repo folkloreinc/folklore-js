@@ -8,8 +8,10 @@ import { getMinimumAdSize } from './utils';
 
 import { useAdsContext } from './AdsContext';
 import { useAdsTargeting } from './AdsTargetingContext';
+import RichAd from './RichAd';
 import * as AppPropTypes from './propTypes';
 import useAd from './useAd';
+import useRichAd from './useRichAd';
 
 const propTypes = {
     slot: PropTypes.string.isRequired,
@@ -27,6 +29,7 @@ const propTypes = {
     className: PropTypes.string,
     emptyClassName: PropTypes.string,
     adClassName: PropTypes.string,
+    richAdClassName: PropTypes.string,
     onRender: PropTypes.func,
     onDestroy: PropTypes.func,
     slotRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
@@ -47,6 +50,7 @@ const defaultProps = {
     className: null,
     emptyClassName: null,
     adClassName: null,
+    richAdClassName: null,
     onRender: null,
     onDestroy: null,
     slotRef: null,
@@ -68,6 +72,7 @@ function Ad({
     className,
     emptyClassName,
     adClassName,
+    richAdClassName,
     onRender,
     onDestroy,
     slotRef,
@@ -179,6 +184,9 @@ function Ad({
         disableTracking,
     });
 
+    const adContainerRef = useRef(null);
+    const richAd = useRichAd(adContainerRef, id);
+
     if (slotRef !== null && isFunction(slotRef)) {
         slotRef(slotObject);
     } else if (slotRef !== null && isObject(slotRef)) {
@@ -241,8 +249,11 @@ function Ad({
             style={!withoutStyle ? containerStyle : null}
             ref={refObserver}
         >
-            <div className={adClassName} style={adStyle}>
+            <div className={adClassName} style={adStyle} ref={adContainerRef}>
                 <div id={id} />
+                {isRendered && richAd !== null ? (
+                    <RichAd richAd={richAd} className={richAdClassName} />
+                ) : null}
             </div>
         </div>
     );

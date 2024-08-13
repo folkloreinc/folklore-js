@@ -30,6 +30,7 @@ const propTypes = {
     fetchMarginPercent: PropTypes.number,
     slots: AdPropTypes.adSlots,
     viewports: AdPropTypes.adViewports,
+    richAdComponents: PropTypes.objectOf(PropTypes.elementType),
     disabled: PropTypes.bool,
     disableTracking: PropTypes.bool,
 };
@@ -48,6 +49,7 @@ const defaultProps = {
     fetchMarginPercent: 300,
     slots: defaultSlots,
     viewports: defaultViewports,
+    richAdComponents: null,
     disabled: false,
     disableTracking: false,
 };
@@ -67,6 +69,7 @@ export function AdsProvider({
     fetchMarginPercent,
     viewports,
     slots,
+    richAdComponents,
     disabled,
     disableTracking,
 }) {
@@ -169,8 +172,17 @@ export function AdsProvider({
             slots: slotsWithSizeMapping,
             slotsPath: finalSlotsPath,
             trackingDisabled: disableTracking,
+            richAdComponents,
         }),
-        [ready, ads, viewports, slotsWithSizeMapping, finalSlotsPath, disableTracking],
+        [
+            ready,
+            ads,
+            viewports,
+            slotsWithSizeMapping,
+            finalSlotsPath,
+            disableTracking,
+            richAdComponents,
+        ],
     );
 
     return <AdsContext.Provider value={value}>{children}</AdsContext.Provider>;
