@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 import useWindowSize from './useWindowSize';
 
@@ -20,23 +20,30 @@ export default function useVisualViewport() {
         height: windowHeight,
     });
 
+    const updateViewport = useCallback(
+        (viewPort = null) => {
+            setViewport(viewPort || window.visualViewport || {});
+        },
+        [setViewport],
+    );
+
     useEffect(() => {
         if (typeof window === 'undefined' || (window.visualViewport || null) === null) {
             return () => {};
         }
-        function updateViewport(e) {
-            setViewport(e.target);
-        }
 
-        setViewport(window.visualViewport);
-
-        window.visualViewport.addEventListener('resize', updateViewport);
-        window.visualViewport.addEventListener('scroll', updateViewport);
-        return () => {
-            window.visualViewport.removeEventListener('resize', updateViewport);
-            window.visualViewport.addEventListener('scroll', updateViewport);
+        const onUpdate = (e) => {
+            updateViewport(e.target);
         };
-    }, [setViewport]);
+        updateViewport();
+
+        window.visualViewport.addEventListener('resize', onUpdate);
+        window.visualViewport.addEventListener('scroll', onUpdate);
+        return () => {
+            window.visualViewport.removeEventListener('resize', onUpdate);
+            window.visualViewport.addEventListener('scroll', onUpdate);
+        };
+    }, [updateViewport]);
 
     return {
         width: viewportWidth || windowWidth,
@@ -45,5 +52,6 @@ export default function useVisualViewport() {
         offsetLeft,
         pageLeft,
         pageTop,
+        updateViewport,
     };
 }
