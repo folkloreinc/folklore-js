@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 import useWindowSize from './useWindowSize';
 
-const useVisualViewport = () => {
+export default function useVisualViewport() {
     const { width: windowWidth, height: windowHeight } = useWindowSize();
 
     const [
@@ -21,7 +21,7 @@ const useVisualViewport = () => {
     });
 
     useEffect(() => {
-        if (!typeof window !== 'undefined' && (window.visualViewport || null) !== null) {
+        if (typeof window === 'undefined' || (window.visualViewport || null) === null) {
             return () => {};
         }
         function updateViewport(e) {
@@ -46,6 +46,4 @@ const useVisualViewport = () => {
         pageLeft,
         pageTop,
     };
-};
-
-export default useVisualViewport;
+}
