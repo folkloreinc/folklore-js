@@ -1,6 +1,7 @@
 export { default as loadDailymotion } from './loadDailymotion';
 export { default as loadFacebook } from './loadFacebook';
 export { default as loadGoogleApi } from './loadGoogleApi';
+export { default as loadGoogleIma } from './loadGoogleIma';
 export { default as loadGoogleMaps } from './loadGoogleMaps';
 export { default as loadInstagram } from './loadInstagram';
 export { default as loadSrcPlayer } from './loadSrcPlayer';
