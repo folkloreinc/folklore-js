@@ -13,11 +13,11 @@ const propTypes = {
 
 const defaultProps = {};
 
-function RichAd({ richAd }) {
+function RichAd({ richAd, ...props }) {
     const { type = null, ...richAdProps } = richAd;
     const { richAdComponents = null } = useAdsContext();
     const RichAdComponent = getComponentFromName(richAdComponents, type);
-    return RichAdComponent !== null ? <RichAdComponent {...richAdProps} /> : null;
+    return RichAdComponent !== null ? <RichAdComponent {...props} {...richAdProps} /> : null;
 }
 RichAd.propTypes = propTypes;
 RichAd.defaultProps = defaultProps;

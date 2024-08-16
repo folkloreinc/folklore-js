@@ -249,10 +249,28 @@ function Ad({
             style={!withoutStyle ? containerStyle : null}
             ref={refObserver}
         >
-            <div className={adClassName} style={adStyle} ref={adContainerRef}>
-                <div id={id} />
+            <div
+                className={adClassName}
+                style={{
+                    position: 'relative',
+                    ...adStyle,
+                }}
+                ref={adContainerRef}
+            >
+                <div
+                    id={id}
+                    style={{
+                        position: isRendered && richAd !== null ? 'absolute' : null,
+                    }}
+                />
                 {isRendered && richAd !== null ? (
-                    <RichAd richAd={richAd} className={richAdClassName} />
+                    <RichAd
+                        richAd={richAd}
+                        isFluid={isFluid}
+                        width={width}
+                        height={height}
+                        className={richAdClassName}
+                    />
                 ) : null}
             </div>
         </div>
