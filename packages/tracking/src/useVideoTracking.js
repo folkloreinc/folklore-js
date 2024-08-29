@@ -12,7 +12,8 @@ function useVideoTracking(player, params) {
         url,
         title = null,
         thumbnail = null,
-        progressSteps = [0.1, 0.25, 0.5, 0.75, 0.9],
+        progressSteps = [0.1, 0.25, 0.5, 0.75, 0.9, 1.0],
+        onProgress = null,
     } = params || {};
     const tracking = useTracking();
     const progressTrackedRef = useRef({});
@@ -111,6 +112,10 @@ function useVideoTracking(player, params) {
                     currentTime,
                 }),
             );
+
+            if (onProgress !== null) {
+                onProgress(step);
+            }
         });
 
         if (stepsToTrack !== null && stepsToTrack.length > 0) {
@@ -128,7 +133,7 @@ function useVideoTracking(player, params) {
                 },
             };
         }
-    }, [currentTime, progressTrackedRef.current, id]);
+    }, [currentTime, progressTrackedRef.current, id, onProgress]);
 }
 
 export default useVideoTracking;
