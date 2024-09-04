@@ -107,9 +107,10 @@ function useVideoTracking(player, params) {
             //     }),
             // );
             tracking.trackVideo(
-                `progress ${Math.round(step * 100, 10)}%`,
+                'progress',
                 getVideoMetadata({
                     currentTime,
+                    videoProgress: Math.round(step * 100, 10),
                 }),
             );
 

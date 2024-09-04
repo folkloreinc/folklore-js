@@ -118,6 +118,7 @@ class Tracking {
             duration = null,
             currentTime = null,
             thumbnail = null,
+            ...data
         } = {},
     ) {
         this.pushEvent('eventInteraction', {
@@ -137,6 +138,7 @@ class Tracking {
                     ? Math.round((currentTime / duration) * 100)
                     : null,
             videoThumbnail: thumbnail,
+            ...data,
         });
     }
 
