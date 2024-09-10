@@ -17,13 +17,16 @@ function useRichAd(containerRef, id, opts) {
     const { onRichAd = null } = opts || {};
 
     useEffect(() => {
+        if (id === null) {
+            return () => {};
+        }
         setRichAd(null);
         function onMessage(event) {
             if (event.origin.match(/safeframe\.googlesyndication\.com/) === null) {
                 return;
             }
-            const container = containerRef.current || document;
-            const iframe = container.querySelector('iframe') || null;
+            const container = containerRef.current || null;
+            const iframe = container !== null ? container.querySelector('iframe') || null : null;
             if (iframe === null || iframe.contentWindow !== event.source) {
                 return;
             }
