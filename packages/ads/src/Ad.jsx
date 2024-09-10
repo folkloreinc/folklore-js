@@ -30,6 +30,7 @@ const propTypes = {
     emptyClassName: PropTypes.string,
     adClassName: PropTypes.string,
     richAdClassName: PropTypes.string,
+    richAdIframeClassName: PropTypes.string,
     onRender: PropTypes.func,
     onDestroy: PropTypes.func,
     slotRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
@@ -51,6 +52,7 @@ const defaultProps = {
     emptyClassName: null,
     adClassName: null,
     richAdClassName: null,
+    richAdIframeClassName: null,
     onRender: null,
     onDestroy: null,
     slotRef: null,
@@ -73,6 +75,7 @@ function Ad({
     emptyClassName,
     adClassName,
     richAdClassName,
+    richAdIframeClassName,
     onRender,
     onDestroy,
     slotRef,
@@ -259,9 +262,12 @@ function Ad({
             >
                 <div
                     id={id}
-                    style={{
-                        position: isRendered && richAd !== null ? 'absolute' : null,
-                    }}
+                    className={classNames([
+                        {
+                            [richAdIframeClassName]:
+                                richAdIframeClassName !== null && isRendered && richAd !== null,
+                        },
+                    ])}
                 />
                 {isRendered && richAd !== null ? (
                     <RichAd
