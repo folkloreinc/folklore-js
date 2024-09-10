@@ -33,6 +33,7 @@ const propTypes = {
     richAdIframeClassName: PropTypes.string,
     onRender: PropTypes.func,
     onDestroy: PropTypes.func,
+    onRichAd: PropTypes.func,
     slotRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 };
 
@@ -55,6 +56,7 @@ const defaultProps = {
     richAdIframeClassName: null,
     onRender: null,
     onDestroy: null,
+    onRichAd: null,
     slotRef: null,
 };
 
@@ -78,6 +80,7 @@ function Ad({
     richAdIframeClassName,
     onRender,
     onDestroy,
+    onRichAd,
     slotRef,
 }) {
     const { slots = null, slotsPath = {} } = useAdsContext();
@@ -188,7 +191,9 @@ function Ad({
     });
 
     const adContainerRef = useRef(null);
-    const richAd = useRichAd(adContainerRef, id);
+    const richAd = useRichAd(adContainerRef, id, {
+        onRichAd,
+    });
 
     if (slotRef !== null && isFunction(slotRef)) {
         slotRef(slotObject);
