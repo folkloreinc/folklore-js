@@ -24,7 +24,7 @@
     "license": "ISC",
     "scripts": {
         "clean": "rm -rf dist",
-        "build": "rollup --bundleConfigAsCjs --config rollup.config.js",
+        "build": "rollup  --bundleConfigAsCjs --config rollup.config.js",
         "prepare": "npm run build && npm run build",
         "cli": "../../node_modules/.bin/babel-node ./src/cli.js"
     },
@@ -41,7 +41,7 @@
         "@babel/preset-env": "^7.22.5",
         "@babel/preset-react": "^7.22.5",
         "@babel/runtime": "^7.22.5",
-        "@formatjs/cli-lib": "^6.1.2",
+        "@formatjs/cli-lib": "6.4.5",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
         "@svgr/webpack": "^8.0.1",
         "babel-loader": "^9.1.2",
