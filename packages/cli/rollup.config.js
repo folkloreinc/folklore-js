@@ -10,7 +10,16 @@ export default [
             format: 'cjs',
             banner: '#!/usr/bin/env node',
         },
-        plugins,
+        plugins: [
+            resolve({
+                // exportConditions: ['node'],
+                // modulesOnly: true,
+                resolveOnly: [
+                    'chalk',
+                ],
+            }),
+            ...plugins,
+        ],
     },
     baseConfig,
 ];

@@ -137,7 +137,7 @@ module.exports = class NodeProjectGenerator extends Generator {
 
                 const scripts = {
                     'build:web': `flklr build --load-env ${ensureLeadingDotSlash(webEntryPath)}`,
-                    'build:rollup': `rollup --config rollup.config.js`,
+                    'build:rollup': `rollup --bundleConfigAsCjs --config rollup.config.js`,
                     'build': 'npm run build:web && npm run build:rollup',
                     'server': `babel-node ${ensureLeadingDotSlash(serverEntryPath)}`,
                     'start': `flklr serve --load-env ${ensureLeadingDotSlash(webEntryPath)}`,

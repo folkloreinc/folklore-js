@@ -32,7 +32,7 @@
     ],
     "scripts": {
         "clean": "rm -rf dist",
-        "build": "rollup --config ../../rollup.config.js",
+        "build": "rollup --bundleConfigAsCjs --config ../../rollup.config.js",
         "prepare": "npm run clean && npm run build"
     },
     "dependencies": {
