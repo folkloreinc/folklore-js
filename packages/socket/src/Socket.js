@@ -2,6 +2,7 @@ import createDebug from 'debug';
 import invariant from 'invariant';
 import isFunction from 'lodash/isFunction';
 import EventEmitter from 'wolfy87-eventemitter';
+import isString from 'lodash/isString';
 
 import SocketAdapters from './adapters/index';
 
@@ -217,8 +218,7 @@ class Socket extends EventEmitter {
         debug('Init');
 
         const { adapter: adapterKey, channels, ...adapterOptions } = this.options;
-        const SocketAdapter = Socket.getAdapter(adapterKey);
-
+        const SocketAdapter = isString(adapterKey) ? Socket.getAdapter(adapterKey) : adapterKey;
         this.adapter = new SocketAdapter(adapterOptions);
 
         const methods = ['start', 'stop', 'destroy', 'updateChannels', 'send'];
