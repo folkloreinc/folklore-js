@@ -3,7 +3,7 @@ import EventEmitter from 'wolfy87-eventemitter';
 
 const debug = createDebug('folklore:socket:pusher');
 
-class PusherSocker extends EventEmitter {
+class PusherSocket extends EventEmitter {
     constructor(opts) {
         super();
         this.options = {
@@ -82,7 +82,7 @@ class PusherSocker extends EventEmitter {
     }
 
     loadPusher() {
-        debug('Load PusherJs');
+        debug('Load Pusher');
         return import('pusher-js').then(({ default: Pusher }) => {
             this.Pusher = Pusher;
         });
@@ -92,6 +92,8 @@ class PusherSocker extends EventEmitter {
         if (this.destroyed) {
             return;
         }
+
+        debug('Create Pusher appKey: %s', this.options.appKey);
 
         const { Pusher } = this;
 
@@ -123,7 +125,7 @@ class PusherSocker extends EventEmitter {
             return;
         }
 
-        if (this.io === null) {
+        if (this.pusher === null) {
             debug('Socket.io not ready.');
             this.shouldStart = true;
             return;
@@ -195,4 +197,4 @@ class PusherSocker extends EventEmitter {
     }
 }
 
-export default PusherSocker;
+export default PusherSocket
