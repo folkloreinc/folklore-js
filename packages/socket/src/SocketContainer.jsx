@@ -1,5 +1,5 @@
-import React, { useMemo, useEffect, useRef, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
+import React, { useMemo, useEffect, useRef, useCallback, useState } from 'react';
 
 import Socket from './Socket';
 import SocketContext from './SocketContext';
@@ -32,7 +32,7 @@ const defaultProps = {
     children: null,
 };
 
-const SocketContainer = function ({
+function SocketContainer({
     children,
     socket,
     autoStart,
@@ -44,11 +44,13 @@ const SocketContainer = function ({
     subscribeKey,
     secretKey,
     channels: initialChannels,
+    ...props
 }) {
     const finalSocket = useMemo(
         () =>
             socket ||
             new Socket({
+                ...props,
                 adapter,
                 host,
                 namespace,
@@ -139,7 +141,7 @@ const SocketContainer = function ({
     );
 
     return <SocketContext.Provider value={value}>{children}</SocketContext.Provider>;
-};
+}
 
 SocketContainer.propTypes = propTypes;
 SocketContainer.defaultProps = defaultProps;
