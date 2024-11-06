@@ -13,6 +13,7 @@ const createWebpackServer = (config, opts = {}) => {
         open = true,
         indexPath = '/index.html',
         setupMiddlewares = null,
+        headers = null,
         ...otherOpts
     } = opts;
     const {
@@ -42,6 +43,7 @@ const createWebpackServer = (config, opts = {}) => {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': '*',
             'Access-Control-Allow-Headers': '*',
+            ...headers,
         },
         ...(isString(proxy)
             ? {

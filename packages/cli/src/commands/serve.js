@@ -38,7 +38,7 @@ setupWebpackCommand(command)
         // Get options
         const packageOptions = getOptionsFromPackage(packageJson);
         const envOptions = getOptionsFromEnv();
-        const { proxy, open, host, ...finalOptions } = {
+        const { proxy, open, host, headers, ...finalOptions } = {
             ...commandOptions,
             ...envOptions,
             ...packageOptions,
@@ -59,6 +59,7 @@ setupWebpackCommand(command)
             open,
             host,
             setupMiddlewares,
+            headers,
         });
 
         // Start server
