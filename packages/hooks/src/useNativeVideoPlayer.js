@@ -101,6 +101,12 @@ export default function useNativeVideoPlayer(
 
         const onCanPlay = () => {
             setLoaded(true);
+            const newMetadata = {
+                duration: player.duration,
+                width: player.videoWidth,
+                height: player.videoHeight,
+            };
+            setMetadata(newMetadata);
             debug('onCanPlay [URL: %s]', url);
         };
         const onMetadataLoaded = () => {
