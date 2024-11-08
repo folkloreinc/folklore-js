@@ -150,7 +150,6 @@ class PusherSocket extends EventEmitter {
             {},
         );
 
-
         this.emit('start');
     }
 
@@ -197,4 +196,4 @@ class PusherSocket extends EventEmitter {
     }
 }
 
-export default PusherSocket
+export default PusherSocket;

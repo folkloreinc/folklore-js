@@ -1,11 +1,11 @@
-import { useContext, useEffect, useState } from 'react';
 import isString from 'lodash/isString';
+import { useContext, useEffect, useState } from 'react';
 
 import SocketContext from './SocketContext';
 
 const useSocket = (
     channelNames = null,
-    { socket: customSocket = null, onMessage: customOnMessage = null } = {},
+    { socket: customSocket = null, onMessage: customOnMessage = null, keepAlive = true } = {},
 ) => {
     const { socket: contextSocket, subscribe, unsubscribe } = useContext(SocketContext);
     const socket = customSocket || contextSocket || null;
@@ -38,11 +38,11 @@ const useSocket = (
             if (channels !== null) {
                 unsubscribe(channels);
             }
-            if (!wasStarted) {
+            if (socket.isStarted() && !keepAlive) {
                 socket.stop();
             }
         };
-    }, [channelsKey, customSocket]);
+    }, [channelsKey, customSocket, keepAlive]);
 
     useEffect(() => {
         if (socket === null) {
