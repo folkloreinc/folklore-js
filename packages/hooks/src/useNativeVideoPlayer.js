@@ -167,7 +167,7 @@ export default function useNativeVideoPlayer(
             player.removeEventListener('pause', onPause);
             player.removeEventListener('ended', onEnded);
         };
-    }, [url, elementRef.current, setPlayState, setMetadata, setMuted, setLoaded]);
+    }, [url, setPlayState, setMetadata, setMuted, setLoaded]);
 
     const { playing } = playState;
     const currentTime = usePlayerCurrentTime(elementRef.current, {
