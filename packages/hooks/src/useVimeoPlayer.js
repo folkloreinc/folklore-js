@@ -16,6 +16,7 @@ export default function useVimeoPlayer(
         autopause = true,
         byline = false,
         controls = false,
+        muted: providedMuted = false,
         initialMuted = false,
         timeUpdateInterval = 1000,
         onTimeUpdate: customOnTimeUpdate = null,
@@ -41,7 +42,7 @@ export default function useVimeoPlayer(
     const videoId = useMemo(() => getVideoId(id), [id]);
     const [ready, setReady] = useState(false);
     const [loaded, setLoaded] = useState(false);
-    const [volume, setVolumeState] = useState(initialMuted ? 0 : 1);
+    const [volume, setVolumeState] = useState(initialMuted || providedMuted ? 0 : 1);
     const [playState, setPlayState] = useState({
         playing: false,
         paused: false,

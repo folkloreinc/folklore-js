@@ -13,6 +13,7 @@ export default function useNativeVideoPlayer(
         width = 0,
         height = 0,
         duration = 0,
+        muted: providedMuted = false,
         initialMuted = false,
         timeUpdateInterval = 1000,
         onTimeUpdate: customOnTimeUpdate = null,
@@ -23,7 +24,7 @@ export default function useNativeVideoPlayer(
     const elementRef = useRef(null);
 
     const [loaded, setLoaded] = useState(false);
-    const [muted, setMuted] = useState(initialMuted);
+    const [muted, setMuted] = useState(initialMuted || providedMuted);
     const [playState, setPlayState] = useState({
         playing: false,
         paused: false,

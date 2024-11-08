@@ -15,7 +15,8 @@ export default function useYouTubePlayer(
         autoplay = false,
         controls = true,
         timeUpdateInterval = 1000,
-        muted: initialMuted = false,
+        muted: providedMuted = false,
+        initialMuted = false,
         onVolumeChange: customOnVolumeChange = null,
         onTimeUpdate: customOnTimeUpdate = null,
         getVideoId = (url) => {
@@ -50,7 +51,7 @@ export default function useYouTubePlayer(
     const videoId = useMemo(() => getVideoId(id), [id]);
 
     const [ready, setReady] = useState(false);
-    const [muted, setMuted] = useState(initialMuted);
+    const [muted, setMuted] = useState(initialMuted || providedMuted);
     const [playState, setPlayState] = useState({
         playing: false,
         paused: false,

@@ -9,7 +9,8 @@ export default function useDailymotionPlayer(id = null, params = {}) {
         width = 0,
         height = 0,
         duration = 0,
-        muted: initialMuted = false,
+        muted: providedMuted = false,
+        initialMuted = false,
         start = 0,
         embedPlayerId = null,
         onTimeUpdate: customOnTimeUpdate = null,
@@ -52,8 +53,8 @@ export default function useDailymotionPlayer(id = null, params = {}) {
     }
     const elementHasChanged = elementRef.current !== playerElementRef.current;
 
-    const [muted, setMuted] = useState(initialMuted);
-    const [volume, setVolumeState] = useState(initialMuted ? 0 : 1);
+    const [muted, setMuted] = useState(initialMuted || providedMuted);
+    const [volume, setVolumeState] = useState(initialMuted || providedMuted ? 0 : 1);
     const [currentTime, setCurrentTime] = useState(0);
     const [playState, setPlayState] = useState({
         playing: false,
