@@ -23,7 +23,7 @@ export default function useNativeVideoPlayer(
     const elementRef = useRef(null);
 
     const [loaded, setLoaded] = useState(false);
-    const [volume, setVolumeState] = useState(initialMuted ? 0 : 1);
+    const [muted, setMuted] = useState(initialMuted);
     const [playState, setPlayState] = useState({
         playing: false,
         paused: false,
@@ -136,6 +136,10 @@ export default function useNativeVideoPlayer(
             });
             debug('onPause [URL: %s]', url);
         };
+        const onVolumeChange = () => {
+            setMuted(player.muted);
+            debug('onVolumeChange [URL: %s]', url);
+        };
         const onEnded = () => {
             setPlayState({
                 playing: false,
@@ -150,6 +154,7 @@ export default function useNativeVideoPlayer(
         player.addEventListener('canplay', onCanPlay);
         player.addEventListener('metadataloaded', onMetadataLoaded);
         player.addEventListener('play', onPlay);
+        player.addEventListener('volumechange', onVolumeChange);
         player.addEventListener('pause', onPause);
         player.addEventListener('ended', onEnded);
 
@@ -158,10 +163,11 @@ export default function useNativeVideoPlayer(
             player.removeEventListener('canplay', onCanPlay);
             player.removeEventListener('metadataloaded', onMetadataLoaded);
             player.removeEventListener('play', onPlay);
+            player.removeEventListener('volumechange', onVolumeChange);
             player.removeEventListener('pause', onPause);
             player.removeEventListener('ended', onEnded);
         };
-    }, [url, elementRef.current, setPlayState, setMetadata, setVolumeState, setLoaded]);
+    }, [url, elementRef.current, setPlayState, setMetadata, setMuted, setLoaded]);
 
     const { playing } = playState;
     const currentTime = usePlayerCurrentTime(elementRef.current, {
@@ -184,8 +190,7 @@ export default function useNativeVideoPlayer(
         ready: true,
         currentTime,
         loaded,
-        muted: volume === 0,
-        volume,
+        muted,
         ...metadata,
         ...playState,
     };
