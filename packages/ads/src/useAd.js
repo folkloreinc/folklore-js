@@ -108,7 +108,7 @@ function useAd(
     }, [adsManager, adsReady, slot]);
 
     useEffect(() => {
-        const slotReady = slot !== null && !slot.isDefined();
+        const slotReady = slot !== null && !slot.isDisplayed();
         if (adsReady && slotReady && (alwaysRender || isVisible)) {
             adsManager.displaySlot(slot);
             track('Init', slot);
