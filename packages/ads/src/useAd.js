@@ -102,12 +102,18 @@ function useAd(
     // Render ad when visible
     useEffect(() => {
         const slotReady = slot !== null && !slot.isDefined();
-        if (adsReady && slotReady && (alwaysRender || isVisible)) {
+        if (adsReady && slotReady) {
             adsManager.defineSlot(slot);
+        }
+    }, [adsManager, adsReady, slot]);
+
+    useEffect(() => {
+        const slotReady = slot !== null && !slot.isDefined();
+        if (adsReady && slotReady && (alwaysRender || isVisible)) {
             adsManager.displaySlot(slot);
             track('Init', slot);
         }
-    }, [adsManager, adsReady, slot, alwaysRender, isIntersecting, track]);
+    }, [adsManager, adsReady, slot, alwaysRender, isVisible, track]);
 
     // Refresh ads slot
     useEffect(() => {
