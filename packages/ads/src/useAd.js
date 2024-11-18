@@ -84,7 +84,7 @@ function useAd(
                 adsManager.destroySlot(newSlot);
             }
         };
-    }, [adsManager, path, disabled, size, sizeMapping, alwaysRender, categoryExclusions]);
+    }, [adsManager, path, disabled, size, sizeMapping, categoryExclusions]);
 
     useEffect(() => {
         if (slot !== null) {
