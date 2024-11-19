@@ -32,7 +32,7 @@ module.exports = class LaravelProjectGenerator extends Generator {
         this.option('laravel-version', {
             type: String,
             desc: 'Laravel version',
-            defaults: '10',
+            defaults: '11',
         });
 
         this.option('laravel-branch', {
@@ -373,12 +373,14 @@ module.exports = class LaravelProjectGenerator extends Generator {
             composerJSON() {
                 this.composerJson.merge({
                     require: {
+                        // Sanctum is not required by default in Laravel 11, so we have to require it manually
+                        'laravel/sanctum': '^4.0',
                         'folklore/laravel-folklore': 'v1.x-dev',
                         'folklore/laravel-locale': 'v8.x-dev',
                         'folklore/laravel-image': 'v1.x-dev',
                     },
                     'require-dev': {
-                        'laravel/telescope': '^4.12.0',
+                        'laravel/telescope': '^5',
                     },
                     extra: {
                         laravel: {
@@ -498,6 +500,18 @@ module.exports = class LaravelProjectGenerator extends Generator {
                 }
 
                 await this.spawnCommand('php', ['artisan', 'key:generate']);
+            },
+
+            async sanctum() {
+                if (this.options['skip-install']) {
+                    return;
+                }
+
+                await this.spawnCommand('php', [
+                    'artisan',
+                    'install:api',
+                    '--without-migration-prompt',
+                ]);
             },
 
             async vendorPublish() {
