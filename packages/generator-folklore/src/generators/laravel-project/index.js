@@ -327,6 +327,7 @@ module.exports = class LaravelProjectGenerator extends Generator {
                         dot: true,
                         nodir: true,
                         cwd: cachePath,
+                        ignore: ['postcss.config.js', 'tailwind.config.js'],
                     });
 
                     let source;
