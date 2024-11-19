@@ -310,9 +310,6 @@ class AdsManager extends EventEmitter {
     }
 
     displaySlot(slot) {
-        if (!slot.canBeDisplayed()) {
-            return;
-        }
         this.callDisplaySlot(slot);
     }
 
@@ -320,12 +317,15 @@ class AdsManager extends EventEmitter {
     callDisplaySlot(slot) {
         const { googletag } = this;
         googletag.cmd.push(() => {
+            if (!slot.canBeDisplayed()) {
+                return;
+            }
             const id = slot.getElementId();
             const path = slot.getAdPath();
             debug('Displaying slot #%s(%s)...', id, path);
-            googletag.display(slot.getAdSlot());
+            googletag.display(id);
             if (googletag.pubads().isInitialLoadDisabled()) {
-                googletag.pubads().refresh([slot.getAdSlot()]);
+                googletag.pubads().refresh([id]);
             }
             slot.setDisplayed(true);
         });
