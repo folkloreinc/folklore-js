@@ -116,12 +116,6 @@ module.exports = class LaravelProjectGenerator extends Generator {
             desc: 'Add mediatheque',
             defaults: false,
         });
-
-        this.option('auth', {
-            type: Boolean,
-            desc: 'Add auth',
-            defaults: false,
-        });
     }
 
     get prompting() {
@@ -182,11 +176,6 @@ module.exports = class LaravelProjectGenerator extends Generator {
                         value: 'panneau',
                         checked: true,
                     },
-                    !this.options.auth && {
-                        name: 'Auth',
-                        value: 'auth',
-                        checked: true,
-                    },
                 ].filter(Boolean);
                 if (featuresChoices.length) {
                     prompts.push({
@@ -218,9 +207,6 @@ module.exports = class LaravelProjectGenerator extends Generator {
                     const features = answers.features || [];
                     if (features.indexOf('panneau') !== -1) {
                         this.options.panneau = true;
-                    }
-                    if (features.indexOf('auth') !== -1) {
-                        this.options.auth = true;
                     }
                     if (features.indexOf('mediatheque') !== -1) {
                         this.options.mediatheque = true;
@@ -315,17 +301,6 @@ module.exports = class LaravelProjectGenerator extends Generator {
                 quiet: true,
             });
         }
-
-        // if (this.options.auth) {
-        //     this.composeWith('folklore:laravel-auth', {
-        //         'project-name': this.options['project-name'],
-        //         'js-path': jsSrcPath,
-        //         'styles-path': stylesSrcPath,
-        //         'skip-install': true,
-        //         'install-npm': true,
-        //         quiet: true,
-        //     });
-        // }
     }
 
     get writing() {
