@@ -12,6 +12,7 @@ function useVideoTracking(player, params) {
         url,
         title = null,
         thumbnail = null,
+        disabled = false,
         progressSteps = [0.1, 0.25, 0.5, 0.75, 0.9, 1.0],
         onProgress = null,
     } = params || {};
@@ -48,7 +49,7 @@ function useVideoTracking(player, params) {
     );
 
     useEffect(() => {
-        if (playing) {
+        if (playing && !disabled) {
             tracking.trackVideo(
                 'play',
                 getVideoMetadata({
@@ -56,10 +57,10 @@ function useVideoTracking(player, params) {
                 }),
             );
         }
-    }, [playing]);
+    }, [playing, disabled]);
 
     useEffect(() => {
-        if (paused) {
+        if (paused && !disabled) {
             tracking.trackVideo(
                 'pause',
                 getVideoMetadata({
@@ -67,10 +68,10 @@ function useVideoTracking(player, params) {
                 }),
             );
         }
-    }, [paused]);
+    }, [paused, disabled]);
 
     useEffect(() => {
-        if (ended) {
+        if (ended && !disabled) {
             tracking.trackVideo(
                 'end',
                 getVideoMetadata({
@@ -78,7 +79,7 @@ function useVideoTracking(player, params) {
                 }),
             );
         }
-    }, [ended]);
+    }, [ended, disabled]);
 
     useEffect(() => {
         if (
@@ -87,7 +88,8 @@ function useVideoTracking(player, params) {
             duration === null ||
             duration <= 0 ||
             progressSteps === null ||
-            progressSteps.length === 0
+            progressSteps.length === 0 ||
+            disabled
         ) {
             return;
         }
@@ -134,7 +136,7 @@ function useVideoTracking(player, params) {
                 },
             };
         }
-    }, [currentTime, progressTrackedRef.current, id, onProgress]);
+    }, [currentTime, progressTrackedRef.current, id, onProgress, disabled]);
 }
 
 export default useVideoTracking;
