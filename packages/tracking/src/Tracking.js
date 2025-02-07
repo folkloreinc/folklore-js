@@ -8,6 +8,7 @@ class Tracking {
             disabled: false,
             paused: false,
             variables: null,
+            withoutIdleCallback: false,
             ...opts,
         };
 
@@ -51,11 +52,17 @@ class Tracking {
     }
 
     pushNow(...args) {
-        const { dataLayer = null } = this.options;
+        const { dataLayer = null, withoutIdleCallback = false } = this.options;
         if (dataLayer === null || this.disabled) {
             return;
         }
-        dataLayer.push(...args);
+        if (!withoutIdleCallback && 'requestIdleCallback' in window) {
+            window.requestIdleCallback(() => {
+                dataLayer.push(...args);
+            });
+        } else {
+            dataLayer.push(...args);
+        }
     }
 
     push(...args) {
