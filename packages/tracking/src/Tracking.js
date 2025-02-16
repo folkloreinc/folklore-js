@@ -60,6 +60,10 @@ class Tracking {
             window.requestIdleCallback(() => {
                 dataLayer.push(...args);
             });
+        } else if (!withoutIdleCallback) {
+            setTimeout(() => {
+                dataLayer.push(...args);
+            }, 0);
         } else {
             dataLayer.push(...args);
         }
