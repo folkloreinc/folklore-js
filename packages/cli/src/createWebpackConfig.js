@@ -39,6 +39,7 @@ export default (entry, opts = {}) => {
         plugins = null,
         profile = false,
         babelRc = false,
+        typescript = false,
         babelConfigFile = null,
         withoutFormatjs = false,
         defineEnv: extraDefineEnv = null,
@@ -303,7 +304,8 @@ export default (entry, opts = {}) => {
                                             throwIfNamespace: false,
                                         },
                                     ],
-                                ],
+                                    typescript && [require.resolve('@babel/preset-typescript'), {}],
+                                ].filter(Boolean),
                                 plugins: [
                                     isDevelopment && require.resolve('react-refresh/babel'),
                                     !withoutFormatjs && [

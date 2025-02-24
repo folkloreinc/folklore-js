@@ -22,6 +22,8 @@ const setupWebpackCommand = (command) => {
         .option('--asset-output-path <path>', 'Output path for asset files')
         .option('--asset-output-filename <name>', 'Output filename for asset files')
         // Webpack
+        .option('--typescript', 'Use TypeScript')
+        // Webpack
         .option('--disable-source-map', 'Disable source map')
         .option('--loaders <path>', 'Path to loaders file')
         .option('--plugins <path>', 'Path to plugins file')
