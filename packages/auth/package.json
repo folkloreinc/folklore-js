@@ -32,6 +32,12 @@
     "files": [
         "dist"
     ],
+    "exports": {
+        ".": {
+            "import": "./dist/es.js",
+            "require": "./dist/cjs.js"
+        }
+    },
     "scripts": {
         "clean": "rm -rf dist",
         "build": "rollup --bundleConfigAsCjs --config ../../rollup.config.js",
