@@ -27,15 +27,14 @@
             "email": "nrb@folklore.email"
         }
     ],
-    "main": "dist/cjs.js",
+    "type": "module",
     "module": "dist/es.js",
     "files": [
         "dist"
     ],
     "exports": {
         ".": {
-            "import": "./dist/es.js",
-            "require": "./dist/cjs.js"
+            "import": "./dist/es.js"
         }
     },
     "scripts": {
