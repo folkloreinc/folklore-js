@@ -5,18 +5,15 @@ import { navigate } from 'wouter/use-browser-location';
 
 const propTypes = {
     location: PropTypes.string.isRequired,
-    children: PropTypes.node,
+    search: PropTypes.string,
+    children: PropTypes.node.isRequired,
 };
 
-const defaultProps = {
-    children: null,
-};
-
-function StaticRouter({ location, children }) {
+function StaticRouter({ location, search = null, children }) {
     const hook = useCallback(() => [location.split('?')[0], navigate], [location]);
     const searchHook = useCallback(
-        () => (location.indexOf('?') !== -1 ? location.split('?')[1] : ''),
-        [location],
+        () => search ?? (location.indexOf('?') !== -1 ? location.split('?')[1] : ''),
+        [search, location],
     );
     const { parser } = useRouter();
     return (
@@ -27,6 +24,5 @@ function StaticRouter({ location, children }) {
 }
 
 StaticRouter.propTypes = propTypes;
-StaticRouter.defaultProps = defaultProps;
 
 export default StaticRouter;
