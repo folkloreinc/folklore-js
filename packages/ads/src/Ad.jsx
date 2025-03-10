@@ -111,7 +111,15 @@ function Ad({
             viewport: providedViewport || contextViewport || targetingViewport,
             targeting: otherProps || {},
         };
-    }, [contextTargeting, providedTargeting, slotName, providedRefreshInterval]);
+    }, [
+        slotName,
+        contextTargeting,
+        providedTargeting,
+        providedRefreshInterval,
+        providedDisabled,
+        providedViewport,
+        contextViewport,
+    ]);
 
     const lastRenderedSize = useRef(null);
     const wasDisabled = useRef(disabled);
