@@ -1,25 +1,33 @@
 const path = require('path');
 const lernaJSON = require('./lerna.json');
 
-module.exports = {
-    babelrcRoots: ['.', ...lernaJSON.packages.map((packagePath) => path.join('./', packagePath))],
-    presets: [
-        [
-            require.resolve('@babel/preset-env'),
-            {
-                targets: 'defaults',
-                modules: false,
-                useBuiltIns: false,
-            },
+module.exports = (api) => {
+    api.cache(true);
+    return {
+        babelrcRoots: [
+            '.',
+            ...lernaJSON.packages.map((packagePath) => path.join('./', packagePath)),
         ],
-        [
-            require.resolve('@babel/preset-react'),
-            {
-                runtime: 'automatic',
-                throwIfNamespace: false,
-            },
+        presets: [
+            [
+                require.resolve('@babel/preset-env'),
+                process.env.NODE_ENV === 'test'
+                    ? { targets: { node: 'current' } }
+                    : {
+                          targets: 'defaults',
+                          modules: false,
+                          useBuiltIns: false,
+                      },
+            ],
+            [
+                require.resolve('@babel/preset-react'),
+                {
+                    runtime: 'automatic',
+                    throwIfNamespace: false,
+                },
+            ],
         ],
-    ],
 
-    plugins: [[require.resolve('@babel/plugin-transform-runtime'), {}]],
+        plugins: [[require.resolve('@babel/plugin-transform-runtime'), {}]],
+    };
 };

@@ -3,7 +3,7 @@ import debounce from 'lodash/debounce';
 import PropTypes from 'prop-types';
 import React, { useState, useContext, useEffect, useMemo, useRef } from 'react';
 
-import { getSizeMappingFromSlot } from './utils';
+import { getSizeFromSizeMapping, getSizeMappingFromSlot } from './utils';
 
 import AdsManager from './AdsManager';
 import { viewports as defaultViewports, slots as defaultSlots } from './defaults';
@@ -28,6 +28,7 @@ const propTypes = {
     mobileScaling: PropTypes.number,
     renderMarginPercent: PropTypes.number,
     fetchMarginPercent: PropTypes.number,
+    viewport: PropTypes.string,
     slots: AdPropTypes.adSlots,
     viewports: AdPropTypes.adViewports,
     richAdComponents: PropTypes.objectOf(PropTypes.elementType),
@@ -47,6 +48,7 @@ const defaultProps = {
     mobileScaling: 1.0,
     renderMarginPercent: 100,
     fetchMarginPercent: 300,
+    viewport: null,
     slots: defaultSlots,
     viewports: defaultViewports,
     richAdComponents: null,
@@ -67,6 +69,7 @@ export function AdsProvider({
     mobileScaling,
     renderMarginPercent,
     fetchMarginPercent,
+    viewport,
     viewports,
     slots,
     richAdComponents,
@@ -138,16 +141,19 @@ export function AdsProvider({
 
     const slotsWithSizeMapping = useMemo(
         () =>
-            Object.keys(slots || {}).reduce(
-                (map, key) => ({
+            Object.keys(slots || {}).reduce((map, key) => {
+                const slot = slots[key];
+                const { size } = slot;
+                const sizeMapping = getSizeMappingFromSlot(slot, viewports);
+                return {
                     ...map,
                     [key]: {
-                        ...slots[key],
-                        sizeMapping: getSizeMappingFromSlot(slots[key], viewports),
+                        ...slot,
+                        size: size || getSizeFromSizeMapping(sizeMapping || null),
+                        sizeMapping,
                     },
-                }),
-                {},
-            ),
+                };
+            }, {}),
         [],
     );
 
@@ -169,6 +175,7 @@ export function AdsProvider({
             ready,
             ads,
             viewports,
+            viewport,
             slots: slotsWithSizeMapping,
             slotsPath: finalSlotsPath,
             trackingDisabled: disableTracking,
@@ -178,6 +185,7 @@ export function AdsProvider({
             ready,
             ads,
             viewports,
+            viewport,
             slotsWithSizeMapping,
             finalSlotsPath,
             disableTracking,

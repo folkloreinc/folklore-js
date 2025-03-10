@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import classNames from 'classnames';
 import isFunction from 'lodash/isFunction';
 import isObject from 'lodash/isObject';
@@ -18,6 +19,7 @@ const propTypes = {
     path: AppPropTypes.adPath,
     size: AppPropTypes.adSize,
     sizeMapping: AppPropTypes.adSizeMapping,
+    viewport: PropTypes.string,
     targeting: AppPropTypes.adTargeting,
     refreshInterval: PropTypes.number,
     alwaysRender: PropTypes.bool,
@@ -37,107 +39,91 @@ const propTypes = {
     slotRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 };
 
-const defaultProps = {
-    path: null,
-    size: null,
-    sizeMapping: null,
-    targeting: null,
-    refreshInterval: null,
-    alwaysRender: true,
-    disabled: false,
-    disableTracking: false,
-    shouldKeepSize: false,
-    withoutStyle: false,
-    withoutMinimumSize: false,
-    className: null,
-    emptyClassName: null,
-    adClassName: null,
-    richAdClassName: null,
-    richAdIframeClassName: null,
-    onRender: null,
-    onDestroy: null,
-    onRichAd: null,
-    slotRef: null,
-};
-
 function Ad({
-    slot: slotName,
-    path,
-    size,
-    sizeMapping,
-    targeting,
-    refreshInterval,
-    alwaysRender,
-    disabled,
-    disableTracking,
-    shouldKeepSize,
-    withoutStyle,
-    withoutMinimumSize,
-    className,
-    emptyClassName,
-    adClassName,
-    richAdClassName,
-    richAdIframeClassName,
-    onRender,
-    onDestroy,
-    onRichAd,
-    slotRef,
+    slot: slotName = null,
+    path: providedPath = null,
+    size: providedSize = null,
+    sizeMapping: providedSizeMapping = null,
+    viewport: providedViewport = null,
+    targeting: providedTargeting = null,
+    refreshInterval: providedRefreshInterval = null,
+    alwaysRender = true,
+    disabled: providedDisabled = false,
+    disableTracking = false,
+    shouldKeepSize = false,
+    withoutStyle = false,
+    withoutMinimumSize = false,
+    className = null,
+    emptyClassName = null,
+    adClassName = null,
+    richAdClassName = null,
+    richAdIframeClassName = null,
+    onRender = null,
+    onDestroy = null,
+    onRichAd = null,
+    slotRef = null,
 }) {
-    const { slots = null, slotsPath = {} } = useAdsContext();
+    const { slots = null, slotsPath = null, viewport: contextViewport = null } = useAdsContext();
+    const { default: defaultSlotPath = null } = slotsPath || {};
     const slot = slotName !== null && slots !== null ? slots[slotName] || null : null;
-    const finalPath =
-        path ||
-        (slot !== null ? slot.path || null : null) ||
-        (slotName !== null ? slotsPath[slotName] : null) ||
-        slotsPath.default ||
+    const {
+        sizeMapping: slotSizeMapping = null,
+        size: slotSize = null,
+        path: slotPath = null,
+    } = slot || {};
+    const path =
+        providedPath ||
+        slotPath ||
+        (slotName !== null && slotsPath !== null ? slotsPath[slotName] : null) ||
+        defaultSlotPath ||
         null;
-    const finalSize = size || (slot !== null ? slot.size || null : null);
-    const finalSizeMapping = sizeMapping || (slot !== null ? slot.sizeMapping || null : null);
+
+    // Size
+    const size = providedSize || slotSize;
+    const sizeMapping = providedSizeMapping || slotSizeMapping;
     const minimumSize = useMemo(
         () =>
             getMinimumAdSize(
-                finalSizeMapping !== null
-                    ? finalSizeMapping.reduce(
-                          (allSizes, sizeMap) => [...allSizes, sizeMap[1]],
-                          [finalSize],
-                      )
-                    : finalSize,
+                sizeMapping !== null
+                    ? sizeMapping.reduce((allSizes, sizeMap) => [...allSizes, sizeMap[1]], [size])
+                    : [size],
             ),
-        [finalSizeMapping, finalSize],
+        [sizeMapping, size],
     );
 
     // Targeting
     const contextTargeting = useAdsTargeting();
-    const { disabled: targetingDisabled = false } = contextTargeting || {};
-    const finalDisabled = disabled || targetingDisabled;
-
-    const allTargeting = useMemo(() => {
-        const { disabled: removedDisabled, ...otherTargeting } = contextTargeting || {};
-        return {
+    const { targeting, refreshInterval, disabled, viewport } = useMemo(() => {
+        const allTargeting = {
             ...(slotName !== null ? { slot: slotName } : null),
-            ...otherTargeting,
-            ...targeting,
+            ...contextTargeting,
+            ...providedTargeting,
         };
-    }, [contextTargeting, targeting, slotName]);
-
-    const finalAdTargeting = useMemo(() => {
-        const { refreshAds = null, ...otherProps } = allTargeting || {};
+        const {
+            refreshAds = null,
+            disabled: targetingDisabled = false,
+            viewport: targetingViewport = null,
+            ...otherProps
+        } = allTargeting || {};
         return {
             refreshInterval:
-                refreshAds !== null && refreshAds === 'inactive' ? null : refreshInterval,
+                refreshAds !== null && refreshAds === 'inactive' ? null : providedRefreshInterval,
+            disabled: providedDisabled || targetingDisabled,
+            viewport: providedViewport || contextViewport || targetingViewport,
             targeting: otherProps || {},
         };
-    }, [allTargeting, refreshInterval]);
+    }, [contextTargeting, providedTargeting, slotName, providedRefreshInterval]);
 
     const lastRenderedSize = useRef(null);
-    const wasDisabled = useRef(finalDisabled);
+    const wasDisabled = useRef(disabled);
+    useEffect(() => {}, []);
     const onAdRender = useCallback(
         (event) => {
             const { isEmpty: newIsEmpty = true, width: newWidth, height: newHeight } = event || {};
 
-            if (finalDisabled) {
+            if (disabled) {
                 wasDisabled.current = true;
-            } else if (!finalDisabled && !newIsEmpty) {
+            } else if (!disabled && !newIsEmpty) {
                 wasDisabled.current = false;
             }
 
@@ -152,7 +138,7 @@ function Ad({
                 onRender(event);
             }
         },
-        [onRender, shouldKeepSize, finalDisabled],
+        [onRender, shouldKeepSize, disabled],
     );
 
     // useEffect(() => {
@@ -179,14 +165,15 @@ function Ad({
         isRendered,
         refObserver,
         slot: slotObject = null,
-    } = useAd(finalPath, finalSize, {
-        sizeMapping: finalSizeMapping,
-        targeting: finalAdTargeting.targeting,
-        refreshInterval: finalAdTargeting.refreshInterval,
+    } = useAd(path, size, {
+        viewport,
+        sizeMapping,
+        targeting,
+        refreshInterval,
         alwaysRender,
         onRender: onAdRender,
         onDestroy,
-        disabled: finalDisabled,
+        disabled,
         disableTracking,
     });
 
@@ -202,15 +189,15 @@ function Ad({
         slotRef.current = slotObject;
     }
 
-    if (finalDisabled) {
+    if (disabled) {
         wasDisabled.current = true;
-    } else if (!finalDisabled && isRendered) {
+    } else if (!disabled && isRendered) {
         wasDisabled.current = false;
     }
 
     const waitingNextRender = wasDisabled.current && !isRendered;
     const keepSize =
-        shouldKeepSize && (finalDisabled || waitingNextRender) && lastRenderedSize.current !== null;
+        shouldKeepSize && (disabled || waitingNextRender) && lastRenderedSize.current !== null;
 
     if (id === null && !keepSize) {
         return null;
@@ -224,7 +211,7 @@ function Ad({
                   height,
               }
             : null;
-    } else if (shouldKeepSize && (finalDisabled || waitingNextRender)) {
+    } else if (shouldKeepSize && (disabled || waitingNextRender)) {
         adStyle = lastRenderedSize.current;
     } else if (!withoutMinimumSize) {
         adStyle = minimumSize;
@@ -289,6 +276,5 @@ function Ad({
 }
 
 Ad.propTypes = propTypes;
-Ad.defaultProps = defaultProps;
 
 export default Ad;
