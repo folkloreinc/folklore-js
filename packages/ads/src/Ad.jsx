@@ -63,7 +63,12 @@ function Ad({
     onRichAd = null,
     slotRef = null,
 }) {
-    const { slots = null, slotsPath = null, viewport: contextViewport = null } = useAdsContext();
+    const {
+        slots = null,
+        slotsPath = null,
+        viewport: contextViewport = null,
+        ads,
+    } = useAdsContext();
     const { default: defaultSlotPath = null } = slotsPath || {};
     const slot = slotName !== null && slots !== null ? slots[slotName] || null : null;
     const {
@@ -107,7 +112,7 @@ function Ad({
         return {
             refreshInterval:
                 refreshAds !== null && refreshAds === 'inactive' ? null : providedRefreshInterval,
-            disabled: providedDisabled || targetingDisabled,
+            disabled: providedDisabled || targetingDisabled || ads.isDisabled(),
             viewport: providedViewport || contextViewport || targetingViewport,
             targeting: otherProps || {},
         };
@@ -115,6 +120,7 @@ function Ad({
         slotName,
         contextTargeting,
         providedTargeting,
+        ads,
         providedRefreshInterval,
         providedDisabled,
         providedViewport,
@@ -163,7 +169,6 @@ function Ad({
 
     // Create ad
     const {
-        disabled: adsDisabled,
         id,
         width,
         height,
@@ -225,7 +230,7 @@ function Ad({
     }
 
     let containerStyle = null;
-    if (adsDisabled) {
+    if (disabled) {
         containerStyle = {
             display: 'none',
             visibility: 'hidden',
