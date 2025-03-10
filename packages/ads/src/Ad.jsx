@@ -85,7 +85,10 @@ function Ad({
         () =>
             getMinimumAdSize(
                 sizeMapping !== null
-                    ? sizeMapping.reduce((allSizes, sizeMap) => [...allSizes, sizeMap[1]], [size])
+                    ? sizeMapping.reduce(
+                          (allSizes, sizeMap) => [...allSizes, ...sizeMap[1]],
+                          [size],
+                      )
                     : [size],
             ),
         [sizeMapping, size],
