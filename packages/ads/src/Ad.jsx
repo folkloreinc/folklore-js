@@ -5,7 +5,7 @@ import isObject from 'lodash/isObject';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 
-import { getMinimumAdSize } from './utils';
+import { getMinimumAdSize, getSizeFromSizeMapping, normalizeAdSizes } from './utils';
 
 import { useAdsContext } from './AdsContext';
 import { useAdsTargeting } from './AdsTargetingContext';
@@ -83,14 +83,10 @@ function Ad({
     const sizeMapping = providedSizeMapping || slotSizeMapping;
     const minimumSize = useMemo(
         () =>
-            getMinimumAdSize(
-                sizeMapping !== null
-                    ? sizeMapping.reduce(
-                          (allSizes, sizeMap) => [...allSizes, ...sizeMap[1]],
-                          [size],
-                      )
-                    : [size],
-            ),
+            getMinimumAdSize([
+                ...(getSizeFromSizeMapping(sizeMapping) || []),
+                ...normalizeAdSizes(size),
+            ]),
         [sizeMapping, size],
     );
 

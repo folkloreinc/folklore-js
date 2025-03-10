@@ -3,6 +3,16 @@ import isObject from 'lodash/isObject';
 import sortBy from 'lodash/sortBy';
 import uniqBy from 'lodash/uniqBy';
 
+export function normalizeAdSizes(size) {
+    if (size === null) {
+        return [];
+    }
+    if (isArray(size) && size.length > 0 && isArray(size[0])) {
+        return size;
+    }
+    return [size];
+}
+
 export function getAdSizes(sizes) {
     return uniqBy(sizes, (size) => (isArray(size) ? size.join('x') : size));
 }
