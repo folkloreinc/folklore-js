@@ -217,7 +217,7 @@ function Ad({
     }
 
     let containerStyle = null;
-    if (disabled) {
+    if (disabled && !keepSize) {
         containerStyle = {
             display: 'none',
             visibility: 'hidden',
