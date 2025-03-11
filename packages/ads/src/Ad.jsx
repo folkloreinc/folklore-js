@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import isFunction from 'lodash/isFunction';
 import isObject from 'lodash/isObject';
 import PropTypes from 'prop-types';
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { getMinimumAdSize, getSizeFromSizeMapping, normalizeAdSizes } from './utils';
 
@@ -127,25 +127,20 @@ function Ad({
         contextViewport,
     ]);
 
-    const lastRenderedSize = useRef(null);
-    const wasDisabled = useRef(disabled);
-    useEffect(() => {}, []);
+    const [lastRenderedSize, setLastRenderedSize] = useState(null);
     const onAdRender = useCallback(
         (event) => {
             const { isEmpty: newIsEmpty = true, width: newWidth, height: newHeight } = event || {};
+            const isRendered = !newIsEmpty;
 
-            if (disabled) {
-                wasDisabled.current = true;
-            } else if (!disabled && !newIsEmpty) {
-                wasDisabled.current = false;
-            }
-
-            lastRenderedSize.current = !newIsEmpty
-                ? {
-                      width: newWidth,
-                      height: newHeight,
-                  }
-                : null;
+            setLastRenderedSize(
+                isRendered
+                    ? {
+                          width: newWidth,
+                          height: newHeight,
+                      }
+                    : null,
+            );
 
             if (onRender !== null) {
                 onRender(event);
@@ -201,15 +196,7 @@ function Ad({
         slotRef.current = slotObject;
     }
 
-    if (disabled) {
-        wasDisabled.current = true;
-    } else if (!disabled && isRendered) {
-        wasDisabled.current = false;
-    }
-
-    const waitingNextRender = wasDisabled.current && !isRendered;
-    const keepSize =
-        shouldKeepSize && (disabled || waitingNextRender) && lastRenderedSize.current !== null;
+    const keepSize = shouldKeepSize && lastRenderedSize !== null && !isRendered;
 
     if (id === null && !keepSize) {
         return null;
@@ -223,8 +210,8 @@ function Ad({
                   height,
               }
             : null;
-    } else if (shouldKeepSize && (disabled || waitingNextRender)) {
-        adStyle = lastRenderedSize.current;
+    } else if (keepSize) {
+        adStyle = lastRenderedSize;
     } else if (!withoutMinimumSize) {
         adStyle = minimumSize;
     }
@@ -250,7 +237,7 @@ function Ad({
             className={classNames([
                 className,
                 {
-                    [emptyClassName]: emptyClassName !== null && isEmpty,
+                    [emptyClassName]: emptyClassName !== null && isEmpty && !keepSize,
                 },
             ])}
             style={!withoutStyle ? containerStyle : null}
