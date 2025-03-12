@@ -1,5 +1,5 @@
 import { useIntersectionObserver, useWindowEvent } from '@folklore/hooks';
-import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
+import { useEffect, useState, useCallback, useRef, useMemo, useId } from 'react';
 
 import { useAdsContext } from './AdsContext';
 import useAdsTracking from './useAdsTracking';
@@ -8,6 +8,7 @@ function useAd(
     path,
     size,
     {
+        id,
         sizeMapping = null,
         viewport = null,
         targeting = null,
@@ -80,6 +81,7 @@ function useAd(
         const newSlot =
             path !== null && !disabled
                 ? adsManager.createSlot(path, viewportFixedSize || size, {
+                      id,
                       visible: isVisible,
                       sizeMapping: viewportFixedSize === null ? sizeMapping : null,
                       targeting,
@@ -99,7 +101,7 @@ function useAd(
         //         adsManager.destroySlot(newSlot);
         //     }
         // };
-    }, [adsManager, path, disabled, size, sizeMapping, viewport, categoryExclusions]);
+    }, [adsManager, path, disabled, size, sizeMapping, viewport, categoryExclusions, id]);
 
     useEffect(() => {
         if (slot !== null) {

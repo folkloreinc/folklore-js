@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import isFunction from 'lodash/isFunction';
 import isObject from 'lodash/isObject';
 import PropTypes from 'prop-types';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 
 import { getMinimumAdSize, getSizeFromSizeMapping, normalizeAdSizes } from './utils';
 
@@ -28,6 +28,7 @@ const propTypes = {
     shouldKeepSize: PropTypes.bool,
     withoutStyle: PropTypes.bool,
     withoutMinimumSize: PropTypes.bool,
+    withReactId: PropTypes.bool,
     className: PropTypes.string,
     emptyClassName: PropTypes.string,
     adClassName: PropTypes.string,
@@ -53,6 +54,7 @@ function Ad({
     shouldKeepSize = false,
     withoutStyle = false,
     withoutMinimumSize = false,
+    withReactId = false,
     className = null,
     emptyClassName = null,
     adClassName = null,
@@ -162,6 +164,8 @@ function Ad({
     //     }
     // }, [disabled]);
 
+    const reactId = useId();
+
     // Create ad
     const {
         id,
@@ -173,6 +177,7 @@ function Ad({
         refObserver,
         slot: slotObject = null,
     } = useAd(path, size, {
+        id: withReactId ? `ad-${reactId}` : null,
         viewport,
         sizeMapping,
         targeting,
