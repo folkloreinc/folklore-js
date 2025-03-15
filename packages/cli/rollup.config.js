@@ -13,22 +13,25 @@ export default [
         },
         plugins: [
             // resolve({
+            //     exportConditions: ['node'],
+            //     modulesOnly: true,
+            //     resolveOnly: [
+            //         /@formatjs/,
+            //         /@vue/,
+            //         /vue/,
+            //         /compiler/
+            //     ],
+            // }),
+            // resolve({
             //     // exportConditions: ['node'],
             //     // modulesOnly: true,
             //     resolveOnly: [
-            //         'chalk',
-            //         '@formatjs/cli-lib'
+            //         /@formatjs/,
+            //         /@vue/,
+            //         /vue/,
+            //         /compiler/
             //     ],
             // }),
-            resolve({
-                // exportConditions: ['node'],
-                // modulesOnly: true,
-                resolveOnly: [
-                    /@formatjs/,
-                    /@vue/,
-                    /vue\//,
-                ],
-            }),
             ...plugins,
         ],
     },
