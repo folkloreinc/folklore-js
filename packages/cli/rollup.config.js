@@ -25,6 +25,7 @@ export default [
                 // modulesOnly: true,
                 resolveOnly: [
                     /@formatjs/,
+                    /@vue/,
                 ],
             }),
             ...plugins,
