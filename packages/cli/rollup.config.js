@@ -13,25 +13,27 @@ export default [
         },
         plugins: [
             // resolve({
-            //     exportConditions: ['node'],
-            //     modulesOnly: true,
-            //     resolveOnly: [
-            //         /@formatjs/,
-            //         /@vue/,
-            //         /vue/,
-            //         /compiler/
-            //     ],
-            // }),
-            // resolve({
             //     // exportConditions: ['node'],
             //     // modulesOnly: true,
-            //     resolveOnly: [
-            //         /@formatjs/,
-            //         /@vue/,
-            //         /vue/,
-            //         /compiler/
-            //     ],
+            //     resolveOnly: (path) => {
+            //         console.log(path);
+            //         if (path === 'fsevents' || path === 'esrecurse') {
+            //             return false;
+            //         }
+            //         return true;
+            //     },
+            //     preferBuiltins: true,
             // }),
+            resolve({
+                // exportConditions: ['node'],
+                // modulesOnly: true,
+                resolveOnly: [
+                    /@formatjs/,
+                    // /@vue/,
+                    // /vue/,
+                    // /compiler/
+                ],
+            }),
             ...plugins,
         ],
     },
