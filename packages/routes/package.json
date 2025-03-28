@@ -27,7 +27,6 @@
             "email": "nrb@folklore.email"
         }
     ],
-    "type": "module",
     "main": "dist/cjs.js",
     "module": "dist/es.js",
     "exports": {
