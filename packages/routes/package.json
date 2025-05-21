@@ -1,6 +1,6 @@
 {
     "name": "@folklore/routes",
-    "version": "0.2.32",
+    "version": "0.2.40",
     "description": "Routes utilities",
     "keywords": [
         "javascript",
@@ -29,6 +29,12 @@
     ],
     "main": "dist/cjs.js",
     "module": "dist/es.js",
+    "exports": {
+        ".": {
+            "import": "./dist/es.js",
+            "require": "./dist/cjs.js"
+        }
+    },
     "files": [
         "dist"
     ],

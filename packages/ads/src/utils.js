@@ -3,31 +3,33 @@ import isObject from 'lodash/isObject';
 import sortBy from 'lodash/sortBy';
 import uniqBy from 'lodash/uniqBy';
 
-export const getAdSizes = (sizes) => {
-    if (isArray(sizes)) {
-        return uniqBy(
-            isArray(sizes[0]) || sizes[0] === 'fluid'
-                ? sizes
-                      .filter((size) => size !== 'fluid')
-                      .reduce((allSizes, size) => [...allSizes, ...getAdSizes(size)], [])
-                : [sizes].filter((size) => size !== 'fluid'),
-            (size) => size.join('x'),
-        );
+export function normalizeAdSizes(size) {
+    if (size === null) {
+        return [];
     }
-    return sizes.split('x').map((it) => parseInt(it, 10));
-};
+    if (isArray(size) && size.length > 0 && isArray(size[0])) {
+        return size;
+    }
+    return [size];
+}
+
+export function getAdSizes(sizes) {
+    return uniqBy(sizes, (size) => (isArray(size) ? size.join('x') : size));
+}
 
 export const getMinimumAdSize = (sizes) =>
-    getAdSizes(sizes).reduce(
-        (minimumSize, size) => ({
-            width: Math.min(minimumSize.width, size[0]),
-            height: Math.min(minimumSize.height, size[1]),
-        }),
-        {
-            width: Infinity,
-            height: Infinity,
-        },
-    );
+    getAdSizes(sizes)
+        .filter((size) => size !== 'fluid')
+        .reduce(
+            (minimumSize, size) => ({
+                width: Math.min(minimumSize.width, size[0]),
+                height: Math.min(minimumSize.height, size[1]),
+            }),
+            {
+                width: Infinity,
+                height: Infinity,
+            },
+        );
 
 export const sizeFitsInViewport = (size, viewport) =>
     (size === 'fluid' && viewport[0] > 600) ||
@@ -69,3 +71,23 @@ export const getSizeMappingFromSlot = ({ size: allSizes = [], sizeMapping = null
     }
     return sizeMapping !== null ? buildSizeMappingFromViewports(sizeMapping, viewports) : null;
 };
+
+export function getSizeFromSizeMapping(sizeMapping) {
+    if (sizeMapping === null) {
+        return null;
+    }
+    return getAdSizes(
+        sizeMapping.reduce((allSizes, sizeMap) => [...allSizes, ...sizeMap[1]], []),
+    ).sort((a, b) => {
+        if (a === 'fluid') {
+            return 1;
+        }
+        if (b === 'fluid') {
+            return -1;
+        }
+        if (a[0] === b[0]) {
+            return a[1] > b[1] ? 1 : -1;
+        }
+        return a[0] > b[0] ? 1 : -1;
+    });
+}

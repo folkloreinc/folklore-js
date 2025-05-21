@@ -9,17 +9,31 @@ export default [
             file: 'dist/cli.js',
             format: 'cjs',
             banner: '#!/usr/bin/env node',
-            // inlineDynamicImports: true
+            inlineDynamicImports: true
         },
         plugins: [
             // resolve({
             //     // exportConditions: ['node'],
             //     // modulesOnly: true,
-            //     resolveOnly: [
-            //         'chalk',
-            //         '@formatjs/cli-lib'
-            //     ],
+            //     resolveOnly: (path) => {
+            //         console.log(path);
+            //         if (path === 'fsevents' || path === 'esrecurse') {
+            //             return false;
+            //         }
+            //         return true;
+            //     },
+            //     preferBuiltins: true,
             // }),
+            resolve({
+                // exportConditions: ['node'],
+                // modulesOnly: true,
+                resolveOnly: [
+                    /@formatjs/,
+                    // /@vue/,
+                    // /vue/,
+                    // /compiler/
+                ],
+            }),
             ...plugins,
         ],
     },

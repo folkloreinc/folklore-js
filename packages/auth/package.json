@@ -1,6 +1,6 @@
 {
     "name": "@folklore/auth",
-    "version": "0.0.5",
+    "version": "0.0.8",
     "description": "Auth utilities",
     "keywords": [
         "javascript",
@@ -32,6 +32,12 @@
     "files": [
         "dist"
     ],
+    "exports": {
+        ".": {
+            "import": "./dist/es.js",
+            "require": "./dist/cjs.js"
+        }
+    },
     "scripts": {
         "clean": "rm -rf dist",
         "build": "rollup --bundleConfigAsCjs --config ../../rollup.config.js",
