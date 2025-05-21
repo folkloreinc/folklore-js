@@ -1,15 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import styles from '<%= getRelativeStylesPath('components/layouts/Main.jsx', 'layouts/main.module.scss') %>';
+import styles from '<%= getRelativeStylesPath('components/layouts/Main.jsx', 'layouts/main.module.css') %>';
 
 const propTypes = {
     children: PropTypes.node.isRequired,
 };
 
-const defaultProps = {};
-
-function MainLayout({ children }) {
+function MainLayout({ children = null }) {
     return (
         <div className={styles.container}>
             <div className={styles.inner}>
@@ -20,6 +18,5 @@ function MainLayout({ children }) {
 };
 
 MainLayout.propTypes = propTypes;
-MainLayout.defaultProps = defaultProps;
 
 export default MainLayout;

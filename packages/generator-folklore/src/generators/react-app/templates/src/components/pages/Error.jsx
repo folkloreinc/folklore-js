@@ -8,7 +8,7 @@ import { useUrlGenerator } from '@folklore/routes';
 // import * as AppPropTypes from '../../lib/PropTypes';
 import PageMeta from '../partials/PageMeta';
 
-import styles from '<%= getRelativeStylesPath('components/pages/Error.jsx', 'pages/error.module.scss') %>';
+import styles from '<%= getRelativeStylesPath('components/pages/Error.jsx', 'pages/error.module.css') %>';
 
 export const messages = defineMessages({
     metaTitle401: {
@@ -73,11 +73,7 @@ const propTypes = {
     statusCode: PropTypes.number,
 };
 
-const defaultProps = {
-    statusCode: 404,
-};
-
-function ErrorPage({ statusCode }) {
+function ErrorPage({ statusCode = 404 }) {
     const url = useUrlGenerator();
     return (
         <div className={styles.container}>
@@ -100,6 +96,5 @@ function ErrorPage({ statusCode }) {
 };
 
 ErrorPage.propTypes = propTypes;
-ErrorPage.defaultProps = defaultProps;
 
 export default ErrorPage;

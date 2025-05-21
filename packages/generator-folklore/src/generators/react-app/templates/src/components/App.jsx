@@ -18,14 +18,7 @@ const propTypes = {
     routes: PropTypes.objectOf(PropTypes.string),
 };
 
-const defaultProps = {
-    intl: null,
-    routes: {
-        home: '/'
-    },
-};
-
-function App({ intl, routes }) {
+function App({ intl = null, routes = { home: '/' } }) {
     const { locale = 'fr', messages = {} } = intl || {};
     return (
         <IntlProvider locale={locale} messages={messages[locale] || messages}>
@@ -39,6 +32,5 @@ function App({ intl, routes }) {
 }
 
 App.propTypes = propTypes;
-App.defaultProps = defaultProps;
 
 export default App;

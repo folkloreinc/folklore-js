@@ -47,6 +47,7 @@ export default (entry, opts = {}) => {
         imageDataUrlMaxSize = 5000,
         babelPresetEnvUseBuiltins = 'entry',
         postcssConfigFile = null,
+        sassLoaderOptions = null,
     } = opts;
 
     const isProduction = process.env.NODE_ENV === 'production';
@@ -60,7 +61,7 @@ export default (entry, opts = {}) => {
         ? getAbsolutePath(postcssConfigFile)
         : postcssConfigFile;
 
-    const getStyleLoaders = (cssOptions, preProcessor) => {
+    const getStyleLoaders = (cssOptions, preProcessor, preProcessorOptions = null) => {
         const styleLoaders = [
             isProduction
                 ? {
@@ -112,6 +113,7 @@ export default (entry, opts = {}) => {
                     loader: require.resolve(preProcessor),
                     options: {
                         sourceMap: !disableSourceMap,
+                        ...(preProcessorOptions || null),
                     },
                 },
             );
@@ -378,6 +380,7 @@ export default (entry, opts = {}) => {
                                     },
                                 },
                                 'sass-loader',
+                                sassLoaderOptions,
                             ),
                             // Don't consider CSS imports dead code even if the
                             // containing package claims to have no side effects.
@@ -399,6 +402,7 @@ export default (entry, opts = {}) => {
                                     },
                                 },
                                 'sass-loader',
+                                sassLoaderOptions,
                             ),
                         },
                         {

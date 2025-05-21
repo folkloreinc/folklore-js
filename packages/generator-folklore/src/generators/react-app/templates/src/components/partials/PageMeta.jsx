@@ -17,11 +17,7 @@ const propTypes = {
     title: AppPropTypes.message,
 };
 
-const defaultProps = {
-    title: messages.title,
-};
-
-function PageMeta({ title }) {
+function PageMeta({ title = null }) {
     const intl = useIntl();
     return (
         <Helmet>
@@ -31,6 +27,5 @@ function PageMeta({ title }) {
 }
 
 PageMeta.propTypes = propTypes;
-PageMeta.defaultProps = defaultProps;
 
-export default React.memo(PageMeta);
+export default PageMeta;

@@ -6,7 +6,7 @@ import { useIntl } from 'react-intl';
 // import * as AppPropTypes from '../../lib/PropTypes';
 import story from '../../micromag/data.json';
 
-import styles from '<%= getRelativeStylesPath('components/pages/Home.jsx', 'pages/home.module.scss') %>';
+import styles from '<%= getRelativeStylesPath('components/pages/Home.jsx', 'pages/home.module.css') %>';
 
 const propTypes = {
     // intl: AppPropTypes.intl.isRequired,

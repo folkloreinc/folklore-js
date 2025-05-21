@@ -1,0 +1,12 @@
+:root {
+    --font-title: 'Helvetica', 'Arial', sans-serif;
+    --font-text: 'Helvetica', 'Arial', sans-serif;
+    --base-font-size: 16px;
+}
+
+/* @font-face {
+    font-family: KodeMono;
+    font-style: normal;
+    font-weight: 400;
+    src: url('../../fonts/kode-mono.woff2') format('woff2');
+} */

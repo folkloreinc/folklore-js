@@ -92,7 +92,7 @@ module.exports = class MicromagProjectGenerator extends Generator {
                 };
 
                 this.fs.delete(this.srcPath('components/pages/Home.jsx'));
-                this.fs.delete(this.srcPath('styles/pages/home.module.scss'));
+                this.fs.delete(this.srcPath('styles/pages/home.module.css'));
 
                 this.fs.copyTpl(
                     this.templatePath('Home.jsx'),
@@ -101,8 +101,8 @@ module.exports = class MicromagProjectGenerator extends Generator {
                 );
 
                 this.fs.copyTpl(
-                    this.templatePath('home.module.scss'),
-                    this.srcPath('styles/pages/home.module.scss'),
+                    this.templatePath('home.module.css'),
+                    this.srcPath('styles/pages/home.module.css'),
                     templateData,
                 );
             },
@@ -127,12 +127,9 @@ module.exports = class MicromagProjectGenerator extends Generator {
             },
 
             styles() {
-                this.fs.delete(this.srcPath('styles/styles.scss'));
+                this.fs.delete(this.srcPath('styles/styles.css'));
 
-                this.fs.copyTpl(
-                    this.templatePath('styles.scss'),
-                    this.srcPath('styles/styles.scss'),
-                );
+                this.fs.copyTpl(this.templatePath('styles.css'), this.srcPath('styles/styles.css'));
             },
 
             micromag() {

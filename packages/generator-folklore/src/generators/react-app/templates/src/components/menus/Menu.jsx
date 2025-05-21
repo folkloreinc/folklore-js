@@ -6,19 +6,14 @@ import { Link } from 'wouter';
 
 import * as AppPropTypes from '../../lib/PropTypes';
 
-import styles from '<%= getRelativeStylesPath('components/menus/Menu.jsx', 'menus/menu.module.scss') %>';
+import styles from '<%= getRelativeStylesPath('components/menus/Menu.jsx', 'menus/menu.module.css') %>';
 
 const propTypes = {
     items: AppPropTypes.menuItems,
     className: PropTypes.string,
 };
 
-const defaultProps = {
-    items: [],
-    className: null,
-};
-
-function Menu({ items, className }) {
+function Menu({ items = [], className = null }) {
     return (
         <nav
             className={classNames([
@@ -56,6 +51,5 @@ function Menu({ items, className }) {
 }
 
 Menu.propTypes = propTypes;
-Menu.defaultProps = defaultProps;
 
 export default Menu;

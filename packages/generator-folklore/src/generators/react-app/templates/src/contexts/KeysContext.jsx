@@ -1,7 +1,8 @@
 /* globals GOOGLE_API_KEY: true */
+
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
 
 const KeysContext = React.createContext({
     googleApiKey: typeof GOOGLE_API_KEY !== 'undefined' ? GOOGLE_API_KEY : null,
@@ -9,13 +10,13 @@ const KeysContext = React.createContext({
 
 export const useKeys = () => useContext(KeysContext);
 
-export const withKeys = WrappedComponent => {
+export const withKeys = (WrappedComponent) => {
     const getDisplayName = ({ displayName = null, name = null }) =>
         displayName || name || 'Component';
 
-    const WithKeysComponent = props => (
+    const WithKeysComponent = (props) => (
         <KeysContext.Consumer>
-            {keys => <WrappedComponent {...keys} {...props} />}
+            {(keys) => <WrappedComponent {...keys} {...props} />}
         </KeysContext.Consumer>
     );
     WithKeysComponent.displayName = `WithKeys(${getDisplayName(WrappedComponent)})`;
@@ -27,15 +28,10 @@ const propTypes = {
     keys: PropTypes.objectOf(PropTypes.string),
 };
 
-const defaultProps = {
-    keys: {},
-};
-
-export const KeysProvider = ({ children, keys }) => (
+export const KeysProvider = ({ children = null, keys = null }) => (
     <KeysContext.Provider value={keys}>{children}</KeysContext.Provider>
 );
 
 KeysProvider.propTypes = propTypes;
-KeysProvider.defaultProps = defaultProps;
 
 export default KeysContext;

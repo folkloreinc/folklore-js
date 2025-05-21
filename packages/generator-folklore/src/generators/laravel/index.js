@@ -1,9 +1,10 @@
-import _ from 'lodash';
-import remote from 'yeoman-remote';
-import glob from 'glob';
-import path from 'path';
 import chalk from 'chalk';
+import glob from 'glob';
+import _ from 'lodash';
 import generatePassword from 'password-generator';
+import path from 'path';
+import remote from 'yeoman-remote';
+
 import Generator from '../../lib/generator';
 
 module.exports = class LaravelGenerator extends Generator {
@@ -154,7 +155,8 @@ module.exports = class LaravelGenerator extends Generator {
                         name: 'project-host',
                         message: 'What is the host of the project?',
                         default: (answers) => {
-                            const projectName = this.options['project-name'] || answers['project-name'];
+                            const projectName =
+                                this.options['project-name'] || answers['project-name'];
                             return projectName.match(/.[^.]+$/)
                                 ? projectName
                                 : `${projectName}.com`;
@@ -168,7 +170,8 @@ module.exports = class LaravelGenerator extends Generator {
                         name: 'db-name',
                         message: 'What is the name of the database?',
                         default: (answers) => {
-                            const projectName = this.options['project-name'] || answers['project-name'];
+                            const projectName =
+                                this.options['project-name'] || answers['project-name'];
                             return projectName.match(/^([^.]+)/)[1];
                         },
                     });
@@ -193,8 +196,8 @@ module.exports = class LaravelGenerator extends Generator {
                         choices: featuresChoices,
                         message: 'Which features?',
                         default: featuresChoices
-                            .filter(it => it.checked || false)
-                            .map(it => it.name),
+                            .filter((it) => it.checked || false)
+                            .map((it) => it.name),
                     });
                 }
 
@@ -258,7 +261,7 @@ module.exports = class LaravelGenerator extends Generator {
             quiet: true,
         });
 
-        this.composeWith('folklore:scss', {
+        this.composeWith('folklore:css', {
             'project-name': this.options['project-name'],
             path: stylesSrcPath,
             react: true,
@@ -325,9 +328,10 @@ module.exports = class LaravelGenerator extends Generator {
             laravel() {
                 const done = this.async();
 
-                const versionBranch = this.options['laravel-version'] === 'latest'
-                    ? 'master'
-                    : this.options['laravel-version'];
+                const versionBranch =
+                    this.options['laravel-version'] === 'latest'
+                        ? 'master'
+                        : this.options['laravel-version'];
                 const branch = this.options['laravel-branch'] || versionBranch;
 
                 remote('laravel', 'laravel', branch, (err, cachePath) => {
@@ -387,7 +391,7 @@ module.exports = class LaravelGenerator extends Generator {
                 this.packageJson.merge({
                     ...packageJSON,
                     scripts: {},
-                    devDependencies: {}
+                    devDependencies: {},
                 });
             },
 

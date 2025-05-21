@@ -1,0 +1,14 @@
+
+@custom-media --very-small-viewport (min-width: 360px);
+@custom-media --small-viewport (min-width: 576px);
+@custom-media --medium-viewport (min-width: 768px);
+@custom-media --large-viewport (min-width: 1200px);
+@custom-media --x-large-viewport (min-width: 1400px);
+
+:root {
+    --very-small-viewport: 360px;
+    --small-viewport: 500px;
+    --medium-viewport: 768px;
+    --large-viewport: 1200px;
+    --x-large-viewport: 1400px;
+}

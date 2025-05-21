@@ -1,7 +1,3 @@
-@import '../commons/variables';
-@import '../commons/placeholders';
-@import '../commons/mixins';
-
 .container {
     position: relative;
 
