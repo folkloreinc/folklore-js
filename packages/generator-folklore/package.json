@@ -9,7 +9,7 @@
     "scripts": {
         "clean:lib": "rm -rf lib/*",
         "clean": "npm run clean:lib",
-        "copy:dirs": "find src/ -type d | grep -E '(/templates|/instructions)$' | sed 's/src\\/\\///g' | xargs -I{} cp -r \"src/{}\" \"lib/{}\"",
+        "copy:dirs": "find src/ -type d | grep -E '(/templates|/instructions)$' | sed 's/src\\///g' | xargs -I{} cp -r \"./src/{}\" \"./lib/{}\"",
         "compile": "../../node_modules/.bin/babel -d lib/ src/",
         "build": "npm run compile && npm run copy:dirs",
         "test": "echo \"Error: no test specified\" && exit 1",
