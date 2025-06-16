@@ -9,7 +9,7 @@ import MainLayout from './layouts/Main';
 import ErrorPage from './pages/Error';
 import HomePage from './pages/Home';
 
-import '<%= getRelativeStylesPath('components/App.jsx', 'styles.scss') %>';
+import '<%= getRelativeStylesPath('components/App.jsx', 'styles.css') %>';
 
 const propTypes = {};
 

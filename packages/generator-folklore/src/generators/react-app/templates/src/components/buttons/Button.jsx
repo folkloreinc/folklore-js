@@ -6,7 +6,7 @@ import { Link } from 'wouter';
 
 import * as AppPropTypes from '../../lib/PropTypes';
 
-import styles from '<%= getRelativeStylesPath('components/buttons/Button.jsx', 'buttons/button.module.scss') %>';
+import styles from '<%= getRelativeStylesPath('components/buttons/Button.jsx', 'buttons/button.module.css') %>';
 
 const propTypes = {
     text: PropTypes.string,
@@ -28,44 +28,24 @@ const propTypes = {
     onClick: PropTypes.func,
 };
 
-const defaultProps = {
-    text: null,
-    type: 'button',
-    href: null,
-    external: false,
-    direct: false,
-    target: '_blank',
-    label: null,
-    children: null,
-    icon: null,
-    iconPosition: 'inline',
-    disabled: false,
-    loading: false,
-    disableOnLoading: true,
-    className: null,
-    iconClassName: null,
-    labelClassName: null,
-    onClick: null,
-};
-
 function Button({
-    text,
-    type,
-    href,
-    external,
-    direct,
-    target,
-    label,
-    children,
-    icon,
-    iconPosition,
-    disabled,
-    loading,
-    disableOnLoading,
-    onClick,
-    className,
-    iconClassName,
-    labelClassName,
+    text = null,
+    type = 'button',
+    href = null,
+    external = false,
+    direct = false,
+    target = '_blank',
+    label = null,
+    children = null,
+    icon = null,
+    iconPosition = 'inline',
+    disabled = false,
+    loading = false,
+    disableOnLoading = true,
+    className = null,
+    iconClassName = null,
+    labelClassName = null,
+    onClick = null,
 }) {
     const finalLabel = label || children;
     const hasChildren = label !== null && children !== null;
@@ -158,6 +138,5 @@ function Button({
 };
 
 Button.propTypes = propTypes;
-Button.defaultProps = defaultProps;
 
 export default Button;

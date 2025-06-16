@@ -1,8 +1,0 @@
-@import '../commons/variables';
-@import '../commons/placeholders';
-@import '../commons/mixins';
-
-.container {
-    @extend %reset-button;
-    display: inline-block;
-}

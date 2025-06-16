@@ -5,7 +5,7 @@ import { defineMessages } from 'react-intl';
 // import * as AppPropTypes from '../../lib/PropTypes';
 import PageMeta from '../partials/PageMeta';
 
-import styles from '<%= getRelativeStylesPath('components/pages/Home.jsx', 'pages/home.module.scss') %>';
+import styles from '<%= getRelativeStylesPath('components/pages/Home.jsx', 'pages/home.module.css') %>';
 
 const messages = defineMessages({
     metaTitle: {

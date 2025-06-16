@@ -34,7 +34,7 @@ module.exports = class HTMLProjectGenerator extends Generator {
 
         this.option('styles-path', {
             type: String,
-            desc: 'Path for the scss',
+            desc: 'Path for the css/scss',
             defaults: 'styles',
         });
 
@@ -142,7 +142,7 @@ module.exports = class HTMLProjectGenerator extends Generator {
             quiet: true,
         });
 
-        this.composeWith('folklore:scss', {
+        this.composeWith('folklore:css', {
             'project-name': projectName,
             path: stylesSrcPath,
             react: true,
@@ -159,7 +159,14 @@ module.exports = class HTMLProjectGenerator extends Generator {
             });
         }
 
-        console.log(srcPath, jsSrcPath, path.join(jsSrcPath, 'index.js'), path.join(srcPath, 'index.html.ejs'));
+        console.log(
+            srcPath,
+            jsSrcPath,
+            path.join(jsSrcPath, 'index.js'),
+            path.join(srcPath, 'index.html.ejs'),
+        );
+
+        this.log('merging with folklore build');
 
         this.composeWith('folklore:build', {
             'src-path': srcPath,

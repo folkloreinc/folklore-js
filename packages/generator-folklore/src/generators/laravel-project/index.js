@@ -262,7 +262,7 @@ module.exports = class LaravelProjectGenerator extends Generator {
             'skip-install': true,
         });
 
-        this.composeWith('folklore:scss', {
+        this.composeWith('folklore:css', {
             'project-name': this.options['project-name'],
             path: stylesSrcPath,
             react: true,

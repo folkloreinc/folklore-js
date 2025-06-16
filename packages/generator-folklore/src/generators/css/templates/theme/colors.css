@@ -1,0 +1,19 @@
+:root {
+    --color-white: #fff;
+    --color-black: #000;
+    --color-blue: #0000fb;
+    --color-purple: #90f;
+    --color-red: #f03;
+    --color-error: var(--color-red);
+}
+
+
+div[data-theme="light"] {
+    --color-text: var(--color-black);
+    --color-title: var(--color-white);
+}
+
+div[data-theme="dark"] {
+    --color-text: var(--color-white);
+    --color-text-alt: var(--color-black);
+}

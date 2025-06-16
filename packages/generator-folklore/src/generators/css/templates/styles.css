@@ -1,0 +1,31 @@
+/* stylelint-disable selector-class-pattern */
+@import 'sanitize.css';
+@import './theme.css';
+
+body {
+    font-family: var(--font-text);
+    font-size: var(--base-font-size);
+    font-weight: 700;
+    overflow-y: scroll;
+}
+
+html,
+body {
+    overscroll-behavior: none;
+    overscroll-behavior-x: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.modal-open {
+    overflow: hidden;
+    padding-right: 0;
+}

@@ -5,10 +5,11 @@
     "trailingComma": "all",
     "tabWidth": 4,
     "importOrder": [
+        "styles\\.s?css$",
         "<THIRD_PARTY_MODULES>",
         "^[./](.*)?/(utils|hooks|lib)",
         "^[./].*(?<!(\\.[a-z]+))$",
-        "\\.scss$",
+        "\\.s?css$",
         "\\.[a-z]+$"
     ],
     "importOrderSeparation": true
