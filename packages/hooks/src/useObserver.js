@@ -121,6 +121,9 @@ export function useObserver(Observer, opts = {}, initialEntry = {}) {
     const currentElement = useRef(null);
     const elementChanged = nodeRef.current !== currentElement.current;
     useEffect(() => {
+        if (disabled) {
+            return () => {};
+        }
         const { current: nodeElement } = nodeRef;
         const callback = (newEntry) => setEntry(newEntry);
         let unsubscribe = null;
