@@ -148,10 +148,12 @@ class PubNubSocket extends EventEmitter {
             return;
         }
 
+        const { subscriptionOptions } = this.options;
         this.shouldStart = false;
         this.starting = true;
         this.pubnub.subscribe({
             channels: this.channels,
+            subscriptionOptions,
         });
 
         this.emit('start');
