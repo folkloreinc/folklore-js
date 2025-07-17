@@ -11,6 +11,7 @@ class PubNubSocket extends EventEmitter {
             publishKey: null,
             subscribeKey: null,
             secretKey: null,
+            withPresence: false,
             ...opts,
         };
 
@@ -148,12 +149,13 @@ class PubNubSocket extends EventEmitter {
             return;
         }
 
-        const { subscriptionOptions } = this.options;
+        const { subscriptionOptions, withPresence } = this.options;
         this.shouldStart = false;
         this.starting = true;
         this.pubnub.subscribe({
             channels: this.channels,
             subscriptionOptions,
+            withPresence,
         });
 
         this.emit('start');
