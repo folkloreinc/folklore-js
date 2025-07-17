@@ -90,13 +90,14 @@ function SocketContainer({
     const removeToChannelsCount = useCallback(
         (newChannels) => {
             channelsCountRef.current = newChannels.reduce((map, channel) => {
-                const newCount = (map[channel] || 0) - 1;
+                const { [channel]: currentCount = 0, ...otherCount } = map;
+                const newCount = (currentCount || 0) - 1;
                 return newCount > 0
                     ? {
-                          ...map,
+                          ...otherCount,
                           [channel]: newCount,
                       }
-                    : map;
+                    : otherCount;
             }, channelsCountRef.current);
             updateChannels(Object.keys(channelsCountRef.current));
         },
