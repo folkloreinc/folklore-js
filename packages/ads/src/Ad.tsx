@@ -1,47 +1,45 @@
 /* eslint-disable react/require-default-props */
 import classNames from 'classnames';
-import isFunction from 'lodash/isFunction';
-import isObject from 'lodash/isObject';
-import PropTypes from 'prop-types';
-import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import React, { Ref, RefCallback, useCallback, useId, useMemo, useRef, useState } from 'react';
 
 import { getMinimumAdSize, getSizeFromSizeMapping, normalizeAdSizes } from './utils';
 
 import { useAdsContext } from './AdsContext';
 import { useAdsTargeting } from './AdsTargetingContext';
 import RichAd from './RichAd';
-import * as AppPropTypes from './propTypes';
 import useAd from './useAd';
 import useRichAd from './useRichAd';
+import { AdSize, AdSizeMapping, AdsTargeting } from './types';
+import AdSlot from './AdSlot';
 
-const propTypes = {
-    slot: PropTypes.string.isRequired,
-    path: AppPropTypes.adPath,
-    size: AppPropTypes.adSize,
-    sizeMapping: AppPropTypes.adSizeMapping,
-    viewport: PropTypes.string,
-    targeting: AppPropTypes.adTargeting,
-    refreshInterval: PropTypes.number,
-    alwaysRender: PropTypes.bool,
-    disabled: PropTypes.bool,
-    disableTracking: PropTypes.bool,
-    shouldKeepSize: PropTypes.bool,
-    withoutStyle: PropTypes.bool,
-    withoutMinimumSize: PropTypes.bool,
-    withReactId: PropTypes.bool,
-    className: PropTypes.string,
-    emptyClassName: PropTypes.string,
-    adClassName: PropTypes.string,
-    richAdClassName: PropTypes.string,
-    richAdIframeClassName: PropTypes.string,
-    onRender: PropTypes.func,
-    onDestroy: PropTypes.func,
-    onRichAd: PropTypes.func,
-    slotRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-};
+export interface AdProps {
+    slot: string;
+    path?: string | null;
+    size?: AdSize[] | null;
+    sizeMapping?: AdSizeMapping[] | null;
+    viewport?: string | null;
+    targeting?: AdsTargeting | null;
+    refreshInterval?: number | null;
+    alwaysRender?: boolean;
+    disabled?: boolean;
+    disableTracking?: boolean;
+    shouldKeepSize?: boolean;
+    withoutStyle?: boolean;
+    withoutMinimumSize?: boolean;
+    withReactId?: boolean;
+    className?: string | null;
+    emptyClassName?: string | null;
+    adClassName?: string | null;
+    richAdClassName?: string | null;
+    richAdIframeClassName?: string | null;
+    onRender?: ((event: any) => void) | null;
+    onDestroy?: (() => void) | null;
+    onRichAd?: ((richAd: any) => void) | null;
+    slotRef?: Ref<AdSlot> | null;
+}
 
 function Ad({
-    slot: slotName = null,
+    slot: slotName,
     path: providedPath = null,
     size: providedSize = null,
     sizeMapping: providedSizeMapping = null,
@@ -64,7 +62,7 @@ function Ad({
     onDestroy = null,
     onRichAd = null,
     slotRef = null,
-}) {
+}: AdProps) {
     const {
         slots = null,
         slotsPath = null,
@@ -72,7 +70,7 @@ function Ad({
         ads,
     } = useAdsContext();
     const { default: defaultSlotPath = null } = slotsPath || {};
-    const slot = slotName !== null && slots !== null ? slots[slotName] || null : null;
+    const slot = slotName && slots !== null ? slots[slotName] || null : null;
     const {
         sizeMapping: slotSizeMapping = null,
         size: slotSize = null,
@@ -129,9 +127,12 @@ function Ad({
         contextViewport,
     ]);
 
-    const [lastRenderedSize, setLastRenderedSize] = useState(null);
+    const [lastRenderedSize, setLastRenderedSize] = useState<{
+        width: number;
+        height: number;
+    } | null>(null);
     const onAdRender = useCallback(
-        (event) => {
+        (event: any) => {
             const { isEmpty: newIsEmpty = true, width: newWidth, height: newHeight } = event || {};
             const isRendered = !newIsEmpty;
 
@@ -194,9 +195,9 @@ function Ad({
         onRichAd,
     });
 
-    if (slotRef !== null && isFunction(slotRef)) {
+    if (slotRef !== null && typeof slotRef === 'function') {
         slotRef(slotObject);
-    } else if (slotRef !== null && isObject(slotRef)) {
+    } else if (slotRef !== null && typeof slotRef === 'object') {
         // eslint-disable-next-line no-param-reassign
         slotRef.current = slotObject;
     }
@@ -278,7 +279,5 @@ function Ad({
         </div>
     );
 }
-
-Ad.propTypes = propTypes;
 
 export default Ad;

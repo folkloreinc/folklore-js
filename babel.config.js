@@ -26,6 +26,7 @@ module.exports = (api) => {
                     throwIfNamespace: false,
                 },
             ],
+            [require.resolve('@babel/preset-typescript'), {}],
         ],
 
         plugins: [[require.resolve('@babel/plugin-transform-runtime'), {}]],

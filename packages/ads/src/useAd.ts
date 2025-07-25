@@ -1,11 +1,28 @@
 import { useIntersectionObserver, useWindowEvent } from '@folklore/hooks';
 import { useEffect, useState, useCallback, useRef, useMemo, useId } from 'react';
 
+import AdSlot from './AdSlot';
 import { useAdsContext } from './AdsContext';
+import { AdSizeMapping, AdsTargeting } from './types';
 import useAdsTracking from './useAdsTracking';
 
+interface UseAdOptions {
+    id?: string;
+    sizeMapping?: AdSizeMapping[] | null;
+    viewport?: string | null;
+    targeting?: AdsTargeting | null;
+    categoryExclusions?: string[] | null;
+    refreshInterval?: number | null;
+    alwaysRender?: boolean;
+    onRender?: (event: any) => void | null;
+    onDestroy?: (event: any) => void | null;
+    disabled?: boolean;
+    disableTracking?: boolean;
+    rootMargin?: string;
+}
+
 function useAd(
-    path,
+    path: string,
     size,
     {
         id,
@@ -20,7 +37,7 @@ function useAd(
         disabled = false,
         disableTracking = false,
         rootMargin = '300px',
-    } = {},
+    }: UseAdOptions = {},
 ) {
     const {
         ads: adsManager,
@@ -31,9 +48,9 @@ function useAd(
 
     const trackAd = useAdsTracking();
     const track = useCallback(
-        (...args) => {
+        (action: string, slot: AdSlot = null, renderEvent: any = null) => {
             if (!disableTracking && !globalTrackingDisabled) {
-                trackAd(...args);
+                trackAd(action, slot, renderEvent);
             }
         },
         [disableTracking, globalTrackingDisabled, trackAd],

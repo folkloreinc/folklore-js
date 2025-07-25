@@ -1,9 +1,11 @@
 import createDebug from 'debug';
 import { useEffect, useState } from 'react';
 
+import { RichAd } from './types';
+
 const debug = createDebug('folklore:ads');
 
-function parseRichAd(data) {
+function parseRichAd(data): RichAd | null {
     let richAd = null;
     try {
         const eventData = JSON.parse(data) || null;
@@ -12,7 +14,11 @@ function parseRichAd(data) {
     return richAd;
 }
 
-function useRichAd(containerRef, id, opts) {
+interface UseRichAdOptions {
+    onRichAd?: (richAd: RichAd) => void | null;
+}
+
+function useRichAd(containerRef, id: string, opts: UseRichAdOptions = {}) {
     const [richAd, setRichAd] = useState(null);
     const { onRichAd = null } = opts || {};
 

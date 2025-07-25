@@ -10,3 +10,4 @@ export { default as useAd } from './useAd';
 export { default as useAdsTracking } from './useAdsTracking';
 export { default as useRichAd } from './useRichAd';
 export * from './utils';
+export * from './types';

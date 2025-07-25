@@ -1,10 +1,12 @@
 import { useTracking } from '@folklore/tracking';
 import { useCallback } from 'react';
 
+import AdSlot from './AdSlot';
+
 export default function useAdsTracking() {
     const tracking = useTracking() || null;
     const trackEvent = useCallback(
-        (action, slot, renderEvent) => {
+        (action: string, slot: AdSlot = null, renderEvent: any = null) => {
             if (tracking !== null && typeof tracking.trackAd !== 'undefined') {
                 tracking.trackAd(action, slot, renderEvent);
             }

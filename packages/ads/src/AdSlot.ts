@@ -1,6 +1,29 @@
 import EventEmitter from 'wolfy87-eventemitter';
 
+import { AdSizeMapping } from './types';
+
+export interface AdSlotOptions {
+    sizeMapping?: null | AdSizeMapping[];
+    targeting?: { [key: string]: string | Array<string> };
+    categoryExclusions?: Array<string>;
+    visible?: boolean;
+}
+
 class AdSlot extends EventEmitter {
+    options: AdSlotOptions;
+    elementId: string;
+    adPath: string;
+    adSize: string | Array<string>;
+    visible: boolean;
+    wasVisible: boolean;
+    adSlot: any;
+    rendered: boolean;
+    displayed: boolean;
+    viewable: boolean;
+    renderEvent: any;
+    refreshDisabled: boolean;
+    destroyed: boolean;
+
     constructor(id, path, size, opts = {}) {
         super();
 
@@ -115,7 +138,6 @@ class AdSlot extends EventEmitter {
         this.displayed = false;
         this.renderEvent = null;
         this.destroyed = true;
-
     }
 
     getElementId() {

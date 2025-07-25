@@ -1,0 +1,30 @@
+import { Ref } from 'react';
+import { AdSize, AdSizeMapping, AdsTargeting } from './types';
+import AdSlot from './AdSlot';
+export interface AdProps {
+    slot: string;
+    path?: string | null;
+    size?: AdSize[] | null;
+    sizeMapping?: AdSizeMapping[] | null;
+    viewport?: string | null;
+    targeting?: AdsTargeting | null;
+    refreshInterval?: number | null;
+    alwaysRender?: boolean;
+    disabled?: boolean;
+    disableTracking?: boolean;
+    shouldKeepSize?: boolean;
+    withoutStyle?: boolean;
+    withoutMinimumSize?: boolean;
+    withReactId?: boolean;
+    className?: string | null;
+    emptyClassName?: string | null;
+    adClassName?: string | null;
+    richAdClassName?: string | null;
+    richAdIframeClassName?: string | null;
+    onRender?: ((event: any) => void) | null;
+    onDestroy?: (() => void) | null;
+    onRichAd?: ((richAd: any) => void) | null;
+    slotRef?: Ref<AdSlot> | null;
+}
+declare function Ad({ slot: slotName, path: providedPath, size: providedSize, sizeMapping: providedSizeMapping, viewport: providedViewport, targeting: providedTargeting, refreshInterval: providedRefreshInterval, alwaysRender, disabled: providedDisabled, disableTracking, shouldKeepSize, withoutStyle, withoutMinimumSize, withReactId, className, emptyClassName, adClassName, richAdClassName, richAdIframeClassName, onRender, onDestroy, onRichAd, slotRef, }: AdProps): import("react/jsx-runtime").JSX.Element;
+export default Ad;

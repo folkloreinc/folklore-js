@@ -5,9 +5,21 @@ import isObject from 'lodash/isObject';
 import EventEmitter from 'wolfy87-eventemitter';
 
 // import loadGPT from './loadGPT';
-import AdSlot from './AdSlot';
+import AdSlot, { AdSlotOptions as BaseAdSlotOptions } from './AdSlot';
+import { AdSize } from './types';
 
 const debug = createDebug('folklore:ads');
+
+declare global {
+    interface Window {
+        googletag?: any;
+        refreshDisabledLineItems?: string[];
+    }
+}
+
+interface AdSlotOptions extends BaseAdSlotOptions {
+    id?: string;
+}
 
 class AdsManager extends EventEmitter {
     // static index = 0;
@@ -21,6 +33,25 @@ class AdsManager extends EventEmitter {
     // }
 
     static ID_PREFIX = 'div-gpt-ad-';
+
+    disabled: boolean;
+    personnalizedAdsDisabled: boolean;
+    ready: boolean;
+    enabled: boolean;
+    googletag: any;
+    slots: AdSlot[];
+    index: number;
+    options: {
+        disabled: boolean;
+        disablePersonnalizedAds: boolean;
+        disableSingleRequest: boolean;
+        disableLazyLoad: boolean;
+        disableVideoAds: boolean;
+        autoInit: boolean;
+        mobileScaling?: number;
+        renderMarginPercent?: number;
+        fetchMarginPercent?: number;
+    };
 
     static getArticleTargeting(article) {
         if (article === null) {
@@ -269,7 +300,7 @@ class AdsManager extends EventEmitter {
         });
     }
 
-    createSlot(path, size, opts = {}) {
+    createSlot(path: string, size: AdSize, opts: AdSlotOptions = {}) {
         const { id: providedId = null } = opts;
         const id = providedId || this.createAdId();
 

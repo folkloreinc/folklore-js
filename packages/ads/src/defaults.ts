@@ -1,11 +1,13 @@
-export const viewports = {
+import { SlotsDefinition, Viewports } from './types';
+
+export const viewports: Viewports = {
     default: [0, 0],
     tablet: [728, 0],
     desktop: [1024, 0],
     laptop: [1400, 700],
 };
 
-export const slots = {
+export const slots: SlotsDefinition = {
     top: {
         sizeMapping: {
             default: [

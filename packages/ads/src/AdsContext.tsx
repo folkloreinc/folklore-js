@@ -7,77 +7,68 @@ import { getSizeFromSizeMapping, getSizeMappingFromSlot } from './utils';
 
 import AdsManager from './AdsManager';
 import { viewports as defaultViewports, slots as defaultSlots } from './defaults';
-import * as AdPropTypes from './propTypes';
+import { Slots, SlotsDefinition, Viewports } from './types';
 
-const AdsContext = React.createContext({
+interface AdsContextType {
+    ready: boolean;
+    ads?: AdsManager;
+    viewports?: Viewports;
+    viewport?: string | null;
+    slots?: Slots;
+    slotsPath?: Record<string, string>;
+    trackingDisabled?: boolean;
+    richAdComponents?: Record<string, React.ElementType>;
+}
+
+const AdsContext = React.createContext<AdsContextType>({
     ready: false,
 });
 
 export const useAdsContext = () => useContext(AdsContext);
 
-const propTypes = {
-    children: PropTypes.node.isRequired,
-    defaultSlotPath: PropTypes.string,
-    slotsPath: PropTypes.objectOf(PropTypes.string),
-    disableSingleRequest: PropTypes.bool,
-    disableVideoAds: PropTypes.bool,
-    disableLazyLoad: PropTypes.bool,
-    autoInit: PropTypes.bool,
-    resizeDebounceDelay: PropTypes.number,
-    refreshOnResize: PropTypes.bool,
-    mobileScaling: PropTypes.number,
-    renderMarginPercent: PropTypes.number,
-    fetchMarginPercent: PropTypes.number,
-    viewport: PropTypes.string,
-    slots: AdPropTypes.adSlots,
-    viewports: AdPropTypes.adViewports,
-    richAdComponents: PropTypes.objectOf(PropTypes.elementType),
-    disabled: PropTypes.bool,
-    disableTracking: PropTypes.bool,
-};
-
-const defaultProps = {
-    defaultSlotPath: null,
-    slotsPath: null,
-    disableSingleRequest: false,
-    disableVideoAds: false,
-    disableLazyLoad: false,
-    autoInit: true,
-    resizeDebounceDelay: 500,
-    refreshOnResize: false,
-    mobileScaling: 1.0,
-    renderMarginPercent: 100,
-    fetchMarginPercent: 300,
-    viewport: null,
-    slots: defaultSlots,
-    viewports: defaultViewports,
-    richAdComponents: null,
-    disabled: false,
-    disableTracking: false,
-};
+interface AdsProviderProps {
+    children: React.ReactNode;
+    defaultSlotPath?: string | null;
+    slotsPath?: Record<string, string> | null;
+    disableSingleRequest?: boolean;
+    disableVideoAds?: boolean;
+    disableLazyLoad?: boolean;
+    autoInit?: boolean;
+    resizeDebounceDelay?: number;
+    refreshOnResize?: boolean;
+    mobileScaling?: number;
+    renderMarginPercent?: number;
+    fetchMarginPercent?: number;
+    viewport?: string | null;
+    viewports?: Viewports;
+    slots?: SlotsDefinition;
+    richAdComponents?: Record<string, React.ElementType> | null;
+    disabled?: boolean;
+    disableTracking?: boolean;
+}
 
 export function AdsProvider({
     children,
-    defaultSlotPath,
-    slotsPath,
-    disableSingleRequest,
-    disableVideoAds,
-    disableLazyLoad,
-    autoInit,
-    resizeDebounceDelay,
-    refreshOnResize,
-    mobileScaling,
-    renderMarginPercent,
-    fetchMarginPercent,
-    viewport,
-    viewports,
-    slots,
-    richAdComponents,
-    disabled,
-    disableTracking,
-}) {
+    defaultSlotPath = null,
+    slotsPath = null,
+    disableSingleRequest = false,
+    disableVideoAds = false,
+    disableLazyLoad = false,
+    autoInit = true,
+    resizeDebounceDelay = 500,
+    refreshOnResize = false,
+    mobileScaling = 1.0,
+    renderMarginPercent = 100,
+    fetchMarginPercent = 300,
+    viewport = null,
+    viewports = defaultViewports,
+    slots = defaultSlots,
+    richAdComponents = null,
+    disabled = false,
+    disableTracking = false,
+}: AdsProviderProps) {
     const [ready, setReady] = useState(false);
-    const adsRef = useRef(null);
+    const adsRef = useRef<AdsManager | null>(null);
     const ads = useMemo(() => {
         if (adsRef.current === null) {
             adsRef.current = new AdsManager({
@@ -106,7 +97,7 @@ export function AdsProvider({
     ]);
 
     useEffect(() => {
-        let onReady = null;
+        let onReady: (() => void) | null = null;
         if (!ads.isReady()) {
             onReady = () => setReady(true);
             ads.on('ready', onReady);
@@ -139,7 +130,7 @@ export function AdsProvider({
         };
     }, [ads, resizeDebounceDelay, refreshOnResize]);
 
-    const slotsWithSizeMapping = useMemo(
+    const slotsWithSizeMapping = useMemo<Slots>(
         () =>
             Object.keys(slots || {}).reduce((map, key) => {
                 const slot = slots[key];
@@ -154,23 +145,20 @@ export function AdsProvider({
                     },
                 };
             }, {}),
-        [],
+        [slots, viewports],
     );
 
-    const finalSlotsPath = useMemo(
-        () =>
-            defaultSlotPath !== null
-                ? {
-                      default: defaultSlotPath,
-                      ...slotsPath,
-                  }
-                : {
-                      ...slotsPath,
-                  },
-        [defaultSlotPath, slotsPath],
-    );
+    const finalSlotsPath = useMemo(() => {
+        if (defaultSlotPath !== null && slotsPath) {
+            return {
+                default: defaultSlotPath,
+                ...slotsPath,
+            };
+        }
+        return slotsPath ? { ...slotsPath } : {};
+    }, [defaultSlotPath, slotsPath]);
 
-    const value = useMemo(
+    const value = useMemo<AdsContextType>(
         () => ({
             ready,
             ads,
@@ -195,8 +183,5 @@ export function AdsProvider({
 
     return <AdsContext.Provider value={value}>{children}</AdsContext.Provider>;
 }
-
-AdsProvider.propTypes = propTypes;
-AdsProvider.defaultProps = defaultProps;
 
 export default AdsContext;

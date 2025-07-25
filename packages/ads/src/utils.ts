@@ -3,7 +3,9 @@ import isObject from 'lodash/isObject';
 import sortBy from 'lodash/sortBy';
 import uniqBy from 'lodash/uniqBy';
 
-export function normalizeAdSizes(size) {
+import { AdSize, AdSizeMapping, Size, Slot, SlotDefinition, Viewport, Viewports } from './types';
+
+export function normalizeAdSizes(size): AdSize[] {
     if (size === null) {
         return [];
     }
@@ -13,14 +15,14 @@ export function normalizeAdSizes(size) {
     return [size];
 }
 
-export function getAdSizes(sizes) {
+export function getAdSizes(sizes): AdSize[] {
     return uniqBy(sizes, (size) => (isArray(size) ? size.join('x') : size));
 }
 
-export const getMinimumAdSize = (sizes) =>
-    getAdSizes(sizes)
+export function getMinimumAdSize(sizes): Size {
+    return getAdSizes(sizes)
         .filter((size) => size !== 'fluid')
-        .reduce(
+        .reduce<Size>(
             (minimumSize, size) => ({
                 width: Math.min(minimumSize.width, size[0]),
                 height: Math.min(minimumSize.height, size[1]),
@@ -30,24 +32,29 @@ export const getMinimumAdSize = (sizes) =>
                 height: Infinity,
             },
         );
+}
 
-export const sizeFitsInViewport = (size, viewport) =>
-    (size === 'fluid' && viewport[0] > 600) ||
-    (size !== 'fluid' &&
-        (viewport[0] === 0 || size[0] <= viewport[0]) &&
-        (viewport[1] === 0 || size[1] <= viewport[1]));
+export function sizeFitsInViewport(size: AdSize, viewport: Viewport): boolean {
+    return (
+        (size === 'fluid' && viewport[0] > 600) ||
+        (size !== 'fluid' &&
+            (viewport[0] === 0 || size[0] <= viewport[0]) &&
+            (viewport[1] === 0 || size[1] <= viewport[1]))
+    );
+}
 
-export const getSortedViewports = (viewports) =>
-    sortBy(
+export function getSortedViewports(viewports: Viewports) {
+    return sortBy(
         Object.keys(viewports).map((name) => ({
             name,
             size: viewports[name],
         })),
         [(viewport) => viewport.size[0]],
     ).reverse();
+}
 
-export const buildSizeMappingFromViewports = (sizeMapping, viewports) =>
-    isObject(sizeMapping) && !isArray(sizeMapping)
+export function buildSizeMappingFromViewports(sizeMapping, viewports): AdSizeMapping[] {
+    return isObject(sizeMapping) && !isArray(sizeMapping)
         ? getSortedViewports(viewports).reduce(
               (newSizeMapping, { name, size: viewPortSize }) =>
                   typeof sizeMapping[name] !== 'undefined'
@@ -56,23 +63,28 @@ export const buildSizeMappingFromViewports = (sizeMapping, viewports) =>
               [],
           )
         : sizeMapping;
+}
 
-export const buildSizeMappingFromSizes = (sizes, viewports) =>
-    getSortedViewports(viewports).map(({ name, size: viewPortSize }) => [
+export function buildSizeMappingFromSizes(sizes, viewports): AdSizeMapping[] {
+    return getSortedViewports(viewports).map(({ name, size: viewPortSize }) => [
         viewPortSize,
         sizes.filter((size) =>
             sizeFitsInViewport(size, name === 'default' ? [300, 300] : viewPortSize),
         ),
     ]);
+}
 
-export const getSizeMappingFromSlot = ({ size: allSizes = [], sizeMapping = null }, viewports) => {
+export function getSizeMappingFromSlot(
+    { size: allSizes = [], sizeMapping = null }: Slot | SlotDefinition,
+    viewports: Viewports,
+): AdSizeMapping[] | null {
     if (sizeMapping === true) {
         return buildSizeMappingFromSizes(allSizes, viewports);
     }
     return sizeMapping !== null ? buildSizeMappingFromViewports(sizeMapping, viewports) : null;
-};
+}
 
-export function getSizeFromSizeMapping(sizeMapping) {
+export function getSizeFromSizeMapping(sizeMapping): AdSize[] | null {
     if (sizeMapping === null) {
         return null;
     }

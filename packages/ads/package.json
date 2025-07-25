@@ -29,12 +29,15 @@
     ],
     "main": "dist/cjs.js",
     "module": "dist/es.js",
+    "types": "types/index.d.ts",
     "files": [
-        "dist"
+        "dist",
+        "types"
     ],
     "scripts": {
-        "clean": "rm -rf dist",
-        "build": "rollup --bundleConfigAsCjs --config ../../rollup.config.js",
+        "clean": "rm -rf dist && rm -rf types",
+        "build:types": "tsc --p tsconfig.json",
+        "build": "npm run build:types && rollup --bundleConfigAsCjs --config ../../rollup.config.js",
         "prepare": "npm run clean && npm run build"
     },
     "devDependencies": {

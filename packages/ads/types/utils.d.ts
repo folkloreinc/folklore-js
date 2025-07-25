@@ -1,0 +1,10 @@
+import { AdSize, AdSizeMapping, Size, Slot, SlotDefinition, Viewport, Viewports } from './types';
+export declare function normalizeAdSizes(size: any): AdSize[];
+export declare function getAdSizes(sizes: any): AdSize[];
+export declare function getMinimumAdSize(sizes: any): Size;
+export declare function sizeFitsInViewport(size: AdSize, viewport: Viewport): boolean;
+export declare function getSortedViewports(viewports: Viewports): any;
+export declare function buildSizeMappingFromViewports(sizeMapping: any, viewports: any): AdSizeMapping[];
+export declare function buildSizeMappingFromSizes(sizes: any, viewports: any): AdSizeMapping[];
+export declare function getSizeMappingFromSlot({ size: allSizes, sizeMapping }: Slot | SlotDefinition, viewports: Viewports): AdSizeMapping[] | null;
+export declare function getSizeFromSizeMapping(sizeMapping: any): AdSize[] | null;
