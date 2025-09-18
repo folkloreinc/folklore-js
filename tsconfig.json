@@ -3,5 +3,16 @@
     "compilerOptions": {
         "strict": false
     },
-    "include": []
+    "include": [],
+    "exclude": [
+        "node_modules",
+        "build",
+        "scripts",
+        "acceptance-tests",
+        "webpack",
+        "jest",
+        "src/setupTests.ts",
+        "@folklore/*",
+        "__tests__"
+    ]
 }

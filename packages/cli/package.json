@@ -25,7 +25,7 @@
     "scripts": {
         "clean": "rm -rf dist",
         "build": "rollup  --bundleConfigAsCjs --config rollup.config.js",
-        "prepare": "npm run build && npm run build",
+        "prepublishOnly": "npm run build && npm run build",
         "cli": "../../node_modules/.bin/babel-node ./src/cli.js"
     },
     "main": "./dist/cjs.js",
@@ -73,8 +73,8 @@
         "postcss": "^8.2.4",
         "postcss-flexbugs-fixes": "^5.0.2",
         "postcss-loader": "^7.3.2",
-        "postcss-normalize": "^10.0.1",
-        "postcss-preset-env": "^9.5.15",
+        "postcss-normalize": "^13.0.1",
+        "postcss-preset-env": "^10.3.1",
         "react-dev-utils": "^11.0.4",
         "react-refresh": "^0.14.0",
         "resolve-url-loader": "^5.0.0",
@@ -83,9 +83,9 @@
         "source-map-loader": "^4.0.1",
         "style-loader": "^3.3.1",
         "vue": "^3.4.0",
-        "webpack": "^5.64.2",
+        "webpack": "^5.101.3",
         "webpack-bundle-analyzer": "^4.5.0",
-        "webpack-dev-server": "^4.5.0",
+        "webpack-dev-server": "^5.2.2",
         "webpack-manifest-plugin": "^5.0.0",
         "webpack-merge": "^5.8.0"
     },

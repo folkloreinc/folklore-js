@@ -13,7 +13,7 @@
         "compile": "../../node_modules/.bin/babel -d lib/ src/",
         "build": "npm run compile && npm run copy:dirs",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "prepare": "npm run clean && npm run build"
+        "prepublishOnly": "npm run clean && npm run build"
     },
     "files": [
         "lib"

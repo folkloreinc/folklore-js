@@ -38,7 +38,7 @@
         "clean": "rm -rf dist && rm -rf types",
         "build:types": "tsc --p tsconfig.json",
         "build": "npm run build:types && rollup --bundleConfigAsCjs --config ../../rollup.config.js",
-        "prepare": "npm run clean && npm run build"
+        "prepublishOnly": "npm run clean && npm run build"
     },
     "devDependencies": {
         "prop-types": "^15.7.2",

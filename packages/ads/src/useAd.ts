@@ -59,7 +59,7 @@ function useAd(
     // Check for visibility
     const {
         ref: refObserver,
-        entry: { isIntersecting },
+        entry: { isIntersecting = false },
     } = useIntersectionObserver({
         rootMargin,
         disabled,

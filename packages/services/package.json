@@ -34,7 +34,7 @@
     "scripts": {
         "clean": "rm -rf dist",
         "build": "rollup --bundleConfigAsCjs --config ../../rollup.config.js",
-        "prepare": "npm run clean && npm run build"
+        "prepublishOnly": "npm run clean && npm run build"
     },
     "dependencies": {
         "@babel/runtime": "^7.4.3",
