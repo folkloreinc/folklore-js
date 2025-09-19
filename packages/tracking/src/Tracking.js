@@ -11,6 +11,7 @@ class Tracking extends EventEmitter {
             paused: false,
             variables: null,
             withoutIdleCallback: false,
+            pageViewEvents: ['pageview', 'page_view', 'pageView'],
             ...opts,
         };
 
@@ -26,6 +27,11 @@ class Tracking extends EventEmitter {
         if (variables !== null) {
             this.setVariables(variables);
         }
+    }
+
+    isPageViewEvent(eventName) {
+        const { pageViewEvents = [] } = this.options;
+        return pageViewEvents.indexOf(eventName) !== -1;
     }
 
     setPage(page) {
@@ -91,7 +97,7 @@ class Tracking extends EventEmitter {
             eventId: uuidv4(),
             ...data,
         });
-        if (eventName === 'pageview' || eventName === 'page_view') {
+        if (this.isPageViewEvent(eventName)) {
             this.setPage(data);
         }
     }
@@ -102,7 +108,7 @@ class Tracking extends EventEmitter {
             eventId: uuidv4(),
             ...data,
         });
-        if (eventName === 'pageview' || eventName === 'page_view') {
+        if (this.isPageViewEvent(eventName)) {
             this.setPage(data);
         }
     }
