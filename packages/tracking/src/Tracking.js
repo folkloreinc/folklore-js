@@ -1,8 +1,10 @@
 /* eslint-disable class-methods-use-this */
 import { v4 as uuidv4 } from 'uuid';
+import EventEmitter from 'wolfy87-eventemitter';
 
-class Tracking {
+class Tracking extends EventEmitter {
     constructor(opts = {}) {
+        super();
         this.options = {
             dataLayer: typeof window !== 'undefined' ? window.dataLayer || null : null,
             disabled: false,
@@ -17,12 +19,18 @@ class Tracking {
         this.disabled = disabled;
         this.paused = paused;
         this.variables = null;
+        this.page = null;
 
         this.pending = [];
 
         if (variables !== null) {
             this.setVariables(variables);
         }
+    }
+
+    setPage(page) {
+        this.page = page;
+        this.emit('page', page);
     }
 
     setVariables(variables) {
@@ -83,6 +91,9 @@ class Tracking {
             eventId: uuidv4(),
             ...data,
         });
+        if (eventName === 'pageview' || eventName === 'page_view') {
+            this.setPage(data);
+        }
     }
 
     pushEventNow(eventName, data) {
@@ -91,6 +102,9 @@ class Tracking {
             eventId: uuidv4(),
             ...data,
         });
+        if (eventName === 'pageview' || eventName === 'page_view') {
+            this.setPage(data);
+        }
     }
 
     trackEvent(category, action, label = null, value = null) {
