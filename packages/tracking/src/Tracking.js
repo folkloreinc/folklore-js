@@ -113,21 +113,23 @@ class Tracking extends EventEmitter {
         }
     }
 
-    trackEvent(category, action, label = null, value = null) {
+    trackEvent(category, action, label = null, value = null, data = null) {
         this.pushEvent('eventInteraction', {
             eventCategory: category,
             eventAction: action,
             eventLabel: label,
             eventValue: value,
+            ...data,
         });
     }
 
-    trackEventNow(category, action, label = null, value = null) {
+    trackEventNow(category, action, label = null, value = null, data = null) {
         this.pushEventNow('eventInteraction', {
             eventCategory: category,
             eventAction: action,
             eventLabel: label,
             eventValue: value,
+            ...data,
         });
     }
 
