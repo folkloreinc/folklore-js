@@ -3,7 +3,7 @@
 namespace App\Panneau\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
-use App\Contracts\Resources\User;
+use App\Contracts\Entities\User;
 
 class PanneauPolicy
 {

@@ -4,7 +4,7 @@ namespace App\Panneau\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Folklore\Http\Resources\MediaResource;
-use App\Contracts\Resources\Page;
+use App\Contracts\Entities\Page;
 use Folklore\Http\Resources\LocalizedResource;
 
 class ParentPageResource extends JsonResource

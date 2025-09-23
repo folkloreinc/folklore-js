@@ -6,7 +6,7 @@ use Folklore\Repositories\Pages as BasePages;
 use App\Contracts\Repositories\Pages as PagesContract;
 use Folklore\Models\Page as PageBaseModel;
 use App\Models\Page as PageModel;
-use App\Contracts\Resources\Page as PageContract;
+use App\Contracts\Entities\Page as PageContract;
 
 class Pages extends BasePages implements PagesContract
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Contracts\Resources\Blocks;
+namespace App\Contracts\Entities\Blocks;
 
-use App\Contracts\Resources\Block as BaseBlock;
+use App\Contracts\Entities\Block as BaseBlock;
 
 interface Text extends BaseBlock
 {

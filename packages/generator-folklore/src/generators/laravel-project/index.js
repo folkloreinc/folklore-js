@@ -373,12 +373,12 @@ module.exports = class LaravelProjectGenerator extends Generator {
             composerJSON() {
                 this.composerJson.merge({
                     require: {
-                        'folklore/laravel-folklore': 'v1.x-dev',
+                        'folklore/laravel-folklore': 'v1.1.x-dev',
                         'folklore/laravel-locale': 'v8.x-dev',
                         'folklore/laravel-image': 'v1.x-dev',
                     },
                     'require-dev': {
-                        'laravel/telescope': '^4.12.0',
+                        'laravel/telescope': '^5.0',
                     },
                     extra: {
                         laravel: {

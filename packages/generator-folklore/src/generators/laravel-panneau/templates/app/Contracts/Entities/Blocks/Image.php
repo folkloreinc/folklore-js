@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Contracts\Resources\Blocks;
+namespace App\Contracts\Entities\Blocks;
 
-use App\Contracts\Resources\Block as BaseBlock;
-use Folklore\Contracts\Resources\Image as ImageContract;
+use App\Contracts\Entities\Block as BaseBlock;
+use Folklore\Contracts\Entities\Image as ImageContract;
 
 interface Image extends BaseBlock
 {

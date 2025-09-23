@@ -64,7 +64,7 @@ module.exports = class LaravelMediathequeGenerator extends Generator {
             composerJSON() {
                 this.composerJson.merge({
                     require: {
-                        'folklore/laravel-folklore': 'v1.x-dev',
+                        'folklore/laravel-folklore': 'v1.1.x-dev',
                         'folklore/laravel-mediatheque': 'v1.1.x-dev',
                     },
                 });
@@ -72,7 +72,7 @@ module.exports = class LaravelMediathequeGenerator extends Generator {
 
             files() {
                 if (!this.options.overrides) {
-                    return
+                    return;
                 }
                 const folders = ['app'];
                 folders.forEach((folder) => {

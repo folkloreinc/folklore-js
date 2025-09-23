@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Contracts\Resources\Block as BlockContract;
-use App\Resources\Block as BlockResource;
+use App\Contracts\Entities\Block as BlockContract;
+use App\Entities\Block as BlockResource;
 use Folklore\Models\Block as BaseBlock;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -11,13 +11,13 @@ class Block extends BaseBlock
 {
     use HasFactory;
 
-    protected $typedResources = [
-        'text' => \App\Resources\Blocks\TextBlock::class,
-        'image' => \App\Resources\Blocks\ImageBlock::class,
+    protected $entitiesByType = [
+        'text' => \App\Entities\Blocks\TextBlock::class,
+        'image' => \App\Entities\Blocks\ImageBlock::class,
     ];
 
     public function toResource(): BlockContract
     {
-        return $this->toTypedResource() ?? new BlockResource($this);
+        return $this->toTypedEntity() ?? new BlockResource($this);
     }
 }

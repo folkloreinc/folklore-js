@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Resources\Blocks;
+namespace App\Entities\Blocks;
 
-use App\Resources\Block;
-use App\Contracts\Resources\Blocks\Image as ImageBlockContract;
-use Folklore\Contracts\Resources\Image as ImageContract;
-use Folklore\Resources\Image;
+use App\Entities\Block;
+use App\Contracts\Entities\Blocks\Image as ImageBlockContract;
+use Folklore\Contracts\Entities\Image as ImageContract;
+use Folklore\Entities\Image;
 
 class ImageBlock extends Block implements ImageBlockContract
 {

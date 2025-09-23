@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Resources\Blocks;
+namespace App\Entities\Blocks;
 
-use App\Resources\Block;
-use App\Contracts\Resources\Blocks\Text as TextBlockContract;
+use App\Entities\Block;
+use App\Contracts\Entities\Blocks\Text as TextBlockContract;
 
 class TextBlock extends Block implements TextBlockContract
 {

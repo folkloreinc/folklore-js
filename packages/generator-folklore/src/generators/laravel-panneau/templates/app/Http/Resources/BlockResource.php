@@ -3,10 +3,10 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Folklore\Contracts\Resources\HasBlocks;
+use Folklore\Contracts\Entities\HasBlocks;
 use Folklore\Http\Resources\LocalizedResource;
-use App\Contracts\Resources\Blocks\Text as TextBlock;
-use App\Contracts\Resources\Blocks\ImageBlock as ImageBlock;
+use App\Contracts\Entities\Blocks\Text as TextBlock;
+use App\Contracts\Entities\Blocks\ImageBlock as ImageBlock;
 use Folklore\Http\Resources\MediaResource;
 
 class BlockResource extends JsonResource

@@ -3,8 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Contracts\Resources\Page;
-use App\Contracts\Resources\Pages\Home as HomePage;
+use App\Contracts\Entities\Page;
+use App\Contracts\Entities\Pages\Home as HomePage;
 use Folklore\Http\Resources\MediaResource;
 use Folklore\Contracts\Resources\HasBlocks;
 

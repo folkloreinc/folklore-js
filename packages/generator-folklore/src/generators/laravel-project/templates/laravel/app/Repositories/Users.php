@@ -6,7 +6,7 @@ use Folklore\Repositories\Users as BaseUsers;
 use App\Contracts\Repositories\Users as UsersContract;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User as UserModel;
-use App\Contracts\Resources\User as UserContract;
+use App\Contracts\Entities\User as UserContract;
 
 class Users extends BaseUsers implements UsersContract
 {
