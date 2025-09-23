@@ -16,7 +16,7 @@ module.exports = class EslintGenerator extends Generator {
     get writing() {
         return {
             eslintConfig() {
-                const srcPath = this.templatePath('eslint.config.js');
+                const srcPath = this.templatePath('.eslint.config.js');
                 const destPath = this.destinationPath('eslint.config.js');
                 this.fs.copy(srcPath, destPath);
             },
@@ -25,6 +25,8 @@ module.exports = class EslintGenerator extends Generator {
                 this.addDevDependencies({
                     '@babel/eslint-parser': '^7.18.9',
                     '@babel/preset-typescript': '^7.26.0',
+                    '@eslint-react/eslint-plugin': '^1.53.0',
+                    'eslint-plugin-react': '^7.37.5',
                     eslint: '^9.36.0',
                     'eslint-config-prettier': '^10.1.8',
                     'eslint-plugin-formatjs': '^5.4.0',
