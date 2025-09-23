@@ -61,11 +61,11 @@ module.exports = class LaravelPanneauGenerator extends Generator {
 
             packageJSON() {
                 this.addDependencies({
-                    '@panneau/app': '^2.0.0',
-                    '@panneau/core': '^2.0.0',
-                    '@panneau/data': '^2.0.0',
-                    '@panneau/field-text': '^2.0.0',
-                    '@panneau/field-localized': '^2.0.0',
+                    '@panneau/app': '^3.0.293',
+                    '@panneau/core': '^3.0.292',
+                    '@panneau/data': '^3.0.292',
+                    '@panneau/field-text': '^3.0.293',
+                    '@panneau/field-localized': '^3.0.293',
                 });
             },
 

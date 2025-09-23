@@ -85,6 +85,7 @@ module.exports = class AppGenerator extends Generator {
                 this.packageJson.merge({
                     scripts,
                     build: {
+                        typescript: true,
                         outputPath: ensureLeadingDotSlash(buildPath),
                         srcPath: ensureLeadingDotSlash(srcPath),
                         htmlPath: ensureLeadingDotSlash(htmlPath),
@@ -95,7 +96,7 @@ module.exports = class AppGenerator extends Generator {
             },
 
             dependencies() {
-                this.addDevDependencies({ '@folklore/cli': '^0.1.9' });
+                this.addDevDependencies({ '@folklore/cli': '^0.1.28' });
             },
         };
     }

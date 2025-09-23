@@ -9,7 +9,6 @@ module.exports = class PrettierGenerator extends Generator {
                 if (this.options.quiet) {
                     return;
                 }
-
                 console.log(chalk.yellow('\n----------------------'));
                 console.log('Prettier Generator');
                 console.log(chalk.yellow('----------------------\n'));
@@ -27,9 +26,10 @@ module.exports = class PrettierGenerator extends Generator {
 
             dependencies() {
                 this.addDevDependencies({
-                    prettier: '^3.2.5',
-                    '@prettier/plugin-php': '^0.22.2',
-                    '@trivago/prettier-plugin-sort-imports': '^4.1.1',
+                    prettier: '^3.6.2',
+                    '@prettier/plugin-php': '^0.24.0',
+                    '@trivago/prettier-plugin-sort-imports': '^5.2.2',
+                    'stylelint-prettier': '^5.0.3',
                 });
             },
         };

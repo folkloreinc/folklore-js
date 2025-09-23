@@ -5,12 +5,19 @@
     "trailingComma": "all",
     "tabWidth": 4,
     "importOrder": [
-        "styles\\.s?css$",
         "<THIRD_PARTY_MODULES>",
         "^[./](.*)?/(utils|hooks|lib)",
         "^[./].*(?<!(\\.[a-z]+))$",
-        "\\.s?css$",
+        "\\.scss$",
         "\\.[a-z]+$"
     ],
-    "importOrderSeparation": true
+    "importOrderSeparation": true,
+    "overrides": [
+        {
+            "files": "*.svg",
+            "options": {
+                "parser": "html"
+            }
+        }
+    ]
 }
