@@ -119,11 +119,11 @@ module.exports = class ReactAppGenerator extends Generator {
                     'react-helmet': '^6.1.0',
                     classnames: '^2.5.1',
 
-                    '@folklore/routes': '^0.2.42',
-                    '@folklore/fonts': '^0.0.15',
-                    '@folklore/forms': '^0.0.28',
+                    '@folklore/routes': '^0.2.43',
+                    '@folklore/fonts': '^0.0.16',
+                    '@folklore/forms': '^0.0.29',
                     '@folklore/fetch': '^0.1.21',
-                    '@folklore/hooks': '^0.0.74',
+                    '@folklore/hooks': '^0.0.75',
                     '@folklore/tracking': '^0.0.33',
 
                     // Polyfills
