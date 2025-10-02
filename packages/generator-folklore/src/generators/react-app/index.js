@@ -112,8 +112,8 @@ module.exports = class ReactAppGenerator extends Generator {
 
             dependencies() {
                 this.addDependencies({
-                    react: '^19.1.1',
-                    'react-dom': '^19.1.1',
+                    react: '^18.3.1',
+                    'react-dom': '^18.3.1',
                     'react-intl': '^7.1.1',
                     wouter: '^3.7.1',
                     'react-helmet': '^6.1.0',
