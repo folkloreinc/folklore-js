@@ -97,6 +97,17 @@ module.exports = class AppGenerator extends Generator {
 
             dependencies() {
                 this.addDevDependencies({ '@folklore/cli': '^0.1.28' });
+                this.addDevDependencies({ '@tsconfig/create-react-app': '^2.0.7' });
+            },
+
+            templates() {
+                // const srcPathJs = this.templatePath('.jsconfig.json');
+                // const destPathJs = this.destinationPath('jsconfig.json');
+                // this.fs.copy(srcPathJs, destPathJs);
+
+                const srcPathTs = this.templatePath('.tsconfig.json');
+                const destPathTs = this.destinationPath('tsconfig.json');
+                this.fs.copy(srcPathTs, destPathTs);
             },
         };
     }
