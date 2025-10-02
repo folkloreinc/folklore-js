@@ -1,19 +1,23 @@
 /* eslint-disable react/no-array-index-key */
-import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Link } from 'wouter';
 
-import * as AppPropTypes from '../../lib/PropTypes';
-
 import styles from '<%= getRelativeStylesPath('components/menus/Menu.jsx', 'menus/menu.module.css') %>';
 
-const propTypes = {
-    items: AppPropTypes.menuItems,
-    className: PropTypes.string,
-};
+interface MenuItem {
+    label: string;
+    url: string;
+    active?: boolean;
+    external?: boolean;
+    target?: string;
+}
 
-function Menu({ items = [], className = null }) {
+interface MenuProps {
+    items?: MenuItem[];
+    className?: string | null;
+}
+
+function Menu({ items = [], className = null }: MenuProps) {
     return (
         <nav
             className={classNames([

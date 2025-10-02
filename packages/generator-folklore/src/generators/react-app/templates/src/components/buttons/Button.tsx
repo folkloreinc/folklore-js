@@ -1,32 +1,36 @@
 /* eslint-disable react/button-has-type */
-import React from 'react';
-import PropTypes from 'prop-types';
+import { ReactNode, MouseEvent } from 'react';
 import classNames from 'classnames';
 import { Link } from 'wouter';
 
-import * as AppPropTypes from '../../lib/PropTypes';
-
 import styles from '<%= getRelativeStylesPath('components/buttons/Button.jsx', 'buttons/button.module.css') %>';
 
-const propTypes = {
-    text: PropTypes.string,
-    type: PropTypes.string,
-    href: PropTypes.string,
-    external: PropTypes.bool,
-    direct: PropTypes.bool,
-    target: PropTypes.string,
-    label: AppPropTypes.label,
-    children: AppPropTypes.label,
-    icon: PropTypes.node,
-    iconPosition: PropTypes.oneOf(['left', 'right', 'inline']),
-    disabled: PropTypes.bool,
-    loading: PropTypes.bool,
-    disableOnLoading: PropTypes.bool,
-    className: PropTypes.string,
-    iconClassName: PropTypes.string,
-    labelClassName: PropTypes.string,
-    onClick: PropTypes.func,
-};
+interface Message {
+    id: string;
+    defaultMessage?: string;
+}
+
+type Label = Message | ReactNode;
+
+interface ButtonProps {
+    text?: string | null;
+    type?: 'button' | 'submit' | 'reset';
+    href?: string | null;
+    external?: boolean;
+    direct?: boolean;
+    target?: string;
+    label?: Label | null;
+    children?: Label | null;
+    icon?: ReactNode | null;
+    iconPosition?: 'left' | 'right' | 'inline';
+    disabled?: boolean;
+    loading?: boolean;
+    disableOnLoading?: boolean;
+    className?: string | null;
+    iconClassName?: string | null;
+    labelClassName?: string | null;
+    onClick?: ((e: MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => void) | null;
+}
 
 function Button({
     text = null,
@@ -46,7 +50,7 @@ function Button({
     iconClassName = null,
     labelClassName = null,
     onClick = null,
-}) {
+}: ButtonProps) {
     const finalLabel = label || children;
     const hasChildren = label !== null && children !== null;
     const hasIcon = icon !== null;
@@ -135,8 +139,6 @@ function Button({
             {content}
         </button>
     );
-};
-
-Button.propTypes = propTypes;
+}
 
 export default Button;

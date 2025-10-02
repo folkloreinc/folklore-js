@@ -1,13 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-
 import styles from '<%= getRelativeStylesPath('components/layouts/Main.jsx', 'layouts/main.module.css') %>';
 
-const propTypes = {
-    children: PropTypes.node.isRequired,
-};
-
-function MainLayout({ children = null }) {
+function MainLayout({ children = null }: { children: React.ReactNode }) {
     return (
         <div className={styles.container}>
             <div className={styles.inner}>
@@ -16,7 +9,5 @@ function MainLayout({ children = null }) {
         </div>
     );
 };
-
-MainLayout.propTypes = propTypes;
 
 export default MainLayout;

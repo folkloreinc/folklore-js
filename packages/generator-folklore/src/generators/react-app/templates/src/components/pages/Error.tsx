@@ -1,11 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'wouter';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useUrlGenerator } from '@folklore/routes';
 
-// import * as AppPropTypes from '../../lib/PropTypes';
 import PageMeta from '../partials/PageMeta';
 
 import styles from '<%= getRelativeStylesPath('components/pages/Error.jsx', 'pages/error.module.css') %>';
@@ -69,11 +66,7 @@ export const messages = defineMessages({
     },
 });
 
-const propTypes = {
-    statusCode: PropTypes.number,
-};
-
-function ErrorPage({ statusCode = 404 }) {
+function ErrorPage({ statusCode = 404 }: { statusCode?: number }) {
     const url = useUrlGenerator();
     return (
         <div className={styles.container}>
@@ -94,7 +87,5 @@ function ErrorPage({ statusCode = 404 }) {
         </div>
     );
 };
-
-ErrorPage.propTypes = propTypes;
 
 export default ErrorPage;

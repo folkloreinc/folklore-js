@@ -22,6 +22,10 @@ module.exports = class ReactAppGenerator extends Generator {
         this.option('styles-path', {
             type: String,
         });
+
+        this.option('types-path', {
+            type: String,
+        });
     }
 
     initializing() {
@@ -91,11 +95,19 @@ module.exports = class ReactAppGenerator extends Generator {
 
             styles() {
                 const templateData = {};
-
                 const stylesPath =
                     this.options['styles-path'] || path.join(this.options.path, 'styles');
                 const srcPath = this.templatePath('styles');
                 const destPath = this.destinationPath(stylesPath);
+                this.fs.copyTpl(srcPath, destPath, templateData);
+            },
+
+            types() {
+                const templateData = {};
+                const typesPath =
+                    this.options['types-path'] || path.join(this.options.path, 'types');
+                const srcPath = this.templatePath('types');
+                const destPath = this.destinationPath(typesPath);
                 this.fs.copyTpl(srcPath, destPath, templateData);
             },
 

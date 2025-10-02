@@ -1,8 +1,5 @@
-import React from 'react';
-// import PropTypes from 'prop-types';
 import { defineMessages } from 'react-intl';
 
-// import * as AppPropTypes from '../../lib/PropTypes';
 import PageMeta from '../partials/PageMeta';
 
 import styles from '<%= getRelativeStylesPath('components/pages/Home.jsx', 'pages/home.module.css') %>';
@@ -14,10 +11,6 @@ const messages = defineMessages({
     },
 });
 
-const propTypes = {
-    // intl: AppPropTypes.intl.isRequired,
-};
-
 function HomePage () {
     return (
         <div className={styles.container}>
@@ -26,7 +19,5 @@ function HomePage () {
         </div>
     );
 }
-
-HomePage.propTypes = propTypes;
 
 export default HomePage;
