@@ -16,7 +16,7 @@ class Block extends BaseBlock
         'image' => \App\Entities\Blocks\ImageBlock::class,
     ];
 
-    public function toResource(): BlockContract
+    public function toEntity(): BlockContract
     {
         return $this->toTypedEntity() ?? new BlockResource($this);
     }

@@ -18,7 +18,7 @@ function renderApp(Container, props) {
 function loadContainer({ isPanneau = false }) {
     return isPanneau
         ? import('./components/Panneau').then(({ default: Container }) => Container)
-        : import('./components/Container').then(({ default: Container }) => Container);
+        : import('./components/App').then(({ default: Container }) => Container);
 }
 
 const props = getAppProps();

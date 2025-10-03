@@ -13,7 +13,7 @@ class User extends BaseUser
 {
     use HasApiTokens, HasFactory;
 
-    public function toResource(): UserContract
+    public function toEntity(): UserContract
     {
         return new UserResource($this);
     }

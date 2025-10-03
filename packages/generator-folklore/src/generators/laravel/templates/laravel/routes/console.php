@@ -1,8 +1,11 @@
 <?php
 
 use Illuminate\Foundation\Inspiring;
+use Illuminate\Support\Facades\Schedule;
 
-//Db Install
+$isProduction = app()->environment('production');
+
+// DB Install
 Artisan::command('db:install {--force}', function () {
     $args = [];
     if ($this->option('force')) {
@@ -12,7 +15,7 @@ Artisan::command('db:install {--force}', function () {
     Artisan::call('db:seed', $args);
 })->describe('Install database');
 
-//DB reset
+// DB reset
 Artisan::command('db:reset {--force}', function () {
     $args = [];
     if ($this->option('force')) {

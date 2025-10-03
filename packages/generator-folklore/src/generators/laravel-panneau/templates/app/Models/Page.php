@@ -15,7 +15,7 @@ class Page extends BasePage
         'home' => \App\Resources\Pages\HomePage::class,
     ];
 
-    public function toResource(): PageContract
+    public function toEntity(): PageContract
     {
         return $this->toTypedEntity() ?? new PageResource($this);
     }

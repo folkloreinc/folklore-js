@@ -4,8 +4,6 @@ import { FIELDS_NAMESPACE } from '@panneau/core/contexts';
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 
-import * as AppPropTypes from '../lib/PropTypes';
-
 import * as fieldsComponents from './panneau/fields';
 
 import '../../styles/panneau.scss';
@@ -14,8 +12,8 @@ const propTypes = {
     definition: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
     baseUrl: PropTypes.string.isRequired,
     uploadEndpoint: PropTypes.string,
-    user: AppPropTypes.user,
-    statusCode: AppPropTypes.statusCode,
+    user: PropTypes.object,
+    statusCode: PropTypes.string,
 };
 
 const defaultProps = {

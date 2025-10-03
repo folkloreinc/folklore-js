@@ -103,12 +103,12 @@ module.exports = class ReactAppGenerator extends Generator {
             },
 
             types() {
-                const templateData = {};
                 const typesPath =
                     this.options['types-path'] || path.join(this.options.path, 'types');
+                console.log('yo', typesPath, this.templatePath('types'));
                 const srcPath = this.templatePath('types');
                 const destPath = this.destinationPath(typesPath);
-                this.fs.copyTpl(srcPath, destPath, templateData);
+                this.fs.copy(srcPath, destPath);
             },
 
             packageJSON() {
