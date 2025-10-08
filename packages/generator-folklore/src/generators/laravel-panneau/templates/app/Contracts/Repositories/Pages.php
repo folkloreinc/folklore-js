@@ -11,7 +11,7 @@ interface Pages extends BasePages
 
     public function findByHandle(string $handle): ?PageResource;
 
-    public function findBySlug(string $slug, string $locale = null): ?PageResource;
+    public function findBySlug(string $slug, ?string $locale = null): ?PageResource;
 
     public function create($data): PageResource;
 

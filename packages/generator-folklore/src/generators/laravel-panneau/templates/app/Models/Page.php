@@ -12,7 +12,7 @@ class Page extends BasePage
     use HasFactory;
 
     protected $entitiesByType = [
-        'home' => \App\Resources\Pages\HomePage::class,
+        'home' => \App\Entities\Pages\HomePage::class,
     ];
 
     public function toEntity(): PageContract

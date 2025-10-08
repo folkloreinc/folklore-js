@@ -25,7 +25,7 @@ class Pages extends BasePages implements PagesContract
         return parent::findByHandle($handle);
     }
 
-    public function findBySlug(string $slug, string $locale = null): ?PageContract
+    public function findBySlug(string $slug, ?string $locale = null): ?PageContract
     {
         return parent::findBySlug($slug, $locale);
     }

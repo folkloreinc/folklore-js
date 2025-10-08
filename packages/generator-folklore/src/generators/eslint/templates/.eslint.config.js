@@ -18,7 +18,7 @@ module.exports = tseslint.config(
     {
         settings: {
             react: {
-                defaultVersion: '19',
+                defaultVersion: '18',
             },
         },
         languageOptions: {
