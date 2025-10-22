@@ -6,7 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Contracts\Entities\Page;
 use App\Contracts\Entities\Pages\Home as HomePage;
 use Folklore\Http\Resources\MediaResource;
-use Folklore\Contracts\Resources\HasBlocks;
+use Folklore\Contracts\Entities\HasBlocks;
 
 class PageResource extends JsonResource
 {
