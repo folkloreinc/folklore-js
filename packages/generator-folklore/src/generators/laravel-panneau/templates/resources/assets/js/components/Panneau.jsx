@@ -6,7 +6,9 @@ import React, { useState, useEffect } from 'react';
 
 import * as fieldsComponents from './panneau/fields';
 
-import '../../styles/panneau.scss';
+import '@panneau/app/assets/css/styles.css';
+import '@panneau/themes/assets/css/styles.css';
+import '@panneau/themes/assets/css/vendor.css';
 
 const propTypes = {
     definition: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
