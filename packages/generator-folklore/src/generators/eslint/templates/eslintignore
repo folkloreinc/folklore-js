@@ -1,7 +1,0 @@
-/lib
-/dist
-/es
-*/*/lib/
-*/*/dist/
-*/*/es/
-node_modules

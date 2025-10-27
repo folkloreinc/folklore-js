@@ -3,7 +3,7 @@
 namespace App\Contracts\Repositories;
 
 use Folklore\Contracts\Repositories\Users as BaseUsers;
-use App\Contracts\Resources\User as UserResource;
+use App\Contracts\Entities\User as UserResource;
 
 interface Users extends BaseUsers
 {

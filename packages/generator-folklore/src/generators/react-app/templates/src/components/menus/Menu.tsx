@@ -1,0 +1,59 @@
+/* eslint-disable react/no-array-index-key */
+import classNames from 'classnames';
+import { Link } from 'wouter';
+
+import styles from '<%= getRelativeStylesPath('components/menus/Menu.jsx', 'menus/menu.module.css') %>';
+
+interface MenuItem {
+    label: string;
+    url: string;
+    active?: boolean;
+    external?: boolean;
+    target?: string;
+}
+
+interface MenuProps {
+    items?: MenuItem[];
+    className?: string | null;
+}
+
+function Menu({ items = [], className = null }: MenuProps) {
+    return (
+        <nav
+            className={classNames([
+                styles.container,
+                {
+                    [className]: className !== null,
+                },
+            ])}
+        >
+            <ul className={styles.items}>
+                {items.map(({ label, url, active = false, external = false, target = '_blank' }, index) => (
+                    <li
+                        className={classNames([
+                            styles.item,
+                            {
+                                [styles.active]: active,
+                            },
+                        ])}
+                        key={`item-${index}`}
+                    >
+                        {external ? (
+                            <a href={url} target={target} className={styles.link}>
+                                {label}
+                            </a>
+                        ) : (
+                            <Link href={url} className={styles.link}>
+                                {label}
+                            </Link>
+                        )}
+                    </li>
+                ))}
+            </ul>
+        </nav>
+    );
+}
+
+Menu.propTypes = propTypes;
+
+export default Menu;

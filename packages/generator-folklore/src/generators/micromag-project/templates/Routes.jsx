@@ -4,16 +4,11 @@ import { Route, Switch } from 'wouter';
 import { useRoutes } from '@folklore/routes';
 
 // import { useUrlGenerator } from '@folklore/routes';
-// import * as AppPropTypes from '../lib/PropTypes';
 import MainLayout from './layouts/Main';
-import ErrorPage from './pages/Error';
+// import ErrorPage from './pages/Error';
 import HomePage from './pages/Home';
 
 import '<%= getRelativeStylesPath('components/App.jsx', 'styles.css') %>';
-
-const propTypes = {};
-
-const defaultProps = {};
 
 function Routes() {
     const routes = useRoutes() || {};
@@ -27,8 +22,5 @@ function Routes() {
         </Switch>
     );
 }
-
-Routes.propTypes = propTypes;
-Routes.defaultProps = defaultProps;
 
 export default Routes;

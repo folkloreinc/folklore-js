@@ -3,7 +3,7 @@
 namespace App\Contracts\Repositories;
 
 use Folklore\Contracts\Repositories\Pages as BasePages;
-use App\Contracts\Resources\Page as PageResource;
+use App\Contracts\Entities\Page as PageResource;
 
 interface Pages extends BasePages
 {
@@ -11,7 +11,7 @@ interface Pages extends BasePages
 
     public function findByHandle(string $handle): ?PageResource;
 
-    public function findBySlug(string $slug, string $locale = null): ?PageResource;
+    public function findBySlug(string $slug, ?string $locale = null): ?PageResource;
 
     public function create($data): PageResource;
 

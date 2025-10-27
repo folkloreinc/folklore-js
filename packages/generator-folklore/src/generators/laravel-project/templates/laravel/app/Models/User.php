@@ -6,14 +6,14 @@ namespace App\Models;
 use Folklore\Models\User as BaseUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Sanctum\HasApiTokens;
-use App\Contracts\Resources\User as UserContract;
-use App\Resources\User as UserResource;
+use App\Contracts\Entities\User as UserContract;
+use App\Entities\User as UserResource;
 
 class User extends BaseUser
 {
     use HasApiTokens, HasFactory;
 
-    public function toResource(): UserContract
+    public function toEntity(): UserContract
     {
         return new UserResource($this);
     }

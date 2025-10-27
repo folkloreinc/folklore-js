@@ -1,6 +1,6 @@
 {
     "name": "@folklore/hooks",
-    "version": "0.0.74",
+    "version": "0.0.75",
     "description": "React hooks",
     "keywords": [
         "javascript",
@@ -39,19 +39,19 @@
         "prepublishOnly": "npm run clean && npm run build"
     },
     "devDependencies": {
-        "react": "^17.0.0 || ^18.0.0",
-        "react-dom": "^17.0.0 || ^18.0.0"
+        "react": "^17.0.0 || ^18.0.0 || ^19.0.0",
+        "react-dom": "^17.0.0 || ^18.0.0 || ^19.0.0"
     },
     "peerDependencies": {
-        "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
-        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
     },
     "publishConfig": {
         "access": "public"
     },
     "gitHead": "534183c15f9eaa4c9f542dcc823797d1078835eb",
     "dependencies": {
-        "@folklore/events": "^0.0.7",
+        "@folklore/events": "^0.0.8",
         "@folklore/services": "^0.1.44",
         "@folklore/utils": "^0.1.4",
         "cancelable-promise": "^4.3.1",

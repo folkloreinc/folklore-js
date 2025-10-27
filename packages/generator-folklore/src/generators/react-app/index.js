@@ -22,6 +22,10 @@ module.exports = class ReactAppGenerator extends Generator {
         this.option('styles-path', {
             type: String,
         });
+
+        this.option('types-path', {
+            type: String,
+        });
     }
 
     initializing() {
@@ -91,12 +95,20 @@ module.exports = class ReactAppGenerator extends Generator {
 
             styles() {
                 const templateData = {};
-
                 const stylesPath =
                     this.options['styles-path'] || path.join(this.options.path, 'styles');
                 const srcPath = this.templatePath('styles');
                 const destPath = this.destinationPath(stylesPath);
                 this.fs.copyTpl(srcPath, destPath, templateData);
+            },
+
+            types() {
+                const typesPath =
+                    this.options['types-path'] || path.join(this.options.path, 'types');
+                console.log('yo', typesPath, this.templatePath('types'));
+                const srcPath = this.templatePath('types');
+                const destPath = this.destinationPath(typesPath);
+                this.fs.copy(srcPath, destPath);
             },
 
             packageJSON() {
@@ -112,27 +124,27 @@ module.exports = class ReactAppGenerator extends Generator {
 
             dependencies() {
                 this.addDependencies({
-                    react: '^18.0.0',
-                    'react-dom': '^18.0.0',
-                    'prop-types': '^15.0.0',
-                    'react-intl': '^6.0.0',
-                    'wouter': '^3.0.0',
-                    'react-helmet': '^6.0.0',
-                    classnames: '^2.3.1',
+                    react: '^18.3.1',
+                    'react-dom': '^18.3.1',
+                    'react-intl': '^7.1.1',
+                    wouter: '^3.7.1',
+                    'react-helmet': '^6.1.0',
+                    classnames: '^2.5.1',
 
-                    '@folklore/routes': '^0.2.31',
-                    '@folklore/fonts': '^0.0.13',
-                    '@folklore/forms': '^0.0.22',
-                    '@folklore/fetch': '^0.1.15',
-                    '@folklore/hooks': '^0.0.42',
-                    '@folklore/tracking': '^0.0.16',
+                    '@folklore/routes': '^0.2.43',
+                    '@folklore/fonts': '^0.0.16',
+                    '@folklore/forms': '^0.0.29',
+                    '@folklore/fetch': '^0.1.21',
+                    '@folklore/hooks': '^0.0.75',
+                    '@folklore/tracking': '^0.0.33',
 
                     // Polyfills
                     intl: '^1.2.5',
-                    '@formatjs/intl-locale': '^3.0.5',
-                    '@formatjs/intl-pluralrules': '^5.1.2',
+                    '@formatjs/intl-locale': '^4.2.11',
+                    '@formatjs/intl-pluralrules': '^5.4.4',
                     'intersection-observer': '^0.12.2',
                     'resize-observer-polyfill': '^1.5.1',
+                    'sanitize.css': '^13.0.0',
                 });
             },
         };

@@ -177,7 +177,7 @@ module.exports = class ReactPackageGenerator extends Generator {
                     return;
                 }
 
-                this.addDependencies(['react@latest', 'prop-types@latest', 'react-dom@latest']);
+                this.addDependencies(['react@18.3.1', 'prop-types@latest', 'react-dom@18.3.1']);
             },
 
             npmInstallDev() {

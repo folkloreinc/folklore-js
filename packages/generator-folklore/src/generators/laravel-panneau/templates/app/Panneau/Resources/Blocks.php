@@ -6,7 +6,7 @@ use Panneau\Support\Resource;
 
 class Blocks extends Resource
 {
-    public static $repository = \App\Contracts\Repositories\Blocks::class;
+    public static $repository = \App\Contracts\Entities\Blocks::class;
 
     public static $jsonResource = \App\Panneau\Http\Resources\BlockResource::class;
 

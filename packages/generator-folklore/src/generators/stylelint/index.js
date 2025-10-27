@@ -35,9 +35,9 @@ module.exports = class StylelintGenerator extends Generator {
 
             dependencies() {
                 this.addDevDependencies({
-                    stylelint: '^16.2.1',
+                    stylelint: '^16.24.0',
                     'stylelint-config-idiomatic-order': '^10.0.0',
-                    'stylelint-config-standard': '^37.0.0',
+                    'stylelint-config-standard': '^39.0.0',
                 });
             },
         };
@@ -47,7 +47,6 @@ module.exports = class StylelintGenerator extends Generator {
         if (this.options['skip-install']) {
             return;
         }
-
         await this.spawnCommand('npm', ['install']);
     }
 };

@@ -6,7 +6,7 @@ use Folklore\Repositories\Pages as BasePages;
 use App\Contracts\Repositories\Pages as PagesContract;
 use Folklore\Models\Page as PageBaseModel;
 use App\Models\Page as PageModel;
-use App\Contracts\Resources\Page as PageContract;
+use App\Contracts\Entities\Page as PageContract;
 
 class Pages extends BasePages implements PagesContract
 {
@@ -25,7 +25,7 @@ class Pages extends BasePages implements PagesContract
         return parent::findByHandle($handle);
     }
 
-    public function findBySlug(string $slug, string $locale = null): ?PageContract
+    public function findBySlug(string $slug, ?string $locale = null): ?PageContract
     {
         return parent::findBySlug($slug, $locale);
     }

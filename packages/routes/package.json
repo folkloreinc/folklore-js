@@ -1,6 +1,6 @@
 {
     "name": "@folklore/routes",
-    "version": "0.2.42",
+    "version": "0.2.43",
     "description": "Routes utilities",
     "keywords": [
         "javascript",
@@ -52,14 +52,14 @@
     },
     "devDependencies": {
         "prop-types": "^15.7.2",
-        "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
-        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
     },
     "peerDependencies": {
         "path-to-regexp": "^6.2.1",
         "prop-types": "^15.7.2",
-        "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
-        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
     },
     "gitHead": "03cdca76413a59fe6bf04ca04e12db6f9e3aad5e"
 }

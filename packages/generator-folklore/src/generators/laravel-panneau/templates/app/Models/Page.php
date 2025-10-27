@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Contracts\Resources\Page as PageContract;
-use App\Resources\Page as PageResource;
+use App\Contracts\Entities\Page as PageContract;
+use App\Entities\Page as PageResource;
 use Folklore\Models\Page as BasePage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -11,13 +11,13 @@ class Page extends BasePage
 {
     use HasFactory;
 
-    protected $typedResources = [
-        'home' => \App\Resources\Pages\HomePage::class,
+    protected $entitiesByType = [
+        'home' => \App\Entities\Pages\HomePage::class,
     ];
 
-    public function toResource(): PageContract
+    public function toEntity(): PageContract
     {
-        return $this->toTypedResource() ?? new PageResource($this);
+        return $this->toTypedEntity() ?? new PageResource($this);
     }
 
     public function blocks()

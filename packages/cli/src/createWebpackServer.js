@@ -50,16 +50,18 @@ const createWebpackServer = (config, opts = {}) => {
                   devMiddleware: {
                       index: false, // specify to enable root proxying
                   },
-                  proxy: {
-                      context: () => true,
-                      target: proxy,
-                      changeOrigin: true,
-                      secure: false,
-                      xfwd: true,
-                      onProxyReq: (proxyReq) => {
-                          proxyReq.setHeader('X-WEBPACK-DEV-SERVER', true);
+                  proxy: [
+                      {
+                          context: () => true,
+                          target: proxy,
+                          changeOrigin: true,
+                          secure: false,
+                          xfwd: true,
+                          onProxyReq: (proxyReq) => {
+                              proxyReq.setHeader('X-WEBPACK-DEV-SERVER', true);
+                          },
                       },
-                  },
+                  ],
               }
             : {
                   proxy,

@@ -4,10 +4,10 @@ namespace App\Panneau\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Folklore\Http\Resources\MediaResource;
-use App\Contracts\Resources\Page;
-use Folklore\Contracts\Resources\HasBlocks;
+use App\Contracts\Entities\Page;
+use Folklore\Contracts\Entities\HasBlocks;
 use Folklore\Http\Resources\LocalizedResource;
-use App\Contracts\Resources\Pages\Home as HomePage;
+use App\Contracts\Entities\Pages\Home as HomePage;
 
 class PageResource extends JsonResource
 {
