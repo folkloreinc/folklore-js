@@ -43,6 +43,8 @@ export default (entry, opts = {}) => {
         babelConfigFile = null,
         withoutFormatjs = false,
         defineEnv: extraDefineEnv = null,
+        overrideEnv: overrideEnvPath = undefined,
+
         disableImageOptimization = false,
         imageOptimization = 'lossless',
         imageDataUrlMaxSize = 5000,
@@ -133,8 +135,10 @@ export default (entry, opts = {}) => {
     const extraPlugins = loadExtendItems(plugins);
     const htmlTemplateParameters = loadExtend(htmlTemplateParametersPath);
 
+    const overrideEnv = loadExtend(overrideEnvPath);
     const defineEnv = getAppEnv({
         extra: extraDefineEnv,
+        override: overrideEnv,
     });
 
     const baseConfig = {
