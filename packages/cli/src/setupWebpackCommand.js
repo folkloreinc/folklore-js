@@ -7,6 +7,7 @@ const setupWebpackCommand = (command) => {
         .option('-e, --env <env>', 'Environment')
         .option('--load-env', 'Load environment file')
         .option('--define-env <...env>', 'Add extra environment variables to the DefinePlugin')
+        .option('--override-env [path]', 'Override environment variables in the DefinePlugin')
         .option('--env-file [path]', 'Path to environment file')
         // Paths
         .option('--public-path <path>', 'Public path')

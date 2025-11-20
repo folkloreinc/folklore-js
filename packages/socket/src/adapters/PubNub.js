@@ -11,6 +11,7 @@ class PubNubSocket extends EventEmitter {
             publishKey: null,
             subscribeKey: null,
             secretKey: null,
+            userId: null,
             withPresence: false,
             ...opts,
         };
@@ -100,9 +101,13 @@ class PubNubSocket extends EventEmitter {
         const pubnubOptions = {
             publishKey: this.options.publishKey,
             subscribeKey: this.options.subscribeKey,
+            userId: `web-user-${Math.floor(Math.random() * 1000)}`,
         };
         if (this.options.uuid !== null) {
             pubnubOptions.uuid = this.options.uuid;
+        }
+        if (this.options.userId !== null) {
+            pubnubOptions.userId = this.options.userId;
         }
         if (this.options.secretKey !== null) {
             pubnubOptions.secretKey = this.options.secretKey;

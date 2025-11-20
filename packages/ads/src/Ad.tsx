@@ -4,13 +4,13 @@ import React, { Ref, RefCallback, useCallback, useId, useMemo, useRef, useState 
 
 import { getMinimumAdSize, getSizeFromSizeMapping, normalizeAdSizes } from './utils';
 
+import AdSlot from './AdSlot';
 import { useAdsContext } from './AdsContext';
 import { useAdsTargeting } from './AdsTargetingContext';
 import RichAd from './RichAd';
+import { AdSize, AdSizeMapping, AdsTargeting } from './types';
 import useAd from './useAd';
 import useRichAd from './useRichAd';
-import { AdSize, AdSizeMapping, AdsTargeting } from './types';
-import AdSlot from './AdSlot';
 
 export interface AdProps {
     slot: string;
@@ -247,6 +247,7 @@ function Ad({
                 },
             ])}
             style={!withoutStyle ? containerStyle : null}
+            suppressHydrationWarning={true}
             ref={refObserver}
         >
             <div
@@ -256,6 +257,7 @@ function Ad({
                     ...adStyle,
                 }}
                 ref={adContainerRef}
+                suppressHydrationWarning={true}
             >
                 <div
                     id={id}
@@ -265,6 +267,7 @@ function Ad({
                                 richAdIframeClassName !== null && isRendered && richAd !== null,
                         },
                     ])}
+                    suppressHydrationWarning={true}
                 />
                 {isRendered && richAd !== null ? (
                     <RichAd

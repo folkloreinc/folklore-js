@@ -1,4 +1,9 @@
-const getAppEnv = ({ source = process.env, pattern = /^FLKLR_APP_/, extra = null } = {}) =>
+const getAppEnv = ({
+    source = process.env,
+    pattern = /^FLKLR_APP_/,
+    extra = null,
+    override = null,
+} = {}) =>
     Object.keys(source)
         .filter((key) => pattern === null || pattern.test(key))
         .reduce(
@@ -17,6 +22,7 @@ const getAppEnv = ({ source = process.env, pattern = /^FLKLR_APP_/, extra = null
                           {},
                       )
                     : null),
+                ...override,
             },
         );
 

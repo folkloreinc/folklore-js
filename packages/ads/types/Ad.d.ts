@@ -1,6 +1,6 @@
 import { Ref } from 'react';
-import { AdSize, AdSizeMapping, AdsTargeting } from './types';
 import AdSlot from './AdSlot';
+import { AdSize, AdSizeMapping, AdsTargeting } from './types';
 export interface AdProps {
     slot: string;
     path?: string | null;
