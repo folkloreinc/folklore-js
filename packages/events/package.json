@@ -1,6 +1,6 @@
 {
     "name": "@folklore/events",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "description": "Events manager",
     "keywords": [
         "javascript",
