@@ -1,3 +1,86 @@
-@import url('@micromag/core');
-@import url('@micromag/viewer');
+/* stylelint-disable selector-class-pattern */
+@import 'sanitize.css';
+@import './theme.css';
+@import '@micromag/core/assets/css/styles.css';
+@import '@micromag/viewer/assets/css/styles.css';
+@import '@micromag/consent/assets/css/styles.css';
 
+html,
+body {
+    overscroll-behavior: none;
+    overscroll-behavior-x: none;
+}
+
+html, body, #app {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    background: var(--color-background, var(--color-black));
+    color: var(--color-text, var(--color-white));
+    font-family: var(--font-text);
+    font-size: 16px;
+    font-weight: 400;
+    overflow-y: scroll;
+}
+
+h1,h2,h3,h4,h5,h6 {
+    font-family: var(--font-title);
+    font-weight: 700;
+}
+
+p {
+    font-family: var(--font-text);
+}
+
+strong {
+    font-weight: 700;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.modal-open {
+    overflow: hidden;
+    padding-right: 0;
+}
+
+.micromag-viewer-menus-menu-preview-title {
+    max-width: 100%;
+    font-family: Inter, Helvetica, arial, sans-serif;;
+    font-size: 20px;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.micromag-viewer-menus-menu-preview-titleContainer {
+    padding: 10px 20px;
+}
+
+@media screen and (width >= 600px) {
+    .micromag-viewer-menus-menu-preview-title {
+        font-size: 24px;
+    }
+
+    .micromag-viewer-menus-menu-preview-titleContainer {
+        padding: 10px 30px;
+    }
+}
+
+@media screen and (width >= 1200px) {
+    .micromag-viewer-menus-menu-preview-title {
+        font-size: 28px;
+    }
+
+    .micromag-viewer-menus-menu-preview-titleContainer {
+        padding: 10px 40px;
+    }
+}

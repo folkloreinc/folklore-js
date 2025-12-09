@@ -1,9 +1,0 @@
-{
-    "compilerOptions": {
-        "jsx": "react-jsx",
-        "module": "esnext",
-        "moduleResolution": "Bundler",
-        "target": "ES5"
-    },
-    "include": ["src/**/*"]
-}

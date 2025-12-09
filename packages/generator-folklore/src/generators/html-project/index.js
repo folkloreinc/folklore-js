@@ -110,6 +110,12 @@ module.exports = class HTMLProjectGenerator extends Generator {
             quiet: true,
         });
 
+        this.composeWith('folklore:typescript', {
+            'src-path': srcPath,
+            'skip-install': true,
+            quiet: true,
+        });
+
         this.composeWith('folklore:eslint', {
             'skip-install': true,
             quiet: true,

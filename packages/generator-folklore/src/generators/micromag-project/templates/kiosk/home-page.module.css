@@ -1,0 +1,83 @@
+.container {
+    position: relative;
+    width: 100%;
+    min-height: 100%;
+
+    .hero {
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+    }
+
+    .heroLink {
+        display: block;
+        max-height: 60svh;
+        aspect-ratio: 9 / 16;
+    }
+
+    .heroThumbnail {
+        display: block;
+        max-width: 100%;
+    }
+
+    .heroInfo {
+        margin-left: 20px;
+    }
+
+    .grid {
+        display: grid;
+        overflow: hidden;
+        padding: 20px;
+        gap: 20px;
+        grid-template-columns: 1fr;
+
+        style {
+            display: none;
+            visibility: hidden;
+        }
+
+        .cell {
+            position: absolute;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            inset: 0;
+            object-fit: contain;
+        }
+
+        .cellLink {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 100svh;
+            margin: 0 auto;
+            cursor: pointer;
+            transform-origin: center;
+            transition: transform 0.3s ease;
+
+            &:hover {
+                transform: scale(1.05);
+            }
+        }
+
+        @media (min-width: 768px) {
+            grid-template-columns: repeat(2, 1fr);
+
+            .cellLink {
+                height: 66svh;
+            }
+        }
+
+        @media (min-width: 1400px) {
+            grid-template-columns: repeat(3, 1fr);
+
+            .cellLink {
+                height: 50svh;
+            }
+        }
+    }
+}

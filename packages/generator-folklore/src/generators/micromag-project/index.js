@@ -27,6 +27,18 @@ module.exports = class MicromagProjectGenerator extends Generator {
             defaults: './dist',
         });
 
+        this.option('kiosk', {
+            type: Boolean,
+            required: false,
+            defaults: false,
+        });
+
+        this.relativeStylesPath = (from, src) =>
+            path.relative(
+                this.destinationPath(path.dirname(path.join(this.options['src-path'], from))),
+                this.destinationPath(path.join(path.join(this.options['src-path'], 'styles'), src)),
+            );
+
         this.srcPath = (filePath) =>
             this.destinationPath(path.join(this.options['src-path'], filePath));
     }
@@ -79,67 +91,105 @@ module.exports = class MicromagProjectGenerator extends Generator {
         });
     }
 
-    get conflicts() {
+    conflicts() {
+        const { kiosk = false } = this.options;
+
+        const files = {
+            'components/App.tsx': 'App.tsx',
+            'components/Routes.tsx': kiosk ? 'kiosk/Routes.tsx' : 'Routes.tsx',
+            'styles/styles.css': kiosk ? 'kiosk/styles.css' : 'styles.css',
+            'components/layouts/Main.tsx': 'Layout.tsx',
+            'styles/layouts/main.module.css': 'layout.module.css',
+            'components/pages/Home.tsx': kiosk ? 'kiosk/HomePage.tsx' : null,
+            'styles/pages/home.module.css': kiosk ? 'kiosk/home-page.module.css' : null,
+        };
+
+        Object.keys(files).forEach((destFile) => {
+            if (files[destFile] === null) {
+                return;
+            }
+
+            this.fs.delete(this.srcPath(destFile));
+
+            this.fs.copyTpl(this.templatePath(files[destFile]), this.srcPath(destFile), {
+                getRelativeStylesPath: this.relativeStylesPath,
+            });
+        });
+    }
+
+    get writing() {
         return {
-            home() {
-                const { 'src-path': srcPath } = this.options;
-                const templateData = {
-                    getRelativeStylesPath: (from, src) =>
-                        path.relative(
-                            this.destinationPath(path.dirname(path.join(srcPath, from))),
-                            this.destinationPath(path.join(path.join(srcPath, 'styles'), src)),
-                        ),
-                };
-
-                this.fs.delete(this.srcPath('components/pages/Home.jsx'));
-                this.fs.delete(this.srcPath('styles/pages/home.module.css'));
-
+            data() {
+                const { kiosk = false } = this.options;
                 this.fs.copyTpl(
-                    this.templatePath('Home.jsx'),
-                    this.srcPath('components/pages/Home.jsx'),
-                    templateData,
+                    this.templatePath('data.json'),
+                    this.srcPath(kiosk ? 'micromags/test/data.json' : 'micromag/data.json'),
                 );
-
                 this.fs.copyTpl(
-                    this.templatePath('home.module.css'),
-                    this.srcPath('styles/pages/home.module.css'),
-                    templateData,
+                    this.templatePath(kiosk ? 'kiosk/micromags.ts' : 'micromags.ts'),
+                    this.srcPath('micromags.ts'),
                 );
             },
 
-            routes() {
-                const { 'src-path': srcPath } = this.options;
-                const templateData = {
-                    getRelativeStylesPath: (from, src) =>
-                        path.relative(
-                            this.destinationPath(path.dirname(path.join(srcPath, from))),
-                            this.destinationPath(path.join(path.join(srcPath, 'styles'), src)),
-                        ),
-                };
-
-                this.fs.delete(this.srcPath('components/Routes.jsx'));
-
+            micromagPage() {
                 this.fs.copyTpl(
-                    this.templatePath('Routes.jsx'),
-                    this.srcPath('components/Routes.jsx'),
-                    templateData,
+                    this.templatePath('MicromagPage.tsx'),
+                    this.srcPath('components/pages/Micromag.tsx'),
+                    {
+                        getRelativeStylesPath: this.relativeStylesPath,
+                    },
                 );
+            },
+
+            types() {
+                this.fs.copyTpl(this.templatePath('types'), this.srcPath('types'), {
+                    getRelativeStylesPath: this.relativeStylesPath,
+                });
             },
 
             styles() {
-                this.fs.delete(this.srcPath('styles/styles.css'));
-
-                this.fs.copyTpl(this.templatePath('styles.css'), this.srcPath('styles/styles.css'));
+                this.fs.copyTpl(this.templatePath('styles'), this.srcPath('styles'), {
+                    getRelativeStylesPath: this.relativeStylesPath,
+                });
             },
 
-            micromag() {
-                this.fs.copyTpl(this.templatePath('data.json'), this.srcPath('micromag/data.json'));
+            hooks() {
+                this.fs.copyTpl(this.templatePath('hooks'), this.srcPath('hooks'), {
+                    getRelativeStylesPath: this.relativeStylesPath,
+                });
+            },
+
+            contexts() {
+                this.fs.copyTpl(this.templatePath('contexts'), this.srcPath('contexts'), {
+                    getRelativeStylesPath: this.relativeStylesPath,
+                });
+            },
+
+            partials() {
+                this.fs.copyTpl(this.templatePath('partials'), this.srcPath('components/partials'), {
+                    getRelativeStylesPath: this.relativeStylesPath,
+                });
+            },
+
+            modals() {
+                this.fs.copyTpl(this.templatePath('modals'), this.srcPath('components/modals'), {
+                    getRelativeStylesPath: this.relativeStylesPath,
+                });
+            },
+
+            icons() {
+                this.fs.copyTpl(this.templatePath('icons'), this.srcPath('components/icons'), {
+                    getRelativeStylesPath: this.relativeStylesPath,
+                });
             },
 
             dependencies() {
                 this.addDependencies({
-                    '@micromag/viewer': '^0.3.492',
-                    '@micromag/intl': '^0.3.488',
+                    '@micromag/viewer': '^0.3.767',
+                    '@micromag/data': '^0.3.767',
+                    '@micromag/core': '^0.3.767',
+                    '@micromag/consent': '^0.3.767',
+                    '@micromag/intl': '^0.3.767',
                 });
             },
         };

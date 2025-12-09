@@ -35,6 +35,7 @@ interface Media {
     id: string;
     type: string;
     url: string;
+    thumbnail_url?: string | null;
     name?: string | null;
     description?: string | null;
     files?: Record<string, Source>;
