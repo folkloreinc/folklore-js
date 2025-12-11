@@ -229,6 +229,11 @@ module.exports = class LaravelProjectGenerator extends Generator {
             quiet: true,
         });
 
+        this.composeWith('folklore:typescript', {
+            'src-path': jsSrcPath,
+            quiet: true,
+        });
+
         this.composeWith('folklore:eslint', {
             'skip-install': true,
             quiet: true,

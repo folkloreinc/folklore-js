@@ -1,15 +1,15 @@
 import { getJSON } from '@folklore/fetch';
 import { useEffect, useState } from 'react';
 
+import addTrackingCodesToStory from '../lib/addTrackingCodesToStory';
+
 import { useAnalytics } from '../contexts/AnalyticsContext';
 import { MicromagItem } from '../types/micromag';
-import useParseTrackingCodes from './useParseTrackingCodes';
 
 const cache = new Map();
 
 export function useMicromagStory(initialMicromag: MicromagItem) {
     const { googleAnalyticsIds = null } = useAnalytics();
-    const parseTrackingCodes = useParseTrackingCodes(googleAnalyticsIds);
 
     const [micromag, setMicromag] = useState(initialMicromag);
     const [loading, setLoading] = useState(false);
@@ -28,7 +28,7 @@ export function useMicromagStory(initialMicromag: MicromagItem) {
                     cache.set(url, newMicromag);
                     setMicromag({
                         ...micromag,
-                        story: parseTrackingCodes(newMicromag),
+                        story: addTrackingCodesToStory(newMicromag, googleAnalyticsIds),
                     });
                     setLoading(false);
                 })
@@ -37,7 +37,7 @@ export function useMicromagStory(initialMicromag: MicromagItem) {
                     setLoading(false);
                 });
         }
-    }, [setLoading, setMicromag, micromag]);
+    }, [setLoading, setMicromag, micromag, googleAnalyticsIds]);
 
     return {
         story: micromag?.story || null,

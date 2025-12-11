@@ -2,7 +2,10 @@ import { useMemo } from 'react';
 
 import { MicromagStory } from '../types/micromag';
 
-export function useMicromagVideo(story: MicromagStory) {
+export function useMicromagVideo(story: MicromagStory): {
+    url: string | null;
+    thumbnail: string | null;
+} {
     const video = useMemo(() => {
         const { components = null, medias = null } = story || {};
         const [firstScreen = null] = components || [];

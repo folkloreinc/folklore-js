@@ -1,5 +1,13 @@
 import { useConsent } from '@micromag/core/contexts';
-import { useCallback, useContext, useEffect, useMemo, useState, createContext, ReactNode } from 'react';
+import {
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
+    createContext,
+    ReactNode,
+} from 'react';
 
 type ModalContextType = {
     modal: any;
@@ -25,7 +33,10 @@ interface ModalProviderProps {
     modal?: any;
 }
 
-export const ModalProvider = ({ children = null, modal: initialModal = null }: ModalProviderProps) => {
+export const ModalProvider = ({
+    children = null,
+    modal: initialModal = null,
+}: ModalProviderProps) => {
     const [modal, setModalState] = useState(initialModal);
     const { consented = null } = useConsent();
 

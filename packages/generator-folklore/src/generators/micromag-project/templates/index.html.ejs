@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<!--[if IE]> <html class="ie" lang="fr"> <![endif]-->
+<!--[if !(IE)]><!-->
+<html lang="fr">
+    <!--<![endif]-->
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+        <title></title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="" />
+
+        <meta property="og:locale" content="fr_CA" />
+        <meta property="og:image" content="/static/media/facebook.jpg" />
+        <meta property="og:title" content="Espace pour la vie - Micromags" />
+        <meta property="og:type" content="website" />
+        <meta property="og:description" content="" />
+        <meta property="og:url" content="/" />
+
+        <link rel="shortcut icon" href="/static/media/favicon.ico" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+        <script type="text/javascript">
+            var TAG_MANAGER_ID = '';
+        </script>
+
+        <!-- Google Tag Manager -->
+        <script>
+            (function (w, d, s, l, i) {
+                w[l] = w[l] || [];
+                w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+                var f = d.getElementsByTagName(s)[0],
+                    j = d.createElement(s),
+                    dl = l != 'dataLayer' ? '&l=' + l : '';
+                j.async = true;
+                j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+                f.parentNode.insertBefore(j, f);
+                window.dataLayer = window.dataLayer || [];
+                function gtag() {
+                    dataLayer.push(arguments);
+                }
+                window.gtag = gtag;
+                function getCookieValue(name) {
+                    const regex = new RegExp(`(^| )${name}=([^;]+)`);
+                    const match = document.cookie.match(regex);
+                    if (match) {
+                        return match[2];
+                    }
+                }
+                const defaultConsent = {
+                    ad_storage: getCookieValue('ad_storage') === 'granted' ? 'granted' : 'denied',
+                    ad_user_data:
+                        getCookieValue('ad_user_data') === 'granted' ? 'granted' : 'denied',
+                    ad_personalization:
+                        getCookieValue('ad_personalization') === 'granted' ? 'granted' : 'denied',
+                    personalization_storage:
+                        getCookieValue('personalization_storage') === 'granted'
+                            ? 'granted'
+                            : 'denied',
+                    analytics_storage:
+                        getCookieValue('analytics_storage') === 'granted' ? 'granted' : 'denied',
+                    functionality_storage: 'granted',
+                    security_storage: 'granted',
+                };
+                gtag('consent', 'default', defaultConsent);
+            })(window, document, 'script', 'dataLayer', TAG_MANAGER_ID);
+        </script>
+
+        <!-- End Google Tag Manager -->
+    </head>
+    <body>
+        <!-- Google Tag Manager (noscript) -->
+        <noscript
+            ><iframe
+                src="https://www.googletagmanager.com/ns.html?id="
+                height="0"
+                width="0"
+                style="display: none; visibility: hidden"
+            ></iframe
+        ></noscript>
+
+        <!-- End Google Tag Manager (noscript) -->
+        <script type="text/javascript">
+            var props = {
+                googleAnalyticsIds: [],
+                tagManagerId: TAG_MANAGER_ID,
+            };
+        </script>
+        <div id="app"></div>
+    </body>
+</html>

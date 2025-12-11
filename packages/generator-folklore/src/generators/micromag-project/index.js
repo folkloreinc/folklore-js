@@ -95,6 +95,7 @@ module.exports = class MicromagProjectGenerator extends Generator {
         const { kiosk = false } = this.options;
 
         const files = {
+            'index.html.ejs': 'index.html.ejs',
             'components/App.tsx': 'App.tsx',
             'components/Routes.tsx': kiosk ? 'kiosk/Routes.tsx' : 'Routes.tsx',
             'styles/styles.css': kiosk ? 'kiosk/styles.css' : 'styles.css',
@@ -161,6 +162,12 @@ module.exports = class MicromagProjectGenerator extends Generator {
 
             contexts() {
                 this.fs.copyTpl(this.templatePath('contexts'), this.srcPath('contexts'), {
+                    getRelativeStylesPath: this.relativeStylesPath,
+                });
+            },
+
+            lib() {
+                this.fs.copyTpl(this.templatePath('lib'), this.srcPath('lib'), {
                     getRelativeStylesPath: this.relativeStylesPath,
                 });
             },
