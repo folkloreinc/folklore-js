@@ -53,6 +53,7 @@ module.exports = class MicromagProjectGenerator extends Generator {
                 console.log(chalk.yellow('\n----------------------'));
                 console.log('Micromag Project Generator');
                 console.log(chalk.yellow('----------------------\n'));
+
                 console.log('Kiosk mode: ' + (this.options.kiosk ? 'Enabled' : 'Disabled'));
             },
 
