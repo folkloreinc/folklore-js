@@ -53,6 +53,7 @@ module.exports = class MicromagProjectGenerator extends Generator {
                 console.log(chalk.yellow('\n----------------------'));
                 console.log('Micromag Project Generator');
                 console.log(chalk.yellow('----------------------\n'));
+                console.log('Kiosk mode: ' + (this.options.kiosk ? 'Enabled' : 'Disabled'));
             },
 
             prompts() {
@@ -173,9 +174,13 @@ module.exports = class MicromagProjectGenerator extends Generator {
             },
 
             partials() {
-                this.fs.copyTpl(this.templatePath('partials'), this.srcPath('components/partials'), {
-                    getRelativeStylesPath: this.relativeStylesPath,
-                });
+                this.fs.copyTpl(
+                    this.templatePath('partials'),
+                    this.srcPath('components/partials'),
+                    {
+                        getRelativeStylesPath: this.relativeStylesPath,
+                    },
+                );
             },
 
             modals() {
