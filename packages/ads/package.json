@@ -1,6 +1,6 @@
 {
     "name": "@folklore/ads",
-    "version": "0.0.120",
+    "version": "0.0.121",
     "description": "Ads library",
     "keywords": [
         "javascript",
@@ -55,7 +55,7 @@
     },
     "gitHead": "701e0702c67df56e94ac2824c3ae3e1d404cb0cd",
     "dependencies": {
-        "@folklore/hooks": "^0.0.78",
+        "@folklore/hooks": "^0.0.79",
         "@folklore/tracking": "^0.0.34",
         "@folklore/utils": "^0.1.4",
         "classnames": "^2.5.1",
