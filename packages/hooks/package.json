@@ -49,7 +49,7 @@
     "publishConfig": {
         "access": "public"
     },
-    "gitHead": "534183c15f9eaa4c9f542dcc823797d1078835eb",
+    "gitHead": "701e0702c67df56e94ac2824c3ae3e1d404cb0cd",
     "dependencies": {
         "@folklore/events": "^0.0.10",
         "@folklore/services": "^0.1.44",

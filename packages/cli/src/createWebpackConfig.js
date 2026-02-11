@@ -51,6 +51,7 @@ export default (entry, opts = {}) => {
         babelPresetEnvUseBuiltins = 'entry',
         postcssConfigFile = null,
         sassLoaderOptions = null,
+        getLocalIndent = null,
     } = opts;
 
     const isProduction = process.env.NODE_ENV === 'production';
@@ -134,6 +135,7 @@ export default (entry, opts = {}) => {
     const extraLoaders = loadExtendItems(loaders);
     const extraPlugins = loadExtendItems(plugins);
     const htmlTemplateParameters = loadExtend(htmlTemplateParametersPath);
+    const customGetLocalIndent = loadExtend(getLocalIndent);
 
     const overrideEnv = loadExtend(overrideEnvPath);
     const defineEnv = getAppEnv({
@@ -367,7 +369,7 @@ export default (entry, opts = {}) => {
                                 sourceMap: !disableSourceMap,
                                 modules: {
                                     mode: 'local',
-                                    getLocalIdent: getCSSModuleLocalIdent,
+                                    getLocalIdent: customGetLocalIndent || getCSSModuleLocalIdent,
                                 },
                             }),
                         },
@@ -404,7 +406,7 @@ export default (entry, opts = {}) => {
                                     sourceMap: !disableSourceMap,
                                     modules: {
                                         mode: 'local',
-                                        getLocalIdent: getCSSModuleLocalIdent,
+                                        getLocalIdent: customGetLocalIndent || getCSSModuleLocalIdent,
                                     },
                                 },
                                 'sass-loader',

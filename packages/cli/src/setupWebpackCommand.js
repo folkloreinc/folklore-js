@@ -38,6 +38,7 @@ const setupWebpackCommand = (command) => {
         .option('--babel-config-file <value>', 'Set configFile option for babel loader')
         .option('--babel-rc <value>', 'Set babelrc option for babel loader')
         .option('--postcss-config-file [value]', 'Set postcss config file option')
+        .option('--get-local-indent [value]', 'getLocalIdent function for css-loader')
         // Images
         .option('--disable-image-optimization', 'Disable images optimization')
         .option('--image-optimization <preset>', 'Set images optimization preset (lossless, lossy)')
