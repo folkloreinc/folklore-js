@@ -7,18 +7,28 @@ export const getWindowSize = () => ({
     height: typeof window !== 'undefined' ? window.innerHeight || 0 : 0,
 });
 
-let currentSize = {
-    width: 0,
-    height: 0,
-};
+let currentSize = null;
 
-export default function useWindowSize({ onChange = null } = {}) {
-    const [size, setSize] = useState(currentSize);
+export default function useWindowSize({ onChange = null, onMount = false, memo = false } = {}) {
+    const [size, setSize] = useState(
+        onMount
+            ? getWindowSize()
+            : {
+                  width: 0,
+                  height: 0,
+              },
+    );
     const sizeRef = useRef(size);
+    if (currentSize === null && memo) {
+        currentSize = size;
+    }
 
     const updateSize = useCallback(() => {
         const newSize = getWindowSize();
-        if (currentSize.width !== newSize.width || currentSize.height !== newSize.height) {
+        if (
+            memo &&
+            (currentSize.width !== newSize.width || currentSize.height !== newSize.height)
+        ) {
             currentSize = newSize;
         }
         if (sizeRef.current.width !== newSize.width || sizeRef.current.height !== newSize.height) {
@@ -27,7 +37,7 @@ export default function useWindowSize({ onChange = null } = {}) {
             return newSize;
         }
         return null;
-    }, [setSize]);
+    }, [setSize, memo]);
 
     const onResize = useCallback(() => {
         const newSize = updateSize();

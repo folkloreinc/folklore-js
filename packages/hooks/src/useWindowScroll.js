@@ -7,16 +7,19 @@ const getWindowScroll = () => ({
     y: typeof window !== 'undefined' ? window.scrollY || 0 : 0,
 });
 
-let currentScroll = getWindowScroll();
+let currentScroll = null;
 
-export default function useWindowScroll(opts = {}) {
-    const { onChange = null } = opts;
-    const [scroll, setScroll] = useState(currentScroll);
+export default function useWindowScroll({ onChange = null, onMount = false, memo = false } = {}) {
+    const [scroll, setScroll] = useState(onMount ? getWindowScroll() : { x: 0, y: 0 });
     const scrollRef = useRef(scroll);
+    if (currentScroll === null && memo) {
+        currentScroll = scroll;
+    }
 
     const updateScroll = useCallback(() => {
         const newScroll = getWindowScroll();
-        if (currentScroll.x !== newScroll.x || currentScroll.y !== newScroll.y) {
+        const { x: currentX, y: currentY } = currentScroll || {};
+        if (memo && (currentX !== newScroll.x || currentY !== newScroll.y)) {
             currentScroll = newScroll;
         }
         if (scrollRef.current.x !== newScroll.x || scrollRef.current.y !== newScroll.y) {
@@ -25,7 +28,7 @@ export default function useWindowScroll(opts = {}) {
             return newScroll;
         }
         return null;
-    }, [setScroll]);
+    }, [setScroll, memo]);
 
     const onScroll = useCallback(() => {
         const newScroll = updateScroll();
