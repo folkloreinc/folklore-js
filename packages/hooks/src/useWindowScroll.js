@@ -10,7 +10,7 @@ const getWindowScroll = () => ({
 let currentScroll = null;
 
 export default function useWindowScroll({ onChange = null, onMount = false, memo = false } = {}) {
-    const [scroll, setScroll] = useState(onMount ? getWindowScroll() : { x: 0, y: 0 });
+    const [scroll, setScroll] = useState(() => (onMount ? getWindowScroll() : { x: 0, y: 0 }));
     const scrollRef = useRef(scroll);
     if (currentScroll === null && memo) {
         currentScroll = scroll;

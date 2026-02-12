@@ -10,7 +10,7 @@ export const getWindowSize = () => ({
 let currentSize = null;
 
 export default function useWindowSize({ onChange = null, onMount = false, memo = false } = {}) {
-    const [size, setSize] = useState(
+    const [size, setSize] = useState(() =>
         onMount
             ? getWindowSize()
             : {
