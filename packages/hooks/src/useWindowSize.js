@@ -7,7 +7,10 @@ export const getWindowSize = () => ({
     height: typeof window !== 'undefined' ? window.innerHeight || 0 : 0,
 });
 
-let currentSize = getWindowSize();
+let currentSize = {
+    width: 0,
+    height: 0,
+};
 
 export default function useWindowSize({ onChange = null } = {}) {
     const [size, setSize] = useState(currentSize);
