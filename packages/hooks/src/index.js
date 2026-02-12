@@ -11,6 +11,7 @@ export { default as useNativeVideoPlayer } from './useNativeVideoPlayer';
 export * from './useObserver';
 export { default as usePlayerCurrentTime } from './usePlayerCurrentTime';
 export { default as useScrollTrigger } from './useScrollTrigger';
+export { default as useSupportsWebp } from './useSupportsWebp';
 export { default as useVideoPlayer } from './useVideoPlayer';
 export { default as useVimeoPlayer } from './useVimeoPlayer';
 export {
