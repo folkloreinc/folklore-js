@@ -1,17 +1,42 @@
-import EventEmitter from 'wolfy87-eventemitter';
 import createDebug from 'debug';
+import EventEmitter from 'wolfy87-eventemitter';
 
 import getServerTime from './getServerTime';
+import type { GetServerTimeOptions } from './getServerTime';
 
 const debug = createDebug('folklore:clock');
 
+type ClockOptions = {
+    time?: number | null;
+    updateInterval?: number | null;
+    autoStart?: boolean;
+    server?: string | null;
+    serverUrlFormat?: string | null;
+    serverParseResponse?: GetServerTimeOptions['parseResponse'];
+    syncCount?: number;
+};
+
 class Clock extends EventEmitter {
-    static getUTCTime(date) {
+    options: Required<Omit<ClockOptions, 'serverParseResponse'>> & {
+        serverParseResponse: GetServerTimeOptions['parseResponse'];
+    };
+    startTime: number;
+    currentTime: number;
+    customStartTime: number;
+    time: number;
+    serverOffset: number;
+    started: boolean;
+    shouldStart: boolean;
+    server: string | null;
+    interval: ReturnType<typeof setInterval> | null;
+    ready: boolean;
+
+    static getUTCTime(date?: Date): number {
         const realDate = date || new Date();
         return realDate.getTime();
     }
 
-    constructor(opts) {
+    constructor(opts: ClockOptions = {}) {
         super();
 
         this.options = {
@@ -50,12 +75,12 @@ class Clock extends EventEmitter {
         }
     }
 
-    setTime(time) {
+    setTime(time: number): void {
         this.startTime = Clock.getUTCTime();
         this.customStartTime = time;
     }
 
-    setServer(server) {
+    setServer(server: string): Promise<void> {
         debug(`Setting server to: ${server}`);
         this.ready = false;
         this.server = server;
@@ -64,27 +89,26 @@ class Clock extends EventEmitter {
             debug('Stopping time whil syncing.');
             this.stop();
         }
-        return this.sync()
-            .then(() => {
-                this.ready = true;
-                this.emit('ready');
-                if (wasStarted || this.shouldStart) {
-                    debug('Starting back...');
-                    this.start();
-                }
-            });
+        return this.sync().then(() => {
+            this.ready = true;
+            this.emit('ready');
+            if (wasStarted || this.shouldStart) {
+                debug('Starting back...');
+                this.start();
+            }
+        });
     }
 
-    sync() {
+    sync(): Promise<void> {
         debug(`Syncing with server: ${this.server}`);
         const { syncCount, serverUrlFormat, serverParseResponse } = this.options;
-        const promises = [];
+        const promises: Promise<{ server: number; client: number }>[] = [];
         for (let i = 0; i < syncCount; i += 1) {
-            const promise = getServerTime(this.server, {
+            const promise = getServerTime(this.server as string, {
                 urlFormat: serverUrlFormat,
                 parseResponse: serverParseResponse,
             }).then((time) => {
-                const clientTime = (new Date()).getTime();
+                const clientTime = new Date().getTime();
                 return {
                     server: time,
                     client: clientTime,
@@ -92,27 +116,24 @@ class Clock extends EventEmitter {
             });
             promises.push(promise);
         }
-        return Promise.all(promises)
-            .then((times) => {
-                const timesCount = times.length;
-                const avgOffset = times.reduce((total, { client, server }) => (
-                    total + (client - server)
-                ), 0) / timesCount;
-                const avgTime = times.reduce((total, { server }) => (
-                    total + server
-                ), 0) / timesCount;
-                this.serverOffset = avgOffset;
-                this.setTime(avgTime);
-                debug(`Time synced with server. Offset: ${this.serverOffset}`);
-                this.emit('synced', avgTime);
-            });
+        return Promise.all(promises).then((times) => {
+            const timesCount = times.length;
+            const avgOffset =
+                times.reduce((total, { client, server }) => total + (client - server), 0) /
+                timesCount;
+            const avgTime = times.reduce((total, { server }) => total + server, 0) / timesCount;
+            this.serverOffset = avgOffset;
+            this.setTime(avgTime);
+            debug(`Time synced with server. Offset: ${this.serverOffset}`);
+            this.emit('synced', avgTime);
+        });
     }
 
-    getOffset() {
+    getOffset(): number {
         return this.serverOffset;
     }
 
-    start() {
+    start(): void {
         if (this.started) {
             return;
         }
@@ -129,7 +150,7 @@ class Clock extends EventEmitter {
         }
     }
 
-    stop() {
+    stop(): void {
         if (!this.started) {
             return;
         }
@@ -141,12 +162,12 @@ class Clock extends EventEmitter {
         }
     }
 
-    getTime() {
+    getTime(): number {
         this.update();
         return this.time;
     }
 
-    update() {
+    update(): void {
         this.currentTime = Clock.getUTCTime();
         const currentDelta = this.currentTime - this.startTime;
         const time = this.customStartTime + currentDelta;
@@ -157,7 +178,7 @@ class Clock extends EventEmitter {
         }
     }
 
-    onUpdate() {
+    onUpdate(): void {
         this.update();
     }
 }

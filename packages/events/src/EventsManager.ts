@@ -1,10 +1,28 @@
-import EventEmitter from 'wolfy87-eventemitter';
 import { supportsPassiveEvents } from 'detect-passive-events';
+import EventEmitter from 'wolfy87-eventemitter';
 
 export const passiveEvents = ['scroll', 'touchstart', 'touchend', 'touchmove'];
 
+type EventCallback = (...args: unknown[]) => void;
+type ListenerCallback = EventListenerOrEventListenerObject;
+type ListenersByEvent = Record<string, EventCallback[]>;
+type NativeListenersByEvent = Record<string, ListenerCallback>;
+
+type EventTargetLike = {
+    addEventListener: (
+        event: string,
+        listener: ListenerCallback,
+        options?: AddEventListenerOptions | boolean,
+    ) => void;
+    removeEventListener: (event: string, listener: ListenerCallback) => void;
+};
+
 class EventsManager extends EventEmitter {
-    constructor(element) {
+    element: EventTargetLike;
+    events: ListenersByEvent;
+    listeners: NativeListenersByEvent;
+
+    constructor(element: EventTargetLike) {
         super();
 
         this.element = element;
@@ -12,7 +30,7 @@ class EventsManager extends EventEmitter {
         this.listeners = {};
     }
 
-    subscribe(event, callback) {
+    subscribe(event: string, callback: EventCallback): void {
         this.on(event, callback);
 
         this.events = {
@@ -25,7 +43,7 @@ class EventsManager extends EventEmitter {
         }
     }
 
-    unsubscribe(event, callback) {
+    unsubscribe(event: string, callback: EventCallback): void {
         this.off(event, callback);
 
         this.events = Object.keys(this.events).reduce((newEvents, eventName) => {
@@ -35,19 +53,21 @@ class EventsManager extends EventEmitter {
                     [eventName]: this.events[eventName],
                 };
             }
-            const newListeners = this.events[eventName].filter(listener => listener !== callback);
-            return newListeners.length > 0 ? {
-                ...newEvents,
-                [eventName]: newListeners,
-            } : newEvents;
-        }, {});
+            const newListeners = this.events[eventName].filter((listener) => listener !== callback);
+            return newListeners.length > 0
+                ? {
+                      ...newEvents,
+                      [eventName]: newListeners,
+                  }
+                : newEvents;
+        }, {} as ListenersByEvent);
 
         if (typeof this.events[event] === 'undefined') {
             this.removeEventListener(event);
         }
     }
 
-    addEventListener(event) {
+    addEventListener(event: string): void {
         if (typeof this.listeners[event] === 'undefined') {
             this.listeners[event] = (...args) => this.emit(event, ...args);
         }
@@ -63,7 +83,7 @@ class EventsManager extends EventEmitter {
         this.element.addEventListener(event, this.listeners[event]);
     }
 
-    removeEventListener(event) {
+    removeEventListener(event: string): void {
         this.element.removeEventListener(event, this.listeners[event]);
     }
 }
