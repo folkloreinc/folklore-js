@@ -3,7 +3,10 @@ import { useLocation } from 'wouter';
 
 import useRouteMatcher from './useRouteMatcher';
 
-export default function useRoutesMatch(routes, specificLocation) {
+export default function useRoutesMatch(
+    routes: string[],
+    specificLocation?: string | null,
+): boolean {
     const routeMatcher = useRouteMatcher();
     const [location] = useLocation();
     return useMemo(

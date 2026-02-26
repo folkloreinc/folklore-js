@@ -1,11 +1,19 @@
 import { useCallback } from 'react';
-import { useRouter, useLocation } from 'wouter';
+import { useLocation, useRouter } from 'wouter';
 
-export default function useRouteMatcher() {
+type RouteMatcher = (
+    route: string,
+    specificLocation?: string | null,
+) => [boolean, Record<string, string>?];
+
+export default function useRouteMatcher(): RouteMatcher {
     const router = useRouter();
     const [location] = useLocation();
     const matcher = useCallback(
-        (route, specificLocation = null) => {
+        (
+            route: string,
+            specificLocation: string | null = null,
+        ): [boolean, Record<string, string>?] => {
             const path = specificLocation || location;
             // when parser is in "loose" mode, `$base` is equal to the
             // first part of the route that matches the pattern
@@ -21,7 +29,9 @@ export default function useRouteMatcher() {
                       // an object with parameters matched, e.g. { foo: "bar" } for "/:foo"
                       // we "zip" two arrays here to construct the object
                       // ["foo"], ["bar"] → { foo: "bar" }
-                      Object.fromEntries(keys.map((key, i) => [key, matches[i]])),
+                      Object.fromEntries(
+                          keys.map((key: string, i: number) => [key, matches[i]]),
+                      ) as Record<string, string>,
                   ]
                 : [false];
         },

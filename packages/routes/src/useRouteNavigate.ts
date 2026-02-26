@@ -5,9 +5,10 @@ import useUrlGeneratorPathToRegexp from './useUrlGenerator';
 
 const useRouteNavigate = () => {
     const url = useUrlGeneratorPathToRegexp();
-    const [,setLocation] = useLocation();
+    const [, setLocation] = useLocation();
     const routeNavigate = useCallback(
-        (route, data, ...args) => setLocation(url(route, data), ...args),
+        (route: string, data?: Record<string, unknown>, ...args: unknown[]) =>
+            setLocation(url(route, data), ...args.slice(0, 1)),
         [setLocation, url],
     );
     return routeNavigate;

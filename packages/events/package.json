@@ -58,6 +58,6 @@
     "gitHead": "4434e099464ff1cf72dbaace7623c2ab6f69337b",
     "dependencies": {
         "detect-passive-events": "^2.0.3",
-        "wolfy87-eventemitter": "^5.2.9"
+        "mitt": "^3.0.1"
     }
 }

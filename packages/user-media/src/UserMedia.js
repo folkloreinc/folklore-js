@@ -1,4 +1,4 @@
-import EventEmitter from 'wolfy87-eventemitter';
+import { EventEmitter } from '@folklore/events';
 import { Promise } from 'es6-promise';
 import MediaStreamRecorder from 'msr';
 import createDebug from 'debug';

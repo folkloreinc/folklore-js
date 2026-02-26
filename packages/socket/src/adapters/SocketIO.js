@@ -1,5 +1,5 @@
 import createDebug from 'debug';
-import EventEmitter from 'wolfy87-eventemitter';
+import { EventEmitter } from '@folklore/events';
 import isArray from 'lodash/isArray';
 
 const debug = createDebug('folklore:socket:socketio');

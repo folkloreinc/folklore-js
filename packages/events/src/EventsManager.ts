@@ -1,26 +1,31 @@
 import { supportsPassiveEvents } from 'detect-passive-events';
-import EventEmitter from 'wolfy87-eventemitter';
+import { EventType } from 'mitt';
+
+import EventEmitter, { Events } from './EventEmitter';
 
 export const passiveEvents = ['scroll', 'touchstart', 'touchend', 'touchmove'];
 
 type EventCallback = (...args: unknown[]) => void;
-type ListenerCallback = EventListenerOrEventListenerObject;
+type ListenerCallback<Payload> = (payload: Payload) => void;
 type ListenersByEvent = Record<string, EventCallback[]>;
-type NativeListenersByEvent = Record<string, ListenerCallback>;
+type NativeListenersByEvent<TEvents extends Events> = Record<
+    EventType,
+    ListenerCallback<TEvents[EventType]>
+>;
 
 type EventTargetLike = {
     addEventListener: (
         event: string,
-        listener: ListenerCallback,
+        listener: EventCallback,
         options?: AddEventListenerOptions | boolean,
     ) => void;
-    removeEventListener: (event: string, listener: ListenerCallback) => void;
+    removeEventListener: (event: string, listener: EventCallback) => void;
 };
 
-class EventsManager extends EventEmitter {
+class EventsManager<TEvents extends Events = Events> extends EventEmitter<TEvents> {
     element: EventTargetLike;
     events: ListenersByEvent;
-    listeners: NativeListenersByEvent;
+    listeners: NativeListenersByEvent<TEvents>;
 
     constructor(element: EventTargetLike) {
         super();
@@ -69,7 +74,7 @@ class EventsManager extends EventEmitter {
 
     addEventListener(event: string): void {
         if (typeof this.listeners[event] === 'undefined') {
-            this.listeners[event] = (...args) => this.emit(event, ...args);
+            this.listeners[event] = (payload) => this.emit(event, payload);
         }
         const needsPassive = passiveEvents.indexOf(event) !== -1;
         if (needsPassive && supportsPassiveEvents === true) {

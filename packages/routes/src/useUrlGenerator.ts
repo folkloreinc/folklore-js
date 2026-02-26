@@ -1,17 +1,23 @@
 import { useCallback } from 'react';
 
 import { useRoutesContext } from './RoutesContext';
-import generatePath from './generatePath';
+import generatePath, { GeneratePathOpts, PathParams } from './generatePath';
 
-const useUrlGeneratorPathToRepexp = () => {
+export type UrlGenerator = (
+    key: string,
+    params?: PathParams,
+    opts?: GeneratePathOpts,
+) => string | null;
+
+function useUrlGeneratorPathToRepexp(): UrlGenerator {
     const { routes = null, basePath = null } = useRoutesContext() || {};
-    const urlGenerator = useCallback(
-        (key, data, opts) => {
+    const urlGenerator = useCallback<UrlGenerator>(
+        (key, params, opts) => {
             const path = routes !== null ? routes[key] || null : null;
             if (path === null) {
                 return null;
             }
-            const url = generatePath(path, data, opts);
+            const url = generatePath(path, params, opts);
             return basePath !== null
                 ? `${basePath.replace(/\/$/, '')}/${url.replace(/^\//, '')}`
                 : url;
@@ -19,6 +25,6 @@ const useUrlGeneratorPathToRepexp = () => {
         [routes, basePath],
     );
     return urlGenerator;
-};
+}
 
 export default useUrlGeneratorPathToRepexp;

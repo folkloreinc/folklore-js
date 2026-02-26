@@ -3,16 +3,28 @@ import { useSyncExternalStore } from 'react';
 
 import parseLocation from './parseLocation';
 
+type UseMemoryRouterOptions = {
+    path?: string;
+    static?: boolean;
+    record?: boolean;
+};
+
+type NavigateOptions = {
+    replace?: boolean;
+};
+
+type NavigateFn = (newPath: string, opts?: NavigateOptions) => void;
+
 export default function useMemoryRouter({
     path = '/',
     static: staticLocation = false,
     record = true,
-} = {}) {
+}: UseMemoryRouterOptions = {}) {
     let currentPath = parseLocation(path);
     const history = [currentPath];
-    const emitter = mitt();
+    const emitter = mitt<{ navigate: string }>();
 
-    const navigateImplementation = (newPath, { replace = false } = {}) => {
+    const navigateImplementation: NavigateFn = (newPath, { replace = false } = {}) => {
         const newParsedPath = parseLocation(newPath);
         if (record) {
             if (replace) {
@@ -26,9 +38,9 @@ export default function useMemoryRouter({
         emitter.emit('navigate', path);
     };
 
-    const navigate = !staticLocation ? navigateImplementation : () => null;
+    const navigate: NavigateFn = !staticLocation ? navigateImplementation : () => {};
 
-    const subscribe = (cb) => {
+    const subscribe = (cb: () => void) => {
         emitter.on('navigate', cb);
         return () => emitter.off('navigate', cb);
     };
@@ -40,11 +52,12 @@ export default function useMemoryRouter({
         navigateImplementation(path);
     }
 
-    const locationHook = () => [
+    const locationHook = (): [string, NavigateFn] => [
         useSyncExternalStore(subscribe, () => currentPath.pathname),
         navigate,
     ];
-    const searchHook = () => useSyncExternalStore(subscribe, () => currentPath.search || '');
+    const searchHook = (): string =>
+        useSyncExternalStore(subscribe, () => currentPath.search || '');
 
     return {
         hook: locationHook,

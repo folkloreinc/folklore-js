@@ -1,10 +1,14 @@
-import EventEmitter from 'wolfy87-eventemitter';
+import { EventEmitter } from '@folklore/events';
+
+type Events = {
+    loaded: (library: unknown) => void;
+};
 
 const createLoader = (loader, getLibrary = null) => {
     let loading = false;
     let loaded = false;
     let loadedLibrary = null;
-    const events = new EventEmitter();
+    const events = new EventEmitter<Events>();
     return (...args) =>
         new Promise((resolve) => {
             if (loadedLibrary === null && getLibrary !== null) {
@@ -16,7 +20,7 @@ const createLoader = (loader, getLibrary = null) => {
             }
 
             if (loading) {
-                events.once('loaded', () => resolve(loadedLibrary));
+                events.once('loaded', (lib) => resolve(lib));
                 return;
             }
 

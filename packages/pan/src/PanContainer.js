@@ -1,7 +1,7 @@
 import { TimelineMax, Linear, Power1 } from 'gsap';
 import Hammer from 'hammerjs';
 import { Instance as Hamster } from 'hamsterjs';
-import EventEmitter from 'wolfy87-eventemitter';
+import { EventEmitter } from '@folklore/events';
 
 class PanContainer extends EventEmitter {
     constructor(container, opts) {

@@ -27,12 +27,13 @@
             "email": "nrb@folklore.email"
         }
     ],
-    "main": "dist/cjs.js",
-    "module": "dist/es.js",
+    "type": "module",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
     "exports": {
         ".": {
-            "import": "./dist/es.js",
-            "require": "./dist/cjs.js"
+            "default": "./dist/index.js",
+            "types": "./dist/index.d.ts"
         }
     },
     "files": [
@@ -40,9 +41,11 @@
     ],
     "sideEffects": false,
     "scripts": {
-        "clean": "rm -rf dist",
-        "build": "rollup --bundleConfigAsCjs --config ../../rollup.config.js",
-        "prepublishOnly": "npm run clean && npm run build"
+        "build": "../../scripts/prepare-package.sh --types",
+        "prepublishOnly": "npm run build"
+    },
+    "publishConfig": {
+        "access": "public"
     },
     "dependencies": {
         "@babel/runtime": "^7.4.3",
@@ -51,13 +54,11 @@
         "wouter": "^3.0.0"
     },
     "devDependencies": {
-        "prop-types": "^15.7.2",
         "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
         "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
     },
     "peerDependencies": {
         "path-to-regexp": "^6.2.1",
-        "prop-types": "^15.7.2",
         "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
         "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
     },

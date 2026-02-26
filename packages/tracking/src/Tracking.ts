@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
+import { EventEmitter } from '@folklore/events';
 import { v4 as uuidv4 } from 'uuid';
-import EventEmitter from 'wolfy87-eventemitter';
 
 type TrackingPayload = Record<string, unknown>;
 

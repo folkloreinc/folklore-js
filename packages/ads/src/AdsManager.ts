@@ -2,7 +2,7 @@
 import createDebug from 'debug';
 import isArray from 'lodash/isArray';
 import isObject from 'lodash/isObject';
-import EventEmitter from 'wolfy87-eventemitter';
+import { EventEmitter } from '@folklore/events';
 
 // import loadGPT from './loadGPT';
 import AdSlot, { AdSlotOptions as BaseAdSlotOptions } from './AdSlot';

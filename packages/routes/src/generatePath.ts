@@ -1,8 +1,16 @@
 import { compile } from 'path-to-regexp';
 
-const compilers = {};
+export type PathParams = Record<string, unknown>;
 
-export default function generatePath(fullPath, data, opts = {}) {
+export type GeneratePathOpts = Parameters<typeof compile>[1];
+
+const compilers: Record<string, (params?: PathParams) => string> = {};
+
+export default function generatePath(
+    fullPath: string,
+    data?: PathParams,
+    opts: GeneratePathOpts = {},
+): string {
     const fullUrlMatches = fullPath.match(/^(https?:\/\/)/);
     if (typeof compilers[fullPath] === 'undefined') {
         compilers[fullPath] = compile(fullPath.replace(/^(https?:\/\/)/, ''), opts);

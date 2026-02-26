@@ -25,16 +25,25 @@
             "email": "nrb@folklore.email"
         }
     ],
-    "main": "dist/cjs.js",
-    "module": "dist/es.js",
+    "type": "module",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+        ".": {
+            "default": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        }
+    },
     "sideEffects": false,
     "files": [
         "dist"
     ],
     "scripts": {
-        "clean": "rm -rf dist",
-        "build": "rollup --bundleConfigAsCjs --config ../../rollup.config.js",
-        "prepublishOnly": "npm run clean && npm run build"
+        "build": "../../scripts/prepare-package.sh --types",
+        "prepublishOnly": "npm run build"
+    },
+    "publishConfig": {
+        "access": "public"
     },
     "dependencies": {
         "@babel/runtime": "^7.4.3",
@@ -42,7 +51,7 @@
         "es6-promise": "^4.2.2",
         "lodash": "^4.17.4",
         "query-string": "^5.0.1",
-        "wolfy87-eventemitter": "^5.2.4"
+        "@folklore/events": "^0.0.10"
     },
     "gitHead": "534183c15f9eaa4c9f542dcc823797d1078835eb"
 }

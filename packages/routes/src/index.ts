@@ -1,4 +1,4 @@
-export { RoutesContext, useRoutesContext, RoutesProvider } from './RoutesContext';
+export * from './RoutesContext';
 export { default as useRouteNavigate } from './useRouteNavigate';
 export { default as useRoutes } from './useRoutes';
 export { default as useRoutesMatch } from './useRoutesMatch';
