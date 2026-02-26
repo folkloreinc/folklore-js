@@ -9,7 +9,11 @@ export function throwResponseError<TData = unknown, TError = unknown>(
     if (response.status >= 200 && response.status < 300) {
         return data;
     }
-    throw new ResponseError<TError>(response.statusText, (data as unknown) as TError, response.status);
+    throw new ResponseError<TError>(
+        response.statusText,
+        data as unknown as TError,
+        response.status,
+    );
 }
 
 export function throwValidationError<TError = unknown>(error: unknown): never {

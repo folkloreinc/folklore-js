@@ -41,9 +41,9 @@ export default {
                 {
                     plugins: [
                         {
-                            name: "removeViewBox",
+                            name: 'removeViewBox',
                             active: false,
-                          },
+                        },
                         {
                             name: 'addAttributesToSVGElement',
                             params: {

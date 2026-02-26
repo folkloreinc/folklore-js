@@ -1,5 +1,6 @@
-import { Container, Texture, Sprite } from 'pixi.js';
 import { getSizeFromString } from '@folklore/size';
+
+import { Container, Sprite, Texture } from 'pixi.js';
 
 // prettier-ignore
 const videoIsPlaying = video => (
@@ -113,9 +114,7 @@ class Video extends Container {
     }
 
     createVideo(url) {
-        const {
-            volume, muted, autoplay, playsInline,
-        } = this.options;
+        const { volume, muted, autoplay, playsInline } = this.options;
         const video = document.createElement('video');
         video.src = url;
         video.autoplay = autoplay;
@@ -175,10 +174,10 @@ class Video extends Container {
     updateSize() {
         const { size } = this.options;
         if (
-            this.sprite === null
-            || this.texture === null
-            || this.texture.baseTexture.width === 0
-            || this.texture.baseTexture.height === 0
+            this.sprite === null ||
+            this.texture === null ||
+            this.texture.baseTexture.width === 0 ||
+            this.texture.baseTexture.height === 0
         ) {
             return;
         }

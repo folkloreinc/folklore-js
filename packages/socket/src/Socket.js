@@ -1,7 +1,7 @@
+import { EventEmitter } from '@folklore/events';
 import createDebug from 'debug';
 import invariant from 'invariant';
 import isFunction from 'lodash/isFunction';
-import { EventEmitter } from '@folklore/events';
 import isString from 'lodash/isString';
 
 import SocketAdapters from './adapters/index';

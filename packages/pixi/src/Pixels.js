@@ -1,8 +1,7 @@
-import {
-    Container, Texture, Sprite, Point,
-} from 'pixi.js';
 import Color from 'color';
 import get from 'lodash/get';
+
+import { Container, Point, Sprite, Texture } from 'pixi.js';
 
 const createColorCanvas = (color, width, height) => {
     const canvas = document.createElement('canvas');
@@ -67,9 +66,7 @@ class Pixels extends Container {
             ...opts,
         };
 
-        const {
-            width, height, colors, pixelWidth, pixelHeight, debug,
-        } = this.options;
+        const { width, height, colors, pixelWidth, pixelHeight, debug } = this.options;
 
         this.expandRadius = this.expandRadius.bind(this);
         this.glitch = this.glitch.bind(this);
@@ -108,10 +105,10 @@ class Pixels extends Container {
         this.imageData = null;
         this.colors = [];
 
-        this.pixels.forEach(pixel => pixel.destroy());
+        this.pixels.forEach((pixel) => pixel.destroy());
         this.pixels = [];
 
-        this.colorsTextures.forEach(texture => texture.destroy());
+        this.colorsTextures.forEach((texture) => texture.destroy());
         this.colorsTextures = [];
     }
 
@@ -164,8 +161,8 @@ class Pixels extends Container {
     }
 
     setColors(colors) {
-        this.colors = colors !== null ? colors.map(color => new Color(color)) : [];
-        this.colorsRgb = this.colors.map(color => color.rgb().array());
+        this.colors = colors !== null ? colors.map((color) => new Color(color)) : [];
+        this.colorsRgb = this.colors.map((color) => color.rgb().array());
         this.updateColorTextures();
     }
 
@@ -263,15 +260,12 @@ class Pixels extends Container {
     }
 
     createPixelSprite(pixelIndex, colorIndex, color) {
-        const {
-            enableAlpha,
-            deadPixelProbability,
-            colorOffsetProbability,
-            maxColorOffset,
-        } = this.options;
-        const colorOffset = Math.random() < colorOffsetProbability
-            ? Math.round(-(maxColorOffset / 2) + Math.random() * maxColorOffset)
-            : 0;
+        const { enableAlpha, deadPixelProbability, colorOffsetProbability, maxColorOffset } =
+            this.options;
+        const colorOffset =
+            Math.random() < colorOffsetProbability
+                ? Math.round(-(maxColorOffset / 2) + Math.random() * maxColorOffset)
+                : 0;
         const maxColorsIndex = this.colorsTextures.length - 1;
         const realColorIndex = Math.max(Math.min(colorIndex + colorOffset, maxColorsIndex), 0);
         const texture = this.colorsTextures[realColorIndex] || null;
@@ -409,12 +403,13 @@ class Pixels extends Container {
     clearSavedImageData(name) {
         const imageName = name || 'default';
         this.savedImagesData = Object.keys(this.savedImagesData).reduce(
-            (images, key) => (key !== imageName
-                ? {
-                    ...images,
-                    [key]: this.savedImagesData[key],
-                }
-                : images),
+            (images, key) =>
+                key !== imageName
+                    ? {
+                          ...images,
+                          [key]: this.savedImagesData[key],
+                      }
+                    : images,
             {},
         );
     }

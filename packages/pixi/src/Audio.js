@@ -1,6 +1,7 @@
-import { Container, Graphics } from 'pixi.js';
+import { getPositionFromString, getSizeFromString } from '@folklore/size';
 import Color from 'color';
-import { getSizeFromString, getPositionFromString } from '@folklore/size';
+
+import { Container, Graphics } from 'pixi.js';
 
 class Audio extends Container {
     constructor(opts) {
@@ -163,9 +164,7 @@ class Audio extends Container {
     }
 
     createBars(container, bars) {
-        const {
-            size, barWidth, barMargin, barMinHeight,
-        } = this.options;
+        const { size, barWidth, barMargin, barMinHeight } = this.options;
 
         const { width, height } = getSizeFromString(
             size,

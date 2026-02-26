@@ -1,7 +1,7 @@
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
-import { isString, isArray } from 'lodash';
+import { isArray, isString } from 'lodash';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import getCSSModuleLocalIdent from 'react-dev-utils/getCSSModuleLocalIdent';
@@ -406,7 +406,8 @@ export default (entry, opts = {}) => {
                                     sourceMap: !disableSourceMap,
                                     modules: {
                                         mode: 'local',
-                                        getLocalIdent: customGetLocalIndent || getCSSModuleLocalIdent,
+                                        getLocalIdent:
+                                            customGetLocalIndent || getCSSModuleLocalIdent,
                                     },
                                 },
                                 'sass-loader',

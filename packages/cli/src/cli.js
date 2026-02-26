@@ -4,6 +4,7 @@ import buildCommand from './commands/build';
 import intlCommand from './commands/intl';
 // import imagesCommand from './commands/images';
 import serveCommand from './commands/serve';
+
 import { version } from '../package.json';
 
 const program = new Command();

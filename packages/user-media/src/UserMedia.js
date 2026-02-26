@@ -1,7 +1,7 @@
 import { EventEmitter } from '@folklore/events';
+import createDebug from 'debug';
 import { Promise } from 'es6-promise';
 import MediaStreamRecorder from 'msr';
-import createDebug from 'debug';
 
 import dataUriToBlob from './dataUriToBlob';
 
@@ -112,9 +112,7 @@ class UserMedia extends EventEmitter {
             return Promise.resolve();
         }
         debug('Starting user media...');
-        const {
-            type, videoConstraints, audioConstraints, audio,
-        } = this.options;
+        const { type, videoConstraints, audioConstraints, audio } = this.options;
         return new Promise((resolve, reject) => {
             navigator.getUserMedia(
                 {
@@ -235,9 +233,11 @@ class UserMedia extends EventEmitter {
 
         if (type === 'video') {
             return 'video/webm';
-        } if (type === 'image') {
+        }
+        if (type === 'image') {
             return 'image/jpeg';
-        } if (type === 'audio') {
+        }
+        if (type === 'audio') {
             return 'audio/wav';
         }
 
@@ -286,7 +286,7 @@ class UserMedia extends EventEmitter {
         if (this.stream === null) {
             return;
         }
-        this.stream.getTracks().forEach(track => track.stop());
+        this.stream.getTracks().forEach((track) => track.stop());
         this.stream = null;
         this.streamUrl = null;
     }

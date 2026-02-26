@@ -1,4 +1,5 @@
 import fsExtra from 'fs-extra';
+
 import getAbsolutePath from './getAbsolutePath';
 
 const getOptionsFromPackage = (packagePath, keys = ['...build', 'proxy']) => {

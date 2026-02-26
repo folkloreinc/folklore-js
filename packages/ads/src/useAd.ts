@@ -1,5 +1,5 @@
 import { useIntersectionObserver, useWindowEvent } from '@folklore/hooks';
-import { useEffect, useState, useCallback, useRef, useMemo, useId } from 'react';
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 
 import AdSlot from './AdSlot';
 import { useAdsContext } from './AdsContext';

@@ -21,7 +21,10 @@ export type UseYouTubePlayerOptions = {
     getVideoId?: (url: string) => string | null;
 };
 
-export default function useYouTubePlayer(idOrUrl: string | null, opts: UseYouTubePlayerOptions = null): VideoPlayer {
+export default function useYouTubePlayer(
+    idOrUrl: string | null,
+    opts: UseYouTubePlayerOptions = null,
+): VideoPlayer {
     const {
         width = 0,
         height = 0,

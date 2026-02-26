@@ -1,11 +1,20 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import debounce from 'lodash/debounce';
-import { useState, useContext, useEffect, useMemo, useRef, ElementType, createContext, ReactNode } from 'react';
+import {
+    ElementType,
+    ReactNode,
+    createContext,
+    useContext,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
 
 import { getSizeFromSizeMapping, getSizeMappingFromSlot } from './utils';
 
 import AdsManager from './AdsManager';
-import { viewports as defaultViewports, slots as defaultSlots } from './defaults';
+import { slots as defaultSlots, viewports as defaultViewports } from './defaults';
 import { Slots, SlotsDefinition, Viewports } from './types';
 
 interface AdsContextType {

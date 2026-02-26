@@ -1,9 +1,8 @@
-import {
-    Container, Texture, loaders, extras,
-} from 'pixi.js';
-import { TweenMax, Linear } from 'gsap';
+import { Linear, TweenMax } from 'gsap';
 import isArray from 'lodash/isArray';
 import sortBy from 'lodash/sortBy';
+
+import { Container, Texture, extras, loaders } from 'pixi.js';
 
 class Movieclip extends Container {
     constructor(opts) {
@@ -89,9 +88,7 @@ class Movieclip extends Container {
     }
 
     createTween(totalFrames) {
-        const {
-            frameRate, repeat, paused, easing, duration,
-        } = this.options;
+        const { frameRate, repeat, paused, easing, duration } = this.options;
         const tweenDuration = duration || totalFrames / frameRate;
         return TweenMax.fromTo(
             this,
@@ -153,7 +150,7 @@ class Movieclip extends Container {
         }
 
         if (this.textures !== null) {
-            this.textures.forEach(texture => texture.destroy(true));
+            this.textures.forEach((texture) => texture.destroy(true));
             this.textures = null;
         }
 

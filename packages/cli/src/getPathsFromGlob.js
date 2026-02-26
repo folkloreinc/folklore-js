@@ -1,6 +1,7 @@
 import fs from 'fs';
-import { isArray } from 'lodash';
 import { sync as globSync } from 'glob';
+import { isArray } from 'lodash';
+
 import getAbsolutePath from './getAbsolutePath';
 
 const getPathsFromGlob = (globs, { cwd = process.cwd() } = {}) => {

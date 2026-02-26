@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useMemo, useEffect, useRef, useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import Socket from './Socket';
 import SocketContext from './SocketContext';

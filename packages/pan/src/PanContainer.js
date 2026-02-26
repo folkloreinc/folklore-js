@@ -1,7 +1,7 @@
-import { TimelineMax, Linear, Power1 } from 'gsap';
+import { EventEmitter } from '@folklore/events';
+import { Linear, Power1, TimelineMax } from 'gsap';
 import Hammer from 'hammerjs';
 import { Instance as Hamster } from 'hamsterjs';
-import { EventEmitter } from '@folklore/events';
 
 class PanContainer extends EventEmitter {
     constructor(container, opts) {
@@ -53,9 +53,7 @@ class PanContainer extends EventEmitter {
     }
 
     init() {
-        const {
-            pan, swipe, mouseWheel, axis, speed, minProgress, maxProgress,
-        } = this.options;
+        const { pan, swipe, mouseWheel, axis, speed, minProgress, maxProgress } = this.options;
 
         // Gestures
         if (pan || swipe) {
@@ -130,10 +128,10 @@ class PanContainer extends EventEmitter {
         this.stopMouseWheelTimeout();
 
         if (
-            !this.enabled
-            || this.panning
-            || (this.lastDeltaX === null && axis === 'x' && Math.abs(deltaY) > Math.abs(deltaX))
-            || (this.lastDeltaY === null && axis === 'y' && Math.abs(deltaX) > Math.abs(deltaY))
+            !this.enabled ||
+            this.panning ||
+            (this.lastDeltaX === null && axis === 'x' && Math.abs(deltaY) > Math.abs(deltaX)) ||
+            (this.lastDeltaY === null && axis === 'y' && Math.abs(deltaX) > Math.abs(deltaY))
         ) {
             return;
         }
