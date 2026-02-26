@@ -1,7 +1,29 @@
 import getSizeInPixel from './getSizeInPixel';
 import getSizeWithinBounds from './getSizeWithinBounds';
 
-const getSizeFromString = (size, width, height, maxWidth, maxHeight, opts) => {
+type SizeValue = string | number | null;
+type InputSize = string | [SizeValue, SizeValue?];
+
+type GetSizeFromStringOptions = {
+    force?: boolean;
+    autoIsNull?: boolean;
+    round?: boolean;
+    cover?: boolean;
+};
+
+type ParsedSize = {
+    width: number | string | null;
+    height: number | string | null;
+};
+
+const getSizeFromString = (
+    size: InputSize,
+    width: number,
+    height: number,
+    maxWidth: number,
+    maxHeight: number,
+    opts: GetSizeFromStringOptions = {},
+): ParsedSize => {
     const {
         force = false,
         autoIsNull = true,
@@ -11,7 +33,7 @@ const getSizeFromString = (size, width, height, maxWidth, maxHeight, opts) => {
         ...opts,
     };
 
-    let returnSize = {
+    let returnSize: ParsedSize = {
         width: maxWidth,
         height: maxHeight,
     };
@@ -68,11 +90,11 @@ const getSizeFromString = (size, width, height, maxWidth, maxHeight, opts) => {
         }
     }
 
-    if (returnSize.width !== null && round) {
+    if (returnSize.width !== null && typeof returnSize.width === 'number' && round) {
         returnSize.width = Math.round(returnSize.width);
     }
 
-    if (returnSize.height !== null && round) {
+    if (returnSize.height !== null && typeof returnSize.height === 'number' && round) {
         returnSize.height = Math.round(returnSize.height);
     }
 

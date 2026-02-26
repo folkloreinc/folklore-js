@@ -11,14 +11,25 @@
 const { attachEvent = null } = typeof document !== 'undefined' ? document || {} : {};
 let stylesCreated = false;
 
+type ResizeListener = (event: Event) => void;
+
+type ResizeElement = HTMLElement & {
+    __resizeTriggers__?: HTMLDivElement;
+    __resizeRAF__?: number;
+    __resizeLast__?: [number, number];
+    __resizeListeners__?: ResizeListener[];
+    attachEvent?: (event: string, fn: ResizeListener) => void;
+    detachEvent?: (event: string, fn: ResizeListener) => void;
+};
+
 const requestFrame = (() => {
     const raf =
         (typeof window !== 'undefined'
             ? window.requestAnimationFrame ||
               window.mozRequestAnimationFrame ||
               window.webkitRequestAnimationFrame
-            : null) || ((fn) => setTimeout(fn, 20));
-    return (fn) => raf(fn);
+            : null) || ((fn: FrameRequestCallback) => setTimeout(fn, 20));
+    return (fn: FrameRequestCallback) => raf(fn);
 })();
 
 const cancelFrame = (() => {
@@ -28,14 +39,17 @@ const cancelFrame = (() => {
               window.mozCancelAnimationFrame ||
               window.webkitCancelAnimationFrame
             : null) || clearTimeout;
-    return (id) => cancel(id);
+    return (id: number) => cancel(id);
 })();
 
-const resetTriggers = (element) => {
+const resetTriggers = (element: ResizeElement): void => {
     const triggers = element.__resizeTriggers__;
-    const expand = triggers.firstElementChild;
-    const contract = triggers.lastElementChild;
-    const expandChild = expand.firstElementChild;
+    if (!triggers) {
+        return;
+    }
+    const expand = triggers.firstElementChild as HTMLElement;
+    const contract = triggers.lastElementChild as HTMLElement;
+    const expandChild = expand.firstElementChild as HTMLElement;
     contract.scrollLeft = contract.scrollWidth;
     contract.scrollTop = contract.scrollHeight;
     expandChild.style.width = `${expand.offsetWidth + 1}px`;
@@ -44,8 +58,11 @@ const resetTriggers = (element) => {
     expand.scrollTop = expand.scrollHeight;
 };
 
-const scrollListener = (e) => {
-    const element = e.currentTarget;
+const scrollListener = (e: Event): void => {
+    const element = e.currentTarget as ResizeElement;
+    if (!element || !element.__resizeLast__ || !element.__resizeListeners__) {
+        return;
+    }
     resetTriggers(element);
     if (element.__resizeRAF__) cancelFrame(element.__resizeRAF__);
     element.__resizeRAF__ = requestFrame(() => {
@@ -110,7 +127,7 @@ const createStyles = () => {
         const style = document.createElement('style');
 
         style.type = 'text/css';
-        if (style.styleSheet) {
+        if (typeof style.styleSheet !== 'undefined') {
             style.styleSheet.cssText = css;
         } else {
             style.appendChild(document.createTextNode(css));
@@ -121,7 +138,7 @@ const createStyles = () => {
     }
 };
 
-const addResizeListener = (element, fn) => {
+const addResizeListener = (element: ResizeElement, fn: ResizeListener): void => {
     if (attachEvent) {
         element.attachEvent('onresize', fn);
     } else {
@@ -142,23 +159,27 @@ const addResizeListener = (element, fn) => {
 
             /* Listen for a css animation to detect element display/re-attach */
             element.__resizeTriggers__.addEventListener(animationstartevent, (e) => {
-                if (e.animationName === animationName) {
+                if ((e as AnimationEvent).animationName === animationName) {
                     resetTriggers(element);
                 }
             });
         }
-        element.__resizeListeners__.push(fn);
+        (element.__resizeListeners__ || []).push(fn);
     }
 };
 
-const removeResizeListener = (element, fn) => {
+const removeResizeListener = (element: ResizeElement, fn: ResizeListener): void => {
     if (attachEvent) {
         element.detachEvent('onresize', fn);
     } else {
+        if (!element.__resizeListeners__) {
+            return;
+        }
         element.__resizeListeners__.splice(element.__resizeListeners__.indexOf(fn), 1);
-        if (!element.__resizeListeners__.length) {
+        if (!element.__resizeListeners__.length && element.__resizeTriggers__) {
             element.removeEventListener('scroll', scrollListener);
-            element.__resizeTriggers__ = !element.removeChild(element.__resizeTriggers__);
+            element.removeChild(element.__resizeTriggers__);
+            element.__resizeTriggers__ = undefined;
         }
     }
 };

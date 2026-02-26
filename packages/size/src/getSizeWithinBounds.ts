@@ -1,4 +1,21 @@
-const getSizeWithinBounds = (width, height, maxWidth, maxHeight, opts) => {
+type GetSizeWithinBoundsOptions = {
+    cover?: boolean;
+};
+
+type SizeWithinBounds = {
+    width: number;
+    height: number;
+    scale?: number;
+    ratio?: number;
+};
+
+const getSizeWithinBounds = (
+    width: number,
+    height: number,
+    maxWidth: number,
+    maxHeight: number,
+    opts: GetSizeWithinBoundsOptions = {},
+): SizeWithinBounds => {
     const options = {
         cover: false,
         ...opts,

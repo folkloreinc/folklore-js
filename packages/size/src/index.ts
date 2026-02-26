@@ -1,13 +1,13 @@
-import getSizeInPixel from './getSizeInPixel';
-import getSizeFromString from './getSizeFromString';
-import getPositionFromString from './getPositionFromString';
-import getSizeWithinBounds from './getSizeWithinBounds';
+import { addResizeListener, removeResizeListener } from './detectElementResize';
 import {
-    getElementInnerWidth,
     getElementInnerHeight,
     getElementInnerSize,
+    getElementInnerWidth,
 } from './getElementInnerSize';
-import { addResizeListener, removeResizeListener } from './detectElementResize';
+import getPositionFromString from './getPositionFromString';
+import getSizeFromString from './getSizeFromString';
+import getSizeInPixel from './getSizeInPixel';
+import getSizeWithinBounds from './getSizeWithinBounds';
 
 export {
     getSizeInPixel,

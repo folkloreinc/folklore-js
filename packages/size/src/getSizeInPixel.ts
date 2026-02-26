@@ -1,12 +1,23 @@
 import isNumber from 'lodash/isNumber';
 import isString from 'lodash/isString';
 
-const getSizeInPixel = (size, maxSize, opts) => {
+type SizeUnit = '%' | 'em' | 'rem' | 'px';
+type SizeValue = number | string | null | undefined;
+
+type GetSizeInPixelOptions = {
+    units?: SizeUnit[];
+};
+
+const getSizeInPixel = (
+    size: SizeValue,
+    maxSize: number,
+    opts: GetSizeInPixelOptions = {},
+): number | null => {
     const options = {
         units: ['%', 'em', 'rem'],
         ...opts,
     };
-    let pixelSize;
+    let pixelSize: number | null;
     if (isNumber(size)) {
         pixelSize = size;
     } else if (isString(size)) {

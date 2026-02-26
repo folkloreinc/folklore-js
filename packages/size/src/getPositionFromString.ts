@@ -1,10 +1,39 @@
 import getSizeInPixel from './getSizeInPixel';
 
-const getPositionFromString = (positionString, width, height, maxWidth, maxHeight, opts) => {
-    // eslint-disable-next-line no-unused-vars
-    const { relativeToElement = false } = {
-        ...opts,
+type GetPositionFromStringOptions = {
+    relativeToElement?: boolean;
+};
+
+type Style = {
+    top?: number;
+    bottom?: number;
+    left?: number;
+    right?: number;
+};
+
+type ComputedPosition = {
+    x: number;
+    y: number;
+    horizontal: string;
+    vertical: string;
+    style: {
+        position: 'absolute';
+        top: number | 'auto';
+        bottom: number | 'auto';
+        left: number | 'auto';
+        right: number | 'auto';
     };
+};
+
+const getPositionFromString = (
+    positionString: string,
+    width: number,
+    height: number,
+    maxWidth: number,
+    maxHeight: number,
+    opts: GetPositionFromStringOptions = {},
+): ComputedPosition => {
+    const { relativeToElement = false } = opts || {};
 
     const positionArray = positionString.split(' ');
     const firstPositionParts = positionArray[0].split(':');
@@ -23,29 +52,32 @@ const getPositionFromString = (positionString, width, height, maxWidth, maxHeigh
 
     const horizontal = horizontalFirst ? firstPosition : secondPosition;
     const vertical = horizontalFirst ? secondPosition : firstPosition;
-    const horizontalOffset = getSizeInPixel(
-        horizontalFirst ? firstPositionValue || 0 : secondPositionValue || 0,
-        relativeToElement ? width : maxWidth,
-    );
-    const verticalOffset = getSizeInPixel(
-        horizontalFirst ? secondPositionValue || 0 : firstPositionValue || 0,
-        relativeToElement ? height : maxHeight,
-    );
+    const horizontalOffset =
+        getSizeInPixel(
+            horizontalFirst ? firstPositionValue || 0 : secondPositionValue || 0,
+            relativeToElement ? width : maxWidth,
+        ) || 0;
+    const verticalOffset =
+        getSizeInPixel(
+            horizontalFirst ? secondPositionValue || 0 : firstPositionValue || 0,
+            relativeToElement ? height : maxHeight,
+        ) || 0;
 
-    const position = {
+    const position: ComputedPosition = {
         x: 0,
         y: 0,
         horizontal,
         vertical,
+        style: {
+            position: 'absolute',
+            top: 'auto',
+            bottom: 'auto',
+            left: 'auto',
+            right: 'auto',
+        },
     };
 
-    const style = {
-        position: 'absolute',
-        top: 'auto',
-        bottom: 'auto',
-        left: 'auto',
-        right: 'auto',
-    };
+    const style: Style = {};
 
     if (horizontal === 'center') {
         position.x = (maxWidth - width) / 2;
@@ -83,9 +115,13 @@ const getPositionFromString = (positionString, width, height, maxWidth, maxHeigh
         style.top += verticalOffset;
     }
 
-    position.style = style;
-
-    return position;
+    return {
+        ...position,
+        style: {
+            ...position.style,
+            ...style,
+        },
+    };
 };
 
 export default getPositionFromString;
