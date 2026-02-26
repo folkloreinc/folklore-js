@@ -2,8 +2,45 @@
 import { v4 as uuidv4 } from 'uuid';
 import EventEmitter from 'wolfy87-eventemitter';
 
+type TrackingPayload = Record<string, unknown>;
+
+type TrackVideoPayload = {
+    platform?: string | null;
+    id?: string | null;
+    url?: string | null;
+    title?: string | null;
+    duration?: number | null;
+    currentTime?: number | null;
+    thumbnail?: string | null;
+} & TrackingPayload;
+
+type TrackingOptions = {
+    dataLayer?: TrackingPayload[] | null;
+    disabled?: boolean;
+    paused?: boolean;
+    variables?: TrackingPayload | null;
+    withoutIdleCallback?: boolean;
+    pageViewEvents?: string[];
+};
+
+declare global {
+    interface Window {
+        dataLayer?: TrackingPayload[];
+    }
+}
+
 class Tracking extends EventEmitter {
-    constructor(opts = {}) {
+    options: Required<Omit<TrackingOptions, 'variables' | 'dataLayer'>> & {
+        variables: TrackingPayload | null;
+        dataLayer: TrackingPayload[] | null;
+    };
+    disabled: boolean;
+    paused: boolean;
+    variables: TrackingPayload | null;
+    page: TrackingPayload | null;
+    pending: TrackingPayload[];
+
+    constructor(opts: TrackingOptions = {}) {
         super();
         this.options = {
             dataLayer: typeof window !== 'undefined' ? window.dataLayer || null : null,
@@ -29,35 +66,35 @@ class Tracking extends EventEmitter {
         }
     }
 
-    isPageViewEvent(eventName) {
+    isPageViewEvent(eventName: string): boolean {
         const { pageViewEvents = [] } = this.options;
         return pageViewEvents.indexOf(eventName) !== -1;
     }
 
-    setPage(page) {
+    setPage(page: TrackingPayload): void {
         this.page = page;
         this.emit('page', page);
     }
 
-    setVariables(variables) {
+    setVariables(variables: TrackingPayload | null): void {
         this.variables = variables;
         if (variables !== null) {
             this.pushNow(variables);
         }
     }
 
-    getVariables() {
+    getVariables(): TrackingPayload | null {
         return this.variables;
     }
 
-    setDisabled(disabled) {
+    setDisabled(disabled: boolean): void {
         this.disabled = disabled;
         if (disabled) {
             this.pending = [];
         }
     }
 
-    setPaused(paused) {
+    setPaused(paused: boolean): void {
         this.paused = paused;
         if (!paused && this.pending.length > 0) {
             this.pushNow(...this.pending);
@@ -65,7 +102,7 @@ class Tracking extends EventEmitter {
         }
     }
 
-    pushNow(...args) {
+    pushNow(...args: TrackingPayload[]): void {
         const { dataLayer = null, withoutIdleCallback = false } = this.options;
         if (dataLayer === null || this.disabled) {
             return;
@@ -83,7 +120,7 @@ class Tracking extends EventEmitter {
         }
     }
 
-    push(...args) {
+    push(...args: TrackingPayload[]): void {
         if (this.paused && !this.disabled) {
             this.pending.push(...args);
             return;
@@ -91,7 +128,7 @@ class Tracking extends EventEmitter {
         this.pushNow(...args);
     }
 
-    pushEvent(eventName, data) {
+    pushEvent(eventName: string, data: TrackingPayload): void {
         this.push({
             event: eventName,
             eventId: uuidv4(),
@@ -102,7 +139,7 @@ class Tracking extends EventEmitter {
         }
     }
 
-    pushEventNow(eventName, data) {
+    pushEventNow(eventName: string, data: TrackingPayload): void {
         this.pushNow({
             event: eventName,
             eventId: uuidv4(),
@@ -113,7 +150,13 @@ class Tracking extends EventEmitter {
         }
     }
 
-    trackEvent(category, action, label = null, value = null, data = null) {
+    trackEvent(
+        category: string,
+        action: string,
+        label: string | null = null,
+        value: string | number | null = null,
+        data: TrackingPayload | null = null,
+    ): void {
         this.pushEvent('eventInteraction', {
             eventCategory: category,
             eventAction: action,
@@ -123,7 +166,13 @@ class Tracking extends EventEmitter {
         });
     }
 
-    trackEventNow(category, action, label = null, value = null, data = null) {
+    trackEventNow(
+        category: string,
+        action: string,
+        label: string | null = null,
+        value: string | number | null = null,
+        data: TrackingPayload | null = null,
+    ): void {
         this.pushEventNow('eventInteraction', {
             eventCategory: category,
             eventAction: action,
@@ -133,7 +182,7 @@ class Tracking extends EventEmitter {
         });
     }
 
-    trackSocial(network, action, target = null) {
+    trackSocial(network: string, action: string, target: string | null = null): void {
         this.pushEvent('socialInteraction', {
             socialNetwork: network,
             socialAction: action,
@@ -142,7 +191,7 @@ class Tracking extends EventEmitter {
     }
 
     trackVideo(
-        action,
+        action: string,
         {
             platform = null,
             id = null,
@@ -152,8 +201,8 @@ class Tracking extends EventEmitter {
             currentTime = null,
             thumbnail = null,
             ...data
-        } = {},
-    ) {
+        }: TrackVideoPayload = {},
+    ): void {
         this.pushEvent('eventInteraction', {
             eventCategory: 'Video',
             eventAction: action,
@@ -175,7 +224,7 @@ class Tracking extends EventEmitter {
         });
     }
 
-    getSocialTarget() {
+    getSocialTarget(): string | null {
         return typeof window !== 'undefined'
             ? `${window.location.protocol}//${window.location.host}`
             : null;

@@ -2,7 +2,29 @@ import { useCallback, useEffect, useRef } from 'react';
 
 import useTracking from './useTracking';
 
-function useVideoTracking(player, params) {
+type VideoPlayerState = {
+    playing?: boolean;
+    paused?: boolean;
+    ended?: boolean;
+    currentTime?: number | null;
+    duration?: number | null;
+};
+
+type UseVideoTrackingParams = {
+    provider?: string;
+    id?: string | null;
+    url?: string | null;
+    title?: string | null;
+    thumbnail?: string | null;
+    disabled?: boolean;
+    progressSteps?: number[] | null;
+    onProgress?: ((step: number) => void) | null;
+};
+
+function useVideoTracking(
+    player: VideoPlayerState | null,
+    params: UseVideoTrackingParams = {},
+): void {
     if (player === null) {
         return;
     }
@@ -17,7 +39,7 @@ function useVideoTracking(player, params) {
         onProgress = null,
     } = params || {};
     const tracking = useTracking();
-    const progressTrackedRef = useRef({});
+    const progressTrackedRef = useRef<Record<string, Record<number, boolean>>>({});
     const {
         playing = false,
         paused = false,
@@ -27,7 +49,7 @@ function useVideoTracking(player, params) {
     } = player;
 
     const getVideoMetadata = useCallback(
-        (metadata) => {
+        (metadata: Record<string, unknown>) => {
             let metadataTitle = null;
             try {
                 metadataTitle =
@@ -49,7 +71,7 @@ function useVideoTracking(player, params) {
     );
 
     useEffect(() => {
-        if (playing && !disabled) {
+        if (playing && !disabled && tracking !== null) {
             tracking.trackVideo(
                 'play',
                 getVideoMetadata({
@@ -57,10 +79,10 @@ function useVideoTracking(player, params) {
                 }),
             );
         }
-    }, [playing, disabled]);
+    }, [playing, disabled, currentTime, tracking, getVideoMetadata]);
 
     useEffect(() => {
-        if (paused && !disabled) {
+        if (paused && !disabled && tracking !== null) {
             tracking.trackVideo(
                 'pause',
                 getVideoMetadata({
@@ -68,10 +90,10 @@ function useVideoTracking(player, params) {
                 }),
             );
         }
-    }, [paused, disabled]);
+    }, [paused, disabled, currentTime, tracking, getVideoMetadata]);
 
     useEffect(() => {
-        if (ended && !disabled) {
+        if (ended && !disabled && tracking !== null) {
             tracking.trackVideo(
                 'end',
                 getVideoMetadata({
@@ -79,7 +101,7 @@ function useVideoTracking(player, params) {
                 }),
             );
         }
-    }, [ended, disabled]);
+    }, [ended, disabled, currentTime, tracking, getVideoMetadata]);
 
     useEffect(() => {
         if (
@@ -89,7 +111,8 @@ function useVideoTracking(player, params) {
             duration <= 0 ||
             progressSteps === null ||
             progressSteps.length === 0 ||
-            disabled
+            disabled ||
+            tracking === null
         ) {
             return;
         }
@@ -121,11 +144,11 @@ function useVideoTracking(player, params) {
             }
         });
 
-        if (stepsToTrack !== null && stepsToTrack.length > 0) {
+        if (stepsToTrack.length > 0) {
             progressTrackedRef.current = {
                 ...progressTrackedRef.current,
-                [id]: {
-                    ...progressTrackedRef.current[id],
+                [id || 'default']: {
+                    ...progressTrackedRef.current[id || 'default'],
                     ...stepsToTrack.reduce(
                         (stepsMap, step) => ({
                             ...stepsMap,
@@ -136,7 +159,16 @@ function useVideoTracking(player, params) {
                 },
             };
         }
-    }, [currentTime, progressTrackedRef.current, id, onProgress, disabled]);
+    }, [
+        currentTime,
+        duration,
+        progressSteps,
+        disabled,
+        id,
+        onProgress,
+        tracking,
+        getVideoMetadata,
+    ]);
 }
 
 export default useVideoTracking;

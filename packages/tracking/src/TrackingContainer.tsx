@@ -1,24 +1,21 @@
-import PropTypes from 'prop-types';
-import React, { useEffect, useMemo } from 'react';
+import React, { type ReactNode, useEffect, useMemo } from 'react';
 
 import Tracking from './Tracking';
 import TrackingContext from './TrackingContext';
 
-const propTypes = {
-    tracking: PropTypes.instanceOf(Tracking),
-    disabled: PropTypes.bool,
-    paused: PropTypes.bool,
-    children: PropTypes.node,
+type TrackingContainerProps = {
+    tracking?: Tracking | null;
+    disabled?: boolean;
+    paused?: boolean;
+    children?: ReactNode;
 };
 
-const defaultProps = {
-    tracking: null,
-    disabled: false,
-    paused: false,
-    children: null,
-};
-
-function TrackingContainer({ children, tracking, disabled, paused }) {
+function TrackingContainer({
+    children = null,
+    tracking = null,
+    disabled = false,
+    paused = false,
+}: TrackingContainerProps): React.JSX.Element {
     const finalTracking = useMemo(
         () =>
             tracking ||
@@ -36,8 +33,5 @@ function TrackingContainer({ children, tracking, disabled, paused }) {
     }, [tracking, disabled, paused]);
     return <TrackingContext.Provider value={finalTracking}>{children}</TrackingContext.Provider>;
 }
-
-TrackingContainer.propTypes = propTypes;
-TrackingContainer.defaultProps = defaultProps;
 
 export default TrackingContainer;
