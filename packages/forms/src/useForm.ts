@@ -1,32 +1,79 @@
-import { getCsrfToken, postJSON, getCSRFHeaders } from '@folklore/fetch';
+import { ValidationError, getCSRFHeaders, getCsrfToken, postJSON } from '@folklore/fetch';
 import isObject from 'lodash/isObject';
 import isString from 'lodash/isString';
-import { useState, useMemo, useCallback } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+
+type FieldErrors = string | string[] | null;
+
+export interface Field {
+    name?: string;
+    value?: unknown;
+    errors?: FieldErrors;
+    onChange?: (value: unknown) => void;
+    [key: string]: unknown;
+}
+
+type FormValues = Record<string, unknown> | null;
+type FormErrors = Record<string, FieldErrors> | null;
+type FieldDefinition = string | Field;
+type RequestState = {
+    success: boolean;
+    loading: boolean;
+    error: boolean;
+};
+
+export interface FormPostData {
+    _token?: string;
+    [key: string]: unknown;
+}
 
 // prettier-ignore
-const getFieldsPropsFromFields = (fields, {
+function getFieldsPropsFromFields(fields: FieldDefinition[], {
     value, errors, onChange, ...props
-}) => fields.reduce(
-    (allFields, field) => {
-        const {
-            name = isString(field) ? field : null,
-        } = isObject(field) ? field : {};
-        return {
-            ...allFields,
-            [name]: {
-                ...(isObject(field) ? field : null),
-                name,
-                value: value !== null ? value[name] || null : null,
-                errors: errors !== null ? errors[name] || null : null,
-                onChange: fieldValue => onChange(name, fieldValue),
-                ...props,
-            },
-        };
-    },
-    {},
-);
+}) {
+    return fields.reduce<Record<string, Field>>(
+        (allFields, field) => {
+            const {
+                name = isString(field) ? field : null,
+            } = isObject(field) ? field : {};
+            return {
+                ...allFields,
+                [name]: {
+                    ...(isObject(field) ? field : null),
+                    name,
+                    value: value !== null ? value[name] || null : null,
+                    errors: errors !== null ? errors[name] || null : null,
+                    onChange: fieldValue => onChange(name, fieldValue),
+                    ...props,
+                },
+            };
+        },
+        {},
+    );
+}
 
-const useForm = (opts = {}) => {
+interface UseFormOptions<TResponse = unknown, TData extends FormPostData = FormPostData> {
+    fields?: FieldDefinition[];
+    action?: string | null;
+    postForm?: ((action: string | null, data: TData) => Promise<TResponse>) | null;
+    initialErrors?: FormErrors;
+    errors?: FormErrors;
+    setErrors?: ((errors: FormErrors) => void) | null;
+    initialGeneralError?: string | null;
+    generalError?: string | null;
+    setGeneralError?: ((error: string | null) => void) | null;
+    initialValue?: FormValues;
+    value?: FormValues;
+    setValue?: ((value: FormValues) => void) | null;
+    getFieldValue?: ((value: unknown) => unknown) | null;
+    onComplete?: ((response: unknown) => void) | null;
+    csrfMetaName?: string | null;
+    xsrfCookieName?: string | null;
+}
+
+function useForm<TResponse = unknown, TData extends FormPostData = FormPostData>(
+    opts: UseFormOptions<TResponse, TData> = {},
+) {
     const {
         fields = [],
         action = null,
@@ -46,17 +93,17 @@ const useForm = (opts = {}) => {
         xsrfCookieName = null,
     } = opts || {};
 
-    const [stateValue, setStateValue] = useState(initialValue || providedValue);
-    const [stateErrors, setStateErrors] = useState(initialErrors || providedErrors);
+    const [stateValue, setStateValue] = useState<FormValues>(initialValue || providedValue);
+    const [stateErrors, setStateErrors] = useState<FormErrors>(initialErrors || providedErrors);
     const [stateGeneralError, setStateGeneralError] = useState(
         initialGeneralError || providedGeneralError,
     );
-    const [requestState, setRequestState] = useState({
+    const [requestState, setRequestState] = useState<RequestState>({
         success: false,
         loading: false,
         error: false,
     });
-    const [response, setResponse] = useState(null);
+    const [response, setResponse] = useState<unknown>(null);
 
     const hasProvidedValue = setProvidedValue !== null;
     const value = hasProvidedValue ? providedValue : stateValue;
@@ -72,8 +119,8 @@ const useForm = (opts = {}) => {
         ? setProvidedGeneralError
         : setStateGeneralError;
 
-    const fieldsKey = [value, errors, getFieldValue].concat(fields);
-    const onFieldChange = useCallback((fieldName, fieldValue) => {
+    const fieldsKey = [value, errors, getFieldValue, ...(fields || [])];
+    const onFieldChange = useCallback((fieldName: string, fieldValue: unknown) => {
         const fieldErrors = errors !== null ? errors[fieldName] || null : null;
         if (fieldErrors !== null) {
             setErrors({
@@ -93,21 +140,29 @@ const useForm = (opts = {}) => {
 
     const csrfToken = useMemo(() => getCsrfToken(), []);
 
-    const onSubmitError = (error) => {
+    const onSubmitError = (error: unknown) => {
         setRequestState({
             success: false,
             loading: false,
             error: true,
         });
-        if (error.name === 'ValidationError') {
-            const { errors: validationErrors = null } = error.getResponseData();
+        if (
+            error &&
+            typeof error === 'object' &&
+            'name' in error &&
+            error.name === 'ValidationError'
+        ) {
+            const validationError = error as ValidationError<{ errors?: FormErrors }>;
+            const { errors: validationErrors = null } = validationError.getResponseData() || {};
             setErrors(validationErrors);
+        } else if (error && typeof error === 'object' && 'message' in error) {
+            setGeneralError(String(error.message));
         } else {
-            setGeneralError(error.message);
+            setGeneralError('Unknown error');
         }
     };
 
-    const onSubmitSuccess = (resp) => {
+    const onSubmitSuccess = (resp: unknown) => {
         setRequestState({
             success: true,
             loading: false,
@@ -118,7 +173,7 @@ const useForm = (opts = {}) => {
     };
 
     const finalPostForm = useCallback(
-        (postAction, postData) =>
+        (postAction: string | null, postData: FormPostData) =>
             postForm !== null
                 ? postForm(postAction, postData)
                 : postJSON(postAction, postData, {
@@ -142,7 +197,7 @@ const useForm = (opts = {}) => {
             setErrors(null);
 
             finalPostForm(action, {
-                ...submitValue,
+                ...(submitValue || {}),
                 _token: getCsrfToken(),
             })
                 .then(onSubmitSuccess)
@@ -152,7 +207,7 @@ const useForm = (opts = {}) => {
     );
 
     const onSubmit = useCallback(
-        (e) => {
+        (e: { preventDefault: () => void }) => {
             e.preventDefault();
             submit();
         },
@@ -183,6 +238,6 @@ const useForm = (opts = {}) => {
         errors,
         generalError,
     };
-};
+}
 
 export default useForm;

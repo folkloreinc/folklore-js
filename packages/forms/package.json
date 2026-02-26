@@ -27,16 +27,25 @@
             "email": "nrb@folklore.email"
         }
     ],
-    "main": "dist/cjs.js",
-    "module": "dist/es.js",
+    "type": "module",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+        ".": {
+            "default": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        }
+    },
     "files": [
         "dist"
     ],
     "sideEffects": false,
     "scripts": {
-        "clean": "rm -rf dist",
-        "build": "rollup --bundleConfigAsCjs --config ../../rollup.config.js",
-        "prepublishOnly": "npm run clean && npm run build"
+        "build": "../../scripts/prepare-package.sh --types",
+        "prepublishOnly": "npm run build"
+    },
+    "publishConfig": {
+        "access": "public"
     },
     "dependencies": {
         "@babel/runtime": "^7.4.3",

@@ -1,24 +1,32 @@
 import Cookies from 'js-cookie';
 
-export const getXSRFToken = (cookieName = null) => {
-    const cookies = Cookies.get();
-    return (cookieName !== null ? cookies[cookieName] : null) || cookies['XSRF-TOKEN'] || null;
+type CSRFHeadersOptions = {
+    csrfMetaName?: string | null;
+    xsrfCookieName?: string | null;
 };
 
-export const getCsrfToken = (name = null) => {
+export function getXSRFToken(cookieName: string | null = null): string | null {
+    const cookies = Cookies.get();
+    return (cookieName !== null ? cookies[cookieName] : null) || cookies['XSRF-TOKEN'] || null;
+}
+
+export function getCsrfToken(name: string | null = null): string | null {
     const metaName = name || 'csrf-token';
     if (typeof document === 'undefined') {
         return null;
     }
-    const metas = [].slice.call(document.getElementsByTagName('meta'));
+    const metas = Array.from(document.getElementsByTagName('meta'));
     return metas.reduce(
-        (val, meta) =>
+        (val: string | null, meta) =>
             meta.getAttribute('name') === metaName ? meta.getAttribute('content') : val,
         null,
     );
-};
+}
 
-export const getCSRFHeaders = ({ csrfMetaName = null, xsrfCookieName = null } = {}) => {
+export const getCSRFHeaders = ({
+    csrfMetaName = null,
+    xsrfCookieName = null,
+}: CSRFHeadersOptions = {}): Record<string, string> | null => {
     const XSRF = getXSRFToken(xsrfCookieName);
     if (XSRF !== null) {
         return {

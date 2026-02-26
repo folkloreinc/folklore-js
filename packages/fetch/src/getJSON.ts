@@ -1,7 +1,10 @@
 import getResponseAndDataObject from './getResponseAndDataObject';
 import { throwResponseError } from './throwErrors';
 
-const getJSON = (url, opts) => {
+function getJSON<TData = unknown, TError = unknown>(
+    url: string,
+    opts: RequestInit = {},
+): Promise<TData> {
     const { headers, ...options } = opts || {};
     return fetch(url, {
         method: 'GET',
@@ -11,8 +14,8 @@ const getJSON = (url, opts) => {
         },
         ...(options || null),
     })
-        .then(getResponseAndDataObject)
-        .then(throwResponseError);
-};
+        .then(getResponseAndDataObject<TData>)
+        .then(throwResponseError<TData, TError>);
+}
 
 export default getJSON;

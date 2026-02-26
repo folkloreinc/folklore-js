@@ -19,8 +19,14 @@ This file defines repository-specific instructions for coding agents working in 
 - Preserve existing coding style and conventions in touched files.
 - Prefer fixing root causes over adding temporary workarounds.
 - Avoid adding new dependencies unless clearly necessary.
-- Use typescript for new files
-- When you convert existing code to typescript, remove propTypes
+
+## Refactor rules
+- Javascript files should be converted to typescript
+- Remove prop-types on components and favor typescript interface
+
+## Style rules
+- Use Typescript
+- Prefer function functionName() {} over const functionName = () => {}
 
 ## Validation Checklist
 2. Run prettier

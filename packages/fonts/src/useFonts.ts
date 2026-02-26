@@ -1,15 +1,23 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import WebFont from 'webfontloader';
 
-const useFonts = (fonts) => {
+type FontsProviderConfig = {
+    families?: string[];
+    id?: string | null;
+    [key: string]: unknown;
+};
+
+type FontsConfig = Record<string, FontsProviderConfig>;
+
+function useFonts(fonts: FontsConfig): { loaded: boolean } {
     const [loaded, setLoaded] = useState(false);
 
     const families = Object.keys(fonts)
-        .reduce((allFamilies, type) => {
+        .reduce((allFamilies: (string | null)[], type) => {
             const { families: typeFamilies = [], id = null } = fonts[type];
             return [...allFamilies, ...typeFamilies, id];
         }, [])
-        .filter((it) => it !== null)
+        .filter((it): it is string => it !== null)
         .sort()
         .join(',');
 
@@ -32,6 +40,6 @@ const useFonts = (fonts) => {
     return {
         loaded,
     };
-};
+}
 
 export default useFonts;

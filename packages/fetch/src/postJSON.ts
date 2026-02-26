@@ -1,7 +1,11 @@
 import getResponseAndDataObject from './getResponseAndDataObject';
 import { throwResponseError, throwValidationError } from './throwErrors';
 
-const postJSON = (url, data, opts) => {
+function postJSON<TData = unknown, TError = unknown>(
+    url: string,
+    data: unknown,
+    opts: RequestInit = {},
+): Promise<TData> {
     const { headers, ...options } = opts || {};
     return fetch(url, {
         method: 'POST',
@@ -12,9 +16,10 @@ const postJSON = (url, data, opts) => {
         },
         body: JSON.stringify(data),
         ...(options || null),
-    }).then(getResponseAndDataObject)
-        .then(throwResponseError)
-        .catch(throwValidationError);
-};
+    })
+        .then(getResponseAndDataObject<TData>)
+        .then(throwResponseError<TData, TError>)
+        .catch(throwValidationError<TError>);
+}
 
 export default postJSON;

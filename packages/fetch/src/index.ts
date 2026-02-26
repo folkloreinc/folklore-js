@@ -1,11 +1,11 @@
 import ResponseError from './ResponseError';
 import ValidationError from './ValidationError';
+import { getCSRFHeaders, getCsrfToken, getXSRFToken } from './csrf';
 import getJSON from './getJSON';
-import postJSON from './postJSON';
-import uploadFile from './uploadFile';
 import getResponseAndDataObject from './getResponseAndDataObject';
+import postJSON from './postJSON';
 import { throwResponseError, throwValidationError } from './throwErrors';
-import { getXSRFToken, getCsrfToken, getCSRFHeaders } from './csrf';
+import uploadFile from './uploadFile';
 
 export {
     ResponseError,
