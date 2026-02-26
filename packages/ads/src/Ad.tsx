@@ -1,6 +1,6 @@
 /* eslint-disable react/require-default-props */
 import classNames from 'classnames';
-import React, { Ref, RefCallback, useCallback, useId, useMemo, useRef, useState } from 'react';
+import { Ref, useCallback, useId, useMemo, useRef, useState } from 'react';
 
 import { getMinimumAdSize, getSizeFromSizeMapping, normalizeAdSizes } from './utils';
 

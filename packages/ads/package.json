@@ -27,18 +27,21 @@
             "email": "nrb@folklore.email"
         }
     ],
-    "main": "dist/cjs.js",
-    "module": "dist/es.js",
-    "types": "types/index.d.ts",
+    "type": "module",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+        ".": {
+            "default": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        }
+    },
     "files": [
-        "dist",
-        "types"
+        "dist"
     ],
     "scripts": {
-        "clean": "rm -rf dist && rm -rf types",
-        "build:types": "tsc --p tsconfig.json",
-        "build": "npm run build:types && rollup --bundleConfigAsCjs --config ../../rollup.config.js",
-        "prepublishOnly": "npm run clean && npm run build"
+        "build": "../../scripts/prepare-package.sh --types",
+        "prepublishOnly": "npm run build"
     },
     "devDependencies": {
         "prop-types": "^15.7.2",

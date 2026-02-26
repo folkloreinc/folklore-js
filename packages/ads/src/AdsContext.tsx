@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import debounce from 'lodash/debounce';
-import PropTypes from 'prop-types';
-import React, { useState, useContext, useEffect, useMemo, useRef } from 'react';
+import { useState, useContext, useEffect, useMemo, useRef, ElementType, createContext, ReactNode } from 'react';
 
 import { getSizeFromSizeMapping, getSizeMappingFromSlot } from './utils';
 
@@ -17,17 +16,17 @@ interface AdsContextType {
     slots?: Slots;
     slotsPath?: Record<string, string>;
     trackingDisabled?: boolean;
-    richAdComponents?: Record<string, React.ElementType>;
+    richAdComponents?: Record<string, ElementType>;
 }
 
-const AdsContext = React.createContext<AdsContextType>({
+const AdsContext = createContext<AdsContextType>({
     ready: false,
 });
 
 export const useAdsContext = () => useContext(AdsContext);
 
 interface AdsProviderProps {
-    children: React.ReactNode;
+    children: ReactNode;
     defaultSlotPath?: string | null;
     slotsPath?: Record<string, string> | null;
     disableSingleRequest?: boolean;
@@ -42,7 +41,7 @@ interface AdsProviderProps {
     viewport?: string | null;
     viewports?: Viewports;
     slots?: SlotsDefinition;
-    richAdComponents?: Record<string, React.ElementType> | null;
+    richAdComponents?: Record<string, ElementType> | null;
     disabled?: boolean;
     disableTracking?: boolean;
 }
