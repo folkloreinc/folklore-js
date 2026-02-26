@@ -1,6 +1,6 @@
 import { cancelable } from 'cancelable-promise';
 import isNumber from 'lodash/isNumber';
-import { useEffect, useState, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 export default function useItems(
     loader,

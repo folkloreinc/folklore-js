@@ -1,15 +1,26 @@
-import { useEffect, useRef } from 'react';
+import { RefObject, useEffect, useRef } from 'react';
 
 import { useResizeObserver } from './useObserver';
 import { eventsManager as windowEventsManager } from './useWindowEvent';
 import useWindowSize from './useWindowSize';
 
+type UseScrollTriggerOptions = {
+    disabled?: boolean;
+    triggers?: number[];
+    useElementScroll?: boolean;
+    onTrigger?: (step: number) => void;
+};
+
+const defaultTriggers = [0.25, 0.5, 0.75, 1];
+
 function useScrollTrigger({
     disabled = false,
-    triggers = [0.1, 0.25, 0.5, 0.75, 0.9, 1.0],
+    triggers = defaultTriggers,
     useElementScroll = false,
     onTrigger = null,
-} = {}) {
+}: UseScrollTriggerOptions = {}): {
+    ref: RefObject<HTMLElement>;
+} {
     const triggersCompletedRef = useRef([]);
     const { height } = useWindowSize();
     const {

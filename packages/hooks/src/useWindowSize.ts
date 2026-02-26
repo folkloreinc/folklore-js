@@ -1,15 +1,29 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import useWindowEvent from './useWindowEvent';
 
-export const getWindowSize = () => ({
-    width: typeof window !== 'undefined' ? window.innerWidth || 0 : 0,
-    height: typeof window !== 'undefined' ? window.innerHeight || 0 : 0,
-});
+type WindowSize = {
+    width: number;
+    height: number;
+};
+
+type UseWindowSizeOptions = {
+    onChange?: (size: WindowSize) => void;
+    onMount?: boolean;
+    memo?: boolean;
+};
+
+export function getWindowSize(): WindowSize {
+    return {
+        width: typeof window !== 'undefined' ? window.innerWidth || 0 : 0,
+        height: typeof window !== 'undefined' ? window.innerHeight || 0 : 0,
+    };
+}
 
 let currentSize = null;
 
-export default function useWindowSize({ onChange = null, onMount = false, memo = false } = {}) {
+export default function useWindowSize(opts: UseWindowSizeOptions = null): WindowSize {
+    const { onChange = null, onMount = false, memo = false } = opts || {};
     const [size, setSize] = useState(() =>
         onMount
             ? getWindowSize()

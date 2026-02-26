@@ -1,11 +1,31 @@
 import { useEffect } from 'react';
 
-import useDailymotionPlayer from './useDailymotionPlayer';
-import useNativeVideoPlayer from './useNativeVideoPlayer';
-import useVimeoPlayer from './useVimeoPlayer';
-import useYouTubePlayer from './useYouTubePlayer';
+import useDailymotionPlayer, { UseDailymotionPlayerOptions } from './useDailymotionPlayer';
+import useNativeVideoPlayer, { UseNativeVideoPlayerOptions } from './useNativeVideoPlayer';
+import useVimeoPlayer, { UseVimeoPlayerOptions } from './useVimeoPlayer';
+import useYouTubePlayer, { UseYouTubePlayerOptions } from './useYouTubePlayer';
+import { VideoPlayer, VideoPlayerMetadata } from './videoPlayer';
 
-export default function useVideoPlayer(params) {
+type UseVideoPlayerOptions = (
+    | UseNativeVideoPlayerOptions
+    | UseVimeoPlayerOptions
+    | UseYouTubePlayerOptions
+    | UseDailymotionPlayerOptions
+) & {
+    service?: 'dailymotion' | 'youtube' | 'vimeo' | 'native' | null;
+    videoId?: string | null;
+    url?: string | null;
+    onLoaded?: (() => void) | null;
+    onPlay?: (() => void) | null;
+    onPause?: (() => void) | null;
+    onEnd?: (() => void) | null;
+    onMetadataChange?: ((metadata: VideoPlayerMetadata) => void) | null;
+    onBufferStart?: (() => void) | null;
+    onBufferEnded?: (() => void) | null;
+    [key: string]: unknown;
+};
+
+export default function useVideoPlayer(opts: UseVideoPlayerOptions = {}): VideoPlayer | null {
     const {
         service = null,
         videoId = null,
@@ -17,16 +37,16 @@ export default function useVideoPlayer(params) {
         onMetadataChange: customOnMetadataChange = null,
         onBufferStart: customOnBufferStart = null,
         onBufferEnded: customOnBufferEnded = null,
-    } = params || {};
+    } = opts || {};
     const dailymotionPlayer = useDailymotionPlayer(
         service === 'dailymotion' ? videoId || url : null,
-        params,
+        opts,
     );
-    const youtubePlayer = useYouTubePlayer(service === 'youtube' ? videoId || url : null, params);
-    const vimeoPlayer = useVimeoPlayer(service === 'vimeo' ? videoId || url : null, params);
-    const nativePlayer = useNativeVideoPlayer(url, params);
+    const youtubePlayer = useYouTubePlayer(service === 'youtube' ? videoId || url : null, opts);
+    const vimeoPlayer = useVimeoPlayer(service === 'vimeo' ? videoId || url : null, opts);
+    const nativePlayer = useNativeVideoPlayer(url, opts);
 
-    let player = null;
+    let player: VideoPlayer | null = null;
     if (service === 'dailymotion') {
         player = dailymotionPlayer;
     } else if (service === 'youtube') {
@@ -58,13 +78,13 @@ export default function useVideoPlayer(params) {
         if (playing && customOnPlay !== null) {
             customOnPlay();
         }
-    }, [playing/* , customOnPlay */]);
+    }, [playing /* , customOnPlay */]);
 
     useEffect(() => {
         if (paused && customOnPause !== null) {
             customOnPause();
         }
-    }, [paused/* , customOnPause */]);
+    }, [paused /* , customOnPause */]);
 
     useEffect(() => {
         if (buffering && customOnBufferStart !== null) {
@@ -72,13 +92,13 @@ export default function useVideoPlayer(params) {
         } else if (!buffering && customOnBufferEnded !== null) {
             customOnBufferEnded();
         }
-    }, [buffering/* , customOnBufferStart, customOnBufferEnded */]);
+    }, [buffering /* , customOnBufferStart, customOnBufferEnded */]);
 
     useEffect(() => {
         if (ended && customOnEnd !== null) {
             customOnEnd();
         }
-    }, [ended/* , customOnEnd */]);
+    }, [ended /* , customOnEnd */]);
 
     useEffect(() => {
         const hasMetadata = metaWidth !== null || metaHeight !== null || metaDuration !== null;

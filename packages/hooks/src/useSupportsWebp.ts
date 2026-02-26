@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export function checkWebpSupport() {
+export function checkWebpSupport(): Promise<boolean> {
     return new Promise((resolve) => {
         const img = document.createElement('img');
         img.onload = () => {
@@ -14,8 +14,8 @@ export function checkWebpSupport() {
     });
 }
 
-export default function useSupportsWebp(defaultValue = true) {
-    const [supportsWebp, setSupportsWebp] = useState(defaultValue);
+export default function useSupportsWebp(defaultValue = true): boolean {
+    const [supportsWebp, setSupportsWebp] = useState<boolean>(defaultValue);
 
     useEffect(() => {
         let canceled = false;

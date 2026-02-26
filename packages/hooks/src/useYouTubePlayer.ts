@@ -1,14 +1,28 @@
 import { loadYouTube } from '@folklore/services';
 import createDebug from 'debug';
-import { useMemo, useRef, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import usePlayerCurrentTime from './usePlayerCurrentTime';
+import { VideoPlayer } from './videoPlayer';
 
 export const NO_PLAYER_ERROR = new Error('No player');
 
-export default function useYouTubePlayer(
-    id,
-    {
+export type UseYouTubePlayerOptions = {
+    width?: number;
+    height?: number;
+    duration?: number;
+    autoplay?: boolean;
+    controls?: boolean;
+    timeUpdateInterval?: number;
+    muted?: boolean;
+    initialMuted?: boolean;
+    onVolumeChange?: (volume: number) => void;
+    onTimeUpdate?: (time: number) => void;
+    getVideoId?: (url: string) => string | null;
+};
+
+export default function useYouTubePlayer(idOrUrl: string | null, opts: UseYouTubePlayerOptions = null): VideoPlayer {
+    const {
         width = 0,
         height = 0,
         duration = 0,
@@ -28,8 +42,7 @@ export default function useYouTubePlayer(
             const match = url.match(regExp);
             return match !== null ? match[7] : null;
         },
-    } = {},
-) {
+    } = opts || {};
     const debug = useMemo(() => createDebug('folklore:video:youtube'), []);
 
     const [apiLoaded, setApiLoaded] = useState(
@@ -48,7 +61,7 @@ export default function useYouTubePlayer(
     }
     const elementHasChanged = elementRef.current !== playerElementRef.current;
 
-    const videoId = useMemo(() => getVideoId(id), [id]);
+    const videoId = useMemo(() => getVideoId(idOrUrl), [idOrUrl]);
 
     const [ready, setReady] = useState(false);
     const [muted, setMuted] = useState(initialMuted || providedMuted);

@@ -1,5 +1,5 @@
 import raf from 'raf';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function useCounter(
     desiredValue,

@@ -1,12 +1,12 @@
-import { useEffect, useState, useRef, useMemo } from 'react';
+import { RefObject, useEffect, useMemo, useRef, useState } from 'react';
 
 const observersCache = new Map();
 
-function getOptionsKey({ root = null, rootMargin, threshold = null }) {
+function getOptionsKey({ root = null, rootMargin, threshold = null }: Record<string, unknown>) {
     return `root_${root}_rootMargin_${rootMargin || null}_threshold_${threshold}`;
 }
 
-function createObserver(Observer, options = {}) {
+function createObserver<TOptions>(Observer, options: TOptions = null) {
     let subscribers = [];
 
     const addSubscriber = (element, callback) => {
@@ -56,7 +56,7 @@ function createObserver(Observer, options = {}) {
         });
     };
 
-    const observer = new Observer(onUpdate, options);
+    const observer = new Observer(onUpdate, options || {});
 
     const unsubscribe = (element, callback = null) => {
         subscribers = removeSubscriber(element, callback);
@@ -108,18 +108,30 @@ export function getObserver(Observer = null, options = {}) {
     return observers[observerKey];
 }
 
-export function useObserver(Observer, opts = {}, initialEntry = {}) {
+interface UseObserverOptions {
+    disabled?: boolean;
+    [key: string]: unknown;
+}
+
+export function useObserver<TOptions = UseObserverOptions, TEntry = Record<string, unknown>>(
+    Observer,
+    opts: TOptions | null,
+    initialEntry: TEntry | null,
+): {
+    ref: RefObject<HTMLElement>;
+    entry: TEntry;
+} {
     const {
         root = null,
         rootMargin = null,
         threshold: defaultThreshold = null,
         disabled = false,
-    } = opts;
-    const [entry, setEntry] = useState(initialEntry);
+    } = opts || {};
+    const [entry, setEntry] = useState<TEntry>(initialEntry);
     const threshold = useMemo(() => defaultThreshold, [defaultThreshold]);
     const nodeRef = useRef(null);
-    const currentElement = useRef(null);
-    const elementChanged = nodeRef.current !== currentElement.current;
+    const currentElementRef = useRef(null);
+    const elementChanged = nodeRef.current !== currentElementRef.current;
     useEffect(() => {
         if (disabled) {
             return () => {};
@@ -128,7 +140,7 @@ export function useObserver(Observer, opts = {}, initialEntry = {}) {
         const callback = (newEntry) => setEntry(newEntry);
         let unsubscribe = null;
         if (nodeElement !== null) {
-            const newOpts = {};
+            const newOpts: UseObserverOptions = {};
             if (root !== null) {
                 newOpts.root = root;
             }
@@ -142,7 +154,7 @@ export function useObserver(Observer, opts = {}, initialEntry = {}) {
             unsubscribe = localUnsubscribe;
             subscribe(nodeElement, callback);
         }
-        currentElement.current = nodeElement;
+        currentElementRef.current = nodeElement;
         return () => {
             if (unsubscribe !== null) {
                 unsubscribe(nodeElement, callback);
@@ -159,6 +171,9 @@ export function useObserver(Observer, opts = {}, initialEntry = {}) {
 /**
  * Intersection Observer
  */
+
+type UseInterserctionObserverOptions = IntersectionObserverInit & UseObserverOptions;
+
 const defaultThreshold = [0, 1.0];
 const intersectionObserverInitialEntry = {
     target: null,
@@ -170,19 +185,16 @@ const intersectionObserverInitialEntry = {
     boundingClientRect: null,
     rootBounds: null,
 };
-export function useIntersectionObserver({
-    root = null,
-    rootMargin = '0px',
-    threshold = defaultThreshold,
-    disabled = false,
-} = {}) {
-    return useObserver(
+
+export function useIntersectionObserver(opts: UseInterserctionObserverOptions = {}) {
+    return useObserver<UseInterserctionObserverOptions, IntersectionObserverEntry>(
         typeof IntersectionObserver !== 'undefined' ? IntersectionObserver : null,
         {
-            root,
-            rootMargin,
-            threshold,
-            disabled,
+            root: null,
+            rootMargin: '0px',
+            threshold: defaultThreshold,
+            disabled: false,
+            ...opts,
         },
         intersectionObserverInitialEntry,
     );
@@ -191,16 +203,19 @@ export function useIntersectionObserver({
 /**
  * Resize Observer
  */
+type UseResizeObserverOptions = ResizeObserverOptions & UseObserverOptions;
+
 const resizeObserverInitialEntry = {
     target: null,
     contentRect: null,
     contentBoxSize: null,
     borderBoxSize: null,
+    devicePixelContentBoxSize: null,
 };
-export function useResizeObserver({ disabled = false } = {}) {
-    return useObserver(
+export function useResizeObserver(opts: UseResizeObserverOptions = {}) {
+    return useObserver<UseResizeObserverOptions, ResizeObserverEntry>(
         typeof ResizeObserver !== 'undefined' ? ResizeObserver : null,
-        { disabled },
+        { disabled: false, ...opts },
         resizeObserverInitialEntry,
     );
 }

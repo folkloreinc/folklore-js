@@ -1,15 +1,29 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import useWindowEvent from './useWindowEvent';
 
-const getWindowScroll = () => ({
-    x: typeof window !== 'undefined' ? window.scrollX || 0 : 0,
-    y: typeof window !== 'undefined' ? window.scrollY || 0 : 0,
-});
+type WindowScroll = {
+    x: number;
+    y: number;
+};
+
+type UseWindowScrollOptions = {
+    onChange?: (scroll: WindowScroll) => void;
+    onMount?: boolean;
+    memo?: boolean;
+};
+
+function getWindowScroll(): WindowScroll {
+    return {
+        x: typeof window !== 'undefined' ? window.scrollX || 0 : 0,
+        y: typeof window !== 'undefined' ? window.scrollY || 0 : 0,
+    };
+}
 
 let currentScroll = null;
 
-export default function useWindowScroll({ onChange = null, onMount = false, memo = false } = {}) {
+export default function useWindowScroll(opts: UseWindowScrollOptions = null): WindowScroll {
+    const { onChange = null, onMount = false, memo = false } = opts || {};
     const [scroll, setScroll] = useState(() => (onMount ? getWindowScroll() : { x: 0, y: 0 }));
     const scrollRef = useRef(scroll);
     if (currentScroll === null && memo) {

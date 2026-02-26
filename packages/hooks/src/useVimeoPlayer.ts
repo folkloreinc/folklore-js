@@ -1,14 +1,32 @@
 import { loadVimeo } from '@folklore/services';
 import createDebug from 'debug';
-import { useMemo, useRef, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import usePlayerCurrentTime from './usePlayerCurrentTime';
+import { VideoPlayer } from './videoPlayer';
 
 export const NO_PLAYER_ERROR = new Error('No player');
 
+export type UseVimeoPlayerOptions = {
+    width?: number;
+    height?: number;
+    duration?: number;
+    autoplay?: boolean;
+    autopause?: boolean;
+    byline?: boolean;
+    controls?: boolean;
+    muted?: boolean;
+    initialMuted?: boolean;
+    timeUpdateInterval?: number;
+    onTimeUpdate?: (time: number) => void;
+    getVideoId?: (url: string) => string | null;
+};
+
 export default function useVimeoPlayer(
-    id,
-    {
+    idOrUrl: string | null,
+    opts: UseVimeoPlayerOptions = {},
+): VideoPlayer {
+    const {
         width = 0,
         height = 0,
         duration = 0,
@@ -27,8 +45,7 @@ export default function useVimeoPlayer(
             const match = url.match(/\/[0-9]+/);
             return match !== null ? match[1] : null;
         },
-    } = {},
-) {
+    } = opts || {};
     const debug = useMemo(() => createDebug('folklore:video:vimeo'), []);
 
     const [apiLoaded, setApiLoaded] = useState(false);
@@ -39,7 +56,7 @@ export default function useVimeoPlayer(
     const playerElementRef = useRef(elementRef.current);
     const elementHasChanged = elementRef.current !== playerElementRef.current;
 
-    const videoId = useMemo(() => getVideoId(id), [id]);
+    const videoId = useMemo(() => getVideoId(idOrUrl), [idOrUrl]);
     const [ready, setReady] = useState(false);
     const [loaded, setLoaded] = useState(false);
     const [volume, setVolumeState] = useState(initialMuted || providedMuted ? 0 : 1);
@@ -59,7 +76,7 @@ export default function useVimeoPlayer(
     // Load SDK
     useEffect(() => {
         let canceled = false;
-        if (!apiLoaded && id !== null) {
+        if (!apiLoaded && videoId !== null) {
             debug('Load API');
             loadVimeo().then((api) => {
                 if (!canceled) {
@@ -72,7 +89,7 @@ export default function useVimeoPlayer(
         return () => {
             canceled = true;
         };
-    }, [id]);
+    }, [videoId]);
 
     const play = useCallback(() => {
         const { current: player } = playerRef;

@@ -13,7 +13,13 @@ const config = tseslint.config(
         files: ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'],
     },
     {
-        ignores: ['**/*.config.js', 'node_modules', '*/*/dist/**', '!.storybook'],
+        ignores: [
+            '**/*.config.js',
+            'node_modules',
+            '*/*/dist/**',
+            '!.storybook',
+            '*/*/src/generators/*/templates/**',
+        ],
     },
     {
         settings: {

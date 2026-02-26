@@ -1,17 +1,28 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import useWindowSize from './useWindowSize';
 
-export default function useVisualViewport() {
+interface VisualViewportData {
+    width: number;
+    height: number;
+    offsetTop?: number;
+    offsetLeft?: number;
+    pageLeft?: number;
+    pageTop?: number;
+}
+
+export default function useVisualViewport(): VisualViewportData & {
+    updateViewport: (viewPort?: VisualViewport) => void;
+} {
     const { width: windowWidth, height: windowHeight } = useWindowSize();
 
-    const [{ width: viewportWidth, height: viewportHeight, ...viewport }, setViewport] = useState({
+    const [viewport, setViewport] = useState<VisualViewportData>({
         width: windowWidth,
         height: windowHeight,
     });
 
     const updateViewport = useCallback(
-        (viewPort = null) => {
+        (newViewport = null) => {
             const {
                 width: newWidth = 0,
                 height: newHeight = 0,
@@ -19,7 +30,7 @@ export default function useVisualViewport() {
                 offsetLeft: newOffsetLeft = 0,
                 pageLeft: newPageLeft = 0,
                 pageTop: newPageTop = 0,
-            } = viewPort || window.visualViewport || {};
+            } = newViewport || window.visualViewport || {};
             setViewport({
                 width: newWidth,
                 height: newHeight,
@@ -50,10 +61,12 @@ export default function useVisualViewport() {
         };
     }, [updateViewport]);
 
+    const { width: viewportWidth, height: viewportHeight, ...otherViewport } = viewport;
+
     return {
         width: viewportWidth || windowWidth,
         height: viewportHeight || windowHeight,
-        ...viewport,
+        ...otherViewport,
         updateViewport,
     };
 }

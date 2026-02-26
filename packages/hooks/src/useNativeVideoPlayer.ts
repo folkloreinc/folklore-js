@@ -1,15 +1,28 @@
 import createDebug from 'debug';
-import { useRef, useCallback, useEffect, useState, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import usePlayerCurrentTime from './usePlayerCurrentTime';
+import { VideoPlayer } from './videoPlayer';
 
 export const NO_PLAYER_ERROR = new Error('No player');
 
 export const isVideoId = (url) => url !== null && url.match(/^[0-9]+$/);
 
+export type UseNativeVideoPlayerOptions = {
+    width?: number;
+    height?: number;
+    duration?: number;
+    timeUpdateInterval?: number;
+    muted?: boolean;
+    initialMuted?: boolean;
+    onTimeUpdate?: (time: number) => void;
+};
+
 export default function useNativeVideoPlayer(
     url,
-    {
+    opts: UseNativeVideoPlayerOptions = null,
+): VideoPlayer<HTMLVideoElement> {
+    const {
         width = 0,
         height = 0,
         duration = 0,
@@ -17,8 +30,7 @@ export default function useNativeVideoPlayer(
         initialMuted = false,
         timeUpdateInterval = 1000,
         onTimeUpdate: customOnTimeUpdate = null,
-    } = {},
-) {
+    } = opts || {};
     const debug = useMemo(() => createDebug('folklore:video:native'), []);
 
     const elementRef = useRef(null);

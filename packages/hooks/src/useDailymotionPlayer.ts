@@ -1,10 +1,27 @@
 import { loadDailymotion } from '@folklore/services';
 import createDebug from 'debug';
-import { useMemo, useState, useRef, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
+import { VideoPlayer } from './videoPlayer';
 
 export const NO_PLAYER_ERROR = new Error('No player');
 
-export default function useDailymotionPlayer(id = null, params = {}) {
+export type UseDailymotionPlayerOptions = {
+    width?: number;
+    height?: number;
+    duration?: number;
+    muted?: boolean;
+    initialMuted?: boolean;
+    start?: number;
+    embedPlayerId?: string | null;
+    onTimeUpdate?: (time: number) => void;
+    getVideoId?: (url: string) => string | null;
+};
+
+export default function useDailymotionPlayer(
+    idOrUrl: string | null,
+    opts: UseDailymotionPlayerOptions = {},
+): VideoPlayer {
     const {
         width = 0,
         height = 0,
@@ -28,7 +45,7 @@ export default function useDailymotionPlayer(id = null, params = {}) {
             }
             return null;
         },
-    } = params;
+    } = opts;
 
     const debug = useMemo(() => createDebug('folklore:video:dailymotion'), []);
 
@@ -43,7 +60,7 @@ export default function useDailymotionPlayer(id = null, params = {}) {
             : null,
     );
     const ready = apiLoaded && playerReady;
-    const videoId = useMemo(() => getVideoId(id), [id]);
+    const videoId = useMemo(() => getVideoId(idOrUrl), [idOrUrl]);
 
     const elementRef = useRef(null);
     const playerRef = useRef(null);
@@ -129,14 +146,7 @@ export default function useDailymotionPlayer(id = null, params = {}) {
             debug('Create player [ID: %s]', videoId);
         }
         playerElementRef.current = element;
-    }, [
-        apiLoaded,
-        elementHasChanged,
-        videoId,
-        width,
-        height,
-        start,
-    ]);
+    }, [apiLoaded, elementHasChanged, videoId, width, height, start]);
 
     useEffect(() => {
         const { current: player = null } = playerRef;
