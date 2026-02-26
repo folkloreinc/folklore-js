@@ -1,7 +1,13 @@
 import isString from 'lodash/isString';
 import { pascalCase } from 'pascal-case';
 
-export default function getComponentFromName(components, name, defaultComponentName = null) {
+type ComponentsMap = Record<string, unknown>;
+
+export default function getComponentFromName(
+    components: ComponentsMap,
+    name: string | null,
+    defaultComponentName: string | unknown = null,
+): unknown {
     const defaultComponent =
         (isString(defaultComponentName)
             ? components[pascalCase(defaultComponentName)]
