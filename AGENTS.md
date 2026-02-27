@@ -27,6 +27,7 @@ This file defines repository-specific instructions for coding agents working in 
 ## Style rules
 - Use Typescript
 - Prefer function functionName() {} over const functionName = () => {}
+- Split tests in separate files according to source file being tested
 
 ## Validation Checklist
 2. Run prettier
