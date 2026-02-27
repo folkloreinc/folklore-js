@@ -3,3 +3,5 @@ export { default as SocketContext } from './SocketContext';
 export { default as SocketContainer } from './SocketContainer';
 export { default as withSocket } from './withSocket';
 export { default as useSocket } from './useSocket';
+export * from './types';
+export * from './debug';

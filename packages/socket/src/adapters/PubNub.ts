@@ -1,9 +1,34 @@
 import { EventEmitter } from '@folklore/events';
-import createDebug from 'debug';
+import type { Listener, default as PubNub, PubNubConfiguration } from 'pubnub';
 
-const debug = createDebug('folklore:socket:pubnub');
+import { debug } from '../debug';
+import { SocketAdapter, SocketAdapterEvents } from '../types';
 
-class PubNubSocket extends EventEmitter {
+interface PubNubConstructor {
+    new (options: PubNubConfiguration): PubNub;
+}
+
+class PubNubSocket extends EventEmitter<SocketAdapterEvents> implements SocketAdapter {
+    options: {
+        uuid: string | null;
+        publishKey: string | null;
+        subscribeKey: string | null;
+        secretKey: string | null;
+        userId: string | null;
+        withPresence: boolean;
+        subscriptionOptions?: Record<string, unknown> | null;
+        [key: string]: unknown;
+    };
+    destroyed: boolean;
+    ready: boolean;
+    shouldStart: boolean;
+    started: boolean;
+    starting: boolean;
+    PubNub: PubNubConstructor | null;
+    pubnub: PubNub | null;
+    pubnubListener: Listener | null;
+    channels: string[];
+
     constructor(opts) {
         super();
         this.options = {
@@ -59,7 +84,7 @@ class PubNubSocket extends EventEmitter {
     }
 
     updateChannels(channels) {
-        debug(`Updating channels: ${channels.join(', ')}`);
+        debug(`[PubNub] Updating channels: ${channels.join(', ')}`);
 
         const { shouldStart, started, starting } = this;
         if (started || starting) {
@@ -78,7 +103,7 @@ class PubNubSocket extends EventEmitter {
         if (this.pubnub !== null) {
             return;
         }
-        debug('Init');
+        debug('[PubNub] Init');
 
         this.destroyed = false;
         const loadPubnub = this.PubNub !== null ? Promise.resolve() : this.loadPubNub();
@@ -86,7 +111,7 @@ class PubNubSocket extends EventEmitter {
     }
 
     loadPubNub() {
-        debug('Load PubNub');
+        debug('[PubNub] Load library');
         return import('pubnub').then(({ default: PubNub }) => {
             this.PubNub = PubNub;
         });
@@ -97,8 +122,9 @@ class PubNubSocket extends EventEmitter {
             return;
         }
 
+        debug('[PubNub] Create client');
         const { PubNub } = this;
-        const pubnubOptions = {
+        const pubnubOptions: PubNubConfiguration = {
             publishKey: this.options.publishKey,
             subscribeKey: this.options.subscribeKey,
             userId: `web-user-${Math.floor(Math.random() * 1000)}`,
@@ -135,21 +161,21 @@ class PubNubSocket extends EventEmitter {
 
         this.ready = false;
 
-        debug('Destroyed.');
+        debug('[PubNub] Destroyed.');
     }
 
     start() {
         if (this.started) {
-            debug('Skipping start: Already started.');
+            debug('[PubNub] Skipping start: Already started.');
             return;
         }
         if (this.starting) {
-            debug('Skipping start: Already starting.');
+            debug('[PubNub] Skipping start: Already starting.');
             return;
         }
 
         if (this.channels.length === 0) {
-            debug('Skipping start: No channels.');
+            debug('[PubNub] Skipping start: No channels.');
             this.shouldStart = true;
             return;
         }
@@ -159,7 +185,7 @@ class PubNubSocket extends EventEmitter {
         this.starting = true;
         this.pubnub.subscribe({
             channels: this.channels,
-            subscriptionOptions,
+            ...(subscriptionOptions || {}),
             withPresence,
         });
 
@@ -170,7 +196,7 @@ class PubNubSocket extends EventEmitter {
         if (!this.started && !this.starting) {
             return;
         }
-        debug('Stopping...');
+        debug('[PubNub] Stopping...');
 
         this.shouldStart = false;
         this.started = false;
@@ -184,7 +210,7 @@ class PubNubSocket extends EventEmitter {
     }
 
     send(data) {
-        debug('Sending', data);
+        debug('[PubNub] Sending', data);
         return new Promise((resolve, reject) => {
             this.pubnub.publish(data, (status, response) => {
                 if (status.error) {

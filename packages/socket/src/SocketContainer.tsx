@@ -1,51 +1,38 @@
-import PropTypes from 'prop-types';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import isString from 'lodash/isString';
+import { JSX, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import Socket from './Socket';
 import SocketContext from './SocketContext';
 
-const propTypes = {
-    socket: PropTypes.instanceOf(Socket),
-    adapter: PropTypes.string,
-    host: PropTypes.string,
-    namespace: PropTypes.string,
-    uuid: PropTypes.string,
-    publishKey: PropTypes.string,
-    subscribeKey: PropTypes.string,
-    secretKey: PropTypes.string,
-    channels: PropTypes.arrayOf(PropTypes.string),
-    autoStart: PropTypes.bool,
-    children: PropTypes.node,
-};
-
-const defaultProps = {
-    socket: null,
-    adapter: 'pubnub',
-    host: null,
-    namespace: null,
-    uuid: null,
-    publishKey: null,
-    subscribeKey: null,
-    secretKey: null,
-    channels: [],
-    autoStart: false,
-    children: null,
+type SocketContainerProps = {
+    children?: ReactNode;
+    socket?: Socket | null;
+    autoStart?: boolean;
+    adapter?: string | null;
+    host?: string | null;
+    namespace?: string | null;
+    uuid?: string | null;
+    publishKey?: string | null;
+    subscribeKey?: string | null;
+    secretKey?: string | null;
+    channels?: string[];
+    [key: string]: unknown;
 };
 
 function SocketContainer({
-    children,
-    socket,
-    autoStart,
-    adapter,
-    host,
-    namespace,
-    uuid,
-    publishKey,
-    subscribeKey,
-    secretKey,
-    channels: initialChannels,
+    children = null,
+    socket = null,
+    autoStart = false,
+    adapter = 'pubnub',
+    host = null,
+    namespace = null,
+    uuid = null,
+    publishKey = null,
+    subscribeKey = null,
+    secretKey = null,
+    channels: initialChannels = [],
     ...props
-}) {
+}: SocketContainerProps): JSX.Element {
     const finalSocket = useMemo(
         () =>
             socket ||
@@ -62,11 +49,11 @@ function SocketContainer({
         [socket, host, adapter, namespace, uuid, publishKey, subscribeKey, secretKey],
     );
 
-    const [channels, setChannels] = useState([]);
-    const channelsCountRef = useRef({});
+    const [channels, setChannels] = useState<string[]>([]);
+    const channelsCountRef = useRef<Record<string, number>>({});
 
     const updateChannels = useCallback(
-        (newChannels) => {
+        (newChannels: string[]) => {
             finalSocket.setChannels(newChannels);
             setChannels(newChannels);
         },
@@ -74,7 +61,7 @@ function SocketContainer({
     );
 
     const addToChannelsCount = useCallback(
-        (newChannels) => {
+        (newChannels: string[]) => {
             channelsCountRef.current = newChannels.reduce(
                 (map, channel) => ({
                     ...map,
@@ -88,7 +75,7 @@ function SocketContainer({
     );
 
     const removeToChannelsCount = useCallback(
-        (newChannels) => {
+        (newChannels: string[]) => {
             channelsCountRef.current = newChannels.reduce((map, channel) => {
                 const { [channel]: currentCount = 0, ...otherCount } = map;
                 const newCount = (currentCount || 0) - 1;
@@ -105,11 +92,15 @@ function SocketContainer({
     );
 
     const subscribe = useCallback(
-        (channelsToAdd) => addToChannelsCount(channelsToAdd),
+        (channelsToAdd: string[] | string) =>
+            addToChannelsCount(isString(channelsToAdd) ? [channelsToAdd] : channelsToAdd),
         [addToChannelsCount],
     );
     const unsubscribe = useCallback(
-        (channelsToRemove) => removeToChannelsCount(channelsToRemove),
+        (channelsToRemove: string[] | string) =>
+            removeToChannelsCount(
+                isString(channelsToRemove) ? [channelsToRemove] : channelsToRemove,
+            ),
         [removeToChannelsCount],
     );
 
@@ -143,8 +134,5 @@ function SocketContainer({
 
     return <SocketContext.Provider value={value}>{children}</SocketContext.Provider>;
 }
-
-SocketContainer.propTypes = propTypes;
-SocketContainer.defaultProps = defaultProps;
 
 export default SocketContainer;

@@ -1,9 +1,29 @@
 import { EventEmitter } from '@folklore/events';
-import createDebug from 'debug';
+import type { Channel, default as Pusher } from 'pusher-js';
 
-const debug = createDebug('folklore:socket:pusher');
+import { debug } from '../debug';
+import { SocketAdapter, SocketAdapterEvents } from '../types';
 
-class PusherSocket extends EventEmitter {
+class PusherSocket extends EventEmitter<SocketAdapterEvents> implements SocketAdapter {
+    options: {
+        uuid: string | null;
+        publishKey: string | null;
+        subscribeKey: string | null;
+        secretKey: string | null;
+        appKey: string | null;
+        cluster: string | null;
+        [key: string]: unknown;
+    };
+    destroyed: boolean;
+    ready: boolean;
+    shouldStart: boolean;
+    started: boolean;
+    starting: boolean;
+    Pusher: typeof Pusher | null;
+    pusher: Pusher | null;
+    channels: string[];
+    clients: Record<string, Channel>;
+
     constructor(opts) {
         super();
         this.options = {
@@ -74,7 +94,7 @@ class PusherSocket extends EventEmitter {
         if (this.pusher !== null) {
             return;
         }
-        debug('Init');
+        debug('[Pusher] Init');
 
         this.destroyed = false;
         const loadPusher = this.Pusher !== null ? Promise.resolve() : this.loadPusher();
@@ -82,7 +102,7 @@ class PusherSocket extends EventEmitter {
     }
 
     loadPusher() {
-        debug('Load Pusher');
+        debug('[Pusher] Load Pusher');
         return import('pusher-js').then(({ default: Pusher }) => {
             this.Pusher = Pusher;
         });
@@ -93,7 +113,7 @@ class PusherSocket extends EventEmitter {
             return;
         }
 
-        debug('Create Pusher appKey: %s', this.options.appKey);
+        debug('[Pusher] Create Pusher appKey: %s', this.options.appKey);
 
         const { Pusher } = this;
 
@@ -112,27 +132,27 @@ class PusherSocket extends EventEmitter {
 
         this.ready = false;
 
-        debug('Destroyed.');
+        debug('[Pusher] Destroyed.');
     }
 
     start() {
         if (this.started) {
-            debug('Skipping start: Already started.');
+            debug('[Pusher] Skipping start: Already started.');
             return;
         }
         if (this.starting) {
-            debug('Skipping start: Already starting.');
+            debug('[Pusher] Skipping start: Already starting.');
             return;
         }
 
         if (this.pusher === null) {
-            debug('Socket.io not ready.');
+            debug('[Pusher] Socket.io not ready.');
             this.shouldStart = true;
             return;
         }
 
         if (this.channels.length === 0) {
-            debug('Skipping start: No channels.');
+            debug('[Pusher] Skipping start: No channels.');
             this.shouldStart = true;
             return;
         }
@@ -157,7 +177,7 @@ class PusherSocket extends EventEmitter {
         if (!this.started && !this.starting) {
             return;
         }
-        debug('Stopping...');
+        debug('[Pusher] Stopping...');
 
         this.shouldStart = false;
         this.started = false;
@@ -175,7 +195,7 @@ class PusherSocket extends EventEmitter {
 
     createClient(channelName) {
         const channel = this.pusher.subscribe(channelName);
-        channel.bind_global((event, data) => this.onMessage({ event, data }, channel));
+        channel.bind_global((event, data) => this.onMessage({ event, data, channel }));
         return channel;
     }
 
@@ -186,11 +206,11 @@ class PusherSocket extends EventEmitter {
     }
 
     send(data) {
-        debug('Sending', data);
+        debug('[Pusher] Sending', data);
         return new Promise((resolve) => {
             const { channel, event = null, data: eventData } = data;
-            this.pusher.trigger(channel, event || 'message', eventData);
-            resolve();
+            this.pusher.send_event(event || 'message', eventData, channel);
+            resolve(data);
         });
     }
 }

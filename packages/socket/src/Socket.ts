@@ -1,16 +1,43 @@
 import { EventEmitter } from '@folklore/events';
-import createDebug from 'debug';
 import invariant from 'invariant';
 import isFunction from 'lodash/isFunction';
 import isString from 'lodash/isString';
 
 import SocketAdapters from './adapters/index';
+import { debug } from './debug';
+import { SocketAdapter, SocketAdapterContructor } from './types';
 
 const normalize = (str) => str.replace(/[^a-z0-9]+/gi, '').toLowerCase();
 
-const debug = createDebug('folklore:socket');
+type SocketEvents = {
+    ready: void;
+    start: void;
+    started: void;
+    stop: void;
+    message: unknown;
+};
 
-class Socket extends EventEmitter {
+class Socket extends EventEmitter<SocketEvents> {
+    static adapters: Record<string, SocketAdapterContructor> = {};
+
+    options: {
+        adapter: string | SocketAdapterContructor | null;
+        host: string | null;
+        namespace: string | null;
+        uuid: string | null;
+        publishKey: string | null;
+        subscribeKey: string | null;
+        secretKey: string | null;
+        channels: string[];
+        [key: string]: unknown;
+    };
+    adapter: SocketAdapter | null;
+    channels: string[];
+    shouldStart: boolean;
+    started: boolean;
+    starting: boolean;
+    ready: boolean;
+
     static getAdapters() {
         return Socket.adapters;
     }
@@ -109,7 +136,7 @@ class Socket extends EventEmitter {
         this.emit('stop');
     }
 
-    onAdapterMessage(message) {
+    onAdapterMessage(message: unknown) {
         debug('Adapter message', message);
         this.emit('message', message);
     }

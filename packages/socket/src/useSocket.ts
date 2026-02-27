@@ -1,15 +1,24 @@
 import isString from 'lodash/isString';
 import { useContext, useEffect, useState } from 'react';
 
+import Socket from './Socket';
 import SocketContext from './SocketContext';
 
-const useSocket = (
-    channelNames = null,
-    { socket: customSocket = null, onMessage: customOnMessage = null, keepAlive = true } = {},
-) => {
+interface UseSocketOptions {
+    socket?: Socket;
+    onMessage?: (...args: unknown[]) => void;
+    keepAlive?: boolean;
+}
+
+function useSocket(channelNames: string | string[] | null = null, opts: UseSocketOptions = {}) {
+    const {
+        socket: customSocket = null,
+        onMessage: customOnMessage = null,
+        keepAlive = true,
+    } = opts || {};
     const { socket: contextSocket, subscribe, unsubscribe } = useContext(SocketContext);
     const socket = customSocket || contextSocket || null;
-    const [started, setStarted] = useState(socket !== null ? socket.isStarted() : false);
+    const [started, setStarted] = useState<boolean>(socket !== null ? socket.isStarted() : false);
 
     const channels = isString(channelNames) ? [channelNames] : channelNames;
     const channelsKey = (channels || []).sort().join(',');
@@ -65,6 +74,6 @@ const useSocket = (
         subscribe,
         unsubscribe,
     };
-};
+}
 
 export default useSocket;

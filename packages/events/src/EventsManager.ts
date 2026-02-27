@@ -1,14 +1,14 @@
 import { supportsPassiveEvents } from 'detect-passive-events';
 import { EventType } from 'mitt';
 
-import EventEmitter, { Events } from './EventEmitter';
+import EventEmitter from './EventEmitter';
 
 export const passiveEvents = ['scroll', 'touchstart', 'touchend', 'touchmove'];
 
 type EventCallback = (...args: unknown[]) => void;
 type ListenerCallback<Payload> = (payload: Payload) => void;
 type ListenersByEvent = Record<string, EventCallback[]>;
-type NativeListenersByEvent<TEvents extends Events> = Record<
+type NativeListenersByEvent<TEvents extends Record<EventType, unknown>> = Record<
     EventType,
     ListenerCallback<TEvents[EventType]>
 >;
@@ -22,7 +22,9 @@ type EventTargetLike = {
     removeEventListener: (event: string, listener: EventCallback) => void;
 };
 
-class EventsManager<TEvents extends Events = Events> extends EventEmitter<TEvents> {
+class EventsManager<
+    TEvents extends Record<EventType, unknown> = Record<EventType, unknown>,
+> extends EventEmitter<TEvents> {
     element: EventTargetLike;
     events: ListenersByEvent;
     listeners: NativeListenersByEvent<TEvents>;

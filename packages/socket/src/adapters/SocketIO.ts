@@ -1,10 +1,27 @@
 import { EventEmitter } from '@folklore/events';
-import createDebug from 'debug';
 import isArray from 'lodash/isArray';
+import type { Manager, Socket } from 'socket.io-client';
 
-const debug = createDebug('folklore:socket:socketio');
+import { debug } from '../debug';
+import { SocketAdapter, SocketAdapterEvents } from '../types';
 
-class SocketIOSocket extends EventEmitter {
+class SocketIOSocket extends EventEmitter<SocketAdapterEvents> implements SocketAdapter {
+    options: {
+        uuid: string | null;
+        host: string | null;
+        path: string | null;
+        query: Record<string, unknown> | null;
+        [key: string]: unknown;
+    };
+    Manager: typeof Manager | null;
+    io: Manager | null;
+    sockets: Record<string, Socket>;
+    channels: string[];
+    shouldStart: boolean;
+    started: boolean;
+    starting: boolean;
+    ready: boolean;
+
     constructor(opts) {
         super();
         this.options = {
@@ -38,7 +55,7 @@ class SocketIOSocket extends EventEmitter {
     }
 
     onConnect(channel) {
-        debug('Socket connected on %s', channel);
+        debug('[socket.io] Socket connected on %s', channel);
 
         if (!this.started) {
             this.started = true;
@@ -48,15 +65,15 @@ class SocketIOSocket extends EventEmitter {
     }
 
     onMessage(message, channel) {
-        debug('Message received on %s %o', channel, message);
+        debug('[socket.io] Message received on %s %o', channel, message);
 
-        this.emit('message', message, channel);
+        this.emit('message', message);
     }
 
     init() {
         import('socket.io-client')
-            .then(({ default: IO }) => {
-                this.Manager = IO.Manager;
+            .then(({ Manager }) => {
+                this.Manager = Manager;
             })
             .then(() => this.createManager())
             .then(() => this.onReady())
@@ -78,7 +95,7 @@ class SocketIOSocket extends EventEmitter {
     }
 
     updateChannels(channels) {
-        debug(`Updating channels: ${channels.join(', ')}`);
+        debug(`[socket.io] Updating channels: ${channels.join(', ')}`);
 
         const { shouldStart, started, starting } = this;
         if (started || starting) {
@@ -94,22 +111,22 @@ class SocketIOSocket extends EventEmitter {
 
     start() {
         if (this.started) {
-            debug('Skipping start: Already started.');
+            debug('[socket.io] Skipping start: Already started.');
             return;
         }
         if (this.starting) {
-            debug('Skipping start: Already starting.');
+            debug('[socket.io] Skipping start: Already starting.');
             return;
         }
 
         if (this.io === null) {
-            debug('Socket.io not ready.');
+            debug('[socket.io] not ready.');
             this.shouldStart = true;
             return;
         }
 
         if (this.channels.length === 0) {
-            debug('Skipping start: No channels.');
+            debug('[socket.io] Skipping start: No channels.');
             this.shouldStart = true;
             return;
         }
@@ -132,7 +149,7 @@ class SocketIOSocket extends EventEmitter {
         if (!this.started && !this.starting) {
             return;
         }
-        debug('Stopping...');
+        debug('[socket.io] Stopping...');
 
         this.shouldStart = false;
         this.started = false;
@@ -162,7 +179,6 @@ class SocketIOSocket extends EventEmitter {
         this.stop();
         this.sockets = {};
         if (this.io !== null) {
-            this.io.close();
             this.io = null;
         }
     }
