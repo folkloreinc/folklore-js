@@ -1,11 +1,12 @@
 import chalk from 'chalk';
+import { highlight } from 'cli-highlight';
+import fs from 'fs';
 import glob from 'glob';
-import _ from 'lodash';
 import path from 'path';
 
 import Generator from '../../lib/generator';
 
-module.exports = class LaravelMediathequeGenerator extends Generator {
+export default class LaravelMediathequeGenerator extends Generator {
     constructor(...args) {
         super(...args);
 
@@ -145,4 +146,4 @@ module.exports = class LaravelMediathequeGenerator extends Generator {
             }),
         );
     }
-};
+}

@@ -7,7 +7,7 @@ import remote from 'yeoman-remote';
 
 import Generator from '../../lib/generator';
 
-module.exports = class LaravelGenerator extends Generator {
+export default class LaravelGenerator extends Generator {
     static safeDbString(str) {
         return str.replace(/[-s.]+/gi, '_').replace(/[^a-z0-9]+/gi, '');
     }
@@ -387,6 +387,7 @@ module.exports = class LaravelGenerator extends Generator {
             },
 
             packageJSON() {
+                const jsonPath = this.destinationPath('package.json');
                 const packageJSON = this.fs.exists(jsonPath) ? this.fs.readJSON(jsonPath) : {};
                 this.packageJson.merge({
                     ...packageJSON,
@@ -517,4 +518,4 @@ module.exports = class LaravelGenerator extends Generator {
             },
         };
     }
-};
+}

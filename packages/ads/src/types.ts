@@ -1,6 +1,6 @@
-export type AdSize = [number, number] | 'fluid';
-export type Viewport = [number, number];
-export type AdSizeMapping = [Viewport, AdSize[]];
+export type AdSize = googletag.SingleSize;
+export type Viewport = googletag.SingleSizeArray;
+export type AdSizeMapping = googletag.SizeMapping;
 
 export interface Size {
     width: number;
@@ -33,10 +33,10 @@ export interface AdsTargeting {
     refreshAds?: 'inactive' | false | null | number;
     disabled?: boolean;
     viewport?: string | null;
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
-export interface RichAd {
+export interface RichAdType {
     type: string;
-    [key: string]: any;
+    [key: string]: unknown;
 }

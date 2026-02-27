@@ -1,10 +1,9 @@
 import chalk from 'chalk';
-import _ from 'lodash';
 import path from 'path';
 
 import Generator from '../../lib/generator';
 
-module.exports = class CliGenerator extends Generator {
+export default class CliGenerator extends Generator {
     // The name `constructor` is important here
     constructor(...args) {
         super(...args);
@@ -26,7 +25,7 @@ module.exports = class CliGenerator extends Generator {
 
         this.option('commands-path', {
             type: String,
-            defaults: './commands'
+            defaults: './commands',
         });
     }
 
@@ -53,7 +52,7 @@ module.exports = class CliGenerator extends Generator {
                     this.destinationPath(path.join(cliPath, filename)),
                     {
                         commands,
-                    }
+                    },
                 );
             },
 
@@ -72,8 +71,8 @@ module.exports = class CliGenerator extends Generator {
 
             dependencies() {
                 this.addDependencies({
-                    'commander': 'latest',
-                    'debug': 'latest',
+                    commander: 'latest',
+                    debug: 'latest',
                 });
             },
         };
@@ -86,4 +85,4 @@ module.exports = class CliGenerator extends Generator {
 
         await this.spawnCommand('npm', ['install']);
     }
-};
+}

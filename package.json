@@ -18,7 +18,7 @@
     ],
     "scripts": {
         "test": "jest",
-        "format": "prettier */*/src/**.{ts,tsx,js,jsx,json,css,scss} --write",
+        "format": "prettier */*/src/** --write",
         "lint": "eslint"
     },
     "workspaces": [

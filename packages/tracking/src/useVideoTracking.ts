@@ -44,7 +44,7 @@ function useVideoTracking(
         playing = false,
         paused = false,
         ended = false,
-        currentTime = false,
+        currentTime = null,
         duration = null,
     } = player;
 
@@ -55,7 +55,7 @@ function useVideoTracking(
                 metadataTitle =
                     title !== null ? decodeURIComponent(title).replace(/[+]+/gi, ' ') : null;
             } catch (e) {
-                console.log('error decoding title', e); // eslint-disable-line
+                console.log('error decoding title', e);
             }
             return {
                 platform: provider,

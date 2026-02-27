@@ -15,12 +15,10 @@ const loadTwitter = createLoader(
                 js.src = url;
                 fjs.parentNode.insertBefore(js, fjs);
 
-                /* eslint-disable no-underscore-dangle */
                 t._e = [];
                 t.ready = (f) => {
                     t._e.push(f);
                 };
-                /* eslint-enable no-underscore-dangle */
                 return t;
             })(document, 'script', 'twitter-wjs');
             twttr.ready(resolve);

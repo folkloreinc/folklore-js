@@ -1,11 +1,10 @@
 import chalk from 'chalk';
-import isArray from 'lodash/isArray';
 import path from 'path';
 
 import Generator from '../../lib/generator';
 import { ensureLeadingDotSlash } from '../../lib/utils';
 
-module.exports = class AppGenerator extends Generator {
+export default class AppGenerator extends Generator {
     // The name `constructor` is important here
     constructor(...args) {
         super(...args);
@@ -108,4 +107,4 @@ module.exports = class AppGenerator extends Generator {
 
         await this.spawnCommand('npm', ['install']);
     }
-};
+}

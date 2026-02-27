@@ -1,13 +1,14 @@
-import path from 'path';
+import { compile, compileAndWrite, extract, extractAndWrite } from '@formatjs/cli-lib';
+import { Command } from 'commander';
 import fs from 'fs';
 import fsExtra from 'fs-extra';
-import { Command } from 'commander';
-import { extractAndWrite, extract, compileAndWrite, compile } from '@formatjs/cli-lib';
 import isArray from 'lodash/isArray';
-import getPathsFromGlob from '../getPathsFromGlob';
+import path from 'path';
+
 import POFile from '../POFile';
-import getOptionsFromPackage from '../getOptionsFromPackage';
 import getAbsolutePath from '../getAbsolutePath';
+import getOptionsFromPackage from '../getOptionsFromPackage';
+import getPathsFromGlob from '../getPathsFromGlob';
 
 const command = new Command('intl');
 

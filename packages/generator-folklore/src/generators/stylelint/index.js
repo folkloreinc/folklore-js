@@ -2,7 +2,7 @@ import chalk from 'chalk';
 
 import Generator from '../../lib/generator';
 
-module.exports = class StylelintGenerator extends Generator {
+export default class StylelintGenerator extends Generator {
     constructor(...args) {
         super(...args);
 
@@ -49,4 +49,4 @@ module.exports = class StylelintGenerator extends Generator {
         }
         await this.spawnCommand('npm', ['install']);
     }
-};
+}

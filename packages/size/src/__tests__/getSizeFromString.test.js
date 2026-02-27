@@ -30,22 +30,14 @@ test('with auto', () => {
 });
 
 test('mix with percentage and pixel', () => {
-    const {
-        width,
-        height,
-        scale,
-    } = getSizeFromString('100px 100%', 100, 100, 200, 200);
+    const { width, height, scale } = getSizeFromString('100px 100%', 100, 100, 200, 200);
     expect(width).toEqual(100);
     expect(height).toEqual(100);
     expect(scale).toEqual(1);
 });
 
 test('with cover', () => {
-    const {
-        width,
-        height,
-        scale,
-    } = getSizeFromString('cover', 50, 100, 200, 200);
+    const { width, height, scale } = getSizeFromString('cover', 50, 100, 200, 200);
     expect(width).toEqual(200);
     expect(height).toEqual(400);
     expect(scale).toEqual(4);

@@ -1,5 +1,6 @@
-import React, { useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
+import React, { useContext, useMemo } from 'react';
+
 import UrlGenerator from '../UrlGenerator';
 
 /**
@@ -15,13 +16,13 @@ export const useUrlGenerator = () => useContext(UrlGeneratorContext);
 /**
  * withUrlGenerator HOC
  */
-export const withUrlGenerator = WrappedComponent => {
+export const withUrlGenerator = (WrappedComponent) => {
     const getDisplayName = ({ displayName = null, name = null }) =>
         displayName || name || 'Component';
 
-    const WithUrlGeneratorComponent = props => (
+    const WithUrlGeneratorComponent = (props) => (
         <UrlGeneratorContext.Consumer>
-            {urlGenerator => <WrappedComponent urlGenerator={urlGenerator} {...props} />}
+            {(urlGenerator) => <WrappedComponent urlGenerator={urlGenerator} {...props} />}
         </UrlGeneratorContext.Consumer>
     );
     WithUrlGeneratorComponent.displayName = `WithUrlGenerator(${getDisplayName(WrappedComponent)})`;
@@ -43,10 +44,10 @@ const defaultProps = {
 };
 
 export const UrlGeneratorProvider = ({ children, routes, urlGenerator }) => {
-    const value = useMemo(() => (urlGenerator !== null ? urlGenerator : new UrlGenerator(routes)), [
-        routes,
-        urlGenerator,
-    ]);
+    const value = useMemo(
+        () => (urlGenerator !== null ? urlGenerator : new UrlGenerator(routes)),
+        [routes, urlGenerator],
+    );
     return <UrlGeneratorContext.Provider value={value}>{children}</UrlGeneratorContext.Provider>;
 };
 

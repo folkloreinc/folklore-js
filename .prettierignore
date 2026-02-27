@@ -1,1 +1,3 @@
-*/*/src/generators/*/templates/**
+**/templates/**
+*/*/lib/**
+*/*/dist/**

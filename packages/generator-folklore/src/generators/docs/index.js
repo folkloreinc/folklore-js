@@ -1,10 +1,9 @@
 import chalk from 'chalk';
-import _ from 'lodash';
 import path from 'path';
 
 import Generator from '../../lib/generator';
 
-module.exports = class DocsGenerator extends Generator {
+export default class DocsGenerator extends Generator {
     constructor(...args) {
         super(...args);
 
@@ -121,6 +120,7 @@ module.exports = class DocsGenerator extends Generator {
                     'build:docs': 'npm run docs:prepare && npm run docs:api',
                 };
 
+                const destPath = this.destinationPath('package.json');
                 const packageJSON = this.fs.exists(destPath) ? this.fs.readJSON(destPath) : {};
                 packageJSON.scripts = {
                     ...packageJSON.scripts,
@@ -146,4 +146,4 @@ module.exports = class DocsGenerator extends Generator {
             },
         };
     }
-};
+}

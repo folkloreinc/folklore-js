@@ -2,7 +2,7 @@ import chalk from 'chalk';
 
 import Generator from '../../lib/generator';
 
-module.exports = class AppGenerator extends Generator {
+export default class AppGenerator extends Generator {
     // The name `constructor` is important here
     constructor(...args) {
         super(...args);
@@ -82,4 +82,4 @@ module.exports = class AppGenerator extends Generator {
             ...this.options,
         });
     }
-};
+}

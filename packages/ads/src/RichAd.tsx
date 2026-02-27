@@ -1,12 +1,11 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { getComponentFromName } from '@folklore/utils';
 
 import { useAdsContext } from './AdsContext';
-import { RichAd as RichAdType } from './types';
+import { RichAdType } from './types';
 
 export interface RichAdProps {
     richAd: RichAdType;
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 function RichAd({ richAd, ...props }: RichAdProps) {

@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import debounce from 'lodash/debounce';
 import {
     ElementType,

@@ -2,7 +2,11 @@ import mitt, { Emitter, EventType } from 'mitt';
 
 export type Events = Record<EventType, unknown>;
 
-class EventEmitter<TEvents extends Events> {
+type BaseEvents = {
+    [key: string]: unknown;
+};
+
+class EventEmitter<TEvents extends Events = BaseEvents> {
     mitt: Emitter<TEvents>;
 
     constructor() {
@@ -23,7 +27,7 @@ class EventEmitter<TEvents extends Events> {
         this.mitt.off(event, handler);
     }
 
-    emit<Event extends keyof TEvents>(event: Event, payload: TEvents[Event]): void {
+    emit<Event extends keyof TEvents>(event: Event, payload?: TEvents[Event]): void {
         this.mitt.emit(event, payload);
     }
 
@@ -38,8 +42,12 @@ class EventEmitter<TEvents extends Events> {
         this.on(event, onceCallback);
     }
 
-    removeAllListeners<Event extends keyof TEvents>(event: Event): void {
-        this.mitt.off(event);
+    removeAllListeners<Event extends keyof TEvents>(event: Event = null): void {
+        if (event !== null) {
+            this.mitt.off(event);
+        } else {
+            this.mitt.all.clear();
+        }
     }
 
     addListener<Event extends keyof TEvents>(

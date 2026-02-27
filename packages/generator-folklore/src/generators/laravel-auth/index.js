@@ -1,10 +1,11 @@
-import _ from 'lodash';
 import chalk from 'chalk';
 import glob from 'glob';
+import _ from 'lodash';
 import path from 'path';
+
 import Generator from '../../lib/generator';
 
-module.exports = class LaravelAuthGenerator extends Generator {
+export default class LaravelAuthGenerator extends Generator {
     constructor(...args) {
         super(...args);
 
@@ -47,12 +48,11 @@ module.exports = class LaravelAuthGenerator extends Generator {
                     return null;
                 }
 
-                return this.prompt(prompts)
-                    .then((answers) => {
-                        if (answers['project-name']) {
-                            this.options['project-name'] = answers['project-name'];
-                        }
-                    });
+                return this.prompt(prompts).then((answers) => {
+                    if (answers['project-name']) {
+                        this.options['project-name'] = answers['project-name'];
+                    }
+                });
             },
         };
     }
@@ -64,9 +64,7 @@ module.exports = class LaravelAuthGenerator extends Generator {
                 const destPath = this.destinationPath('composer.json');
 
                 const newJson = this.fs.readJSON(srcPath);
-                const currentJson = this.fs.exists(destPath)
-                    ? this.fs.readJSON(destPath)
-                    : {};
+                const currentJson = this.fs.exists(destPath) ? this.fs.readJSON(destPath) : {};
                 this.fs.writeJSON(destPath, _.merge(currentJson, newJson));
             },
 
@@ -91,12 +89,16 @@ module.exports = class LaravelAuthGenerator extends Generator {
                         } else {
                             this.fs.copyTpl(source, destination, {
                                 project_name: this.options['project-name'],
-                                getRelativeStylesPath: (from, src) => path.relative(
-                                    this.destinationPath(path.dirname(path.join(jsPath, from))),
-                                    this.destinationPath(
-                                        path.join(stylesPath || path.join(jsPath, 'styles'), src),
+                                getRelativeStylesPath: (from, src) =>
+                                    path.relative(
+                                        this.destinationPath(path.dirname(path.join(jsPath, from))),
+                                        this.destinationPath(
+                                            path.join(
+                                                stylesPath || path.join(jsPath, 'styles'),
+                                                src,
+                                            ),
+                                        ),
                                     ),
-                                ),
                             });
                         }
                     });
@@ -126,4 +128,4 @@ module.exports = class LaravelAuthGenerator extends Generator {
             },
         };
     }
-};
+}

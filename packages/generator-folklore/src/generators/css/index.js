@@ -3,7 +3,7 @@ import path from 'path';
 
 import Generator from '../../lib/generator';
 
-module.exports = class CssGenerator extends Generator {
+export default class CssGenerator extends Generator {
     constructor(...args) {
         super(...args);
 
@@ -88,4 +88,4 @@ module.exports = class CssGenerator extends Generator {
 
         await this.spawnCommand('npm', ['install']);
     }
-};
+}

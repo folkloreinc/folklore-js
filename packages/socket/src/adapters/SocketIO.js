@@ -1,5 +1,5 @@
-import createDebug from 'debug';
 import { EventEmitter } from '@folklore/events';
+import createDebug from 'debug';
 import isArray from 'lodash/isArray';
 
 const debug = createDebug('folklore:socket:socketio');
@@ -151,7 +151,6 @@ class SocketIOSocket extends EventEmitter {
         return socket;
     }
 
-    // eslint-disable-next-line class-methods-use-this
     stopSocket(socket) {
         socket.off('connect');
         socket.off('message');

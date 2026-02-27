@@ -100,7 +100,7 @@ class UserMedia extends EventEmitter {
         this.snapshotVideo.removeEventListener('canplay', this.onSnapshotVideoCanPlay);
         try {
             this.snapshotVideo.srcObject = null;
-        } catch (e) {
+        } catch {
             this.snapshotVideo.src = null;
         }
         this.snapshotVideo = null;
@@ -158,7 +158,7 @@ class UserMedia extends EventEmitter {
             this.snapshotVideo.autoplay = true;
             try {
                 this.snapshotVideo.srcObject = this.getStream();
-            } catch (e) {
+            } catch {
                 this.snapshotVideo.src = this.getStreamUrl();
             }
         });

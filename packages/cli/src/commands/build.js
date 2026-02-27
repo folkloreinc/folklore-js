@@ -1,12 +1,14 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 import { Command } from 'commander';
-import path from 'path';
 import dotenv from 'dotenv';
-import setupWebpackCommand from '../setupWebpackCommand';
+import path from 'path';
+
 import createWebpackCompiler from '../createWebpackCompiler';
 import createWebpackConfig from '../createWebpackConfig';
-import getOptionsFromPackage from '../getOptionsFromPackage';
-import getOptionsFromEnv from '../getOptionsFromEnv';
 import getEntryFromArgs from '../getEntryFromArgs';
+import getOptionsFromEnv from '../getOptionsFromEnv';
+import getOptionsFromPackage from '../getOptionsFromPackage';
+import setupWebpackCommand from '../setupWebpackCommand';
 
 const command = new Command('build');
 

@@ -2,7 +2,7 @@ import chalk from 'chalk';
 
 import Generator from '../../lib/generator';
 
-module.exports = class SvgoGenerator extends Generator {
+export default class SvgoGenerator extends Generator {
     prompting() {
         if (this.options.quiet) {
             return;
@@ -18,4 +18,4 @@ module.exports = class SvgoGenerator extends Generator {
         const destPath = this.destinationPath('svgo.config.js');
         this.fs.copy(srcPath, destPath);
     }
-};
+}

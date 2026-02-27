@@ -2,12 +2,6 @@ import { ReactNode, createContext, useContext, useMemo } from 'react';
 
 import { AdsTargeting } from './types';
 
-interface AdsTargetingProviderProps {
-    children: ReactNode;
-    targeting?: AdsTargeting;
-    replace?: boolean;
-}
-
 const defaultTargeting: AdsTargeting = {
     domain:
         typeof window !== 'undefined'
@@ -18,6 +12,12 @@ const defaultTargeting: AdsTargeting = {
 const AdsTargetingContext = createContext<AdsTargeting | null>(defaultTargeting);
 
 export const useAdsTargeting = (): AdsTargeting | null => useContext(AdsTargetingContext);
+
+interface AdsTargetingProviderProps {
+    children: ReactNode;
+    targeting?: AdsTargeting;
+    replace?: boolean;
+}
 
 export function AdsTargetingProvider({
     children,

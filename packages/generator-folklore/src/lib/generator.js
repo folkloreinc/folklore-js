@@ -1,7 +1,8 @@
-import BaseGenerator from 'yeoman-generator';
 import Immutable from 'immutable';
-import path from 'path';
 import _ from 'lodash';
+import path from 'path';
+import process from 'process';
+import BaseGenerator from 'yeoman-generator';
 
 class Generator extends BaseGenerator {
     static prompts = {
@@ -17,7 +18,7 @@ class Generator extends BaseGenerator {
     };
 
     static getConfigPath() {
-        const home = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'];
+        const home = process.env[process.platform === 'win32' ? 'USERPROFILE' : 'HOME'];
         return path.join(home, '.config/yeoman-generator-folklore/config.json');
     }
 
@@ -34,11 +35,11 @@ class Generator extends BaseGenerator {
 
     get composerJson() {
         if (!this._composerJson) {
-          this._composerJson = this.createStorage('composer.json');
+            this._composerJson = this.createStorage('composer.json');
         }
 
         return this._composerJson;
-      }
+    }
 
     getConfig() {
         const configPath = Generator.getConfigPath();

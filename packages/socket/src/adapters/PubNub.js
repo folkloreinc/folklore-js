@@ -1,5 +1,5 @@
-import createDebug from 'debug';
 import { EventEmitter } from '@folklore/events';
+import createDebug from 'debug';
 
 const debug = createDebug('folklore:socket:pubnub');
 

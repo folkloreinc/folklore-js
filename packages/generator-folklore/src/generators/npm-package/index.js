@@ -4,7 +4,7 @@ import path from 'path';
 
 import Generator from '../../lib/generator';
 
-module.exports = class NpmPackageGenerator extends Generator {
+export default class NpmPackageGenerator extends Generator {
     constructor(...args) {
         super(...args);
 
@@ -254,4 +254,4 @@ module.exports = class NpmPackageGenerator extends Generator {
             },
         };
     }
-};
+}

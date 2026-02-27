@@ -1,11 +1,13 @@
-import path from 'path';
+/* eslint-disable @typescript-eslint/no-require-imports */
 import { Command } from 'commander';
-import sass from 'sass';
-import postcss from 'postcss';
 import fs from 'fs';
 import mkdirp from 'mkdirp';
-import getPathsFromGlob from '../getPathsFromGlob';
+import path from 'path';
+import postcss from 'postcss';
+import sass from 'sass';
+
 import getAbsolutePath from '../getAbsolutePath';
+import getPathsFromGlob from '../getPathsFromGlob';
 
 const command = new Command('styles');
 

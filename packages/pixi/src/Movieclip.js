@@ -82,7 +82,6 @@ class Movieclip extends Container {
         this.loader.load(this.onTexturesLoaded);
     }
 
-    // eslint-disable-next-line class-methods-use-this
     createSprite(textures) {
         return new extras.AnimatedSprite(textures);
     }

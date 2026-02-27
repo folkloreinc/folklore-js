@@ -2,7 +2,7 @@ import chalk from 'chalk';
 
 import Generator from '../../lib/generator';
 
-module.exports = class TestGenerator extends Generator {
+export default class TestGenerator extends Generator {
     constructor(...args) {
         super(...args);
 
@@ -68,4 +68,4 @@ module.exports = class TestGenerator extends Generator {
             },
         };
     }
-};
+}

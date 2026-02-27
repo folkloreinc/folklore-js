@@ -1,11 +1,11 @@
-import _ from 'lodash';
 import chalk from 'chalk';
-import path from 'path';
 import { pascalCase } from 'change-case';
+import _ from 'lodash';
+import path from 'path';
+
 import Generator from '../../lib/generator';
 
-module.exports = class ComposerPackageGenerator extends Generator {
-
+export default class ComposerPackageGenerator extends Generator {
     constructor(...args) {
         super(...args);
 
@@ -66,8 +66,12 @@ module.exports = class ComposerPackageGenerator extends Generator {
                         name: 'package-namespace',
                         message: 'Namespace of the package:',
                         default: (answers) => {
-                            const packageName = (this.options['package-name'] || answers['package-name']);
-                            const namespace = packageName.split('/').map(part => pascalCase(part)).join('\\');
+                            const packageName =
+                                this.options['package-name'] || answers['package-name'];
+                            const namespace = packageName
+                                .split('/')
+                                .map((part) => pascalCase(part))
+                                .join('\\');
                             return namespace;
                         },
                     });
@@ -77,15 +81,14 @@ module.exports = class ComposerPackageGenerator extends Generator {
                     return null;
                 }
 
-                return this.prompt(prompts)
-                    .then((answers) => {
-                        if (answers['package-name']) {
-                            this.options['package-name'] = answers['package-name'];
-                        }
-                        if (answers['package-namespace']) {
-                            this.options['package-namespace'] = answers['package-namespace'];
-                        }
-                    });
+                return this.prompt(prompts).then((answers) => {
+                    if (answers['package-name']) {
+                        this.options['package-name'] = answers['package-name'];
+                    }
+                    if (answers['package-namespace']) {
+                        this.options['package-namespace'] = answers['package-namespace'];
+                    }
+                });
             },
         };
     }
@@ -124,7 +127,9 @@ module.exports = class ComposerPackageGenerator extends Generator {
             serviceProvider() {
                 const { namespacePath, baseClassName } = this.templateData;
                 const srcPath = this.templatePath('ServiceProvider.php');
-                const destPath = this.destinationPath(`src/${namespacePath}/${baseClassName}ServiceProvider.php`);
+                const destPath = this.destinationPath(
+                    `src/${namespacePath}/${baseClassName}ServiceProvider.php`,
+                );
                 this.fs.copyTpl(srcPath, destPath, this.templateData);
             },
 
@@ -187,11 +192,8 @@ module.exports = class ComposerPackageGenerator extends Generator {
                 newJson.autoload['psr-0'] = {
                     [namespace]: 'src/',
                 };
-                newJson.extra.laravel.providers = [
-                    `${namespace}\\${baseClassName}ServiceProvider`,
-                ];
-                const currentJson = this.fs.exists(destPath) ?
-                    this.fs.readJSON(destPath) : {};
+                newJson.extra.laravel.providers = [`${namespace}\\${baseClassName}ServiceProvider`];
+                const currentJson = this.fs.exists(destPath) ? this.fs.readJSON(destPath) : {};
                 this.fs.writeJSON(destPath, _.merge(newJson, currentJson));
             },
         };
@@ -210,4 +212,4 @@ module.exports = class ComposerPackageGenerator extends Generator {
             },
         };
     }
-};
+}

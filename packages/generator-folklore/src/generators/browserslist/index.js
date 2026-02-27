@@ -2,7 +2,7 @@ import chalk from 'chalk';
 
 import Generator from '../../lib/generator';
 
-module.exports = class BrowsersListGenerator extends Generator {
+export default class BrowsersListGenerator extends Generator {
     get prompting() {
         return {
             welcome() {
@@ -22,4 +22,4 @@ module.exports = class BrowsersListGenerator extends Generator {
         const destPath = this.destinationPath('.browserslistrc');
         this.fs.copy(srcPath, destPath);
     }
-};
+}

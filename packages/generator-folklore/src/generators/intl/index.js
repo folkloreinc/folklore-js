@@ -3,7 +3,7 @@ import path from 'path';
 
 import Generator from '../../lib/generator';
 
-module.exports = class IntlGenerator extends Generator {
+export default class IntlGenerator extends Generator {
     constructor(...args) {
         super(...args);
 
@@ -92,4 +92,4 @@ module.exports = class IntlGenerator extends Generator {
 
         await this.spawnCommand('npm', ['install']);
     }
-};
+}

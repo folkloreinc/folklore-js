@@ -15,17 +15,20 @@ const config = tseslint.config(
     {
         ignores: [
             '**/*.config.js',
+            '*.config.*',
             'node_modules',
             '*/*/dist/**',
+            '*/*/lib/**',
             '!.storybook',
             '*/*/src/generators/*/templates/**',
+            '**/__tests__/**',
         ],
     },
     {
         settings: {
             react: {
-                version: '19',
-                defaultVersion: '19',
+                version: '18',
+                defaultVersion: '18',
             },
             'import/resolver': {
                 typescript: {},
@@ -33,6 +36,7 @@ const config = tseslint.config(
         },
         languageOptions: {
             globals: {
+                ...globals.node,
                 ...Object.keys(globals.browser).reduce(
                     (map, key) => ({
                         ...map,

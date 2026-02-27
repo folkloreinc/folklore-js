@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { JSX, type ReactNode, createContext, useContext, useMemo } from 'react';
 
 export type RoutesMap = Record<string, string>;

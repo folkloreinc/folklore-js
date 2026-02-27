@@ -2,7 +2,7 @@ import chalk from 'chalk';
 
 import Generator from '../../lib/generator';
 
-module.exports = class TypescriptGenerator extends Generator {
+export default class TypescriptGenerator extends Generator {
     constructor(...args) {
         super(...args);
 
@@ -53,4 +53,4 @@ module.exports = class TypescriptGenerator extends Generator {
         }
         await this.spawnCommand('npm', ['install']);
     }
-};
+}

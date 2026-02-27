@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle, no-param-reassign */
 /**
  * Detect Element Resize
  *

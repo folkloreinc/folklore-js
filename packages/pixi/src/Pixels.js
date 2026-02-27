@@ -282,7 +282,6 @@ class Pixels extends Container {
         return sprite;
     }
 
-    /* eslint-disable no-param-reassign */
     updatePixelSprite(sprite, colorIndex, color) {
         const { enableAlpha } = this.options;
         const pixelAlpha = color[3] / 255;
@@ -331,7 +330,6 @@ class Pixels extends Container {
             return texture;
         });
 
-        /* eslint-disable no-param-reassign */
         const [firstTexture] = this.colorsTextures;
         const maxColorsIndex = this.colorsTextures.length - 1;
         this.pixels.forEach((pixel) => {

@@ -7,7 +7,7 @@ import remote from 'yeoman-remote';
 
 import Generator from '../../lib/generator';
 
-module.exports = class LaravelProjectGenerator extends Generator {
+export default class LaravelProjectGenerator extends Generator {
     static safeDbString(str) {
         return str.replace(/[-s.]+/gi, '_').replace(/[^a-z0-9]+/gi, '');
     }
@@ -409,10 +409,10 @@ module.exports = class LaravelProjectGenerator extends Generator {
             },
 
             env() {
-                const url = _.template(_.get(this.options, 'url'))({
-                    project_host: this.options['project-host'],
-                    project_name: this.options['project-name'],
-                }).replace(/^(http)?(s)?(:\/\/)?/, 'http$2://');
+                // const url = _.template(_.get(this.options, 'url'))({
+                //     project_host: this.options['project-host'],
+                //     project_name: this.options['project-name'],
+                // }).replace(/^(http)?(s)?(:\/\/)?/, 'http$2://');
 
                 const urlLocal = _.template(_.get(this.options, 'local-url'))({
                     project_host: this.options['project-host'],
@@ -436,12 +436,6 @@ module.exports = class LaravelProjectGenerator extends Generator {
                     proxy_url: urlProxy,
                 };
 
-                const prodTemplateData = {
-                    ...templateData,
-                    url,
-                    db_username: this.options['db-name'],
-                };
-
                 const src = this.templatePath('env');
                 const dest = this.destinationPath('.env');
                 this.fs.copyTpl(src, dest, templateData);
@@ -450,6 +444,11 @@ module.exports = class LaravelProjectGenerator extends Generator {
                 const destExample = this.destinationPath('.env.example');
                 this.fs.copyTpl(srcExample, destExample, templateData);
 
+                // const prodTemplateData = {
+                //     ...templateData,
+                //     url,
+                //     db_username: this.options['db-name'],
+                // };
                 // const srcProd = this.templatePath('env.prod');
                 // const destProd = this.destinationPath('.env.prod');
                 // this.fs.copyTpl(srcProd, destProd, prodTemplateData);
@@ -548,4 +547,4 @@ module.exports = class LaravelProjectGenerator extends Generator {
             },
         };
     }
-};
+}

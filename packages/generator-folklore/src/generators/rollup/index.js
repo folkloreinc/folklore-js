@@ -1,9 +1,8 @@
 import chalk from 'chalk';
-import path from 'path';
 
 import Generator from '../../lib/generator';
 
-module.exports = class RollupGenerator extends Generator {
+export default class RollupGenerator extends Generator {
     constructor(...args) {
         super(...args);
     }
@@ -50,4 +49,4 @@ module.exports = class RollupGenerator extends Generator {
 
         await this.spawnCommand('npm', ['install']);
     }
-};
+}

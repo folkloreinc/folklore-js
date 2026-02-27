@@ -1,11 +1,11 @@
 import chalk from 'chalk';
-import { pascal } from 'change-case';
+import { pascalCase } from 'change-case';
 import _ from 'lodash';
 import path from 'path';
 
 import Generator from '../../lib/generator';
 
-module.exports = class ReactPackageGenerator extends Generator {
+export default class ReactPackageGenerator extends Generator {
     constructor(...args) {
         super(...args);
 
@@ -85,7 +85,7 @@ module.exports = class ReactPackageGenerator extends Generator {
                         default: (answers) => {
                             const packageName =
                                 this.options['package-name'] || answers['package-name'];
-                            return packageName ? pascal(packageName) : undefined;
+                            return packageName ? pascalCase(packageName) : undefined;
                         },
                     });
                 }
@@ -198,4 +198,4 @@ module.exports = class ReactPackageGenerator extends Generator {
             },
         };
     }
-};
+}

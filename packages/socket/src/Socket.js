@@ -217,6 +217,7 @@ class Socket extends EventEmitter {
 
         debug('Init');
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { adapter: adapterKey, channels, ...adapterOptions } = this.options;
         const SocketAdapter = isString(adapterKey) ? Socket.getAdapter(adapterKey) : adapterKey;
         this.adapter = new SocketAdapter(adapterOptions);

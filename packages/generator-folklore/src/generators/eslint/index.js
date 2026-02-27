@@ -2,7 +2,7 @@ import chalk from 'chalk';
 
 import Generator from '../../lib/generator';
 
-module.exports = class EslintGenerator extends Generator {
+export default class EslintGenerator extends Generator {
     prompting() {
         if (this.options.quiet) {
             return;
@@ -33,7 +33,6 @@ module.exports = class EslintGenerator extends Generator {
                     'eslint-plugin-import': '^2.32.0',
                     'eslint-plugin-jsx-a11y': '^6.10.2',
                     'eslint-plugin-prettier': '^5.5.4',
-                    'eslint-plugin-react': '^7.37.5',
                     typescript: '^5.7.3',
                     'typescript-eslint': '^8.25.0',
                 });
@@ -48,4 +47,4 @@ module.exports = class EslintGenerator extends Generator {
 
         await this.spawnCommand('npm', ['install']);
     }
-};
+}

@@ -1,5 +1,5 @@
-import createDebug from 'debug';
 import { EventEmitter } from '@folklore/events';
+import createDebug from 'debug';
 
 const debug = createDebug('folklore:socket:pusher');
 
@@ -179,7 +179,6 @@ class PusherSocket extends EventEmitter {
         return channel;
     }
 
-    // eslint-disable-next-line class-methods-use-this
     stopClient(channelName, channel) {
         channel.unbind_global();
         this.pusher.unsubscribe(channelName);

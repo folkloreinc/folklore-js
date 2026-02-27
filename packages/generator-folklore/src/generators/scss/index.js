@@ -1,8 +1,9 @@
 import chalk from 'chalk';
 import path from 'path';
+
 import Generator from '../../lib/generator';
 
-module.exports = class ScssGenerator extends Generator {
+export default class ScssGenerator extends Generator {
     constructor(...args) {
         super(...args);
 
@@ -16,10 +17,8 @@ module.exports = class ScssGenerator extends Generator {
             defaults: 'src/scss',
         });
 
-        this.stylesPath = destPath => this.destinationPath(path.join(
-            this.options.path,
-            destPath || '',
-        ));
+        this.stylesPath = (destPath) =>
+            this.destinationPath(path.join(this.options.path, destPath || ''));
     }
 
     get prompting() {
@@ -45,12 +44,11 @@ module.exports = class ScssGenerator extends Generator {
                     return null;
                 }
 
-                return this.prompt(prompts)
-                    .then((answers) => {
-                        if (answers['project-name']) {
-                            this.options['project-name'] = answers['project-name'];
-                        }
-                    });
+                return this.prompt(prompts).then((answers) => {
+                    if (answers['project-name']) {
+                        this.options['project-name'] = answers['project-name'];
+                    }
+                });
             },
         };
     }
@@ -70,4 +68,4 @@ module.exports = class ScssGenerator extends Generator {
             },
         };
     }
-};
+}

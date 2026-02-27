@@ -1,10 +1,9 @@
 import chalk from 'chalk';
-import _ from 'lodash';
 import path from 'path';
 
 import Generator from '../../lib/generator';
 
-module.exports = class ReactAppGenerator extends Generator {
+export default class ReactAppGenerator extends Generator {
     // The name `constructor` is important here
     constructor(...args) {
         super(...args);
@@ -113,7 +112,6 @@ module.exports = class ReactAppGenerator extends Generator {
 
             packageJSON() {
                 const srcPath = this.templatePath('_package.json');
-                const destPath = this.destinationPath('package.json');
 
                 const packageJSON = this.fs.readJSON(srcPath);
                 this.packageJson.merge({
@@ -157,4 +155,4 @@ module.exports = class ReactAppGenerator extends Generator {
 
         await this.spawnCommand('npm', ['install']);
     }
-};
+}

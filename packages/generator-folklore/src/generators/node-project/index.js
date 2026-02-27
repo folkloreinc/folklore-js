@@ -1,11 +1,10 @@
 import chalk from 'chalk';
-import _ from 'lodash';
 import path from 'path';
 
 import Generator from '../../lib/generator';
 import { ensureLeadingDotSlash } from '../../lib/utils';
 
-module.exports = class NodeProjectGenerator extends Generator {
+export default class NodeProjectGenerator extends Generator {
     // The name `constructor` is important here
     constructor(...args) {
         super(...args);
@@ -138,9 +137,9 @@ module.exports = class NodeProjectGenerator extends Generator {
                 const scripts = {
                     'build:web': `flklr build --load-env ${ensureLeadingDotSlash(webEntryPath)}`,
                     'build:rollup': `rollup --bundleConfigAsCjs --config rollup.config.js`,
-                    'build': 'npm run build:web && npm run build:rollup',
-                    'server': `babel-node ${ensureLeadingDotSlash(serverEntryPath)}`,
-                    'start': `flklr serve --load-env ${ensureLeadingDotSlash(webEntryPath)}`,
+                    build: 'npm run build:web && npm run build:rollup',
+                    server: `babel-node ${ensureLeadingDotSlash(serverEntryPath)}`,
+                    start: `flklr serve --load-env ${ensureLeadingDotSlash(webEntryPath)}`,
                 };
 
                 this.packageJson.merge({
@@ -157,4 +156,4 @@ module.exports = class NodeProjectGenerator extends Generator {
 
         await this.spawnCommand('npm', ['install']);
     }
-};
+}

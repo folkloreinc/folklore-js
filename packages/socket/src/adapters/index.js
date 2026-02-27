@@ -1,6 +1,6 @@
 import PubNub from './PubNub';
-import SocketIO from './SocketIO';
 import Pusher from './Pusher';
+import SocketIO from './SocketIO';
 
 export default {
     PubNub,

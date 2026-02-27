@@ -3,7 +3,7 @@ import path from 'path';
 
 import Generator from '../../lib/generator';
 
-module.exports = class StorybookGenerator extends Generator {
+export default class StorybookGenerator extends Generator {
     constructor(...args) {
         super(...args);
 
@@ -70,6 +70,7 @@ module.exports = class StorybookGenerator extends Generator {
             },
 
             packageJSON() {
+                const destPath = this.destinationPath('package.json');
                 const packageJSON = this.fs.exists(destPath) ? this.fs.readJSON(destPath) : {};
                 packageJSON['storybook-deployer'] = {
                     gitUsername: 'Folklore',
@@ -100,4 +101,4 @@ module.exports = class StorybookGenerator extends Generator {
             },
         };
     }
-};
+}

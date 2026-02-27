@@ -1,4 +1,3 @@
-/* globals refreshDisabledLineItems: [] */
 import { EventEmitter } from '@folklore/events';
 import createDebug from 'debug';
 import isArray from 'lodash/isArray';
@@ -12,8 +11,8 @@ const debug = createDebug('folklore:ads');
 
 declare global {
     interface Window {
-        googletag?: any;
-        refreshDisabledLineItems?: string[];
+        googletag?: typeof googletag;
+        refreshDisabledLineItems?: number[];
     }
 }
 
@@ -21,7 +20,12 @@ interface AdSlotOptions extends BaseAdSlotOptions {
     id?: string;
 }
 
-class AdsManager extends EventEmitter {
+type AdsManagerEvents = {
+    ready: void;
+    'destroy:slot': AdSlot;
+};
+
+class AdsManager extends EventEmitter<AdsManagerEvents> {
     // static index = 0;
 
     // static createAdId() {
@@ -38,7 +42,7 @@ class AdsManager extends EventEmitter {
     personnalizedAdsDisabled: boolean;
     ready: boolean;
     enabled: boolean;
-    googletag: any;
+    googletag: typeof googletag;
     slots: AdSlot[];
     index: number;
     options: {
@@ -119,7 +123,8 @@ class AdsManager extends EventEmitter {
         this.personnalizedAdsDisabled = this.options.disablePersonnalizedAds;
         this.ready = false;
         this.enabled = false;
-        this.googletag = typeof window !== 'undefined' ? window.googletag : { cmd: [] };
+        this.googletag =
+            typeof window !== 'undefined' ? window.googletag : ({ cmd: [] } as typeof googletag);
         this.slots = [];
         this.index = 0;
 
@@ -211,7 +216,7 @@ class AdsManager extends EventEmitter {
         this.emit('ready');
     }
 
-    onSlotRenderEnded(event) {
+    onSlotRenderEnded(event: googletag.events.SlotRenderEndedEvent) {
         const { slot: eventSlot, lineItemId = null, size = [] } = event;
 
         const renderSlot = this.slots.find((slot) => eventSlot === slot.getAdSlot()) || null;
@@ -237,7 +242,7 @@ class AdsManager extends EventEmitter {
                 'Render ended for slot #%s(%s) with size %s.',
                 eventSlot.getSlotElementId(),
                 eventSlot.getAdUnitPath(),
-                size !== null ? size.join('x') : '-',
+                size !== null && isArray(size) ? size.join('x') : '-',
             );
         }
     }
@@ -257,8 +262,7 @@ class AdsManager extends EventEmitter {
         );
     }
 
-    // eslint-disable-next-line class-methods-use-this
-    onSlotVisibleChange(visible, slot) {
+    onSlotVisibleChange({ visible, slot }) {
         debug(
             'Slot #%s(%s) visibility change to %s',
             slot.getElementId(),
@@ -300,7 +304,7 @@ class AdsManager extends EventEmitter {
         });
     }
 
-    createSlot(path: string, size: AdSize, opts: AdSlotOptions = {}) {
+    createSlot(path: string, size: AdSize, opts: AdSlotOptions = {}): AdSlot {
         const { id: providedId = null } = opts;
         const id = providedId || this.createAdId();
 
@@ -344,7 +348,6 @@ class AdsManager extends EventEmitter {
         this.callDisplaySlot(slot);
     }
 
-    /* eslint-disable */
     callDisplaySlot(slot) {
         const { googletag } = this;
         googletag.cmd.push(() => {
@@ -361,11 +364,12 @@ class AdsManager extends EventEmitter {
             slot.setDisplayed(true);
         });
     }
-    /* eslint-enable */
 
     destroySlot(id) {
         const { googletag } = this;
-        const slot = isObject(id) ? id : this.slots.find((it) => it.getElementId() === id) || null;
+        const slot = isObject(id)
+            ? (id as AdSlot)
+            : this.slots.find((it) => it.getElementId() === id) || null;
         if (slot === null || slot.isDestroyed()) {
             return;
         }
@@ -386,7 +390,9 @@ class AdsManager extends EventEmitter {
 
     refreshSlot(id) {
         const { googletag } = this;
-        const slot = isObject(id) ? id : this.slots.find((it) => it.getElementId() === id) || null;
+        const slot = isObject(id)
+            ? (id as AdSlot)
+            : this.slots.find((it) => it.getElementId() === id) || null;
         if (slot === null || slot.isDestroyed() || slot.isRefreshDisabled()) {
             return;
         }

@@ -21,7 +21,7 @@ export function getAdSizes(sizes): AdSize[] {
 
 export function getMinimumAdSize(sizes): Size {
     return getAdSizes(sizes)
-        .filter((size) => size !== 'fluid')
+        .filter((size) => size !== 'fluid' && !(isArray(size) && size[0] === 'fluid'))
         .reduce<Size>(
             (minimumSize, size) => ({
                 width: Math.min(minimumSize.width, size[0]),
@@ -35,9 +35,10 @@ export function getMinimumAdSize(sizes): Size {
 }
 
 export function sizeFitsInViewport(size: AdSize, viewport: Viewport): boolean {
+    const isFluid = size === 'fluid' || (isArray(size) && size[0] === 'fluid');
     return (
-        (size === 'fluid' && viewport[0] > 600) ||
-        (size !== 'fluid' &&
+        (isFluid && viewport[0] > 600) ||
+        (!isFluid &&
             (viewport[0] === 0 || size[0] <= viewport[0]) &&
             (viewport[1] === 0 || size[1] <= viewport[1]))
     );

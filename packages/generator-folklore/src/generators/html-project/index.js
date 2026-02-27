@@ -4,7 +4,7 @@ import path from 'path';
 
 import Generator from '../../lib/generator';
 
-module.exports = class HTMLProjectGenerator extends Generator {
+export default class HTMLProjectGenerator extends Generator {
     // The name `constructor` is important here
     constructor(...args) {
         super(...args);
@@ -224,4 +224,4 @@ module.exports = class HTMLProjectGenerator extends Generator {
 
         await this.spawnCommand('npm', ['install']);
     }
-};
+}

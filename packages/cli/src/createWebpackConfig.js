@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
-import { isArray, isString } from 'lodash';
+import isArray from 'lodash/isArray';
+import isString from 'lodash/isString';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import getCSSModuleLocalIdent from 'react-dev-utils/getCSSModuleLocalIdent';
-import { DefinePlugin } from 'webpack';
+import { webpack } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
 import { merge } from 'webpack-merge';
@@ -150,7 +152,6 @@ export default (entry, opts = {}) => {
 
         bail: isProduction,
 
-        // eslint-disable-next-line no-nested-ternary
         devtool: !disableSourceMap
             ? isProduction
                 ? 'source-map'
@@ -434,7 +435,7 @@ export default (entry, opts = {}) => {
         },
 
         plugins: [
-            new DefinePlugin({
+            new webpack.DefinePlugin({
                 'process.env': Object.keys(defineEnv).reduce(
                     (map, key) => ({
                         ...map,

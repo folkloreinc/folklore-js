@@ -4,7 +4,7 @@ import path from 'path';
 
 import Generator from '../../lib/generator';
 
-module.exports = class LernaRepositoryGenerator extends Generator {
+export default class LernaRepositoryGenerator extends Generator {
     constructor(...args) {
         super(...args);
 
@@ -242,4 +242,4 @@ module.exports = class LernaRepositoryGenerator extends Generator {
             },
         };
     }
-};
+}

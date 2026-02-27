@@ -1,21 +1,24 @@
 import createDebug from 'debug';
 import { useEffect, useState } from 'react';
 
-import { RichAd } from './types';
+import { RichAdType } from './types';
 
 const debug = createDebug('folklore:ads');
 
-function parseRichAd(data): RichAd | null {
+function parseRichAd(data): RichAdType | null {
     let richAd = null;
     try {
         const eventData = JSON.parse(data) || null;
         richAd = eventData !== null ? eventData.richAd || null : null;
-    } catch (e) {}
+    } catch {
+        richAd = null;
+        console.warn('Failed to parse rich ad data', data);
+    }
     return richAd;
 }
 
 interface UseRichAdOptions {
-    onRichAd?: (richAd: RichAd) => void | null;
+    onRichAd?: (richAd: RichAdType) => void | null;
 }
 
 function useRichAd(containerRef, id: string, opts: UseRichAdOptions = {}) {

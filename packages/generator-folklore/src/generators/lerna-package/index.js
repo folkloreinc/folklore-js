@@ -1,11 +1,11 @@
-import _ from 'lodash';
-import path from 'path';
 import chalk from 'chalk';
+import { pascalCase, snakeCase } from 'change-case';
 import get from 'lodash/get';
-import { pascal as pascalCase, snake as snakeCase } from 'change-case';
+import path from 'path';
+
 import Generator from '../../lib/generator';
 
-module.exports = class LernaPackageGenerator extends Generator {
+export default class LernaPackageGenerator extends Generator {
     constructor(...args) {
         super(...args);
 
@@ -22,8 +22,9 @@ module.exports = class LernaPackageGenerator extends Generator {
         const lernaJSON = this.fs.readJSON(this.destinationPath('lerna.json'));
         const packageJSON = this.fs.readJSON(this.destinationPath('package.json'));
 
-        this.packageFolders = (get(lernaJSON, 'useWorkspaces', false) ? packageJSON.workspaces : lernaJSON.packages)
-            .map(it => it.replace(/\/\*$/, ''));
+        this.packageFolders = (
+            get(lernaJSON, 'useWorkspaces', false) ? packageJSON.workspaces : lernaJSON.packages
+        ).map((it) => it.replace(/\/\*$/, ''));
 
         this.option('package-folder', {
             type: String,
@@ -38,11 +39,13 @@ module.exports = class LernaPackageGenerator extends Generator {
 
         this.packagePath = (destPath) => {
             const nameParts = this.options['package-name'].split('/');
-            return this.destinationPath(path.join(
-                this.options['package-folder'],
-                nameParts[nameParts.length - 1],
-                destPath || '',
-            ));
+            return this.destinationPath(
+                path.join(
+                    this.options['package-folder'],
+                    nameParts[nameParts.length - 1],
+                    destPath || '',
+                ),
+            );
         };
     }
 
@@ -104,7 +107,7 @@ module.exports = class LernaPackageGenerator extends Generator {
                     type: 'input',
                     name: 'component-name',
                     message: 'Name of the component:',
-                    when: answers => (answers.type || this.options.type) === 'react',
+                    when: (answers) => (answers.type || this.options.type) === 'react',
                     default: (answers) => {
                         const packageName = answers['package-name'] || this.options['package-name'];
                         const parts = packageName.split(path.sep);
@@ -247,11 +250,8 @@ module.exports = class LernaPackageGenerator extends Generator {
                 }
 
                 const done = this.async();
-                this.spawnCommand('lerna', [
-                    'bootstrap',
-                    '--ignore-scripts',
-                ]).on('close', done);
+                this.spawnCommand('lerna', ['bootstrap', '--ignore-scripts']).on('close', done);
             },
         };
     }
-};
+}

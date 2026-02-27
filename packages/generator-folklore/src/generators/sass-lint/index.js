@@ -1,7 +1,8 @@
 import chalk from 'chalk';
+
 import Generator from '../../lib/generator';
 
-module.exports = class SassLintGenerator extends Generator {
+export default class SassLintGenerator extends Generator {
     constructor(...args) {
         super(...args);
 
@@ -37,4 +38,4 @@ module.exports = class SassLintGenerator extends Generator {
             },
         };
     }
-};
+}

@@ -1,11 +1,12 @@
-import path from 'path';
 import { Command } from 'commander';
 import favicons from 'favicons';
 import fs from 'fs-extra';
 import imagemin from 'imagemin';
+import path from 'path';
+
+import getAbsolutePath from '../getAbsolutePath';
 import getPathsFromGlob from '../getPathsFromGlob';
 import imageminPresets from '../imageminPresets';
-import getAbsolutePath from '../getAbsolutePath';
 
 const command = new Command('images');
 

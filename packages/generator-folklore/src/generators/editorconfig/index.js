@@ -2,7 +2,7 @@ import chalk from 'chalk';
 
 import Generator from '../../lib/generator';
 
-module.exports = class EditorConfigGenerator extends Generator {
+export default class EditorConfigGenerator extends Generator {
     prompting() {
         if (this.options.quiet) {
             return;
@@ -18,4 +18,4 @@ module.exports = class EditorConfigGenerator extends Generator {
         const destPath = this.destinationPath('.editorconfig');
         this.fs.copy(srcPath, destPath);
     }
-};
+}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 import { Command } from 'commander';
 import dotenv from 'dotenv';
 import path from 'path';

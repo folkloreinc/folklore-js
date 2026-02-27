@@ -1,10 +1,9 @@
 import chalk from 'chalk';
-import _ from 'lodash';
 import path from 'path';
 
 import Generator from '../../lib/generator';
 
-module.exports = class ServerGenerator extends Generator {
+export default class ServerGenerator extends Generator {
     // The name `constructor` is important here
     constructor(...args) {
         super(...args);
@@ -74,4 +73,4 @@ module.exports = class ServerGenerator extends Generator {
 
         await this.spawnCommand('npm', ['install']);
     }
-};
+}

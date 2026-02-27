@@ -1,26 +1,39 @@
 import { EventEmitter } from '@folklore/events';
 
-import { AdSizeMapping } from './types';
+import { AdSizeMapping, AdsTargeting } from './types';
+
+export type RenderEvent = googletag.events.SlotRenderEndedEvent & {
+    width: number;
+    height: number;
+    isFluid: boolean;
+    slot: AdSlot;
+};
 
 export interface AdSlotOptions {
     sizeMapping?: null | AdSizeMapping[];
-    targeting?: { [key: string]: string | Array<string> };
+    targeting?: AdsTargeting;
     categoryExclusions?: Array<string>;
     visible?: boolean;
 }
 
-class AdSlot extends EventEmitter {
+type AddSlotEvents = {
+    render: { event: googletag.events.SlotRenderEndedEvent; slot: AdSlot };
+    visible: { visible: boolean; slot: AdSlot };
+    destroy: AdSlot;
+};
+
+class AdSlot extends EventEmitter<AddSlotEvents> {
     options: AdSlotOptions;
     elementId: string;
     adPath: string;
     adSize: string | Array<string>;
     visible: boolean;
     wasVisible: boolean;
-    adSlot: any;
+    adSlot: googletag.Slot | null;
     rendered: boolean;
     displayed: boolean;
     viewable: boolean;
-    renderEvent: any;
+    renderEvent: googletag.events.SlotRenderEndedEvent;
     refreshDisabled: boolean;
     destroyed: boolean;
 
@@ -88,10 +101,10 @@ class AdSlot extends EventEmitter {
         return this;
     }
 
-    setRenderEvent(event) {
+    setRenderEvent(event: googletag.events.SlotRenderEndedEvent) {
         this.renderEvent = event;
         this.rendered = true;
-        this.emit('render', event, this);
+        this.emit('render', { event, slot: this });
         return this;
     }
 
@@ -104,13 +117,12 @@ class AdSlot extends EventEmitter {
         return this;
     }
 
-    // eslint-disable-next-line
     setVisible(visible) {
         this.visible = visible;
         if (!this.wasVisible && visible) {
             this.wasVisible = visible;
         }
-        this.emit('visible', visible, this);
+        this.emit('visible', { visible, slot: this });
         return this;
     }
 

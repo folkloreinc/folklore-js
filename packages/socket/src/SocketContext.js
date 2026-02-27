@@ -1,6 +1,6 @@
-import React from 'react';
+import { createContext } from 'react';
 
-const SocketContext = React.createContext({
+const SocketContext = createContext({
     socket: null,
     subscribe: () => {},
     unsubscribe: () => {},

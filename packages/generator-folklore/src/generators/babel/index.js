@@ -1,9 +1,8 @@
 import chalk from 'chalk';
-import path from 'path';
 
 import Generator from '../../lib/generator';
 
-module.exports = class BabelGenerator extends Generator {
+export default class BabelGenerator extends Generator {
     constructor(...args) {
         super(...args);
 
@@ -74,4 +73,4 @@ module.exports = class BabelGenerator extends Generator {
 
         await this.spawnCommand('npm', ['install']);
     }
-};
+}

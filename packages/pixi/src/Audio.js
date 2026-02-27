@@ -143,7 +143,6 @@ class Audio extends Container {
         }
     }
 
-    // eslint-disable-next-line class-methods-use-this
     createAudioContext() {
         return new (window.AudioContext || window.webkitAudioContext)();
     }

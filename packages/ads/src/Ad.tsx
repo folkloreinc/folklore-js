@@ -1,14 +1,13 @@
-/* eslint-disable react/require-default-props */
 import classNames from 'classnames';
 import { Ref, useCallback, useId, useMemo, useRef, useState } from 'react';
 
 import { getMinimumAdSize, getSizeFromSizeMapping, normalizeAdSizes } from './utils';
 
-import AdSlot from './AdSlot';
+import AdSlot, { RenderEvent } from './AdSlot';
 import { useAdsContext } from './AdsContext';
 import { useAdsTargeting } from './AdsTargetingContext';
 import RichAd from './RichAd';
-import { AdSize, AdSizeMapping, AdsTargeting } from './types';
+import { AdSize, AdSizeMapping, AdsTargeting, RichAdType } from './types';
 import useAd from './useAd';
 import useRichAd from './useRichAd';
 
@@ -32,9 +31,9 @@ export interface AdProps {
     adClassName?: string | null;
     richAdClassName?: string | null;
     richAdIframeClassName?: string | null;
-    onRender?: ((event: any) => void) | null;
-    onDestroy?: (() => void) | null;
-    onRichAd?: ((richAd: any) => void) | null;
+    onRender?: ((event: RenderEvent) => void) | null;
+    onDestroy?: ((slot: AdSlot) => void) | null;
+    onRichAd?: ((richAd: RichAdType) => void) | null;
     slotRef?: Ref<AdSlot> | null;
 }
 
@@ -132,7 +131,7 @@ function Ad({
         height: number;
     } | null>(null);
     const onAdRender = useCallback(
-        (event: any) => {
+        (event: RenderEvent) => {
             const { isEmpty: newIsEmpty = true, width: newWidth, height: newHeight } = event || {};
             const isRendered = !newIsEmpty;
 
@@ -198,7 +197,6 @@ function Ad({
     if (slotRef !== null && typeof slotRef === 'function') {
         slotRef(slotObject);
     } else if (slotRef !== null && typeof slotRef === 'object') {
-        // eslint-disable-next-line no-param-reassign
         slotRef.current = slotObject;
     }
 

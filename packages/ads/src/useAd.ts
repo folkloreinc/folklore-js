@@ -1,7 +1,7 @@
 import { useIntersectionObserver, useWindowEvent } from '@folklore/hooks';
-import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import AdSlot from './AdSlot';
+import AdSlot, { RenderEvent } from './AdSlot';
 import { useAdsContext } from './AdsContext';
 import { AdSizeMapping, AdsTargeting } from './types';
 import useAdsTracking from './useAdsTracking';
@@ -14,8 +14,8 @@ interface UseAdOptions {
     categoryExclusions?: string[] | null;
     refreshInterval?: number | null;
     alwaysRender?: boolean;
-    onRender?: (event: any) => void | null;
-    onDestroy?: (event: any) => void | null;
+    onRender?: (event: RenderEvent) => void | null;
+    onDestroy?: (slot: AdSlot) => void | null;
     disabled?: boolean;
     disableTracking?: boolean;
     rootMargin?: string;
@@ -48,7 +48,7 @@ function useAd(
 
     const trackAd = useAdsTracking();
     const track = useCallback(
-        (action: string, slot: AdSlot = null, renderEvent: any = null) => {
+        (action: string, slot: AdSlot = null, renderEvent: RenderEvent = null) => {
             if (!disableTracking && !globalTrackingDisabled) {
                 trackAd(action, slot, renderEvent);
             }
@@ -174,8 +174,8 @@ function useAd(
             }
             return () => {};
         }
-        const onSlotRender = (event) => {
-            const newRenderEvent = {
+        function onSlotRender({ event }: { event: googletag.events.SlotRenderEndedEvent }) {
+            const newRenderEvent: RenderEvent = {
                 ...event,
                 ...(slot !== null ? slot.getRenderedSize() : null),
                 slot,
@@ -190,7 +190,7 @@ function useAd(
             } else {
                 track('Render', slot, newRenderEvent);
             }
-        };
+        }
         slot.on('render', onSlotRender);
         return () => slot.off('render', onSlotRender);
     }, [slot, disabled, setRenderEvent, onRender, track]);
@@ -200,7 +200,7 @@ function useAd(
         if (slot === null) {
             return () => {};
         }
-        const onSlotDestroy = (destroySlot) => {
+        const onSlotDestroy = (destroySlot: AdSlot) => {
             if (onDestroy !== null) {
                 onDestroy(destroySlot);
             }

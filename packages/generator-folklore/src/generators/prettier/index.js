@@ -2,7 +2,7 @@ import chalk from 'chalk';
 
 import Generator from '../../lib/generator';
 
-module.exports = class PrettierGenerator extends Generator {
+export default class PrettierGenerator extends Generator {
     get prompting() {
         return {
             welcome() {
@@ -42,4 +42,4 @@ module.exports = class PrettierGenerator extends Generator {
 
         await this.spawnCommand('npm', ['install']);
     }
-};
+}
