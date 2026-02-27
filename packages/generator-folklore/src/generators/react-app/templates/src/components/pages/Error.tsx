@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { Link } from 'wouter';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useUrlGenerator } from '@folklore/routes';

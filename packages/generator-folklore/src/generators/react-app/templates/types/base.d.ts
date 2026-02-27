@@ -1,37 +1,37 @@
-interface IntlMessage {
+export interface IntlMessage {
     id?: string;
     defaultMessage?: string;
 }
 
-interface Labels {
+export interface Labels {
     [key: string]: string;
 }
 
-interface Theme {
+export interface Theme {
     name: string;
 }
 
-interface ImageSize {
+export interface ImageSize {
     id: string;
     url: string;
     width: number;
     height: number;
 }
 
-interface Source {
+export interface Source {
     id: string;
     mime?: string | null;
     url: string;
     size?: number | null;
 }
 
-interface Embed {
+export interface Embed {
     provider: string;
     iframeUrl?: string;
     html?: string;
 }
 
-interface Media {
+export interface Media {
     id: string;
     type: string;
     url: string;
@@ -41,23 +41,23 @@ interface Media {
     files?: Record<string, Source>;
 }
 
-interface Image extends Media, ImageSize {
+export interface Image extends Media, ImageSize {
     type: 'image';
     sizes: ImageSize[];
     credits?: string;
 }
 
-interface Audio extends Media {
+export interface Audio extends Media {
     type: 'audio';
 }
 
-interface Video extends Media {
+export interface Video extends Media {
     type: 'video';
     embed?: Embed;
     sources?: Source[];
 }
 
-interface MenuItem {
+export interface MenuItem {
     id: string;
     href: string;
     external?: boolean;
@@ -65,7 +65,7 @@ interface MenuItem {
     icon?: ReactNode;
 }
 
-interface Page {
+export interface Page {
     id: string;
     title?: string | null;
     slug?: string | null;
@@ -74,7 +74,7 @@ interface Page {
     image?: Image | null;
 }
 
-interface User {
+export interface User {
     id: string;
 }
 

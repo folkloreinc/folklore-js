@@ -1,4 +1,4 @@
-import React from 'react';
+import { StrictMode, createElement } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import App from './components/App';
@@ -10,8 +10,8 @@ function getAppProps() {
 
 function renderApp(props) {
     const element = document.getElementById('app');
-    const app = React.createElement(App, props);
-    const strictMode = React.createElement(React.StrictMode, {}, app);
+    const app = createElement(App, props);
+    const strictMode = createElement(StrictMode, {}, app);
     const root = createRoot(element);
     root.render(strictMode);
 }

@@ -1,4 +1,4 @@
-interface BaseField {
+export interface BaseField {
     name: string;
     type: string;
     component?: string;
@@ -7,49 +7,49 @@ interface BaseField {
     image?: Image | null;
 }
 
-interface FieldOption {
+export interface FieldOption {
     value: string;
     label: string;
 }
 
-interface OptionsField extends BaseField {
+export interface OptionsField extends BaseField {
     type: 'options';
     options: FieldOption[];
     multiple?: boolean;
 }
 
-interface ButtonsField extends OptionsField {
+export interface ButtonsField extends OptionsField {
     type: 'buttons';
 }
 
-interface SelectField extends OptionsField {
+export interface SelectField extends OptionsField {
     type: 'select';
 }
 
-interface TextField extends BaseField {
+export interface TextField extends BaseField {
     type: 'text';
 }
 
-type FormBaseField = OptionsField | TextField | BaseField;
+export type FormBaseField = OptionsField | TextField | BaseField;
 
-interface GroupField extends BaseField {
+export interface GroupField extends BaseField {
     type: 'group';
     fields: FormBaseField[];
 }
 
-type FormField = FormBaseField | GroupField;
+export type FormField = FormBaseField | GroupField;
 
-interface Form {
+export interface Form {
     id: string;
     title?: string;
     fields: FormField[];
 }
 
-interface FormErrors {
+export interface FormErrors {
     [fieldName: string]: string[] | null;
 }
 
-interface FormSnippet {
+export interface FormSnippet {
     id: string;
     title?: string;
 }

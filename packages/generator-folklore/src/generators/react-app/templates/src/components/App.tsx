@@ -1,4 +1,4 @@
-import { RoutesProvider } from '@folklore/routes';
+import { RoutesMap, RoutesProvider } from '@folklore/routes';
 import { IntlProvider } from 'react-intl';
 import { Router } from 'wouter';
 
@@ -9,7 +9,7 @@ interface AppProps {
         locale?: string;
         messages?: Record<string, Record<string, string>> | Record<string, string>;
     } | null;
-    routes?: Record<string, string>;
+    routes?: RoutesMap;
 }
 
 function App({ intl = null, routes = { home: '/' } }: AppProps) {

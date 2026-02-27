@@ -1,16 +1,12 @@
-/* eslint-disable react/button-has-type */
 import { ReactNode, MouseEvent } from 'react';
 import classNames from 'classnames';
 import { Link } from 'wouter';
 
+import { IntlMessage } from '../../types';
+
 import styles from '<%= getRelativeStylesPath('components/buttons/Button.jsx', 'buttons/button.module.css') %>';
 
-interface Message {
-    id: string;
-    defaultMessage?: string;
-}
-
-type Label = Message | ReactNode;
+type Label = IntlMessage | ReactNode;
 
 interface ButtonProps {
     text?: string | null;

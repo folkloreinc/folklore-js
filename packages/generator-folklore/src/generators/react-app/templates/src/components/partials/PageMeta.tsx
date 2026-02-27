@@ -1,4 +1,3 @@
-/* eslint-disable react/no-array-index-key */
 import { Helmet } from 'react-helmet';
 import { useIntl } from 'react-intl';
 

@@ -1,16 +1,10 @@
-/* eslint-disable react/no-array-index-key */
 import classNames from 'classnames';
 import { Link } from 'wouter';
 
+import { MenuItem } from '../../types';
+
 import styles from '<%= getRelativeStylesPath('components/menus/Menu.jsx', 'menus/menu.module.css') %>';
 
-interface MenuItem {
-    label: string;
-    url: string;
-    active?: boolean;
-    external?: boolean;
-    target?: string;
-}
 
 interface MenuProps {
     items?: MenuItem[];

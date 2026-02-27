@@ -1,13 +1,23 @@
 /* globals GOOGLE_API_KEY: true */
-import React, { useContext } from 'react';
+import { useContext, createContext, ReactNode } from 'react';
 
-const KeysContext = React.createContext({
+type KeysContextType = {
+    googleApiKey?: string | null;
+    [key: string]: unknown;
+};
+
+const KeysContext = createContext<KeysContextType>({
     googleApiKey: typeof GOOGLE_API_KEY !== 'undefined' ? GOOGLE_API_KEY : null,
 });
 
 export const useKeys = () => useContext(KeysContext);
 
-export const KeysProvider = ({ children = null, keys = null }: { children: React.ReactNode, keys: object | null }) => (
+interface KeysProviderProps {
+    children: ReactNode;
+    keys: KeysContextType | null;
+}
+
+export const KeysProvider = ({ children = null, keys = null }: KeysProviderProps) => (
     <KeysContext.Provider value={keys}>{children}</KeysContext.Provider>
 );
 

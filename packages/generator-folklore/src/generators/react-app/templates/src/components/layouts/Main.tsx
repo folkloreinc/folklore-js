@@ -1,6 +1,12 @@
+import { ReactNode } from 'react';
+
 import styles from '<%= getRelativeStylesPath('components/layouts/Main.jsx', 'layouts/main.module.css') %>';
 
-function MainLayout({ children = null }: { children: React.ReactNode }) {
+interface MainLayoutProps {
+    children: ReactNode;
+}
+
+function MainLayout({ children = null }: MainLayoutProps) {
     return (
         <div className={styles.container}>
             <div className={styles.inner}>

@@ -1,22 +1,22 @@
-interface Microformat {
+export interface Microformat {
     '@context': string;
     '@type': string;
     identifier: string;
     [key: string]: unknown;
 }
 
-interface Taxonomy {
+export interface Taxonomy {
     id: string;
     type: string;
     label: string;
     slug: string;
 }
 
-interface Category extends Taxonomy {
+export interface Category extends Taxonomy {
     type: 'category';
 }
 
-interface Author {
+export interface Author {
     id: string;
     slug: string;
     name: string;
@@ -24,13 +24,13 @@ interface Author {
     isPerson?: boolean;
 }
 
-interface Credit {
+export interface Credit {
     author?: Author | null;
     name?: string | null;
     role?: string;
 }
 
-interface Organisation {
+export interface Organisation {
     id: string;
     name: string;
 }
