@@ -3,7 +3,7 @@ type NavigatorWithMsTouch = Navigator & {
 };
 
 export default function isTouchScreen(): boolean | null {
-    if (typeof navigator === 'undefined') {
+    if (typeof window === 'undefined' || typeof navigator === 'undefined') {
         return null;
     }
     const typedNavigator = navigator as NavigatorWithMsTouch;
