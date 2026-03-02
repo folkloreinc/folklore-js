@@ -1,6 +1,6 @@
 {
     "name": "@folklore/user-media",
-    "version": "0.1.23",
+    "version": "0.1.24",
     "description": "getUserMedia utilities",
     "keywords": [
         "javascript",
@@ -39,11 +39,11 @@
     },
     "dependencies": {
         "@babel/runtime": "^7.4.3",
+        "@folklore/events": "^0.0.11",
         "debug": "^3.1.0",
         "es6-promise": "^4.2.2",
         "lodash": "^4.17.4",
-        "msr": "^1.3.4",
-        "@folklore/events": "^0.0.10"
+        "msr": "^1.3.4"
     },
     "gitHead": "03cdca76413a59fe6bf04ca04e12db6f9e3aad5e"
 }
