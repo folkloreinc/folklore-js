@@ -30,7 +30,7 @@ function SocketContainer({
     publishKey = null,
     subscribeKey = null,
     secretKey = null,
-    channels: initialChannels = [],
+    channels: initialChannels,
     ...props
 }: SocketContainerProps): JSX.Element {
     const finalSocket = useMemo(
@@ -105,11 +105,11 @@ function SocketContainer({
     );
 
     useEffect(() => {
-        subscribe(initialChannels);
+        subscribe(initialChannels || []);
         return () => {
-            unsubscribe(initialChannels);
+            unsubscribe(initialChannels || []);
         };
-    }, [initialChannels, subscribe, unsubscribe]);
+    }, [initialChannels || [], subscribe, unsubscribe]);
 
     useEffect(() => {
         finalSocket.init();
