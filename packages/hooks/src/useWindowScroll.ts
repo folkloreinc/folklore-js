@@ -22,8 +22,11 @@ function getWindowScroll(): WindowScroll {
 
 let currentScroll = null;
 
-export default function useWindowScroll(opts: UseWindowScrollOptions = null): WindowScroll {
-    const { onChange = null, onMount = false, memo = false } = opts || {};
+export default function useWindowScroll({
+    onChange = null,
+    onMount = false,
+    memo = false,
+}: UseWindowScrollOptions = {}): WindowScroll {
     const [scroll, setScroll] = useState(() => (onMount ? getWindowScroll() : { x: 0, y: 0 }));
     const scrollRef = useRef(scroll);
     if (currentScroll === null && memo) {

@@ -22,8 +22,11 @@ export function getWindowSize(): WindowSize {
 
 let currentSize = null;
 
-export default function useWindowSize(opts: UseWindowSizeOptions = null): WindowSize {
-    const { onChange = null, onMount = false, memo = false } = opts || {};
+export default function useWindowSize({
+    onChange = null,
+    onMount = false,
+    memo = false,
+}: UseWindowSizeOptions = {}): WindowSize {
     const [size, setSize] = useState(() =>
         onMount
             ? getWindowSize()

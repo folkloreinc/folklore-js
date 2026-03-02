@@ -1,11 +1,7 @@
-import { EventsManager } from '@folklore/events';
+import { EventsManager, type NormalizedEventsMap } from '@folklore/events';
 import { useEffect } from 'react';
 
-type EventsMap<T> = {
-    [K in keyof T]: T[K];
-};
-
-type WindowEventsMap = EventsMap<WindowEventMap>;
+type WindowEventsMap = NormalizedEventsMap<WindowEventMap>;
 
 export const eventsManager =
     typeof window !== 'undefined' ? new EventsManager<WindowEventsMap>(window) : null;

@@ -5,22 +5,23 @@ import EventEmitter, { EventsMap } from './EventEmitter';
 export const passiveEvents = ['scroll', 'touchstart', 'touchend', 'touchmove'];
 
 type Callback<Payload = unknown> = (payload: Payload) => void;
-type ListenersByEvent<TEvents extends EventsMap> = Record<
-    keyof TEvents,
-    Callback<TEvents[keyof TEvents]>[]
->;
-type UniqueListenersByEvent<TEvents extends EventsMap> = Record<
-    keyof TEvents,
-    Callback<TEvents[keyof TEvents]>
->;
+type ListenersByEvent<TEvents extends EventsMap> = {
+    [Event in keyof TEvents]: Callback<TEvents[Event]>[];
+};
+type UniqueListenersByEvent<TEvents extends EventsMap> = {
+    [Event in keyof TEvents]: Callback<TEvents[Event]>;
+};
 
 type EventTargetLike<TEvents extends EventsMap> = {
-    addEventListener: (
-        event: keyof TEvents,
-        listener: Callback<TEvents[keyof TEvents]>,
+    addEventListener: <Event extends keyof TEvents>(
+        event: Event,
+        listener: Callback<TEvents[Event]>,
         options?: { passive?: boolean } | boolean,
     ) => void;
-    removeEventListener: (event: keyof TEvents, listener: Callback<TEvents[keyof TEvents]>) => void;
+    removeEventListener: <Event extends keyof TEvents>(
+        event: Event,
+        listener: Callback<TEvents[Event]>,
+    ) => void;
 };
 
 class EventsManager<TEvents extends EventsMap = EventsMap> extends EventEmitter<TEvents> {

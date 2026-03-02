@@ -1,11 +1,7 @@
-import { EventsManager } from '@folklore/events';
+import { EventsManager, type NormalizedEventsMap } from '@folklore/events';
 import { useEffect } from 'react';
 
-type EventsMap<T> = {
-    [K in keyof T]: T[K];
-};
-
-type DocumentEventsMap = EventsMap<DocumentEventMap>;
+type DocumentEventsMap = NormalizedEventsMap<DocumentEventMap>;
 
 export const eventsManager =
     typeof document !== 'undefined' ? new EventsManager<DocumentEventsMap>(document) : null;

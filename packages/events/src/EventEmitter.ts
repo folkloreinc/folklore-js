@@ -1,5 +1,9 @@
 import mitt, { Emitter } from 'mitt';
 
+export type NormalizedEventsMap<Events> = {
+    [Event in keyof Events]: Events[Event];
+};
+
 export type EventsMap = Record<string, unknown>;
 
 class EventEmitter<TEvents extends EventsMap = EventsMap> {

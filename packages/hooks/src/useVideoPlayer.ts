@@ -25,26 +25,29 @@ type UseVideoPlayerOptions = (
     [key: string]: unknown;
 };
 
-export default function useVideoPlayer(opts: UseVideoPlayerOptions = {}): VideoPlayer | null {
-    const {
-        service = null,
-        videoId = null,
-        url = null,
-        onLoaded: customOnLoaded = null,
-        onPlay: customOnPlay = null,
-        onPause: customOnPause = null,
-        onEnd: customOnEnd = null,
-        onMetadataChange: customOnMetadataChange = null,
-        onBufferStart: customOnBufferStart = null,
-        onBufferEnded: customOnBufferEnded = null,
-    } = opts || {};
+export default function useVideoPlayer({
+    service = null,
+    videoId = null,
+    url = null,
+    onLoaded: customOnLoaded = null,
+    onPlay: customOnPlay = null,
+    onPause: customOnPause = null,
+    onEnd: customOnEnd = null,
+    onMetadataChange: customOnMetadataChange = null,
+    onBufferStart: customOnBufferStart = null,
+    onBufferEnded: customOnBufferEnded = null,
+    ...opts
+}: UseVideoPlayerOptions = {}): VideoPlayer | null {
     const dailymotionPlayer = useDailymotionPlayer(
         service === 'dailymotion' ? videoId || url : null,
         opts,
     );
     const youtubePlayer = useYouTubePlayer(service === 'youtube' ? videoId || url : null, opts);
     const vimeoPlayer = useVimeoPlayer(service === 'vimeo' ? videoId || url : null, opts);
-    const nativePlayer = useNativeVideoPlayer(url, opts);
+    const nativePlayer = useNativeVideoPlayer(
+        ['dailymotion', 'youtube', 'vimeo'].indexOf(service) === -1 ? url : null,
+        opts,
+    );
 
     let player: VideoPlayer | null = null;
     if (service === 'dailymotion') {
