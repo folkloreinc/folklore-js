@@ -109,7 +109,7 @@ function SocketContainer({
         return () => {
             unsubscribe(initialChannels || []);
         };
-    }, [initialChannels || [], subscribe, unsubscribe]);
+    }, [initialChannels, subscribe, unsubscribe]);
 
     useEffect(() => {
         finalSocket.init();
