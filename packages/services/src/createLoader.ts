@@ -26,10 +26,7 @@ const createLoader = (loader, getLibrary = null) => {
 
             loading = true;
             loader(...args).then((newLibrary = null) => {
-                loadedLibrary = newLibrary;
-                if (loadedLibrary === null && getLibrary !== null) {
-                    loadedLibrary = getLibrary(...args);
-                }
+                loadedLibrary = (getLibrary !== null ? getLibrary(...args) : null) || newLibrary;
                 loaded = true;
                 resolve(loadedLibrary);
                 events.emit('loaded', loadedLibrary);
