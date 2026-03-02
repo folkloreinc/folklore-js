@@ -25,7 +25,7 @@ interface AppProps {
     micromags?: MicromagItem[] | null;
 }
 
-function App({ intl = null, routes = {}, micromags = defaultMicromags, googleAnalyticsIds }: AppProps) {
+function App({ intl = null, routes, micromags = defaultMicromags, googleAnalyticsIds }: AppProps) {
     const { locale = 'fr', messages = null } = intl || {};
     const finalMessages = messages !== null && messages[locale] ? messages[locale] : messages;
 

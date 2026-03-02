@@ -11,7 +11,7 @@ interface MenuProps {
     className?: string | null;
 }
 
-function Menu({ items = [], className = null }: MenuProps) {
+function Menu({ items = null, className = null }: MenuProps) {
     return (
         <nav
             className={classNames([
@@ -22,7 +22,7 @@ function Menu({ items = [], className = null }: MenuProps) {
             ])}
         >
             <ul className={styles.items}>
-                {items.map(({ label, url, active = false, external = false, target = '_blank' }, index) => (
+                {(items || []).map(({ label, url, active = false, external = false, target = '_blank' }, index) => (
                     <li
                         className={classNames([
                             styles.item,
@@ -47,7 +47,5 @@ function Menu({ items = [], className = null }: MenuProps) {
         </nav>
     );
 }
-
-Menu.propTypes = propTypes;
 
 export default Menu;
