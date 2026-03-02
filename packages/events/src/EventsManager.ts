@@ -1,43 +1,42 @@
 import { supportsPassiveEvents } from 'detect-passive-events';
-import { EventType } from 'mitt';
 
-import EventEmitter from './EventEmitter';
+import EventEmitter, { EventsMap } from './EventEmitter';
 
 export const passiveEvents = ['scroll', 'touchstart', 'touchend', 'touchmove'];
 
-type EventCallback = (...args: unknown[]) => void;
-type ListenerCallback<Payload> = (payload: Payload) => void;
-type ListenersByEvent = Record<string, EventCallback[]>;
-type NativeListenersByEvent<TEvents extends Record<EventType, unknown>> = Record<
-    EventType,
-    ListenerCallback<TEvents[EventType]>
+type Callback<Payload = unknown> = (payload: Payload) => void;
+type ListenersByEvent<TEvents extends EventsMap> = Record<
+    keyof TEvents,
+    Callback<TEvents[keyof TEvents]>[]
+>;
+type UniqueListenersByEvent<TEvents extends EventsMap> = Record<
+    keyof TEvents,
+    Callback<TEvents[keyof TEvents]>
 >;
 
-type EventTargetLike = {
+type EventTargetLike<TEvents extends EventsMap> = {
     addEventListener: (
-        event: string,
-        listener: EventCallback,
-        options?: AddEventListenerOptions | boolean,
+        event: keyof TEvents,
+        listener: Callback<TEvents[keyof TEvents]>,
+        options?: { passive?: boolean } | boolean,
     ) => void;
-    removeEventListener: (event: string, listener: EventCallback) => void;
+    removeEventListener: (event: keyof TEvents, listener: Callback<TEvents[keyof TEvents]>) => void;
 };
 
-class EventsManager<
-    TEvents extends Record<EventType, unknown> = Record<EventType, unknown>,
-> extends EventEmitter<TEvents> {
-    element: EventTargetLike;
-    events: ListenersByEvent;
-    listeners: NativeListenersByEvent<TEvents>;
+class EventsManager<TEvents extends EventsMap = EventsMap> extends EventEmitter<TEvents> {
+    element: EventTargetLike<TEvents>;
+    events: ListenersByEvent<TEvents> | null;
+    listeners: UniqueListenersByEvent<TEvents>;
 
-    constructor(element: EventTargetLike) {
+    constructor(element: EventTargetLike<TEvents>) {
         super();
 
         this.element = element;
-        this.events = {};
-        this.listeners = {};
+        this.events = {} as ListenersByEvent<TEvents>;
+        this.listeners = {} as UniqueListenersByEvent<TEvents>;
     }
 
-    subscribe(event: string, callback: EventCallback): void {
+    subscribe<Event extends keyof TEvents>(event: Event, callback: Callback<TEvents[Event]>): void {
         this.on(event, callback);
 
         this.events = {
@@ -50,7 +49,10 @@ class EventsManager<
         }
     }
 
-    unsubscribe(event: string, callback: EventCallback): void {
+    unsubscribe<Event extends keyof TEvents>(
+        event: Event,
+        callback: Callback<TEvents[Event]>,
+    ): void {
         this.off(event, callback);
 
         this.events = Object.keys(this.events).reduce((newEvents, eventName) => {
@@ -67,20 +69,22 @@ class EventsManager<
                       [eventName]: newListeners,
                   }
                 : newEvents;
-        }, {} as ListenersByEvent);
+        }, {} as ListenersByEvent<TEvents>);
 
         if (typeof this.events[event] === 'undefined') {
             this.removeEventListener(event);
         }
     }
 
-    addEventListener(event: string): void {
+    addEventListener<Event extends keyof TEvents>(event: Event): void {
         if (typeof this.listeners[event] === 'undefined') {
             this.listeners[event] = (payload) => this.emit(event, payload);
         }
-        const needsPassive = passiveEvents.indexOf(event) !== -1;
+        const needsPassive = passiveEvents.indexOf(event as string) !== -1;
         if (needsPassive && supportsPassiveEvents === true) {
-            this.element.addEventListener(event, this.listeners[event], { passive: true });
+            this.element.addEventListener(event, this.listeners[event], {
+                passive: true,
+            });
             return;
         }
         if (needsPassive && supportsPassiveEvents === false) {
@@ -90,7 +94,7 @@ class EventsManager<
         this.element.addEventListener(event, this.listeners[event]);
     }
 
-    removeEventListener(event: string): void {
+    removeEventListener<Event extends keyof TEvents>(event: Event): void {
         this.element.removeEventListener(event, this.listeners[event]);
     }
 }

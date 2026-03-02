@@ -11,7 +11,7 @@ export default function useItems(
         onError = null,
     },
 ) {
-    const lastState = useRef(null);
+    const lastStateRef = useRef(null);
     const initialState = useMemo(
         () => ({
             total: (providedItems || []).length,
@@ -65,8 +65,8 @@ export default function useItems(
     };
 
     useEffect(() => {
-        const hadState = lastState.current !== null;
-        lastState.current = initialState;
+        const hadState = lastStateRef.current !== null;
+        lastStateRef.current = initialState;
         if (hadState) {
             setState(initialState);
         }
@@ -113,7 +113,7 @@ export const useItemsPaginated = (
         query = null,
     } = {},
 ) => {
-    const lastState = useRef(null);
+    const lastStateRef = useRef(null);
     const initialState = useMemo(() => {
         const finalInitialPages =
             initialPages !== null ? initialPages.map((it) => getPageFromResponse(it)) : null;
@@ -248,7 +248,7 @@ export const useItemsPaginated = (
 
     // Reset all on query change
     useEffect(() => {
-        const hadState = lastState.current !== null;
+        const hadState = lastStateRef.current !== null;
         if (hadState) {
             currentPagesRef.current = null;
             updateState({
@@ -262,8 +262,8 @@ export const useItemsPaginated = (
     }, [query]);
 
     useEffect(() => {
-        const hadState = lastState.current !== null;
-        lastState.current = initialState;
+        const hadState = lastStateRef.current !== null;
+        lastStateRef.current = initialState;
         if (hadState) {
             currentPagesRef.current = initialState.pages;
             setState(initialState);

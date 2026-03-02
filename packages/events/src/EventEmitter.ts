@@ -1,6 +1,8 @@
-import mitt, { Emitter, EventType } from 'mitt';
+import mitt, { Emitter } from 'mitt';
 
-class EventEmitter<TEvents extends Record<EventType, unknown> = Record<EventType, unknown>> {
+export type EventsMap = Record<string, unknown>;
+
+class EventEmitter<TEvents extends EventsMap = EventsMap> {
     mitt: Emitter<TEvents>;
 
     constructor() {
