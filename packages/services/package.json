@@ -1,6 +1,6 @@
 {
     "name": "@folklore/services",
-    "version": "0.1.45",
+    "version": "0.1.46",
     "description": "External services utilities",
     "keywords": [
         "javascript",
@@ -47,7 +47,7 @@
     },
     "dependencies": {
         "@babel/runtime": "^7.4.3",
-        "@folklore/events": "^0.0.11",
+        "@folklore/events": "^0.0.12",
         "@vimeo/player": "^2.16.4",
         "es6-promise": "^4.2.2",
         "lodash": "^4.17.4",
