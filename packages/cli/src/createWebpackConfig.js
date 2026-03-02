@@ -7,7 +7,7 @@ import isString from 'lodash/isString';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import getCSSModuleLocalIdent from 'react-dev-utils/getCSSModuleLocalIdent';
-import { webpack } from 'webpack';
+import webpack from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
 import { merge } from 'webpack-merge';
