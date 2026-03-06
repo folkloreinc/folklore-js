@@ -2,7 +2,7 @@ export * as PropTypes from './propTypes';
 export { default as Ad } from './Ad';
 export { default as RichAd } from './RichAd';
 export * from './AdsContext';
-export { default as AdSlot } from './AdSlot';
+export { default as AdSlot, type RenderEvent } from './AdSlot';
 export { default as AdsManager } from './AdsManager';
 export * from './AdsTargetingContext';
 export * from './defaults';
