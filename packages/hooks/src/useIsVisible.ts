@@ -6,7 +6,7 @@ type UseIsVisibleOptions = UseInterserctionObserverOptions & {
     persist?: boolean;
 };
 
-export function useIsVisible({ persist = false, ...opts }: UseIsVisibleOptions = {}) {
+export default function useIsVisible({ persist = false, ...opts }: UseIsVisibleOptions = {}) {
     const {
         ref,
         entry: { isIntersecting },
