@@ -1,24 +1,27 @@
 import { useRef } from 'react';
 
-import { useIntersectionObserver } from './useObserver';
+import { type UseInterserctionObserverOptions, useIntersectionObserver } from './useObserver';
 
-function useIsVisible({ persist = false, ...opts } = {}) {
+type UseIsVisibleOptions = UseInterserctionObserverOptions & {
+    persist?: boolean;
+};
+
+export function useIsVisible({ persist = false, ...opts }: UseIsVisibleOptions = {}) {
     const {
         ref,
         entry: { isIntersecting },
     } = useIntersectionObserver(opts);
+    const dummyRef = useRef(null);
 
-    const wasIntersecting = useRef(isIntersecting);
-    if (isIntersecting && !wasIntersecting.current) {
-        wasIntersecting.current = isIntersecting;
+    const wasIntersectingRef = useRef(isIntersecting);
+    if (isIntersecting && !wasIntersectingRef.current) {
+        wasIntersectingRef.current = isIntersecting;
     }
 
-    const isVisible = (!persist && isIntersecting) || (persist && wasIntersecting.current);
+    const isVisible = (!persist && isIntersecting) || (persist && wasIntersectingRef.current);
 
     return {
-        ref: !persist || !isVisible ? ref : { current: null },
+        ref: !persist || !isVisible ? ref : dummyRef,
         visible: isVisible,
     };
 }
-
-export default useIsVisible;

@@ -172,7 +172,7 @@ export function useObserver<TOptions = UseObserverOptions, TEntry = Record<strin
  * Intersection Observer
  */
 
-type UseInterserctionObserverOptions = IntersectionObserverInit & UseObserverOptions;
+export type UseInterserctionObserverOptions = IntersectionObserverInit & UseObserverOptions;
 
 const defaultThreshold = [0, 1.0];
 const intersectionObserverInitialEntry = {
