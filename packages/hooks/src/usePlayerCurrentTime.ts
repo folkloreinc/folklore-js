@@ -1,22 +1,41 @@
 import { useEffect, useRef, useState } from 'react';
 
-export default function usePlayerCurrentTime(
-    player,
+import { VideoPlayer } from './videoPlayer';
+
+type Player = HTMLVideoElement | HTMLAudioElement | VideoPlayer;
+
+type UsePlayerCurrentTimeOptions<P> = {
+    id?: string | number | null;
+    disabled?: boolean;
+    updateInterval?: number;
+    onUpdate?: (time: number) => void;
+    getCurrentTime?: (player: P) => number | Promise<number>;
+};
+
+function defaultGetCurrentTime(player) {
+    if (typeof player.currentTime === 'number') {
+        return player.currentTime;
+    }
+    return 0;
+}
+
+export default function usePlayerCurrentTime<P = Player>(
+    player: P | null,
     {
         id = null,
         disabled = false,
         updateInterval = 1000,
         onUpdate: customOnUpdate = null,
-        getCurrentTime = (p) => p.currentTime,
-    } = {},
-) {
+        getCurrentTime = defaultGetCurrentTime,
+    }: UsePlayerCurrentTimeOptions<P> = {},
+): number {
     const [currentTime, setCurrentTime] = useState(0);
-    const realCurrentTime = useRef(currentTime);
+    const realCurrentTimeRef = useRef(currentTime);
 
     const lastIdRef = useRef(id);
     const idChanged = lastIdRef.current !== id;
     if (idChanged) {
-        realCurrentTime.current = 0;
+        realCurrentTimeRef.current = 0;
         lastIdRef.current = id;
     }
 
@@ -30,7 +49,7 @@ export default function usePlayerCurrentTime(
             if (canceled) {
                 return;
             }
-            realCurrentTime.current = time;
+            realCurrentTimeRef.current = time;
             setCurrentTime(time);
 
             if (customOnUpdate !== null) {
@@ -39,7 +58,7 @@ export default function usePlayerCurrentTime(
         };
         const interval = setInterval(() => {
             const time = getCurrentTime(player);
-            if (typeof time.then !== 'undefined') {
+            if (typeof time === 'object' && typeof time.then === 'function') {
                 time.then(updateTime);
             } else {
                 updateTime(time);
@@ -51,5 +70,5 @@ export default function usePlayerCurrentTime(
         };
     }, [id, player, setCurrentTime, disabled, updateInterval, getCurrentTime]);
 
-    return realCurrentTime.current;
+    return realCurrentTimeRef.current;
 }

@@ -1,6 +1,5 @@
 import { EventEmitter } from '@folklore/events';
 import createDebug from 'debug';
-import { Promise } from 'es6-promise';
 import MediaStreamRecorder from 'msr';
 
 import dataUriToBlob from './dataUriToBlob';

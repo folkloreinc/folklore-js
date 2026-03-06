@@ -48,7 +48,6 @@
     "dependencies": {
         "@babel/runtime": "^7.4.3",
         "@folklore/events": "^0.0.12",
-        "es6-promise": "^4.2.2",
         "js-cookie": "^2.2.0",
         "lodash": "^4.17.4"
     },

@@ -1,19 +1,29 @@
+import isFunction from 'lodash/isFunction';
 import { useCallback } from 'react';
 
 import useWindowEvent from './useWindowEvent';
 
-export default function useKeyboard(keyMap = null) {
+type KeyMap =
+    | Record<
+          string,
+          | ((event: KeyboardEvent) => void)
+          | {
+                down?: (event: KeyboardEvent) => void;
+                up?: (event: KeyboardEvent) => void;
+            }
+      >
+    | ((event: KeyboardEvent) => void)
+    | null;
+
+export default function useKeyboard(keyMap: KeyMap = null) {
     const onKeyDown = useCallback(
-        (event) => {
+        (event: KeyboardEvent) => {
             const { key } = event;
             let callback = null;
-            if (typeof keyMap === 'function') {
+            if (isFunction(keyMap)) {
                 callback = keyMap;
             } else if (typeof keyMap[key] !== 'undefined') {
-                callback =
-                    typeof keyMap[key] === 'function'
-                        ? keyMap[key]
-                        : (keyMap[key] || {}).down || null;
+                callback = isFunction(keyMap[key]) ? keyMap[key] : (keyMap[key] || {}).down || null;
             }
             if (callback !== null) {
                 callback(event);
@@ -22,16 +32,13 @@ export default function useKeyboard(keyMap = null) {
         [keyMap],
     );
     const onKeyUp = useCallback(
-        (event) => {
+        (event: KeyboardEvent) => {
             const { key } = event;
             let callback = null;
-            if (typeof keyMap === 'function') {
+            if (isFunction(keyMap)) {
                 callback = keyMap;
             } else if (typeof keyMap[key] !== 'undefined') {
-                callback =
-                    typeof keyMap[key] === 'function'
-                        ? keyMap[key]
-                        : (keyMap[key] || {}).up || null;
+                callback = isFunction(keyMap[key]) ? keyMap[key] : (keyMap[key] || {}).up || null;
             }
             if (callback !== null) {
                 callback(event);
