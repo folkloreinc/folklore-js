@@ -11,8 +11,10 @@ export interface Viewports {
     [name: string]: Viewport;
 }
 
+export type SlotSizeMapping = Record<string, AdSize[]> | boolean | AdSizeMapping[];
+
 export interface SlotDefinition {
-    sizeMapping?: Record<string, AdSize[]> | boolean | null | AdSizeMapping[] | null;
+    sizeMapping?: SlotSizeMapping | null;
     size?: AdSize[];
     path?: string | null;
 }
