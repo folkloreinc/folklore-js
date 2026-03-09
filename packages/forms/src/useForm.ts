@@ -22,10 +22,7 @@ type RequestState = {
     error: boolean;
 };
 
-export interface FormPostData {
-    _token?: string;
-    [key: string]: unknown;
-}
+export type FormPostData = Record<string, unknown>;
 
 // prettier-ignore
 function getFieldsPropsFromFields(fields: FieldDefinition[], {
@@ -173,10 +170,10 @@ function useForm<TResponse = unknown, TData extends FormPostData = FormPostData>
     };
 
     const finalPostForm = useCallback(
-        (postAction: string | null, postData: FormPostData) =>
+        (postAction: string | null, postData: TData) =>
             postForm !== null
                 ? postForm(postAction, postData)
-                : postJSON(postAction, postData, {
+                : postJSON<TResponse, TData>(postAction, postData, {
                       credentials: 'include',
                       headers: getCSRFHeaders({
                           csrfMetaName,
@@ -197,7 +194,7 @@ function useForm<TResponse = unknown, TData extends FormPostData = FormPostData>
             setErrors(null);
 
             finalPostForm(action, {
-                ...(submitValue || {}),
+                ...((submitValue || {}) as TData),
                 _token: getCsrfToken(),
             })
                 .then(onSubmitSuccess)
