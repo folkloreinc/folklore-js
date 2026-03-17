@@ -42,6 +42,15 @@ export default class TypescriptGenerator extends Generator {
             dependencies() {
                 this.addDevDependencies({
                     '@tsconfig/create-react-app': '^2.0.9',
+                    '@types/facebook-js-sdk': '^3.3.12',
+                    '@types/jest': '^30.0.0',
+                    '@types/json-stable-stringify': '^1.2.0',
+                    '@types/lodash': '^4.17.24',
+                    '@types/minimatch': '^6.0.0',
+                    '@types/node': '^25.0.3',
+                    '@types/react': '^19.2.7',
+                    '@types/react-dom': '^19.2.3',
+                    'typescript-plugin-css-modules': '^5.2.0',
                 });
             },
         };

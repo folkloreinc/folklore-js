@@ -1,37 +1,39 @@
-export interface IntlMessage {
+type ReactNode = import('react').ReactNode;
+
+interface IntlMessage {
     id?: string;
     defaultMessage?: string;
 }
 
-export interface Labels {
+interface Labels {
     [key: string]: string;
 }
 
-export interface Theme {
+interface Theme {
     name: string;
 }
 
-export interface ImageSize {
+interface ImageSize {
     id: string;
     url: string;
     width: number;
     height: number;
 }
 
-export interface Source {
+interface Source {
     id: string;
     mime?: string | null;
     url: string;
     size?: number | null;
 }
 
-export interface Embed {
+interface Embed {
     provider: string;
     iframeUrl?: string;
     html?: string;
 }
 
-export interface Media {
+interface Media {
     id: string;
     type: string;
     url: string;
@@ -41,31 +43,33 @@ export interface Media {
     files?: Record<string, Source>;
 }
 
-export interface Image extends Media, ImageSize {
+interface Image extends Media, ImageSize {
     type: 'image';
     sizes: ImageSize[];
     credits?: string;
 }
 
-export interface Audio extends Media {
+interface Audio extends Media {
     type: 'audio';
 }
 
-export interface Video extends Media {
+interface Video extends Media {
     type: 'video';
     embed?: Embed;
     sources?: Source[];
 }
 
-export interface MenuItem {
+interface MenuItem {
     id: string;
-    href: string;
+    url: string;
+    active?: boolean;
     external?: boolean;
+    target?: string;
     label?: string | ReactNode;
     icon?: ReactNode;
 }
 
-export interface Page {
+interface Page {
     id: string;
     title?: string | null;
     slug?: string | null;
@@ -74,7 +78,8 @@ export interface Page {
     image?: Image | null;
 }
 
-export interface User {
+interface User {
     id: string;
+    [key: string]: unknown;
 }
 

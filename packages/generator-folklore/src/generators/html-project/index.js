@@ -126,6 +126,11 @@ export default class HTMLProjectGenerator extends Generator {
             quiet: true,
         });
 
+        this.composeWith('folklore:postcss', {
+            quiet: true,
+            'skip-install': true,
+        });
+
         this.composeWith('folklore:svgo', {
             quiet: true,
             'skip-install': true,
@@ -165,18 +170,11 @@ export default class HTMLProjectGenerator extends Generator {
             });
         }
 
-        console.log(
-            srcPath,
-            jsSrcPath,
-            path.join(jsSrcPath, 'index.js'),
-            path.join(srcPath, 'index.html.ejs'),
-        );
-
         this.log('merging with folklore build');
 
         this.composeWith('folklore:build', {
             'src-path': srcPath,
-            'entry-path': path.join(jsSrcPath, 'index.js'),
+            'entry-path': path.join(jsSrcPath, 'index.ts'),
             'html-path': path.join(srcPath, 'index.html.ejs'),
             'build-path': destPath,
             'empty-path': destPath,

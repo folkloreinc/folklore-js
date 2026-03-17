@@ -87,8 +87,8 @@ export default class ReactAppGenerator extends Generator {
             index() {
                 const jsPath = this.options.path;
                 this.fs.copyTpl(
-                    this.templatePath('index.js'),
-                    this.destinationPath(path.join(jsPath, 'index.js')),
+                    this.templatePath('index.ts'),
+                    this.destinationPath(path.join(jsPath, 'index.ts')),
                 );
             },
 
@@ -122,19 +122,19 @@ export default class ReactAppGenerator extends Generator {
 
             dependencies() {
                 this.addDependencies({
-                    react: '^18.3.1',
-                    'react-dom': '^18.3.1',
-                    'react-intl': '^7.1.1',
+                    react: '^19.2.0',
+                    'react-dom': '^19.2.0',
+                    'react-intl': '^10.0.0',
                     wouter: '^3.7.1',
-                    'react-helmet': '^6.1.0',
                     classnames: '^2.5.1',
 
-                    '@folklore/routes': '^0.2.43',
-                    '@folklore/fonts': '^0.0.16',
-                    '@folklore/forms': '^0.0.29',
-                    '@folklore/fetch': '^0.1.21',
-                    '@folklore/hooks': '^0.0.75',
-                    '@folklore/tracking': '^0.0.33',
+                    '@folklore/auth': '^0.0.14',
+                    '@folklore/routes': '^0.2.47',
+                    '@folklore/fonts': '^0.0.20',
+                    '@folklore/forms': '^0.0.35',
+                    '@folklore/fetch': '^0.1.24',
+                    '@folklore/hooks': '^0.0.91',
+                    '@folklore/tracking': '^0.0.36',
 
                     // Polyfills
                     intl: '^1.2.5',

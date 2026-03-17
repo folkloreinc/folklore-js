@@ -122,7 +122,7 @@ export default class NodeProjectGenerator extends Generator {
     get writing() {
         return {
             index() {
-                this.fs.copyTpl(this.templatePath('index.js'), this.srcPath('index.js'));
+                this.fs.copyTpl(this.templatePath('index.ts'), this.srcPath('index.ts'));
             },
 
             packageJson() {
@@ -131,7 +131,7 @@ export default class NodeProjectGenerator extends Generator {
                     'html-path': htmlPath,
                     'server-path': serverPath,
                 } = this.options;
-                const webEntryPath = path.join(srcPath, htmlPath, 'index.js');
+                const webEntryPath = path.join(srcPath, htmlPath, 'index.ts');
                 const serverEntryPath = path.join(srcPath, serverPath, 'server.js');
 
                 const scripts = {

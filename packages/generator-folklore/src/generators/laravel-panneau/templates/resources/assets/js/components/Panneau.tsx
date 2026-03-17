@@ -1,30 +1,30 @@
+import '@panneau/app/assets/css/styles.css';
+
 import { getCSRFHeaders } from '@folklore/fetch';
 import Panneau from '@panneau/app';
+import { PanneauDefinition } from '@panneau/core';
 import { FIELDS_NAMESPACE } from '@panneau/core/contexts';
-import PropTypes from 'prop-types';
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import * as fieldsComponents from './panneau/fields';
 
-import '@panneau/app/assets/css/styles.css';
-import '@panneau/themes/assets/css/styles.css';
-import '@panneau/themes/assets/css/vendor.css';
+import '../../styles/panneau.css';
 
-const propTypes = {
-    definition: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-    baseUrl: PropTypes.string.isRequired,
-    uploadEndpoint: PropTypes.string,
-    user: PropTypes.object,
-    statusCode: PropTypes.string,
-};
+export interface PanneauContainerProps {
+    definition: PanneauDefinition;
+    baseUrl: string;
+    uploadEndpoint?: string;
+    user?: User | null;
+    statusCode?: number | null;
+}
 
-const defaultProps = {
-    user: null,
-    uploadEndpoint: '/panneau/upload',
-    statusCode: null,
-};
-
-const PanneauContainer = ({ definition, user, baseUrl, uploadEndpoint, statusCode }) => {
+const PanneauContainer = ({
+    definition,
+    user = null,
+    baseUrl,
+    uploadEndpoint = '/panneau/upload',
+    statusCode = null,
+}: PanneauContainerProps) => {
     const { routes = {} } = definition;
     const isAuthorized = statusCode !== 401 && statusCode !== 403;
     const [localeLoaded, setLocaleLoaded] = useState(false);
@@ -61,8 +61,5 @@ const PanneauContainer = ({ definition, user, baseUrl, uploadEndpoint, statusCod
         />
     ) : null;
 };
-
-PanneauContainer.propTypes = propTypes;
-PanneauContainer.defaultProps = defaultProps;
 
 export default PanneauContainer;

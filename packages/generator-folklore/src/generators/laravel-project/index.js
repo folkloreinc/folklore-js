@@ -259,6 +259,11 @@ export default class LaravelProjectGenerator extends Generator {
             'skip-install': true,
         });
 
+        this.composeWith('folklore:postcss', {
+            quiet: true,
+            'skip-install': true,
+        });
+
         this.composeWith('folklore:react-app', {
             'project-name': this.options['project-name'],
             path: jsSrcPath,
@@ -277,7 +282,7 @@ export default class LaravelProjectGenerator extends Generator {
 
         this.composeWith('folklore:build', {
             'src-path': assetsPath,
-            'entry-path': path.join(jsSrcPath, 'index.js'),
+            'entry-path': path.join(jsSrcPath, 'index.ts'),
             'build-path': publicPath,
             quiet: true,
             'skip-install': true,
@@ -387,7 +392,7 @@ export default class LaravelProjectGenerator extends Generator {
                     },
                     extra: {
                         laravel: {
-                            'dont-discover': ['laravel/telescope', 'folklore/laravel-folklore'],
+                            'dont-discover': ['laravel/telescope'],
                         },
                     },
                     'minimum-stability': 'dev',
@@ -399,11 +404,11 @@ export default class LaravelProjectGenerator extends Generator {
                 this.packageJson.merge({
                     scripts: {
                         clean: 'rm -rf public/static && rm -rf public/precache-*',
-                        'build:scripts': 'flklr build --load-env ./resources/assets/js/index.js',
+                        'build:scripts': 'flklr build --load-env ./resources/assets/js/index.ts',
                         'build:views': 'php artisan assets:view',
                         build: 'npm run clean && npm run build:scripts && npm run build:views',
                         start: 'npm run server',
-                        server: 'flklr serve --load-env ./resources/assets/js/index.js',
+                        server: 'flklr serve --load-env ./resources/assets/js/index.ts',
                     },
                 });
             },

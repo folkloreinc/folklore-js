@@ -14,13 +14,17 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
-        if (!$request->expectsJson()) {
-            $routeWithLocale = route('login') .
+        if (!$request->expectsJson() && $request->isPanneau()) {
+            return route('panneau.auth.login') .
                 '?' .
                 http_build_query([
                     'next' => $request->fullUrl(),
                 ]);
-            return $request->isPanneau() ? route('panneau.auth.login') : $routeWithLocale;
         }
+
+        return route('login') .
+            http_build_query([
+                'next' => $request->fullUrl(),
+            ]);
     }
 }

@@ -28,7 +28,7 @@ export default class PrettierGenerator extends Generator {
                 this.addDevDependencies({
                     prettier: '^3.6.2',
                     '@prettier/plugin-php': '^0.24.0',
-                    '@trivago/prettier-plugin-sort-imports': '^5.2.2',
+                    '@trivago/prettier-plugin-sort-imports': '^6.0.0',
                     'stylelint-prettier': '^5.0.3',
                 });
             },

@@ -16,7 +16,7 @@ const moduleNameMapper = getPackagesPaths().reduce((map, packagePath) => {
     const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
     return {
         ...map,
-        [packageJson.name]: `<rootDir>/${packagePath}/src/index.js`,
+        [packageJson.name]: `<rootDir>/${packagePath}/src/index.ts`,
     };
 }, {});
 

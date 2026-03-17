@@ -223,8 +223,8 @@ export default class LernaPackageGenerator extends Generator {
                         },
                     );
                     this.fs.copyTpl(
-                        this.templatePath('src/react/index.js'),
-                        this.packagePath('src/index.js'),
+                        this.templatePath('src/react/index.ts'),
+                        this.packagePath('src/index.ts'),
                         {
                             componentName,
                         },

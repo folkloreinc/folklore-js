@@ -1,8 +1,6 @@
-import { ReactNode, MouseEvent } from 'react';
 import classNames from 'classnames';
+import { ReactNode, MouseEvent } from 'react';
 import { Link } from 'wouter';
-
-import { IntlMessage } from '../../types';
 
 import styles from '<%= getRelativeStylesPath('components/buttons/Button.jsx', 'buttons/button.module.css') %>';
 

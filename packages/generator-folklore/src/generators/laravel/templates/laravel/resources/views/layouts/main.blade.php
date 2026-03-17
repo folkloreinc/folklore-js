@@ -11,7 +11,7 @@
     <meta name="language" content="{{ $locale }}">
 
 	<title>@yield('title')</title>
-	<meta name="description" content="@yield('description')" data-react-helmet="true">
+	<meta name="description" content="@yield('description')">
 
 	<link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-ico">
 	<link rel="icon" href="{{ asset('favicon.png') }}" type="image/png">
@@ -20,12 +20,12 @@
         <!-- Open Graph meta -->
 		<meta property="og:locale" content="{{ $locale }}_CA">
 		@hasSection('thumbnail')
-			<meta property="og:image" content="@yield('thumbnail')" data-react-helmet="true">
+			<meta property="og:image" content="@yield('thumbnail')">
 		@endif
-		<meta property="og:title" content="@yield('title')" data-react-helmet="true">
-		<meta property="og:type" content="website" data-react-helmet="true">
-		<meta property="og:description" content="@yield('description')" data-react-helmet="true">
-		<meta property="og:url" content="{{ Request::url() }}" data-react-helmet="true">
+		<meta property="og:title" content="@yield('title')">
+		<meta property="og:type" content="website">
+		<meta property="og:description" content="@yield('description')">
+		<meta property="og:url" content="{{ Request::url() }}">
     @show
 
     @section('head:analytics')

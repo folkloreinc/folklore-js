@@ -1,14 +1,13 @@
-const reactPlugin = require('eslint-plugin-react');
-const formatjs = require('eslint-plugin-formatjs');
-const globals = require('globals');
-const babelParser = require('@babel/eslint-parser');
-const importPlugin = require('eslint-plugin-import');
-const js = require('@eslint/js');
-const tseslint = require('typescript-eslint');
-const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended');
-const eslintReact = require('@eslint-react/eslint-plugin');
+import formatjs from 'eslint-plugin-formatjs';
+import globals from 'globals';
+import babelParser from '@babel/eslint-parser';
+import importPlugin from 'eslint-plugin-import';
+import js from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import eslintReact from '@eslint-react/eslint-plugin';
 
-module.exports = tseslint.config(
+export default tseslint.config(
     {
         files: ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'],
     },
@@ -18,7 +17,7 @@ module.exports = tseslint.config(
     {
         settings: {
             react: {
-                defaultVersion: '18',
+                defaultVersion: '19',
             },
         },
         languageOptions: {
@@ -51,8 +50,6 @@ module.exports = tseslint.config(
     importPlugin.flatConfigs.typescript,
     importPlugin.flatConfigs.recommended,
     formatjs.configs.recommended,
-    reactPlugin.configs.flat.recommended,
-    reactPlugin.configs.flat['jsx-runtime'],
     eslintPluginPrettierRecommended,
     {
         rules: {

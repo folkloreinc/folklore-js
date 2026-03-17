@@ -1,15 +1,15 @@
-export interface BaseBlock {
+interface BaseBlock {
     id: string;
     uuid?: string;
     type: string;
     placement?: string;
 }
 
-export interface TextBlock extends BaseBlock {
+interface TextBlock extends BaseBlock {
     type: 'text';
 }
 
-export interface ImageBlock extends BaseBlock {
+interface ImageBlock extends BaseBlock {
     type: 'image';
     media: {
         url: string;
@@ -19,18 +19,18 @@ export interface ImageBlock extends BaseBlock {
     caption?: string;
 }
 
-export interface HeadingBlock extends BaseBlock {
+interface HeadingBlock extends BaseBlock {
     type: 'heading';
 }
 
-export interface CardsBlock extends BaseBlock {
+interface CardsBlock extends BaseBlock {
     type: 'cards';
     cards: Card[];
 }
 
-export type Block = TextBlock | ImageBlock | HeadingBlock | CardsBlock | BaseBlock;
+type Block = TextBlock | ImageBlock | HeadingBlock | CardsBlock | BaseBlock;
 
-export interface BaseCard {
+interface BaseCard {
     id: string;
     type: string;
     title?: string | null;
@@ -38,4 +38,4 @@ export interface BaseCard {
     image?: Image | null;
 }
 
-export type Card = BaseCard;
+type Card = BaseCard;

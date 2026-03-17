@@ -21,7 +21,7 @@ export default class AppGenerator extends Generator {
 
         this.option('entry-path', {
             type: String,
-            defaults: './src/index.js',
+            defaults: './src/index.ts',
         });
 
         this.option('build-path', {

@@ -1,8 +1,6 @@
 import classNames from 'classnames';
 import { Link } from 'wouter';
 
-import { MenuItem } from '../../types';
-
 import styles from '<%= getRelativeStylesPath('components/menus/Menu.jsx', 'menus/menu.module.css') %>';
 
 
@@ -22,27 +20,32 @@ function Menu({ items = null, className = null }: MenuProps) {
             ])}
         >
             <ul className={styles.items}>
-                {(items || []).map(({ label, url, active = false, external = false, target = '_blank' }, index) => (
-                    <li
-                        className={classNames([
-                            styles.item,
-                            {
-                                [styles.active]: active,
-                            },
-                        ])}
-                        key={`item-${index}`}
-                    >
-                        {external ? (
-                            <a href={url} target={target} className={styles.link}>
-                                {label}
-                            </a>
-                        ) : (
-                            <Link href={url} className={styles.link}>
-                                {label}
-                            </Link>
-                        )}
-                    </li>
-                ))}
+                {(items || []).map(
+                    (
+                        { label, url, active = false, external = false, target = '_blank' },
+                        index,
+                    ) => (
+                        <li
+                            className={classNames([
+                                styles.item,
+                                {
+                                    [styles.active]: active,
+                                },
+                            ])}
+                            key={`item-${index}`}
+                        >
+                            {external ? (
+                                <a href={url} target={target} className={styles.link}>
+                                    {label}
+                                </a>
+                            ) : (
+                                <Link href={url} className={styles.link}>
+                                    {label}
+                                </Link>
+                            )}
+                        </li>
+                    ),
+                )}
             </ul>
         </nav>
     );

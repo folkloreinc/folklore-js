@@ -1,14 +1,14 @@
-import { Helmet } from 'react-helmet';
-import { useIntl } from 'react-intl';
+import { ReactNode } from 'react';
+import { type MessageDescriptor, useIntl } from 'react-intl';
 
 import { isMessage } from '../../lib/utils';
 
-function PageMeta({ title = null }: { title: string | object | null }) {
+function PageMeta({ title = null }: { title: ReactNode | MessageDescriptor | null }) {
     const intl = useIntl();
     return (
-        <Helmet>
+        <>
             <title>{isMessage(title) ? intl.formatMessage(title) : title}</title>
-        </Helmet>
+        </>
     );
 }
 

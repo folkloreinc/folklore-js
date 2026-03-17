@@ -35,9 +35,9 @@ export default class StylelintGenerator extends Generator {
 
             dependencies() {
                 this.addDevDependencies({
-                    stylelint: '^16.24.0',
+                    stylelint: '^17.4.0',
                     'stylelint-config-idiomatic-order': '^10.0.0',
-                    'stylelint-config-standard': '^39.0.0',
+                    'stylelint-config-standard': '^40.0.0',
                 });
             },
         };

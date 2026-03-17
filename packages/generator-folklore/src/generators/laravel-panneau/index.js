@@ -60,11 +60,11 @@ export default class LaravelPanneauGenerator extends Generator {
 
             packageJSON() {
                 this.addDependencies({
-                    '@panneau/app': '^3.0.293',
-                    '@panneau/core': '^3.0.292',
-                    '@panneau/data': '^3.0.292',
-                    '@panneau/field-text': '^3.0.293',
-                    '@panneau/field-localized': '^3.0.293',
+                    '@panneau/app': '^4.0.0',
+                    '@panneau/core': '^4.0.0',
+                    '@panneau/data': '^4.0.0',
+                    '@panneau/field-text': '^4.0.0',
+                    '@panneau/field-localized': '^4.0.0',
                 });
             },
 
@@ -109,8 +109,8 @@ export default class LaravelPanneauGenerator extends Generator {
             },
 
             indexJs() {
-                const source = this.templatePath('index.js');
-                const destination = this.destinationPath('resources/assets/js/index.js');
+                const source = this.templatePath('index.ts');
+                const destination = this.destinationPath('resources/assets/js/index.ts');
                 this.fs.copyTpl(source, destination, {});
             },
 

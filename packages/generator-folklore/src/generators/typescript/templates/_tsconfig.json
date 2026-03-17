@@ -1,8 +1,9 @@
 {
     "extends": "@tsconfig/create-react-app/tsconfig.json",
     "compilerOptions": {
-        "strict": false
+        "strict": false,
+        "plugins": [{ "name": "typescript-plugin-css-modules" }]
     },
-    "include": ["<%= srcPath.replace(/\/$/, '') %>/**/*", "<%= srcPath.replace(/\/$/, '') %>/types/*.ts"],
+    "include": ["<%= srcPath.replace(/\/$/, '') %>/**/*", "<%= srcPath.replace(/\/$/, '') %>/types/*.d.ts"],
     "exclude": ["node_modules", "./public", "./storage", "./vendor", "./dist", "./es", "./lib"]
 }
