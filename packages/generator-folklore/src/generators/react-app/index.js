@@ -124,7 +124,7 @@ export default class ReactAppGenerator extends Generator {
                 this.addDependencies({
                     react: '^19.2.0',
                     'react-dom': '^19.2.0',
-                    'react-intl': '^10.0.0',
+                    'react-intl': '^8.1.4',
                     wouter: '^3.7.1',
                     classnames: '^2.5.1',
 

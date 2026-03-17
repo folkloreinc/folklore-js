@@ -1,7 +1,6 @@
 import { useRoutes } from '@folklore/routes';
 import { Route, Switch } from 'wouter';
 
-import { MicromagItem } from '../types/micromag';
 import MainLayout from './layouts/Main';
 import HomePage from './pages/Home';
 import MicromagPage from './pages/Micromag';

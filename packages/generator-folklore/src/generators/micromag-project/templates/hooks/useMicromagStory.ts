@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import addTrackingCodesToStory from '../lib/addTrackingCodesToStory';
 
 import { useAnalytics } from '../contexts/AnalyticsContext';
-import { MicromagItem } from '../types/micromag';
 
 const cache = new Map();
 

@@ -1,7 +1,6 @@
 import useMicromagStory from '../../hooks/useMicromagStory';
 import { useMicromagVideo } from '../../hooks/useMicromagVideo';
 
-import { MicromagItem } from '../../types/micromag';
 import Preview from './Preview';
 import Video from './Video';
 

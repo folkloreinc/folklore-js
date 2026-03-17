@@ -3,7 +3,6 @@ import { useLocation } from 'wouter';
 
 import useMicromagStory from '../../hooks/useMicromagStory';
 
-import { MicromagItem } from '../../types/micromag';
 import Micromag from '../partials/Micromag';
 import PageMeta from '../partials/PageMeta';
 

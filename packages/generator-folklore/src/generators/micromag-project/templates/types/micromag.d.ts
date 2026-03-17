@@ -1,15 +1,15 @@
-export interface MicromagTrackingCode {
+interface MicromagTrackingCode {
     id: string;
     type: string;
     [key: string]: unknown;
 }
 
-export interface MicromagVideo {
+interface MicromagVideo {
     media?: string;
     [key: string]: unknown;
 }
 
-export interface MicromagComponent {
+interface MicromagComponent {
     id: string;
     type: string;
     video?: MicromagVideo;
@@ -20,7 +20,7 @@ export interface MicromagComponent {
     [key: string]: unknown;
 }
 
-export interface MicromagOrganisation {
+interface MicromagOrganisation {
     slug?: string;
     tracking?: {
         codes?: MicromagTrackingCode[];
@@ -32,7 +32,7 @@ export interface MicromagOrganisation {
     [key: string]: unknown;
 }
 
-export interface MicromagStory {
+interface MicromagStory {
     title?: string;
     metadata?: {
         [key: string]: unknown;
@@ -50,7 +50,7 @@ export interface MicromagStory {
     [key: string]: unknown;
 }
 
-export interface MicromagItem {
+interface MicromagItem {
     id: string;
     slug: string;
     story?: MicromagStory;

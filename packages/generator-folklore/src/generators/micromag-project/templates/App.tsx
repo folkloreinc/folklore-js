@@ -5,7 +5,6 @@ import { IntlProvider } from '@micromag/intl';
 
 import { AnalyticsProvider } from '../contexts/AnalyticsContext';
 import { ModalProvider } from '../contexts/ModalContext';
-import { MicromagItem } from '../types/micromag';
 import Routes from './Routes';
 
 import defaultMicromags from '../micromags';

@@ -1,5 +1,3 @@
-import { MicromagStory } from '../types/micromag';
-
 export default function addTrackingCodesToStory(story: MicromagStory, extraCodes: string[]) {
     if (extraCodes.length <= 0 || story === null) {
         return story;

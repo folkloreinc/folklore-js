@@ -1,5 +1,3 @@
-import { MicromagItem } from './types/micromag';
-
 import testStory from './micromag/data.json';
 
 const micromags: MicromagItem[] = [

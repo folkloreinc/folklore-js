@@ -1,6 +1,5 @@
 import { Route, Switch } from 'wouter';
 
-import { MicromagItem } from '../types/micromag';
 import MainLayout from './layouts/Main';
 import MicromagPage from './pages/Micromag';
 

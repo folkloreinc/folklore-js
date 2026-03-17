@@ -2,8 +2,6 @@ import isEmpty from 'lodash/isEmpty';
 import uniq from 'lodash/uniq';
 import { useMemo } from 'react';
 
-import { MicromagStory } from '../types/micromag';
-
 export function useStoryTrackingVariables(story: MicromagStory): Record<string, unknown> {
     const trackingVariables = useMemo(() => {
         // Organisation level

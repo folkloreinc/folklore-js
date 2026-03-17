@@ -196,11 +196,11 @@ export default class MicromagProjectGenerator extends Generator {
 
             dependencies() {
                 this.addDependencies({
-                    '@micromag/viewer': '^0.3.767',
-                    '@micromag/data': '^0.3.767',
-                    '@micromag/core': '^0.3.767',
-                    '@micromag/consent': '^0.3.767',
-                    '@micromag/intl': '^0.3.767',
+                    '@micromag/viewer': '^0.4.0',
+                    '@micromag/data': '^0.4.0',
+                    '@micromag/core': '^0.4.0',
+                    '@micromag/consent': '^0.4.0',
+                    '@micromag/intl': '^0.4.0',
                 });
             },
         };

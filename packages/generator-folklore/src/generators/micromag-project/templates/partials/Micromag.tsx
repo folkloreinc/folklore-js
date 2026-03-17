@@ -7,8 +7,6 @@ import { useState, useCallback, useMemo, ReactNode } from 'react';
 
 import useStoryTrackingVariables from '../../hooks/useStoryTrackingVariables';
 
-import { MicromagStory } from '../../types/micromag';
-
 import styles from '<%= getRelativeStylesPath('components/partials/Micromag.jsx', 'partials/micromag.module.css') %>';
 
 interface MicromagProps {
