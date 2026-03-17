@@ -1,11 +1,10 @@
-const postcssPresetEnv = require('postcss-preset-env');
-const postcssNormalize = require('postcss-normalize');
-const postcssCustomMedia = require('postcss-custom-media');
-const postcssImport = require('postcss-import');
+import postcssGlobalData from '@csstools/postcss-global-data';
+import postcssCustomMedia from 'postcss-custom-media';
+import postcssImport from 'postcss-import';
+import postcssNormalize from 'postcss-normalize';
+import postcssPresetEnv from 'postcss-preset-env';
 
-const postcssGlobalData = require('@csstools/postcss-global-data');
-
-module.exports = {
+export default {
     plugins: [
         postcssImport({}),
         // postcssGlobalData({

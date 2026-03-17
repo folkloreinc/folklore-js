@@ -45,8 +45,6 @@ class PanneauServiceProvider extends BaseServiceProvider
                 return config('locale.locales');
             });
 
-            UploadField::setEndpoint(route('panneau.upload'));
-
             PageSlugField::setRoutesResolver(function ($locale) {
                 return [
                     'page' => url()->routeForReactRouter($locale . '.page', [
