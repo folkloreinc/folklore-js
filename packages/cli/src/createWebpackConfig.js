@@ -518,6 +518,8 @@ export default (entry, opts = {}) => {
 
             isDevelopment && new ReactRefreshWebpackPlugin(),
 
+            isDevelopment && new webpack.HotModuleReplacementPlugin(),
+
             analyzer && new BundleAnalyzerPlugin(),
 
             ...(extraPlugins || []),
