@@ -54,6 +54,12 @@ export default tseslint.config(
     {
         rules: {
             'formatjs/no-literal-string-in-jsx': 'off',
+            '@typescript-eslint/no-unused-vars': [
+                'error',
+                {
+                    ignoreRestSiblings: true,
+                },
+            ],
         },
     },
 );
