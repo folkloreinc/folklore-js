@@ -79,7 +79,7 @@ function useVideoTracking(
                 }),
             );
         }
-    }, [playing, disabled, currentTime, tracking, getVideoMetadata]);
+    }, [playing, disabled, tracking, getVideoMetadata]);
 
     useEffect(() => {
         if (paused && !disabled && tracking !== null) {
@@ -101,7 +101,7 @@ function useVideoTracking(
                 }),
             );
         }
-    }, [ended, disabled, currentTime, tracking, getVideoMetadata]);
+    }, [ended, disabled, tracking, getVideoMetadata]);
 
     useEffect(() => {
         if (
