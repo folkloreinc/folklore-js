@@ -74,11 +74,11 @@ export function AdsProvider({
     disabled = false,
     disableTracking = false,
 }: AdsProviderProps) {
+    'use memo';
     const [ready, setReady] = useState(false);
-    const adsRef = useRef<AdsManager | null>(null);
-    const ads = useMemo(() => {
-        if (adsRef.current === null) {
-            adsRef.current = new AdsManager({
+    const [ads] = useState(
+        () =>
+            new AdsManager({
                 autoInit,
                 disabled,
                 disableSingleRequest,
@@ -87,36 +87,29 @@ export function AdsProvider({
                 mobileScaling,
                 renderMarginPercent,
                 fetchMarginPercent,
-            });
-        } else {
-            adsRef.current.setDisabled(disabled);
-        }
-        return adsRef.current;
-    }, [
-        autoInit,
-        disabled,
-        disableSingleRequest,
-        disableVideoAds,
-        disableLazyLoad,
-        mobileScaling,
-        renderMarginPercent,
-        fetchMarginPercent,
-    ]);
+            }),
+    );
+
+    if (!ready && ads.isReady()) {
+        setReady(true);
+    }
+
+    if (disabled !== ads.isDisabled()) {
+        ads.setDisabled(disabled);
+    }
 
     useEffect(() => {
-        let onReady: (() => void) | null = null;
-        if (!ads.isReady()) {
-            onReady = () => setReady(true);
-            ads.on('ready', onReady);
-        } else {
+        if (ready) {
+            return;
+        }
+        function onReady() {
             setReady(true);
         }
+        ads.on('ready', onReady);
         return () => {
-            if (onReady != null) {
-                ads.off('ready', onReady);
-            }
+            ads.off('ready', onReady);
         };
-    }, [ads, setReady]);
+    }, [ads, ready, setReady]);
 
     useEffect(() => {
         if (!autoInit) {
@@ -137,58 +130,37 @@ export function AdsProvider({
         };
     }, [ads, resizeDebounceDelay, refreshOnResize]);
 
-    const slotsWithSizeMapping = useMemo<Slots>(
-        () =>
-            Object.keys(slots || {}).reduce((map, key) => {
-                const slot = slots[key];
-                const { size } = slot;
-                const sizeMapping = getSizeMappingFromSlot(slot, viewports);
-                return {
-                    ...map,
-                    [key]: {
-                        ...slot,
-                        size: size || getSizeFromSizeMapping(sizeMapping || null),
-                        sizeMapping,
-                    },
-                };
-            }, {}),
-        [slots, viewports],
-    );
+    const slotsWithSizeMapping = Object.keys(slots || {}).reduce((map, key) => {
+        const slot = slots[key];
+        const { size } = slot;
+        const sizeMapping = getSizeMappingFromSlot(slot, viewports);
+        return {
+            ...map,
+            [key]: {
+                ...slot,
+                size: size || getSizeFromSizeMapping(sizeMapping || null),
+                sizeMapping,
+            },
+        };
+    }, {});
 
-    const finalSlotsPath = useMemo(() => {
-        if (defaultSlotPath !== null && slotsPath) {
-            return {
-                default: defaultSlotPath,
-                ...slotsPath,
-            };
-        }
-        return slotsPath ? { ...slotsPath } : {};
-    }, [defaultSlotPath, slotsPath]);
+    const finalSlotsPath = {
+        default: defaultSlotPath,
+        ...slotsPath,
+    };
 
-    const value = useMemo<AdsContextType>(
-        () => ({
-            ready,
-            ads,
-            viewports,
-            viewport,
-            slots: slotsWithSizeMapping,
-            slotsPath: finalSlotsPath,
-            trackingDisabled: disableTracking,
-            richAdComponents,
-        }),
-        [
-            ready,
-            ads,
-            viewports,
-            viewport,
-            slotsWithSizeMapping,
-            finalSlotsPath,
-            disableTracking,
-            richAdComponents,
-        ],
-    );
+    const value = {
+        ready,
+        ads,
+        viewports,
+        viewport,
+        slots: slotsWithSizeMapping,
+        slotsPath: finalSlotsPath,
+        trackingDisabled: disableTracking,
+        richAdComponents,
+    };
 
-    return <AdsContext.Provider value={value}>{children}</AdsContext.Provider>;
+    return <AdsContext value={value}>{children}</AdsContext>;
 }
 
 export default AdsContext;
