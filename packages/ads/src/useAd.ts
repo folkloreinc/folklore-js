@@ -39,6 +39,7 @@ function useAd(
         rootMargin = '300px',
     }: UseAdOptions = {},
 ) {
+    'use memo';
     const {
         ads: adsManager,
         viewports,
@@ -47,14 +48,11 @@ function useAd(
     } = useAdsContext();
 
     const trackAd = useAdsTracking();
-    const track = useCallback(
-        (action: string, slot: AdSlot = null, renderEvent: RenderEvent = null) => {
-            if (!disableTracking && !globalTrackingDisabled) {
-                trackAd(action, slot, renderEvent);
-            }
-        },
-        [disableTracking, globalTrackingDisabled, trackAd],
-    );
+    const track = (action: string, slot: AdSlot = null, renderEvent: RenderEvent = null) => {
+        if (!disableTracking && !globalTrackingDisabled) {
+            trackAd(action, slot, renderEvent);
+        }
+    };
 
     // Check for visibility
     const {
@@ -67,8 +65,8 @@ function useAd(
 
     // Window blur
     const [windowActive, setWindowActive] = useState(true); // eslint-disable-line
-    const onWindowBlur = useCallback(() => setWindowActive(false), [setWindowActive]);
-    const onWindowFocus = useCallback(() => setWindowActive(true), [setWindowActive]);
+    const onWindowBlur = () => setWindowActive(false);
+    const onWindowFocus = () => setWindowActive(true);
     useWindowEvent('blur', onWindowBlur);
     useWindowEvent('focus', onWindowFocus);
 
@@ -77,25 +75,36 @@ function useAd(
     // Current render event
     const [renderEvent, setRenderEvent] = useState(null);
 
-    // Create slot
-    const slotRef = useRef(null);
-    // const { current: slot } = slotRef;
-    // const [slot, setSlot] = useState(null);
-    const slot = useMemo(() => {
-        const { current: currentSlot = null } = slotRef;
-        if (currentSlot !== null) {
-            adsManager.destroySlot(currentSlot);
-        }
+    const viewportSize = viewport !== null ? viewports[viewport] || null : null;
+    const [, viewportFixedSize = null] =
+        sizeMapping !== null && viewportSize !== null
+            ? sizeMapping.find(([itViewport]) => itViewport.join('x') === viewportSize.join('x')) ||
+              []
+            : [];
 
-        const viewportSize = viewport !== null ? viewports[viewport] || null : null;
-        const [, viewportFixedSize = null] =
-            sizeMapping !== null && viewportSize !== null
-                ? sizeMapping.find(
-                      ([itViewport]) => itViewport.join('x') === viewportSize.join('x'),
-                  ) || []
-                : [];
+    const adSize = viewportFixedSize || size;
 
-        const newSlot =
+    const [slot, setSlot] = useState(() =>
+        path !== null && !disabled
+            ? adsManager.createSlot(path, adSize, {
+                  id,
+                  visible: isVisible,
+                  sizeMapping: viewportFixedSize === null ? sizeMapping : null,
+                  targeting,
+                  categoryExclusions,
+              })
+            : null,
+    );
+
+    if (
+        slot !== null &&
+        (path !== slot.getAdPath() ||
+            adSize !== slot.getAdSize() ||
+            id !== slot.getElementId() ||
+            categoryExclusions !== slot.options.categoryExclusions ||
+            sizeMapping !== slot.options.sizeMapping)
+    ) {
+        setSlot(
             path !== null && !disabled
                 ? adsManager.createSlot(path, viewportFixedSize || size, {
                       id,
@@ -104,9 +113,35 @@ function useAd(
                       targeting,
                       categoryExclusions,
                   })
+                : null,
+        );
+    }
+
+    useEffect(
+        () => () => {
+            if (slot !== null) {
+                adsManager.destroySlot(slot);
+            }
+        },
+        [slot],
+    );
+
+    // Create slot
+    const slotRef = useRef(null);
+    // const { current: slot } = slotRef;
+    // const [slot, setSlot] = useState(null);
+    useEffect(() => {
+        const newSlot =
+            path !== null && !disabled
+                ? adsManager.createSlot(path, adSize, {
+                      id,
+                      visible: isVisible,
+                      sizeMapping: viewportFixedSize === null ? sizeMapping : null,
+                      targeting,
+                      categoryExclusions,
+                  })
                 : null;
         slotRef.current = newSlot;
-        return newSlot;
         // // setSlot(newSlot);
         // // if (currentSlot.current !== null && adsReady) {
         // //     adsManager.defineSlot(currentSlot.current);
@@ -120,34 +155,21 @@ function useAd(
         // };
     }, [adsManager, path, disabled, size, sizeMapping, viewport, categoryExclusions, id]);
 
-    useEffect(() => {
-        if (slot !== null) {
-            slot.setTargeting(targeting);
-        }
-    }, [slot, targeting]);
+    if (slot !== null && targeting !== slot.getTargeting()) {
+        slot.setTargeting(targeting);
+    }
 
-    // Set visibility
-    useEffect(() => {
-        if (slot !== null) {
-            slot.setVisible(isVisible);
-        }
-    }, [slot, isVisible]);
+    if (slot !== null && isVisible !== slot.isVisible()) {
+        slot.setVisible(isVisible);
+    }
 
-    // Render ad when visible
-    useEffect(() => {
-        const slotReady = slot !== null && !slot.isDefined();
-        if (adsReady && slotReady) {
-            adsManager.defineSlot(slot);
-        }
-    }, [adsManager, adsReady, slot]);
+    if (adsReady && slot !== null && !slot.isDefined()) {
+        adsManager.defineSlot(slot);
+    }
 
-    useEffect(() => {
-        const slotReady = slot !== null && !slot.isDisplayed();
-        if (adsReady && slotReady && (alwaysRender || isVisible)) {
-            adsManager.displaySlot(slot);
-            track('Init', slot);
-        }
-    }, [adsManager, adsReady, slot, alwaysRender, isVisible, track]);
+    if (adsReady && slot !== null && !slot.isDisplayed() && (alwaysRender || isVisible)) {
+        adsManager.displaySlot(slot);
+    }
 
     // Refresh ads slot
     useEffect(() => {
@@ -166,12 +188,25 @@ function useAd(
         };
     }, [adsManager, adsReady, slot, isVisible, refreshInterval, track]);
 
+    if (slot === null && renderEvent !== null) {
+        setRenderEvent(null);
+    }
+
+    // Listen to display event
+    useEffect(() => {
+        if (slot === null) {
+            return () => {};
+        }
+        function onSlotDisplay() {
+            track('Init', slot);
+        }
+        slot.on('display', onSlotDisplay);
+        return () => slot.off('display', onSlotDisplay);
+    }, [slot]);
+
     // Listen to render event
     useEffect(() => {
         if (slot === null) {
-            if (renderEvent !== null) {
-                setRenderEvent(null);
-            }
             return () => {};
         }
         function onSlotRender({ event }: { event: googletag.events.SlotRenderEndedEvent }) {
@@ -200,25 +235,14 @@ function useAd(
         if (slot === null) {
             return () => {};
         }
-        const onSlotDestroy = (destroySlot: AdSlot) => {
+        function onSlotDestroy(destroySlot: AdSlot) {
             if (onDestroy !== null) {
                 onDestroy(destroySlot);
             }
-        };
+        }
         slot.on('destroy', onSlotDestroy);
         return () => slot.off('destroy', onSlotDestroy);
     }, [slot, onDestroy]);
-
-    // Destroy slot
-    // useEffect(
-    //     () => () => {
-    //         if (slot !== null) {
-    //             // currentSlot.current = null;
-    //             adsManager.destroySlot(slot);
-    //         }
-    //     },
-    //     [],
-    // );
 
     return {
         refObserver,

@@ -20,6 +20,8 @@ type AddSlotEvents = {
     render: { event: googletag.events.SlotRenderEndedEvent; slot: AdSlot };
     visible: { visible: boolean; slot: AdSlot };
     destroy: AdSlot;
+    init: googletag.Slot | null;
+    display: void;
 };
 
 class AdSlot extends EventEmitter<AddSlotEvents> {
@@ -98,6 +100,7 @@ class AdSlot extends EventEmitter<AddSlotEvents> {
         if (slot !== null) {
             this.updateAdSlot();
         }
+        this.emit('init', slot);
         return this;
     }
 
@@ -114,6 +117,9 @@ class AdSlot extends EventEmitter<AddSlotEvents> {
 
     setDisplayed(displayed) {
         this.displayed = displayed;
+        if (displayed) {
+            this.emit('display');
+        }
         return this;
     }
 
