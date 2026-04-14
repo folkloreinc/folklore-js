@@ -20,6 +20,7 @@ export default function useMemoryRouter({
     static: staticLocation = false,
     record = true,
 }: UseMemoryRouterOptions = {}) {
+    'use memo';
     let currentPath = parseLocation(path);
     const history = [currentPath];
     const emitter = mitt<{ navigate: string }>();
@@ -52,12 +53,10 @@ export default function useMemoryRouter({
         navigateImplementation(path);
     }
 
-    const locationHook = (): [string, NavigateFn] => [
-        useSyncExternalStore(subscribe, () => currentPath.pathname),
-        navigate,
-    ];
-    const searchHook = (): string =>
-        useSyncExternalStore(subscribe, () => currentPath.search || '');
+    const locationStore = useSyncExternalStore(subscribe, () => currentPath.pathname);
+    const searchStore = useSyncExternalStore(subscribe, () => currentPath.search || '');
+    const locationHook = (): [string, NavigateFn] => [locationStore, navigate];
+    const searchHook = (): string => searchStore;
 
     return {
         hook: locationHook,

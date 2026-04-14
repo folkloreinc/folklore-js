@@ -1,23 +1,22 @@
-import { useMemo } from 'react';
-import { useLocation } from 'wouter';
+import { useLocation, useRouter } from 'wouter';
 
-import useRouteMatcher from './useRouteMatcher';
+import useRoutes from './useRoutes';
 
-export default function useRoutesMatch(
-    routes: string[],
-    specificLocation?: string | null,
-): boolean {
-    const routeMatcher = useRouteMatcher();
+export default function useRoutesMatch(routes: string[], specificLocation?: string): boolean {
+    'use memo';
+    const router = useRouter();
+    const allRoutes = useRoutes();
     const [location] = useLocation();
-    return useMemo(
-        () =>
-            routes.reduce((isMatching, route) => {
-                if (isMatching) {
-                    return true;
-                }
-                const [match = false] = routeMatcher(route, specificLocation || location);
-                return match;
-            }, false),
-        [...routes, routeMatcher, specificLocation, location],
+    const patterns = routes
+        .map((route) => allRoutes[route] || route)
+        .map((route) => {
+            const { pattern = null } = router.parser(route || '*');
+            return pattern;
+        })
+        .filter((it) => it !== null);
+    const finalLocation = specificLocation || location;
+    return patterns.reduce(
+        (isMatching, pattern) => isMatching || pattern.exec(finalLocation) !== null,
+        false,
     );
 }

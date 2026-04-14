@@ -1,4 +1,4 @@
-import { JSX, type ReactNode, createContext, useContext, useMemo } from 'react';
+import { JSX, type ReactNode, createContext, use } from 'react';
 
 export type RoutesMap = Record<string, string>;
 
@@ -15,7 +15,7 @@ const defaultValue: RoutesContextValue = {
 export const RoutesContext = createContext<RoutesContextValue | null>(defaultValue);
 
 export function useRoutesContext(): RoutesContextValue {
-    return useContext(RoutesContext);
+    return use(RoutesContext);
 }
 
 type RoutesProviderProps = {
@@ -29,14 +29,11 @@ export function RoutesProvider({
     basePath = null,
     children,
 }: RoutesProviderProps): JSX.Element {
-    const value = useMemo(
-        () => ({
-            routes,
-            basePath,
-        }),
-        [routes, basePath],
-    );
-    return <RoutesContext.Provider value={value}>{children}</RoutesContext.Provider>;
+    const value = {
+        routes,
+        basePath,
+    };
+    return <RoutesContext value={value}>{children}</RoutesContext>;
 }
 
 export default RoutesContext;
