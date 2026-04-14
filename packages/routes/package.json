@@ -57,7 +57,7 @@
         "react-dom": "^19.0.0"
     },
     "peerDependencies": {
-        "path-to-regexp": "^7.0.0",
+        "path-to-regexp": "^6.0.0",
         "react": "^19.0.0",
         "react-dom": "^19.0.0"
     },

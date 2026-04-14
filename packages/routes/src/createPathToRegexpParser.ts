@@ -1,4 +1,4 @@
-import { pathToRegexp } from 'path-to-regexp';
+import { type Key, pathToRegexp } from 'path-to-regexp';
 import { type Parser } from 'wouter';
 
 type CreatePathToRegexpParserOpts = Parameters<typeof pathToRegexp>[1];
@@ -7,7 +7,8 @@ export default function createPathToRegexpParser(opts: CreatePathToRegexpParserO
     return (fullPath: string, loose?: boolean) => {
         const path = fullPath.replace(/^(https?:\/\/[^/]+)\/?/, '/');
         const isWildcard = path.match(/(\/|^)\*$/) !== null;
-        const regexp = pathToRegexp(isWildcard ? path.replace(/(\/|^)\*$/, '$1(.*)') : path, {
+        const keys: Key[] = [];
+        const regexp = pathToRegexp(isWildcard ? path.replace(/(\/|^)\*$/, '$1(.*)') : path, keys, {
             end: !loose && !isWildcard,
             ...opts,
         });
@@ -16,7 +17,7 @@ export default function createPathToRegexpParser(opts: CreatePathToRegexpParserO
             pattern: regexp,
             // `pathToRegexp` returns some metadata about the keys,
             // we want to strip it to just an array of keys
-            keys: regexp.keys.map((k) => `${k.name}`),
+            keys: keys.map((k) => `${k.name}`),
         };
     };
 }
