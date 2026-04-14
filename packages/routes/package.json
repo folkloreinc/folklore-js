@@ -50,7 +50,6 @@
     "dependencies": {
         "@babel/runtime": "^7.4.3",
         "mitt": "^3.0.1",
-        "regexparam": "^3.0.0",
         "wouter": "^3.0.0"
     },
     "devDependencies": {
@@ -58,7 +57,7 @@
         "react-dom": "^19.0.0"
     },
     "peerDependencies": {
-        "path-to-regexp": "^8.3.0",
+        "path-to-regexp": "^6.0.0 || ^7.0.0",
         "react": "^19.0.0",
         "react-dom": "^19.0.0"
     },
