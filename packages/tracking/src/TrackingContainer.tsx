@@ -26,7 +26,7 @@ function TrackingContainer({
             : null,
     );
     useEffect(() => {
-        if (finalTracking === null) {
+        if (finalTracking !== null) {
             finalTracking.setDisabled(disabled);
             finalTracking.setPaused(paused);
         }
