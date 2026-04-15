@@ -1,4 +1,4 @@
-import React, { type ReactNode, useEffect, useMemo } from 'react';
+import React, { type ReactNode, useEffect, useState } from 'react';
 
 import Tracking from './Tracking';
 import TrackingContext from './TrackingContext';
@@ -16,22 +16,22 @@ function TrackingContainer({
     disabled = false,
     paused = false,
 }: TrackingContainerProps): React.JSX.Element {
-    const finalTracking = useMemo(
-        () =>
-            tracking ||
-            new Tracking({
-                disabled,
-                paused,
-            }),
-        [tracking],
+    'use memo';
+    const [finalTracking] = useState(() =>
+        tracking === null
+            ? new Tracking({
+                  disabled,
+                  paused,
+              })
+            : null,
     );
     useEffect(() => {
-        if (tracking === null) {
+        if (finalTracking === null) {
             finalTracking.setDisabled(disabled);
             finalTracking.setPaused(paused);
         }
-    }, [tracking, disabled, paused]);
-    return <TrackingContext.Provider value={finalTracking}>{children}</TrackingContext.Provider>;
+    }, [finalTracking, disabled, paused]);
+    return <TrackingContext value={tracking || finalTracking}>{children}</TrackingContext>;
 }
 
 export default TrackingContainer;

@@ -25,9 +25,7 @@ function useVideoTracking(
     player: VideoPlayerState | null,
     params: UseVideoTrackingParams = {},
 ): void {
-    if (player === null) {
-        return;
-    }
+    'use memo';
     const {
         provider,
         id,
@@ -46,7 +44,7 @@ function useVideoTracking(
         ended = false,
         currentTime = null,
         duration = null,
-    } = player;
+    } = player || {};
 
     const getVideoMetadata = useCallback(
         (metadata: Record<string, unknown>) => {
