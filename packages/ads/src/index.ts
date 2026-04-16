@@ -1,4 +1,3 @@
-export * as PropTypes from './propTypes';
 export { default as Ad } from './Ad';
 export { default as RichAd } from './RichAd';
 export * from './AdsContext';

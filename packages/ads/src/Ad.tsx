@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { Ref, useCallback, useId, useMemo, useRef, useState } from 'react';
+import { Ref, useCallback, useId, useImperativeHandle, useMemo, useRef, useState } from 'react';
 
 import { getMinimumAdSize, getSizeFromSizeMapping, normalizeAdSizes } from './utils';
 
@@ -62,6 +62,7 @@ function Ad({
     onRichAd = null,
     slotRef = null,
 }: AdProps) {
+    'use memo';
     const {
         slots = null,
         slotsPath = null,
@@ -85,71 +86,52 @@ function Ad({
     // Size
     const size = providedSize || slotSize;
     const sizeMapping = providedSizeMapping || slotSizeMapping;
-    const minimumSize = useMemo(
-        () =>
-            getMinimumAdSize([
-                ...(getSizeFromSizeMapping(sizeMapping) || []),
-                ...normalizeAdSizes(size),
-            ]),
-        [sizeMapping, size],
-    );
+    const minimumSize = getMinimumAdSize([
+        ...(getSizeFromSizeMapping(sizeMapping) || []),
+        ...normalizeAdSizes(size),
+    ]);
 
     // Targeting
     const contextTargeting = useAdsTargeting();
-    const { targeting, refreshInterval, disabled, viewport } = useMemo(() => {
-        const allTargeting = {
-            ...(slotName !== null ? { slot: slotName } : null),
-            ...contextTargeting,
-            ...providedTargeting,
-        };
-        const {
-            refreshAds = null,
-            disabled: targetingDisabled = false,
-            viewport: targetingViewport = null,
-            ...otherProps
-        } = allTargeting || {};
-        return {
-            refreshInterval:
-                refreshAds !== null && refreshAds === 'inactive' ? null : providedRefreshInterval,
-            disabled: providedDisabled || targetingDisabled || ads.isDisabled(),
-            viewport: providedViewport || contextViewport || targetingViewport,
-            targeting: otherProps || {},
-        };
-    }, [
-        slotName,
-        contextTargeting,
-        providedTargeting,
-        ads,
-        providedRefreshInterval,
-        providedDisabled,
-        providedViewport,
-        contextViewport,
-    ]);
+    const allTargeting = {
+        ...(slotName !== null ? { slot: slotName } : null),
+        ...contextTargeting,
+        ...providedTargeting,
+    };
+    const {
+        refreshAds = null,
+        disabled: targetingDisabled = false,
+        viewport: targetingViewport = null,
+        ...otherProps
+    } = allTargeting || {};
+
+    const refreshInterval =
+        refreshAds !== null && refreshAds === 'inactive' ? null : providedRefreshInterval;
+    const disabled = providedDisabled || targetingDisabled || ads.isDisabled();
+    const viewport = providedViewport || contextViewport || targetingViewport;
+    const targeting = otherProps || {};
 
     const [lastRenderedSize, setLastRenderedSize] = useState<{
         width: number;
         height: number;
     } | null>(null);
-    const onAdRender = useCallback(
-        (event: RenderEvent) => {
-            const { isEmpty: newIsEmpty = true, width: newWidth, height: newHeight } = event || {};
-            const isRendered = !newIsEmpty;
+    const onAdRender = (event: RenderEvent) => {
+        const { isEmpty: newIsEmpty = true, width: newWidth, height: newHeight } = event || {};
+        const isRendered = !newIsEmpty;
 
-            setLastRenderedSize(
-                isRendered
-                    ? {
-                          width: newWidth,
-                          height: newHeight,
-                      }
-                    : null,
-            );
+        setLastRenderedSize(
+            isRendered
+                ? {
+                      width: newWidth,
+                      height: newHeight,
+                  }
+                : null,
+        );
 
-            if (onRender !== null) {
-                onRender(event);
-            }
-        },
-        [onRender, shouldKeepSize, disabled],
-    );
+        if (onRender !== null) {
+            onRender(event);
+        }
+    };
 
     // useEffect(() => {
     //     if (!disabled) {
@@ -194,11 +176,7 @@ function Ad({
         onRichAd,
     });
 
-    if (slotRef !== null && typeof slotRef === 'function') {
-        slotRef(slotObject);
-    } else if (slotRef !== null && typeof slotRef === 'object') {
-        slotRef.current = slotObject;
-    }
+    useImperativeHandle(slotRef, () => slotObject, [slotObject]);
 
     const keepSize = shouldKeepSize && lastRenderedSize !== null && !isRendered;
 
@@ -269,6 +247,7 @@ function Ad({
                 />
                 {isRendered && richAd !== null ? (
                     <RichAd
+                        slot={slotName}
                         richAd={richAd}
                         isFluid={isFluid}
                         width={width}

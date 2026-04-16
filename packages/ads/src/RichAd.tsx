@@ -9,6 +9,7 @@ export interface RichAdProps {
 }
 
 function RichAd({ richAd, ...props }: RichAdProps) {
+    'use memo';
     const { type = null, ...richAdProps } = richAd;
     const { richAdComponents = null } = useAdsContext();
     const RichAdComponent = getComponentFromName(richAdComponents, type);

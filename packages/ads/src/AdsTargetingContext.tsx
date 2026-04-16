@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useContext, useMemo } from 'react';
+import { ReactNode, createContext, use } from 'react';
 
 import { AdsTargeting } from './types';
 
@@ -11,7 +11,7 @@ const defaultTargeting: AdsTargeting = {
 
 const AdsTargetingContext = createContext<AdsTargeting | null>(defaultTargeting);
 
-export const useAdsTargeting = (): AdsTargeting | null => useContext(AdsTargetingContext);
+export const useAdsTargeting = (): AdsTargeting | null => use(AdsTargetingContext);
 
 interface AdsTargetingProviderProps {
     children: ReactNode;
@@ -24,16 +24,10 @@ export function AdsTargetingProvider({
     targeting = defaultTargeting,
     replace = false,
 }: AdsTargetingProviderProps) {
+    'use memo';
     const previousTargeting = useAdsTargeting();
-    const mergedTargeting = useMemo(
-        () => (replace ? targeting : { ...previousTargeting, ...targeting }),
-        [replace, previousTargeting, targeting],
-    );
-    return (
-        <AdsTargetingContext.Provider value={mergedTargeting}>
-            {children}
-        </AdsTargetingContext.Provider>
-    );
+    const mergedTargeting = replace ? targeting : { ...previousTargeting, ...targeting };
+    return <AdsTargetingContext value={mergedTargeting}>{children}</AdsTargetingContext>;
 }
 
 export default AdsTargetingContext;

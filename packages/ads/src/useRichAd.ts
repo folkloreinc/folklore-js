@@ -22,14 +22,19 @@ interface UseRichAdOptions {
 }
 
 function useRichAd(containerRef, id: string, opts: UseRichAdOptions = {}) {
-    const [richAd, setRichAd] = useState(null);
+    'use memo';
     const { onRichAd = null } = opts || {};
+    const [richAd, setRichAd] = useState(null);
+    const [richAdId, setRichAdId] = useState(id);
+    if (richAdId !== id) {
+        setRichAdId(id);
+        setRichAd(null);
+    }
 
     useEffect(() => {
         if (id === null) {
             return () => {};
         }
-        setRichAd(null);
         function onMessage(event) {
             if (event.origin.match(/safeframe\.googlesyndication\.com/) === null) {
                 return;
