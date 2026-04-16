@@ -54,7 +54,7 @@
     "publishConfig": {
         "access": "public"
     },
-    "gitHead": "d018123fa21ce7162576d57242b78c6cd4f7ff83",
+    "gitHead": "068d2eae8d520bfc90ab7308d851860271b2cfc5",
     "dependencies": {
         "@folklore/events": "^0.0.12",
         "@folklore/hooks": "^0.0.91",
