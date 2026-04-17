@@ -1,5 +1,5 @@
 import mitt from 'mitt';
-import { useSyncExternalStore } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 
 import parseLocation from './parseLocation';
 
@@ -21,21 +21,21 @@ export default function useMemoryRouter({
     record = true,
 }: UseMemoryRouterOptions = {}) {
     'use memo';
-    let currentPath = parseLocation(path);
-    const history = [currentPath];
+    const [currentPath, setCurrentPath] = useState(() => parseLocation(path));
+    const [history, setHistory] = useState([currentPath]);
     const emitter = mitt<{ navigate: string }>();
 
     const navigateImplementation: NavigateFn = (newPath, { replace = false } = {}) => {
         const newParsedPath = parseLocation(newPath);
         if (record) {
             if (replace) {
-                history.splice(history.length - 1, 1, newParsedPath);
+                setHistory([...history].splice(history.length - 1, 1, newParsedPath));
             } else {
-                history.push(newParsedPath);
+                setHistory([...history, newParsedPath]);
             }
         }
 
-        currentPath = newParsedPath;
+        setCurrentPath(newParsedPath);
         emitter.emit('navigate', path);
     };
 
@@ -48,7 +48,7 @@ export default function useMemoryRouter({
 
     function reset() {
         // clean history array with mutation to preserve link
-        history.splice(0, history.length);
+        setHistory([...history].splice(0, history.length));
 
         navigateImplementation(path);
     }
