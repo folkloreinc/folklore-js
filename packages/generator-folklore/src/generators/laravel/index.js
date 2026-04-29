@@ -67,7 +67,7 @@ export default class LaravelGenerator extends Generator {
         this.option('assets-path', {
             type: String,
             desc: 'Path for assets',
-            defaults: 'resources/assets',
+            defaults: 'resources',
         });
 
         this.option('public-path', {
@@ -369,12 +369,12 @@ export default class LaravelGenerator extends Generator {
                     'app/Providers/AppServiceProvider.php',
                     'resources/sass/**',
                     'resources/js/**',
-                    'resources/sass',
+                    'resources/styles',
                     'resources/js',
-                    'resources/assets/sass/**',
-                    'resources/assets/js/**',
-                    'resources/assets/sass',
-                    'resources/assets/js',
+                    'resources/styles/**',
+                    'resources/js/**',
+                    'resources/styles',
+                    'resources/js',
                     'resources/views/welcome.blade.php',
                     'resources/views/errors/404.blade.php',
                     'resources/views/errors/500.blade.php',

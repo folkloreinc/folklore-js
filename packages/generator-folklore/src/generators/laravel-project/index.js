@@ -61,7 +61,7 @@ export default class LaravelProjectGenerator extends Generator {
         this.option('assets-path', {
             type: String,
             desc: 'Path for assets',
-            defaults: 'resources/assets',
+            defaults: 'resources',
         });
 
         this.option('public-path', {
@@ -289,7 +289,7 @@ export default class LaravelProjectGenerator extends Generator {
         });
 
         this.composeWith('folklore:intl', {
-            'translations-path': path.join(jsSrcPath, '**/*.{js,jsx}'),
+            'translations-path': path.join(jsSrcPath, '**/*.{js,jsx,ts,tsx}'),
             'output-path': './lang',
             'without-id-only': true,
             quiet: true,
@@ -404,11 +404,11 @@ export default class LaravelProjectGenerator extends Generator {
                 this.packageJson.merge({
                     scripts: {
                         clean: 'rm -rf public/static && rm -rf public/precache-*',
-                        'build:scripts': 'flklr build --load-env ./resources/assets/js/index.ts',
+                        'build:scripts': 'flklr build --load-env ./resources/js/index.ts',
                         'build:views': 'php artisan assets:view',
                         build: 'npm run clean && npm run build:scripts && npm run build:views',
                         start: 'npm run server',
-                        server: 'flklr serve --load-env ./resources/assets/js/index.ts',
+                        server: 'flklr serve --load-env ./resources/js/index.ts',
                     },
                 });
             },

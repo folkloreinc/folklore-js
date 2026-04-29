@@ -110,7 +110,7 @@ export default class LaravelPanneauGenerator extends Generator {
 
             indexJs() {
                 const source = this.templatePath('index.ts');
-                const destination = this.destinationPath('resources/assets/js/index.ts');
+                const destination = this.destinationPath('resources/js/index.ts');
                 this.fs.copyTpl(source, destination, {});
             },
 

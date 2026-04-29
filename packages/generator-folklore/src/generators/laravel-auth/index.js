@@ -16,12 +16,12 @@ export default class LaravelAuthGenerator extends Generator {
 
         this.option('js-path', {
             type: String,
-            defaults: 'resources/assets/js',
+            defaults: 'resources/js',
         });
 
         this.option('styles-path', {
             type: String,
-            defaults: 'resources/assets/styles',
+            defaults: 'resources/styles',
         });
     }
 
@@ -69,7 +69,7 @@ export default class LaravelAuthGenerator extends Generator {
             },
 
             files() {
-                const folders = ['app', 'resources', 'routes', 'database'];
+                const folders = ['app', 'resources', 'routes', 'database', 'lang'];
 
                 const jsPath = this.options['js-path'] || null;
                 const stylesPath = this.options['styles-path'] || null;

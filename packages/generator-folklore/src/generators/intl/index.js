@@ -10,7 +10,7 @@ export default class IntlGenerator extends Generator {
         this.option('translations-path', {
             type: String,
             desc: 'Path for to search for translations',
-            defaults: './src/**/*.{js,jsx}',
+            defaults: './src/**/*.{js,jsx,ts,tsx}',
         });
 
         this.option('locales', {
