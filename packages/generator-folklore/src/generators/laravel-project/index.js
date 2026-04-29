@@ -289,7 +289,7 @@ export default class LaravelProjectGenerator extends Generator {
         });
 
         this.composeWith('folklore:intl', {
-            'translations-path': path.join(jsSrcPath, '**/*.{js,jsx,ts,tsx}'),
+            'translations-path': path.join(jsSrcPath, '**/*.{js,jsx,tsx}'),
             'output-path': './lang',
             'without-id-only': true,
             quiet: true,
