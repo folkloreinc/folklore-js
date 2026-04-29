@@ -361,6 +361,7 @@ export default class LaravelProjectGenerator extends Generator {
 
             removeFiles() {
                 const files = [
+                    '.gitignore',
                     'package.json',
                     'config/app.php',
                     'config/auth.php',
@@ -457,6 +458,12 @@ export default class LaravelProjectGenerator extends Generator {
                 // const srcProd = this.templatePath('env.prod');
                 // const destProd = this.destinationPath('.env.prod');
                 // this.fs.copyTpl(srcProd, destProd, prodTemplateData);
+            },
+
+            gitignore() {
+                const src = this.templatePath('gitignore');
+                const dest = this.destinationPath('.gitignore');
+                this.fs.copy(src, dest);
             },
 
             files() {
