@@ -23,14 +23,13 @@ export default class EslintGenerator extends Generator {
 
             dependencies() {
                 this.addDevDependencies({
-                    '@babel/eslint-parser': '^7.18.9',
-                    '@babel/preset-typescript': '^7.26.0',
-                    '@eslint-react/eslint-plugin': '^2.0.0',
-                    eslint: '^9.36.0',
+                    '@eslint-react/eslint-plugin': '^5.6.0',
+                    '@eslint/js': '^9.39.4',
+                    eslint: '^10.0.0',
                     'eslint-config-prettier': '^10.1.8',
-                    'eslint-plugin-formatjs': '^5.4.0',
-                    'eslint-plugin-import': '^2.32.0',
+                    'eslint-plugin-formatjs': '^6.4.6',
                     'eslint-plugin-prettier': '^5.5.4',
+                    globals: '^17.5.0',
                     typescript: '^5.7.3',
                     'typescript-eslint': '^8.25.0',
                 });
