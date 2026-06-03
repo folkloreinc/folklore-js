@@ -145,6 +145,11 @@ export default class HTMLProjectGenerator extends Generator {
             quiet: true,
         });
 
+        this.composeWith('folklore:babel', {
+            'skip-install': true,
+            quiet: true,
+        });
+
         this.composeWith('folklore:react-app', {
             'project-name': projectName,
             path: jsSrcPath,
@@ -169,6 +174,11 @@ export default class HTMLProjectGenerator extends Generator {
                 quiet: true,
             });
         }
+
+        this.composeWith('folklore:agents', {
+            'src-path': srcPath,
+            quiet: true,
+        });
 
         this.log('merging with folklore build');
 

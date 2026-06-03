@@ -6,19 +6,7 @@ export default class BabelGenerator extends Generator {
     constructor(...args) {
         super(...args);
 
-        this.option('react', {
-            type: Boolean,
-            required: false,
-            defaults: false,
-        });
-
         this.option('transform-runtime', {
-            type: Boolean,
-            required: false,
-            defaults: false,
-        });
-
-        this.option('react-intl', {
             type: Boolean,
             required: false,
             defaults: false,
@@ -38,29 +26,21 @@ export default class BabelGenerator extends Generator {
     get writing() {
         return {
             config() {
-                const {
-                    react,
-                    'transform-runtime': transformRuntime,
-                    'react-intl': reactIntl,
-                } = this.options;
+                const { 'transform-runtime': transformRuntime } = this.options;
 
-                const srcPath = this.templatePath('config.js');
+                const srcPath = this.templatePath('config.ejs');
                 const destPath = this.destinationPath('babel.config.js');
                 this.fs.copyTpl(srcPath, destPath, {
-                    react,
                     transformRuntime,
-                    reactIntl,
                 });
             },
 
             dependencies() {
                 this.addDevDependencies({
-                    '@babel/core': '^7.19.3',
-                    '@babel/cli': 'latest',
-                    '@babel/node': 'latest',
                     '@babel/plugin-transform-runtime': 'latest',
-                    '@babel/preset-env': 'latest',
-                    '@babel/preset-react': 'latest',
+                    'babel-plugin-formatjs': '^11.3.7',
+                    'babel-plugin-lodash': '^3.3.4',
+                    'babel-plugin-react-compiler': '^1.0.0',
                 });
             },
         };

@@ -1,4 +1,4 @@
-interface BaseField {
+interface Field {
     name: string;
     type: string;
     component?: string;
@@ -12,7 +12,7 @@ interface FieldOption {
     label: string;
 }
 
-interface OptionsField extends BaseField {
+interface OptionsField extends Field {
     type: 'options';
     options: FieldOption[];
     multiple?: boolean;
@@ -26,13 +26,13 @@ interface SelectField extends OptionsField {
     type: 'select';
 }
 
-interface TextField extends BaseField {
+interface TextField extends Field {
     type: 'text';
 }
 
-type FormBaseField = OptionsField | TextField | BaseField;
+type FormBaseField = OptionsField | TextField | Field;
 
-interface GroupField extends BaseField {
+interface GroupField extends Field {
     type: 'group';
     fields: FormBaseField[];
 }
@@ -47,9 +47,4 @@ interface Form {
 
 interface FormErrors {
     [fieldName: string]: string[] | null;
-}
-
-interface FormSnippet {
-    id: string;
-    title?: string;
 }

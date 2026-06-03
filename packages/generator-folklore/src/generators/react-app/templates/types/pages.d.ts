@@ -1,3 +1,14 @@
+
+interface BaseCard {
+    id: string;
+    type: string;
+    title?: string | null;
+    description?: string | null;
+    image?: Image | null;
+}
+
+type Card = BaseCard;
+
 interface BaseBlock {
     id: string;
     uuid?: string;
@@ -30,12 +41,13 @@ interface CardsBlock extends BaseBlock {
 
 type Block = TextBlock | ImageBlock | HeadingBlock | CardsBlock | BaseBlock;
 
-interface BaseCard {
+interface BasePage {
     id: string;
-    type: string;
     title?: string | null;
+    slug?: string | null;
+    path?: string | null;
     description?: string | null;
     image?: Image | null;
 }
 
-type Card = BaseCard;
+type Page = BasePage;
