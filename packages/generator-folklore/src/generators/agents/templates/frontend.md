@@ -19,3 +19,4 @@
 - Organize global types in `.d.ts` files in the `types` folder
 - Add className props for style composition and when needed add className props for inner elements
 - Don't write string, use i18n components from react-intl
+- Always add a `description` to i18n message and don't define `id`

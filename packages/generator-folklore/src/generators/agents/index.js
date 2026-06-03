@@ -26,6 +26,7 @@ export default class AgentsGenerator extends Generator {
             this.fs.read(this.templatePath('general.md')),
             hasComposerJson ? this.fs.read(this.templatePath('laravel.md')) : null,
             hasPackageJson ? this.fs.read(this.templatePath('frontend.md')) : null,
+            this.fs.read(this.templatePath('after.md')),
         ]
             .filter((it) => it !== null)
             .join(separator);
