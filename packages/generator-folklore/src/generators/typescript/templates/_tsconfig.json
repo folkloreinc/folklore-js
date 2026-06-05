@@ -2,7 +2,11 @@
     "extends": "@tsconfig/create-react-app/tsconfig.json",
     "compilerOptions": {
         "strict": false,
-        "plugins": [{ "name": "typescript-plugin-css-modules" }]
+        "plugins": [{ "name": "typescript-plugin-css-modules" }],
+        "paths": {
+            "lodash": ["node_modules/@types/lodash-es"],
+            "lodash/*": ["node_modules/lodash-es/*"]
+        }
     },
     "include": ["<%= srcPath.replace(/\/$/, '') %>/**/*", "<%= srcPath.replace(/\/$/, '') %>/types/*.d.ts"],
     "exclude": ["node_modules", "./public", "./storage", "./vendor", "./dist", "./es", "./lib"]

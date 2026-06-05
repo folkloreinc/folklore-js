@@ -46,6 +46,7 @@ export default class TypescriptGenerator extends Generator {
                     '@types/jest': '^30.0.0',
                     '@types/json-stable-stringify': '^1.2.0',
                     '@types/lodash': '^4.17.24',
+                    '@types/lodash-es': '^4.17.24',
                     '@types/minimatch': '^6.0.0',
                     '@types/node': '^25.0.3',
                     '@types/react': '^19.2.7',
