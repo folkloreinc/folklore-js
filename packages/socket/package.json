@@ -1,6 +1,6 @@
 {
     "name": "@folklore/socket",
-    "version": "0.4.36",
+    "version": "0.4.37",
     "description": "Socket utilities",
     "keywords": [
         "javascript",
@@ -46,7 +46,7 @@
     },
     "dependencies": {
         "@babel/runtime": "^7.4.3",
-        "@folklore/events": "^0.0.13",
+        "@folklore/events": "^0.0.14",
         "debug": "^3.1.0",
         "invariant": "^2.2.2",
         "lodash-es": "^4.17.4",

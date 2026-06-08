@@ -1,6 +1,6 @@
 {
     "name": "@folklore/tracking",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "description": "Tracking utilities",
     "keywords": [
         "javascript",
@@ -46,7 +46,7 @@
     },
     "dependencies": {
         "@babel/runtime": "^7.4.3",
-        "@folklore/events": "^0.0.13",
+        "@folklore/events": "^0.0.14",
         "uuid": "^10.0.0"
     },
     "devDependencies": {
