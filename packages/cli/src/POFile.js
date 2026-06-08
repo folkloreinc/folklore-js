@@ -1,7 +1,7 @@
 import fs from 'fs';
 import fsExtra from 'fs-extra';
 import gettextParser from 'gettext-parser';
-import isEmpty from 'lodash-es/isEmpty';
+import isEmpty from 'lodash/isEmpty';
 
 class POFile {
     static parse(filePath) {
