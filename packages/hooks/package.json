@@ -1,6 +1,6 @@
 {
     "name": "@folklore/hooks",
-    "version": "0.0.92",
+    "version": "0.0.93",
     "description": "React hooks",
     "keywords": [
         "javascript",
@@ -45,9 +45,9 @@
         "prepublishOnly": "npm run build"
     },
     "dependencies": {
-        "@folklore/events": "^0.0.12",
-        "@folklore/services": "^0.1.49",
-        "@folklore/utils": "^0.1.9",
+        "@folklore/events": "^0.0.13",
+        "@folklore/services": "^0.1.50",
+        "@folklore/utils": "^0.1.10",
         "cancelable-promise": "^4.3.1",
         "debug": "^4.3.4",
         "lodash-es": "^4.17.21",
