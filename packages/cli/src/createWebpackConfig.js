@@ -222,7 +222,6 @@ export default (entry, opts = {}) => {
                           'scheduler/tracing': 'scheduler/tracing-profiling',
                       }
                     : null),
-                lodash: 'lodash-es-es',
             },
         },
 
