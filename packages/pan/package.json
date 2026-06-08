@@ -27,14 +27,15 @@
             "email": "nrb@folklore.email"
         }
     ],
+    "sideEffects": false,
     "main": "dist/cjs.js",
     "module": "dist/ejs.js",
     "files": [
         "dist"
     ],
     "scripts": {
-        "clean": "rm -rf dist",
         "build": "rollup --bundleConfigAsCjs --config ../../rollup.config.js",
+        "clean": "rm -rf dist",
         "prepublishOnly": "npm run clean && npm run build"
     },
     "dependencies": {

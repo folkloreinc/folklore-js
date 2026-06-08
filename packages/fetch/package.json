@@ -25,31 +25,31 @@
             "email": "nrb@folklore.email"
         }
     ],
+    "sideEffects": false,
     "type": "module",
-    "module": "dist/index.js",
-    "types": "dist/index.d.ts",
     "exports": {
         ".": {
-            "default": "./dist/index.js",
-            "types": "./dist/index.d.ts"
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
         }
     },
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
     "files": [
         "dist"
     ],
-    "sideEffects": false,
     "scripts": {
         "build": "../../scripts/prepare-package.sh --types",
         "prepublishOnly": "npm run build"
-    },
-    "publishConfig": {
-        "access": "public"
     },
     "dependencies": {
         "@babel/runtime": "^7.4.3",
         "@folklore/events": "^0.0.12",
         "js-cookie": "^2.2.0",
         "lodash-es": "^4.17.4"
+    },
+    "publishConfig": {
+        "access": "public"
     },
     "gitHead": "a728dcb48b2623cffc043629a0e86c273dcce71a"
 }

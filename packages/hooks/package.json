@@ -27,22 +27,31 @@
             "email": "nrb@folklore.email"
         }
     ],
+    "sideEffects": false,
     "type": "module",
-    "module": "dist/index.js",
-    "types": "dist/index.d.ts",
     "exports": {
         ".": {
-            "default": "./dist/index.js",
-            "types": "./dist/index.d.ts"
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
         }
     },
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
     "files": [
         "dist"
     ],
-    "sideEffects": false,
     "scripts": {
         "build": "../../scripts/prepare-package.sh --types",
         "prepublishOnly": "npm run build"
+    },
+    "dependencies": {
+        "@folklore/events": "^0.0.12",
+        "@folklore/services": "^0.1.49",
+        "@folklore/utils": "^0.1.9",
+        "cancelable-promise": "^4.3.1",
+        "debug": "^4.3.4",
+        "lodash-es": "^4.17.21",
+        "raf": "^3.4.1"
     },
     "devDependencies": {
         "react": "^17.0.0 || ^18.0.0 || ^19.0.0",
@@ -55,14 +64,5 @@
     "publishConfig": {
         "access": "public"
     },
-    "gitHead": "eb9e679a3826752b5908f504134027de82f2bcc2",
-    "dependencies": {
-        "@folklore/events": "^0.0.12",
-        "@folklore/services": "^0.1.49",
-        "@folklore/utils": "^0.1.9",
-        "cancelable-promise": "^4.3.1",
-        "debug": "^4.3.4",
-        "lodash-es": "^4.17.21",
-        "raf": "^3.4.1"
-    }
+    "gitHead": "eb9e679a3826752b5908f504134027de82f2bcc2"
 }

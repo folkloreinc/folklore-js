@@ -7,6 +7,7 @@
         "type": "git",
         "url": "git+https://github.com/folkloreinc/folklore-js.git"
     },
+    "license": "ISC",
     "author": {
         "name": "Folklore",
         "email": "info@folklore.email"
@@ -21,13 +22,6 @@
             "email": "nrb@folklore.email"
         }
     ],
-    "license": "ISC",
-    "scripts": {
-        "clean": "rm -rf dist",
-        "build": "rollup  --bundleConfigAsCjs --config rollup.config.js",
-        "prepublishOnly": "npm run build && npm run build",
-        "cli": "../../node_modules/.bin/babel-node ./src/cli.js"
-    },
     "main": "./dist/cjs.js",
     "module": "./dist/ejs.js",
     "bin": {
@@ -36,6 +30,12 @@
     "files": [
         "dist"
     ],
+    "scripts": {
+        "build": "rollup  --bundleConfigAsCjs --config rollup.config.js",
+        "clean": "rm -rf dist",
+        "cli": "../../node_modules/.bin/babel-node ./src/cli.js",
+        "prepublishOnly": "npm run build && npm run build"
+    },
     "dependencies": {
         "@babel/core": "^7.28.4",
         "@babel/preset-env": "^7.28.3",

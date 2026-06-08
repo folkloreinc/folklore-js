@@ -27,21 +27,32 @@
             "email": "nrb@folklore.email"
         }
     ],
+    "sideEffects": false,
     "type": "module",
-    "module": "dist/index.js",
-    "types": "dist/index.d.ts",
     "exports": {
         ".": {
-            "default": "./dist/index.js",
-            "types": "./dist/index.d.ts"
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
         }
     },
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
     "files": [
         "dist"
     ],
     "scripts": {
         "build": "../../scripts/prepare-package.sh --types",
         "prepublishOnly": "npm run build"
+    },
+    "dependencies": {
+        "@folklore/events": "^0.0.12",
+        "@folklore/hooks": "^0.0.92",
+        "@folklore/tracking": "^0.1.2",
+        "@folklore/utils": "^0.1.9",
+        "@types/google-publisher-tag": "^1.20260216.0",
+        "classnames": "^2.5.1",
+        "debug": "^4.3.4",
+        "lodash-es": "^4.17.21"
     },
     "devDependencies": {
         "react": "^19.0.0",
@@ -54,15 +65,5 @@
     "publishConfig": {
         "access": "public"
     },
-    "gitHead": "068d2eae8d520bfc90ab7308d851860271b2cfc5",
-    "dependencies": {
-        "@folklore/events": "^0.0.12",
-        "@folklore/hooks": "^0.0.92",
-        "@folklore/tracking": "^0.1.2",
-        "@folklore/utils": "^0.1.9",
-        "@types/google-publisher-tag": "^1.20260216.0",
-        "classnames": "^2.5.1",
-        "debug": "^4.3.4",
-        "lodash-es": "^4.17.21"
-    }
+    "gitHead": "068d2eae8d520bfc90ab7308d851860271b2cfc5"
 }

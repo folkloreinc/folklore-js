@@ -27,18 +27,19 @@
             "email": "nrb@folklore.email"
         }
     ],
+    "sideEffects": false,
     "type": "module",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
+        }
+    },
     "module": "dist/index.js",
     "types": "dist/index.d.ts",
     "files": [
         "dist"
     ],
-    "exports": {
-        ".": {
-            "default": "./dist/index.js",
-            "types": "./dist/index.d.ts"
-        }
-    },
     "scripts": {
         "build": "../../scripts/prepare-package.sh --types",
         "prepublishOnly": "npm run build"

@@ -5,29 +5,29 @@
     "keywords": [
         "yeoman-generator"
     ],
-    "main": "index.js",
-    "scripts": {
-        "clean:lib": "rm -rf lib/*",
-        "clean": "npm run clean:lib",
-        "copy:dirs": "find src/ -type d | grep -E '(/templates|/instructions)$' | sed 's/src\\///g' | xargs -I{} cp -r \"./src/{}/\" \"./lib/{}/\"",
-        "compile": "../../node_modules/.bin/babel -d lib/ src/",
-        "build": "npm run compile && npm run copy:dirs",
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "prepublishOnly": "npm run clean && npm run build"
+    "homepage": "https://github.com/folkloreinc/folklore-js/tree/master/packages/generator-folklore#readme",
+    "bugs": {
+        "url": "https://github.com/folkloreinc/folklore-js/issues"
     },
-    "files": [
-        "lib"
-    ],
     "repository": {
         "type": "git",
         "url": "git+https://github.com/folkloreinc/folklore-js.git"
     },
-    "author": "Folklore <info@folklore.email>",
     "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/folkloreinc/folklore-js/issues"
+    "author": "Folklore <info@folklore.email>",
+    "main": "index.js",
+    "files": [
+        "lib"
+    ],
+    "scripts": {
+        "build": "npm run compile && npm run copy:dirs",
+        "clean": "npm run clean:lib",
+        "clean:lib": "rm -rf lib/*",
+        "compile": "../../node_modules/.bin/babel -d lib/ src/",
+        "copy:dirs": "find src/ -type d | grep -E '(/templates|/instructions)$' | sed 's/src\\///g' | xargs -I{} cp -r \"./src/{}/\" \"./lib/{}/\"",
+        "prepublishOnly": "npm run clean && npm run build",
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "homepage": "https://github.com/folkloreinc/folklore-js/tree/master/packages/generator-folklore#readme",
     "dependencies": {
         "chalk": "^4.0.0",
         "change-case": "^4.1.2",
