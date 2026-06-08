@@ -41,7 +41,7 @@
         "@babel/runtime": "^7.4.3",
         "@folklore/events": "^0.0.12",
         "debug": "^3.1.0",
-        "lodash": "^4.17.4",
+        "lodash-es": "^4.17.4",
         "msr": "^1.3.4"
     },
     "gitHead": "a728dcb48b2623cffc043629a0e86c273dcce71a"

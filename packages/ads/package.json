@@ -63,6 +63,6 @@
         "@types/google-publisher-tag": "^1.20260216.0",
         "classnames": "^2.5.1",
         "debug": "^4.3.4",
-        "lodash": "^4.17.21"
+        "lodash-es": "^4.17.21"
     }
 }

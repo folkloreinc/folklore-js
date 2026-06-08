@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import _ from 'lodash';
+import _ from 'lodash-es';
 import path from 'path';
 import process from 'process';
 import BaseGenerator from 'yeoman-generator';

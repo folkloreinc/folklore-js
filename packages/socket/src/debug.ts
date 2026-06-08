@@ -1,5 +1,5 @@
 import createDebug from 'debug';
-import isString from 'lodash/isString';
+import isString from 'lodash-es/isString';
 
 type debug = (...args: unknown[]) => void;
 type debugCreator = (namespace: string) => debug;

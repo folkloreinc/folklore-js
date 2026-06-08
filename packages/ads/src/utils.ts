@@ -1,7 +1,7 @@
-import isArray from 'lodash/isArray';
-import isObject from 'lodash/isObject';
-import sortBy from 'lodash/sortBy';
-import uniqBy from 'lodash/uniqBy';
+import isArray from 'lodash-es/isArray';
+import isObject from 'lodash-es/isObject';
+import sortBy from 'lodash-es/sortBy';
+import uniqBy from 'lodash-es/uniqBy';
 
 import { AdSize, AdSizeMapping, Size, Slot, SlotDefinition, Viewport, Viewports } from './types';
 

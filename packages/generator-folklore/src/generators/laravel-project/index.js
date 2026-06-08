@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import glob from 'glob';
-import _ from 'lodash';
+import _ from 'lodash-es';
 import generatePassword from 'password-generator';
 import path from 'path';
 import remote from 'yeoman-remote';

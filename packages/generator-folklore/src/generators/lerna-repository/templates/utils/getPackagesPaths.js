@@ -1,6 +1,6 @@
 const path = require('path');
 /* eslint-disable import/no-extraneous-dependencies */
-const get = require('lodash/get');
+const get = require('lodash-es/get');
 const glob = require('glob');
 /* eslint-enable import/no-extraneous-dependencies */
 

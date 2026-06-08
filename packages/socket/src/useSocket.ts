@@ -1,4 +1,4 @@
-import isString from 'lodash/isString';
+import isString from 'lodash-es/isString';
 import { useContext, useEffect, useState } from 'react';
 
 import Socket from './Socket';

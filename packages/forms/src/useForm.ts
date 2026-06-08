@@ -1,6 +1,6 @@
 import { ValidationError, getCSRFHeaders, getCsrfToken, postJSON } from '@folklore/fetch';
-import isObject from 'lodash/isObject';
-import isString from 'lodash/isString';
+import isObject from 'lodash-es/isObject';
+import isString from 'lodash-es/isString';
 import { useCallback, useMemo, useState } from 'react';
 
 type FieldErrors = string | string[] | null;

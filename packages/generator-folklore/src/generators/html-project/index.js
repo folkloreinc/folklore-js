@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import _ from 'lodash';
+import _ from 'lodash-es';
 import path from 'path';
 
 import Generator from '../../lib/generator';

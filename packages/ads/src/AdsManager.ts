@@ -1,7 +1,7 @@
 import { EventEmitter } from '@folklore/events';
 import createDebug from 'debug';
-import isArray from 'lodash/isArray';
-import isObject from 'lodash/isObject';
+import isArray from 'lodash-es/isArray';
+import isObject from 'lodash-es/isObject';
 
 // import loadGPT from './loadGPT';
 import AdSlot, { AdSlotOptions as BaseAdSlotOptions } from './AdSlot';

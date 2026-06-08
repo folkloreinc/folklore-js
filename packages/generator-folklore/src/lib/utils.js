@@ -1,4 +1,4 @@
-import isString from 'lodash/isString';
+import isString from 'lodash-es/isString';
 import path from 'path';
 
 export function ensureLeadingDotSlash(filePath) {

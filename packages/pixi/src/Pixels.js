@@ -1,5 +1,5 @@
 import Color from 'color';
-import get from 'lodash/get';
+import get from 'lodash-es/get';
 
 import { Container, Point, Sprite, Texture } from 'pixi.js';
 

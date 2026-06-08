@@ -1,5 +1,5 @@
-import isNumber from 'lodash/isNumber';
-import isString from 'lodash/isString';
+import isNumber from 'lodash-es/isNumber';
+import isString from 'lodash-es/isString';
 
 type SizeUnit = '%' | 'em' | 'rem' | 'px';
 type SizeValue = number | string | null | undefined;

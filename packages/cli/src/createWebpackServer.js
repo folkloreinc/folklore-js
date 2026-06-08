@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-import isString from 'lodash/isString';
+import isString from 'lodash-es/isString';
 import url from 'url';
 import WebpackDevServer from 'webpack-dev-server';
 

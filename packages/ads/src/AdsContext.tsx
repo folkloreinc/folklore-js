@@ -1,4 +1,4 @@
-import debounce from 'lodash/debounce';
+import debounce from 'lodash-es/debounce';
 import { ElementType, ReactNode, createContext, use, useEffect, useState } from 'react';
 
 import { getSizeFromSizeMapping, getSizeMappingFromSlot } from './utils';

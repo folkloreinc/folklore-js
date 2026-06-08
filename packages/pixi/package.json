@@ -42,7 +42,7 @@
         "@folklore/size": "^0.1.26",
         "color": "^2.0.1",
         "gsap": "^1.20.3",
-        "lodash": "^4.17.4",
+        "lodash-es": "^4.17.4",
         "pixi.js": "^4.6.2"
     },
     "gitHead": "a728dcb48b2623cffc043629a0e86c273dcce71a"

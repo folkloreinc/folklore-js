@@ -1,4 +1,4 @@
-import isString from 'lodash/isString';
+import isString from 'lodash-es/isString';
 import { JSX, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import Socket from './Socket';

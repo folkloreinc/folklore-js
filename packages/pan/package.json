@@ -43,7 +43,7 @@
         "gsap": "^1.20.3",
         "hammerjs": "^2.0.8",
         "hamsterjs": "^1.1.2",
-        "lodash": "^4.17.4"
+        "lodash-es": "^4.17.4"
     },
     "gitHead": "a728dcb48b2623cffc043629a0e86c273dcce71a"
 }

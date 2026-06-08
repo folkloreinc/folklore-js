@@ -1,6 +1,6 @@
 import { Linear, TweenMax } from 'gsap';
-import isArray from 'lodash/isArray';
-import sortBy from 'lodash/sortBy';
+import isArray from 'lodash-es/isArray';
+import sortBy from 'lodash-es/sortBy';
 
 import { Container, Texture, extras, loaders } from 'pixi.js';
 

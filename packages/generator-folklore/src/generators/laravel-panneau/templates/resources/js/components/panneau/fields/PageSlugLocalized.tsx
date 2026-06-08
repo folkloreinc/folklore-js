@@ -1,7 +1,7 @@
 import { useFormValue } from '@panneau/core/contexts';
 import LocalizedField from '@panneau/field-localized';
-import get from 'lodash/get';
-import isEmpty from 'lodash/isEmpty';
+import get from 'lodash-es/get';
+import isEmpty from 'lodash-es/isEmpty';
 import { useMemo } from 'react';
 import slugify from 'slugify';
 

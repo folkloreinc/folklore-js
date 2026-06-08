@@ -1,5 +1,5 @@
-import isEmpty from 'lodash/isEmpty';
-import uniq from 'lodash/uniq';
+import isEmpty from 'lodash-es/isEmpty';
+import uniq from 'lodash-es/uniq';
 import { useMemo } from 'react';
 
 export function useStoryTrackingVariables(story: MicromagStory): Record<string, unknown> {

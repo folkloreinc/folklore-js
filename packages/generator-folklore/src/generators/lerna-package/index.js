@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import { pascalCase, snakeCase } from 'change-case';
-import get from 'lodash/get';
+import get from 'lodash-es/get';
 import path from 'path';
 
 import Generator from '../../lib/generator';

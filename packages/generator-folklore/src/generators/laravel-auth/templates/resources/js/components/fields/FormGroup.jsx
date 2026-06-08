@@ -2,9 +2,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import isArray from 'lodash/isArray';
-import isString from 'lodash/isString';
-import isEmpty from 'lodash/isEmpty';
+import isArray from 'lodash-es/isArray';
+import isString from 'lodash-es/isString';
+import isEmpty from 'lodash-es/isEmpty';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 
 import * as AppPropTypes from '../../lib/PropTypes';

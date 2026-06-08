@@ -2,8 +2,8 @@
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
-import isArray from 'lodash/isArray';
-import isString from 'lodash/isString';
+import isArray from 'lodash-es/isArray';
+import isString from 'lodash-es/isString';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import getCSSModuleLocalIdent from 'react-dev-utils/getCSSModuleLocalIdent';
@@ -222,7 +222,7 @@ export default (entry, opts = {}) => {
                           'scheduler/tracing': 'scheduler/tracing-profiling',
                       }
                     : null),
-                lodash: 'lodash-es',
+                lodash: 'lodash-es-es',
             },
         },
 

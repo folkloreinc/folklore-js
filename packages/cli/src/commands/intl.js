@@ -2,7 +2,7 @@ import { compile, compileAndWrite, extract, extractAndWrite } from '@formatjs/cl
 import { Command } from 'commander';
 import fs from 'fs';
 import fsExtra from 'fs-extra';
-import isArray from 'lodash/isArray';
+import isArray from 'lodash-es/isArray';
 import path from 'path';
 
 import POFile from '../POFile';

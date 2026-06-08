@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { sync as globSync } from 'glob';
-import isArray from 'lodash/isArray';
+import isArray from 'lodash-es/isArray';
 
 import getAbsolutePath from './getAbsolutePath';
 

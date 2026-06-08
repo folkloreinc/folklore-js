@@ -1,5 +1,5 @@
 import { EventEmitter } from '@folklore/events';
-import isArray from 'lodash/isArray';
+import isArray from 'lodash-es/isArray';
 import type { Manager, Socket } from 'socket.io-client';
 
 import { debug } from '../debug';

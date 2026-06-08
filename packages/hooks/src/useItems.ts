@@ -1,5 +1,5 @@
 import { cancelable } from 'cancelable-promise';
-import isNumber from 'lodash/isNumber';
+import isNumber from 'lodash-es/isNumber';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 export default function useItems(

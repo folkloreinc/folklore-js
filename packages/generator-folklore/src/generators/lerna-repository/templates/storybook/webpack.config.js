@@ -12,7 +12,7 @@ module.exports =  async ({ config: storybookBaseConfig }) => {
     // Alias packages
     const alias = {};
     const exactPackages = [
-        'lodash',
+        'lodash-es',
         '@babel/runtime',
     ];
     getPackagesPaths().forEach((packagePath) => {

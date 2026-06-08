@@ -49,7 +49,7 @@
         "@babel/runtime": "^7.4.3",
         "@folklore/events": "^0.0.12",
         "@vimeo/player": "^2.16.4",
-        "lodash": "^4.17.4",
+        "lodash-es": "^4.17.4",
         "query-string": "^5.0.1"
     },
     "gitHead": "a728dcb48b2623cffc043629a0e86c273dcce71a"
