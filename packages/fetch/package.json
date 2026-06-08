@@ -1,6 +1,6 @@
 {
     "name": "@folklore/fetch",
-    "version": "0.1.27",
+    "version": "0.1.28",
     "description": "Fetch utilities",
     "keywords": [
         "javascript",
@@ -44,7 +44,7 @@
     },
     "dependencies": {
         "@babel/runtime": "^7.4.3",
-        "@folklore/events": "^0.0.14",
+        "@folklore/events": "^0.0.15",
         "js-cookie": "^2.2.0",
         "lodash-es": "^4.17.4"
     },

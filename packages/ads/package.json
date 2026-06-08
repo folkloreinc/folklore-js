@@ -1,6 +1,6 @@
 {
     "name": "@folklore/ads",
-    "version": "0.2.4",
+    "version": "0.2.5",
     "description": "Ads library",
     "keywords": [
         "javascript",
@@ -45,10 +45,10 @@
         "prepublishOnly": "npm run build"
     },
     "dependencies": {
-        "@folklore/events": "^0.0.14",
-        "@folklore/hooks": "^0.0.94",
-        "@folklore/tracking": "^0.1.4",
-        "@folklore/utils": "^0.1.11",
+        "@folklore/events": "^0.0.15",
+        "@folklore/hooks": "^0.0.95",
+        "@folklore/tracking": "^0.1.5",
+        "@folklore/utils": "^0.1.12",
         "@types/google-publisher-tag": "^1.20260216.0",
         "classnames": "^2.5.1",
         "debug": "^4.3.4",
