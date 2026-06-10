@@ -24,44 +24,19 @@ type RequestState = {
 
 export type FormPostData = Record<string, unknown>;
 
-// prettier-ignore
-function getFieldsPropsFromFields(fields: FieldDefinition[], {
-    value, errors, onChange, ...props
-}) {
-    return fields.reduce<Record<string, Field>>(
-        (allFields, field) => {
-            const {
-                name = isString(field) ? field : null,
-            } = isObject(field) ? field : {};
-            return {
-                ...allFields,
-                [name]: {
-                    ...(isObject(field) ? field : null),
-                    name,
-                    value: value !== null ? value[name] || null : null,
-                    errors: errors !== null ? errors[name] || null : null,
-                    onChange: fieldValue => onChange(name, fieldValue),
-                    ...props,
-                },
-            };
-        },
-        {},
-    );
-}
-
 export interface UseFormOptions<TResponse = unknown, TData extends FormPostData = FormPostData> {
     fields?: FieldDefinition[];
     action?: string | null;
     postForm?: ((action: string | null, data: TData) => Promise<TResponse>) | null;
     initialErrors?: FormErrors;
     errors?: FormErrors;
-    setErrors?: ((errors: FormErrors) => void) | null;
+    setErrors?: ((errors: FormErrors | ((currentErrors: FormErrors) => FormErrors)) => void) | null;
     initialGeneralError?: string | null;
     generalError?: string | null;
     setGeneralError?: ((error: string | null) => void) | null;
     initialValue?: FormValues;
     value?: FormValues;
-    setValue?: ((value: FormValues) => void) | null;
+    setValue?: ((value: FormValues | ((currentValue: FormValues) => FormValues)) => void) | null;
     getFieldValue?: ((value: unknown) => unknown) | null;
     onComplete: ((response: unknown) => void) | null;
     resetOnComplete?: boolean;
@@ -119,23 +94,31 @@ function useForm<TResponse = unknown, TData extends FormPostData = FormPostData>
         : setStateGeneralError;
 
     const onFieldChange = (fieldName: string, fieldValue: unknown) => {
-        const fieldErrors = errors !== null ? errors[fieldName] || null : null;
-        if (fieldErrors !== null) {
-            setErrors({
-                ...errors,
+        const hasErrors = (errors !== null ? errors[fieldName] || null : null) !== null;
+        if (hasErrors) {
+            setErrors((currentErrors) => ({
+                ...currentErrors,
                 [fieldName]: null,
-            });
+            }));
         }
-        setValue({
-            ...value,
+        setValue((currentValue) => ({
+            ...currentValue,
             [fieldName]: getFieldValue !== null ? getFieldValue(fieldValue) : fieldValue,
-        });
+        }));
     };
-    const fieldsProps = getFieldsPropsFromFields(fields, {
-        value,
-        errors,
-        onChange: onFieldChange,
-    });
+    const fieldsProps = fields.reduce<Record<string, Field>>((allFields, field) => {
+        const { name = isString(field) ? field : null } = isObject(field) ? field : {};
+        return {
+            ...allFields,
+            [name]: {
+                ...(isObject(field) ? field : null),
+                name,
+                value: value !== null ? value[name] || null : null,
+                errors: errors !== null ? errors[name] || null : null,
+                onChange: (fieldValue) => onFieldChange(name, fieldValue),
+            },
+        };
+    }, {});
 
     const [csrfToken, setCsrfToken] = useState(() => getCsrfToken());
 
