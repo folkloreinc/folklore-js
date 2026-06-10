@@ -1,7 +1,7 @@
 import { ValidationError, getCSRFHeaders, getCsrfToken, postJSON } from '@folklore/fetch';
 import isObject from 'lodash-es/isObject';
 import isString from 'lodash-es/isString';
-import { useCallback, useMemo, useState } from 'react';
+import { SubmitEvent, useState } from 'react';
 
 type FieldErrors = string | string[] | null;
 
@@ -49,7 +49,7 @@ function getFieldsPropsFromFields(fields: FieldDefinition[], {
     );
 }
 
-interface UseFormOptions<TResponse = unknown, TData extends FormPostData = FormPostData> {
+export interface UseFormOptions<TResponse = unknown, TData extends FormPostData = FormPostData> {
     fields?: FieldDefinition[];
     action?: string | null;
     postForm?: ((action: string | null, data: TData) => Promise<TResponse>) | null;
@@ -63,13 +63,14 @@ interface UseFormOptions<TResponse = unknown, TData extends FormPostData = FormP
     value?: FormValues;
     setValue?: ((value: FormValues) => void) | null;
     getFieldValue?: ((value: unknown) => unknown) | null;
-    onComplete?: ((response: unknown) => void) | null;
+    onComplete: ((response: unknown) => void) | null;
+    resetOnComplete?: boolean;
     csrfMetaName?: string | null;
     xsrfCookieName?: string | null;
 }
 
 function useForm<TResponse = unknown, TData extends FormPostData = FormPostData>(
-    opts: UseFormOptions<TResponse, TData> = {},
+    opts: UseFormOptions<TResponse, TData>,
 ) {
     const {
         fields = [],
@@ -86,6 +87,7 @@ function useForm<TResponse = unknown, TData extends FormPostData = FormPostData>
         setValue: setProvidedValue = null,
         getFieldValue = null,
         onComplete = null,
+        resetOnComplete = false,
         csrfMetaName = null,
         xsrfCookieName = null,
     } = opts || {};
@@ -116,8 +118,7 @@ function useForm<TResponse = unknown, TData extends FormPostData = FormPostData>
         ? setProvidedGeneralError
         : setStateGeneralError;
 
-    const fieldsKey = [value, errors, getFieldValue, ...(fields || [])];
-    const onFieldChange = useCallback((fieldName: string, fieldValue: unknown) => {
+    const onFieldChange = (fieldName: string, fieldValue: unknown) => {
         const fieldErrors = errors !== null ? errors[fieldName] || null : null;
         if (fieldErrors !== null) {
             setErrors({
@@ -129,13 +130,27 @@ function useForm<TResponse = unknown, TData extends FormPostData = FormPostData>
             ...value,
             [fieldName]: getFieldValue !== null ? getFieldValue(fieldValue) : fieldValue,
         });
-    }, fieldsKey);
-    const fieldsProps = useMemo(
-        () => getFieldsPropsFromFields(fields, { value, errors, onChange: onFieldChange }),
-        fieldsKey,
-    );
+    };
+    const fieldsProps = getFieldsPropsFromFields(fields, {
+        value,
+        errors,
+        onChange: onFieldChange,
+    });
 
-    const csrfToken = useMemo(() => getCsrfToken(), []);
+    const [csrfToken, setCsrfToken] = useState(() => getCsrfToken());
+
+    const reset = () => {
+        setValue(initialValue);
+        setErrors(initialErrors);
+        setGeneralError(initialGeneralError);
+        setRequestState({
+            success: false,
+            loading: false,
+            error: false,
+        });
+        setResponse(null);
+        setCsrfToken(getCsrfToken());
+    };
 
     const onSubmitError = (error: unknown) => {
         setRequestState({
@@ -166,50 +181,49 @@ function useForm<TResponse = unknown, TData extends FormPostData = FormPostData>
             error: false,
         });
         setResponse(resp);
-        onComplete(resp);
+        if (onComplete !== null) {
+            onComplete(resp);
+        }
+
+        if (resetOnComplete) {
+            reset();
+        } else {
+            setCsrfToken(getCsrfToken());
+        }
     };
 
-    const finalPostForm = useCallback(
-        (postAction: string | null, postData: TData) =>
-            postForm !== null
-                ? postForm(postAction, postData)
-                : postJSON<TResponse, TData>(postAction, postData, {
-                      credentials: 'include',
-                      headers: getCSRFHeaders({
-                          csrfMetaName,
-                          xsrfCookieName,
-                      }),
+    const finalPostForm = (postAction: string | null, postData: TData) =>
+        postForm !== null
+            ? postForm(postAction, postData)
+            : postJSON<TResponse, TData>(postAction, postData, {
+                  credentials: 'include',
+                  headers: getCSRFHeaders({
+                      csrfMetaName,
+                      xsrfCookieName,
                   }),
-        [postForm, postJSON, getCSRFHeaders, csrfMetaName, xsrfCookieName],
-    );
+              });
 
-    const submit = useCallback(
-        (submitValue = value) => {
-            setRequestState({
-                success: false,
-                loading: true,
-                error: false,
-            });
-            setGeneralError(null);
-            setErrors(null);
+    const submit = (submitValue = value) => {
+        setRequestState({
+            success: false,
+            loading: true,
+            error: false,
+        });
+        setGeneralError(null);
+        setErrors(null);
 
-            finalPostForm(action, {
-                ...((submitValue || {}) as TData),
-                _token: getCsrfToken(),
-            })
-                .then(onSubmitSuccess)
-                .catch(onSubmitError);
-        },
-        [finalPostForm, action, value],
-    );
+        finalPostForm(action, {
+            ...((submitValue || {}) as TData),
+            _token: csrfToken,
+        })
+            .then(onSubmitSuccess)
+            .catch(onSubmitError);
+    };
 
-    const onSubmit = useCallback(
-        (e: { preventDefault: () => void }) => {
-            e.preventDefault();
-            submit();
-        },
-        [submit],
-    );
+    const onSubmit = (e?: SubmitEvent) => {
+        e?.preventDefault();
+        submit();
+    };
 
     let status = null;
     if (requestState.loading) {
@@ -228,6 +242,7 @@ function useForm<TResponse = unknown, TData extends FormPostData = FormPostData>
         csrfToken,
         submit,
         onSubmit,
+        reset,
         ...requestState,
         status,
         response,
