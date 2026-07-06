@@ -29,9 +29,10 @@ export function RoutesProvider({
     basePath = null,
     children,
 }: RoutesProviderProps): JSX.Element {
+    const { routes: previousRoutes, basePath: previousBasePath } = use(RoutesContext);
     const value = {
-        routes,
-        basePath,
+        routes: { ...previousRoutes, ...routes },
+        basePath: basePath ?? previousBasePath,
     };
     return <RoutesContext value={value}>{children}</RoutesContext>;
 }
