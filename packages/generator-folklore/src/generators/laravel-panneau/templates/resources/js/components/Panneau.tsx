@@ -32,7 +32,10 @@ const PanneauContainer = ({
     useEffect(() => {
         let canceled = false;
         const { locale = 'fr' } = definition.intl || {};
-        import(locale === 'en' ? `@panneau/intl/locale/en` : `@panneau/intl/locale/fr`).then(() => {
+        (locale === 'en'
+            ? import('@panneau/intl/locale/en')
+            : import('@panneau/intl/locale/fr')
+        ).then(() => {
             if (!canceled) {
                 setLocaleLoaded(true);
             }

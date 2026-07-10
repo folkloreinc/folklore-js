@@ -129,7 +129,7 @@ export default class ReactAppGenerator extends Generator {
                     classnames: '^2.5.1',
 
                     '@folklore/auth': '^0.0.14',
-                    '@folklore/routes': '^0.2.47',
+                    '@folklore/routes': '^0.4.11',
                     '@folklore/fonts': '^0.0.20',
                     '@folklore/forms': '^0.0.35',
                     '@folklore/fetch': '^0.1.24',
