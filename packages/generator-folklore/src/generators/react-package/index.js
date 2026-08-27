@@ -177,7 +177,7 @@ export default class ReactPackageGenerator extends Generator {
                     return;
                 }
 
-                this.addDependencies(['react@18.3.1', 'prop-types@latest', 'react-dom@18.3.1']);
+                this.addDependencies(['react@19.2.8', 'prop-types@latest', 'react-dom@19.2.8']);
             },
 
             npmInstallDev() {
