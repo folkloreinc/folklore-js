@@ -25,25 +25,32 @@ const PanneauContainer = ({
     uploadEndpoint = '/panneau/upload',
     statusCode = null,
 }: PanneauContainerProps) => {
-    const { routes = {} } = definition;
+    const { routes = {}, intl = null } = definition;
+    const { locale = 'fr' } = intl || {};
     const isAuthorized = statusCode !== 401 && statusCode !== 403;
     const [localeLoaded, setLocaleLoaded] = useState(false);
 
     useEffect(() => {
         let canceled = false;
-        const { locale = 'fr' } = definition.intl || {};
-        (locale === 'en'
-            ? import('@panneau/intl/locale/en')
-            : import('@panneau/intl/locale/fr')
-        ).then(() => {
-            if (!canceled) {
-                setLocaleLoaded(true);
-            }
-        });
+        if (locale === 'fr') {
+            import('@panneau/intl/locale/fr').then(() => {
+                if (!canceled) {
+                    setLocaleLoaded(true);
+                }
+            });
+        } else if (locale === 'en') {
+            import('@panneau/intl/locale/en').then(() => {
+                if (!canceled) {
+                    setLocaleLoaded(true);
+                }
+            });
+        } else {
+            setLocaleLoaded(true);
+        }
         return () => {
             canceled = true;
         };
-    }, [definition]);
+    }, [locale]);
 
     return localeLoaded ? (
         <Panneau
