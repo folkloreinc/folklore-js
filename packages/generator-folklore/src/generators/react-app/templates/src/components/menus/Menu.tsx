@@ -3,6 +3,13 @@ import { Link } from 'wouter';
 
 import styles from '<%= getRelativeStylesPath('components/menus/Menu.jsx', 'menus/menu.module.css') %>';
 
+interface MenuItem {
+    label: string;
+    url: string;
+    active?: boolean;
+    external?: boolean;
+    target?: string;
+}
 
 interface MenuProps {
     items?: MenuItem[];
@@ -21,10 +28,7 @@ function Menu({ items = null, className = null }: MenuProps) {
         >
             <ul className={styles.items}>
                 {(items || []).map(
-                    (
-                        { label, url, active = false, external = false, target = '_blank' },
-                        index,
-                    ) => (
+                    ({ label = null, url = null, active = false, external = false, target = '_blank' }) => (
                         <li
                             className={classNames([
                                 styles.item,
@@ -32,7 +36,7 @@ function Menu({ items = null, className = null }: MenuProps) {
                                     [styles.active]: active,
                                 },
                             ])}
-                            key={`item-${index}`}
+                            key={`item-${label}-${url}`}
                         >
                             {external ? (
                                 <a href={url} target={target} className={styles.link}>
@@ -52,3 +56,4 @@ function Menu({ items = null, className = null }: MenuProps) {
 }
 
 export default Menu;
+
