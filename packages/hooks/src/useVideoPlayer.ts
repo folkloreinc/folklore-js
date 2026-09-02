@@ -6,7 +6,7 @@ import useVimeoPlayer, { UseVimeoPlayerOptions } from './useVimeoPlayer';
 import useYouTubePlayer, { UseYouTubePlayerOptions } from './useYouTubePlayer';
 import { VideoPlayer, VideoPlayerMetadata } from './videoPlayer';
 
-type UseVideoPlayerOptions = (
+export type UseVideoPlayerOptions = (
     | UseNativeVideoPlayerOptions
     | UseVimeoPlayerOptions
     | UseYouTubePlayerOptions

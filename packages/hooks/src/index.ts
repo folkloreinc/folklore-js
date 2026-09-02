@@ -12,7 +12,7 @@ export * from './useObserver';
 export { default as usePlayerCurrentTime } from './usePlayerCurrentTime';
 export { default as useScrollTrigger } from './useScrollTrigger';
 export { default as useSupportsWebp } from './useSupportsWebp';
-export { default as useVideoPlayer } from './useVideoPlayer';
+export { default as useVideoPlayer, type UseVideoPlayerOptions } from './useVideoPlayer';
 export { default as useVimeoPlayer } from './useVimeoPlayer';
 export {
     default as useVisualViewport,
@@ -22,3 +22,4 @@ export { default as useWindowEvent, eventsManager as windowEventsManager } from 
 export { default as useWindowScroll } from './useWindowScroll';
 export { default as useWindowSize } from './useWindowSize';
 export { default as useYouTubePlayer } from './useYouTubePlayer';
+export * from './videoPlayer';
