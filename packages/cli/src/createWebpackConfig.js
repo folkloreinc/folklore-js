@@ -48,7 +48,9 @@ export default (entry, opts = {}) => {
         overrideEnv: overrideEnvPath = undefined,
 
         disableImageOptimization = false,
-        imageOptimization = 'lossless',
+        imageminPresets: imageminPresetsPath = null,
+        imageOptimizationOptions: imageOptimizationOptionsPath = null,
+        imageminPreset = 'lossless',
         imageDataUrlMaxSize = 5000,
         babelPresetEnvUseBuiltins = 'entry',
         postcssConfigFile = null,
@@ -138,6 +140,8 @@ export default (entry, opts = {}) => {
     const extraPlugins = loadExtendItems(plugins);
     const htmlTemplateParameters = loadExtend(htmlTemplateParametersPath);
     const customGetLocalIndent = loadExtend(getLocalIndent);
+    const customImageOptimizationOptions = loadExtend(imageOptimizationOptionsPath);
+    const customImageminPresets = loadExtend(imageminPresetsPath);
 
     const overrideEnv = loadExtend(overrideEnvPath);
     const defineEnv = getAppEnv({
@@ -184,6 +188,20 @@ export default (entry, opts = {}) => {
             splitChunks: {
                 chunks: isProduction ? 'all' : 'async',
             },
+            minimizer: [
+                !disableImageOptimization &&
+                    isProduction &&
+                    new ImageMinimizerPlugin(
+                        customImageOptimizationOptions ?? {
+                            minimizer: {
+                                implementation: ImageMinimizerPlugin.imageminMinify,
+                                options: {
+                                    ...(customImageminPresets ?? imageminPresets)[imageminPreset],
+                                },
+                            },
+                        },
+                    ),
+            ],
         },
 
         resolve: {
@@ -477,21 +495,6 @@ export default (entry, opts = {}) => {
                     filename: path.join(cssOutputPath, cssOutputFilename),
                     chunkFilename: path.join(cssOutputPath, cssChunkOutputFilename),
                 }),
-
-            !disableImageOptimization &&
-                isProduction &&
-                new ImageMinimizerPlugin(
-                    {
-                        lossless: {
-                            minimizerOptions: {
-                                ...imageminPresets.losslessWebpack,
-                            },
-                        },
-                        lossy: {
-                            minify: ImageMinimizerPlugin.squooshMinify,
-                        },
-                    }[imageOptimization],
-                ),
 
             new WebpackManifestPlugin({
                 fileName: 'asset-manifest.json',

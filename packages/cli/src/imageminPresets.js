@@ -26,7 +26,7 @@ export default {
     //         }),
     //     ],
     // },
-    losslessWebpack: {
+    lossless: {
         plugins: [
             [
                 'gifsicle',

@@ -41,7 +41,9 @@ const setupWebpackCommand = (command) => {
         .option('--get-local-indent [value]', 'getLocalIdent function for css-loader')
         // Images
         .option('--disable-image-optimization', 'Disable images optimization')
-        .option('--image-optimization <preset>', 'Set images optimization preset (lossless, lossy)')
+        .option('--image-optimization-options <path>', 'Path to image optimization options file')
+        .option('--imagemin-presets <path>', 'Path to imagemin presets file')
+        .option('--imagemin-preset <preset>', 'Set imagemin preset (lossless, lossy)')
         .option('--image-data-url-max-size <size>', 'Maximum size for data url images')
         // HTML
         .option(
