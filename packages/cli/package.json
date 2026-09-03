@@ -91,5 +91,5 @@
         "webpack-manifest-plugin": "^5.0.0",
         "webpack-merge": "^5.8.0"
     },
-    "gitHead": "e6e697159b85fdde1a3f561786fff9d98ee2dbbb"
+    "gitHead": "41842f8e8446a1f27d8ceb4c92a10c46d86cb610"
 }
