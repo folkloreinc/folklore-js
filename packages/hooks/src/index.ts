@@ -10,6 +10,7 @@ export * from './useItems';
 export { default as useNativeVideoPlayer } from './useNativeVideoPlayer';
 export * from './useObserver';
 export { default as usePlayerCurrentTime } from './usePlayerCurrentTime';
+export { default as useScrollDataAttribute } from './useScrollDataAttribute';
 export { default as useScrollTrigger } from './useScrollTrigger';
 export { default as useSupportsWebp } from './useSupportsWebp';
 export { default as useVideoPlayer, type UseVideoPlayerOptions } from './useVideoPlayer';
