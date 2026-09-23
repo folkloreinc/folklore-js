@@ -218,7 +218,7 @@ function useAd(
         disabled: adsManager.isDisabled(),
         id: slot !== null ? slot.getElementId() : null,
         isRendered: slot !== null && slot.isRendered() && renderEvent !== null,
-        isEmpty: slot !== null && renderEvent !== null ? slot.isEmpty() : true,
+        isEmpty: slot !== null ? slot.isEmpty() : true,
         isVisible: slot !== null ? slot.isVisible() : true,
         width: null,
         height: null,
