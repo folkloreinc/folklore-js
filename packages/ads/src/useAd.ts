@@ -212,18 +212,26 @@ function useAd(
         [],
     );
 
+    const { isEmpty = true, size: renderedSize = null } = renderEvent ?? {};
+
     return {
         refObserver,
         slot,
-        disabled: adsManager.isDisabled(),
+        disabled: adsManager.isDisabled() || disabled,
         id: slot !== null ? slot.getElementId() : null,
-        isRendered: slot !== null && slot.isRendered(),
-        isEmpty: slot !== null ? slot.isEmpty() : true,
-        isVisible: slot !== null ? slot.isVisible() : true,
+        isRendered: renderEvent !== null,
+        isEmpty: isEmpty,
+        isVisible: isVisible,
         width: null,
         height: null,
         renderEvent,
-        ...(slot !== null ? slot.getRenderedSize() : null),
+        ...(renderedSize !== null
+            ? {
+                  width: renderedSize[0],
+                  height: renderedSize[1],
+                  isFluid: renderedSize[0] === 0 && renderedSize[1] === 0,
+              }
+            : null),
     };
 }
 
