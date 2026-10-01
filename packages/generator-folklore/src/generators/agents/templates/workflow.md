@@ -4,11 +4,11 @@ Branching follows Gitflow, kept light. `develop` is where development happens: e
 
 On GitHub, `develop` is the default branch (so PRs target it and `Closes #<number>` closes issues on merge), and the `bug`, `enhancement` and `in-progress` labels exist.
 
-### Commit straight to `develop` (default)
+### Work straight on `develop` (default)
 
-- Small changes asked for directly in conversation: fixes, style or copy tweaks, translations, content. The request was reviewed by being asked for.
+- Small changes asked for directly in conversation: fixes, style or copy tweaks, translations, content.
 - Documentation, comments and config with no runtime effect.
-- Run the checks before committing. Never push unless asked.
+- Run the checks , then stop and leave the changes uncommitted: the maintainer reviews them before they land. Commit only when explicitly asked to. Never push unless asked.
 
 ### Use an issue and a PR
 
@@ -25,7 +25,7 @@ What decides the flow is where the request came from and what it touches, not th
 2. Add the `in-progress` label before starting: it stops a second session from picking the same issue. Remove it if the work is abandoned.
 3. For an `enhancement`, write a short plan in the issue body before coding. `bug` issues skip the plan.
 4. One branch per issue, prefixed by its type: `feature/<number>-<slug>` for an `enhancement`, `bug/<number>-<slug>` for a `bug` (other types follow the same pattern, e.g. `docs/`, `refactor/`). Branch from an up-to-date `develop`, in its own worktree under `.claude/worktrees/<number>-<slug>` so parallel sessions don't share a checkout.
-5. Run the checks, push and open the PR against `develop` with `Closes #<number>` in its body, without asking. If the change couldn't be verified in the session, list the test scenario as a checkbox list in the PR body.
+5. Commit on the issue branch as the work progresses, without asking: the PR is where the review happens. Run the checks, push and open the PR against `develop` with `Closes #<number>` in its body, without asking. If the change couldn't be verified in the session, list the test scenario as a checkbox list in the PR body.
 6. The issue closes when the PR merges into `develop`, never just because code was pushed. Remove the worktree (`git worktree remove`) once merged.
 
 Something out of scope noticed along the way becomes a new issue (title, context, files involved) rather than growing the current change. Every issue carries a type label: `bug` or `enhancement`.
