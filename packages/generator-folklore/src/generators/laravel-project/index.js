@@ -296,6 +296,15 @@ export default class LaravelProjectGenerator extends Generator {
             'skip-install': true,
         });
 
+        this.composeWith('folklore:claude', {
+            type: 'laravel',
+            url: _.template(_.get(this.options, 'local-url'))({
+                project_host: this.options['project-host'],
+                project_name: this.options['project-name'],
+            }),
+            quiet: true,
+        });
+
         if (this.options.mediatheque) {
             this.composeWith('folklore:laravel-mediatheque', {
                 'project-name': this.options['project-name'],

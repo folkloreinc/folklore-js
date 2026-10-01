@@ -8,6 +8,7 @@ Always test a Laravel project through its `.test` domain, never `localhost`: som
 
 Notes:
 
+- The `dev` configuration of `.claude/launch.json` runs these steps for Claude Code's browser preview.
 - Options reach `flklr` from `package.json` (`build` key), the environment (`FLKLR_*`) and the command line, the command line winning. Leave `package.json` as is and pass overrides on the command line.
 - On a certificate error, see [Fixing Valet certificates](#fixing-valet-certificates) rather than switching to `localhost` or plain HTTP.
 - Stop the dev server once testing is done.

@@ -1,0 +1,36 @@
+{
+    "permissions": {
+        "allow": [
+            "Bash(npm run lint*)",
+            "Bash(npm run format*)",
+            "Bash(npm run typecheck)",
+            "Bash(npm run test*)",
+            "Bash(npm test*)",
+            "Bash(npm run server*)",
+            "Bash(npx prettier *)",
+            "Bash(npx eslint *)",
+            "Bash(npx stylelint *)",
+            "Bash(npx tsc --noEmit*)",
+            "Bash(php artisan test*)",
+            "Bash(npx flklr certificates*)",
+            "Bash(npx flklr certs*)",
+            "Bash(gh issue view *)",
+            "Bash(gh issue list*)",
+            "Bash(gh issue create *)",
+            "Bash(gh issue edit *)",
+            "Bash(gh issue comment *)",
+            "Bash(gh pr view*)",
+            "Bash(gh pr list*)",
+            "Bash(gh pr diff*)",
+            "Bash(gh pr checks*)",
+            "Bash(gh pr create *)",
+            "Bash(gh pr edit *)",
+            "Bash(gh pr comment *)"
+        ],
+        "ask": [
+            "Bash(npx flklr certificates*--fix*)",
+            "Bash(npx flklr certs*--fix*)",
+            "Bash(git push*)"
+        ]
+    }
+}

@@ -22,7 +22,8 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
-/.claude
+/.claude/settings.local.json
+/.claude/worktrees/
 
 /public/static
 /public/asset-manifest.json

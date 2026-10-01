@@ -180,6 +180,11 @@ export default class HTMLProjectGenerator extends Generator {
             quiet: true,
         });
 
+        this.composeWith('folklore:claude', {
+            type: 'html',
+            quiet: true,
+        });
+
         this.log('merging with folklore build');
 
         this.composeWith('folklore:build', {

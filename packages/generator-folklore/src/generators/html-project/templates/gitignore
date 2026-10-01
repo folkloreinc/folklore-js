@@ -34,3 +34,7 @@ node_modules
 /.sass-cache
 /.tmp
 /dist
+
+# Claude Code (shared settings and launch config are tracked)
+/.claude/settings.local.json
+/.claude/worktrees/

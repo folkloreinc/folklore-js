@@ -7,6 +7,7 @@ Without a backend, the dev server serves the project directly on `localhost`.
 
 Notes:
 
+- The `dev` configuration of `.claude/launch.json` runs these steps for Claude Code's browser preview.
 - Options reach `flklr` from `package.json` (`build` key), the environment (`FLKLR_*`) and the command line, the command line winning. Leave `package.json` as is and pass overrides on the command line.
 - HTTP avoids the dev server's self-signed certificate, which browsers reject. Use the default HTTPS only when a feature requires a secure context the browser won't grant to `localhost`.
 - Stop the dev server once testing is done.
