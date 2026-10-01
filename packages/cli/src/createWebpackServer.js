@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
+import fs from 'fs';
 import isString from 'lodash/isString';
 import url from 'url';
 import WebpackDevServer from 'webpack-dev-server';
 
 import createWebpackCompiler from './createWebpackCompiler';
 import getAbsolutePath from './getAbsolutePath';
+import getValetCertificate from './getValetCertificate';
 
 const createWebpackServer = (config, opts = {}) => {
     const compiler = createWebpackCompiler(config);
@@ -15,6 +17,7 @@ const createWebpackServer = (config, opts = {}) => {
         indexPath = '/index.html',
         setupMiddlewares = null,
         headers = null,
+        serverType = 'https',
         ...otherOpts
     } = opts;
     const {
@@ -29,9 +32,26 @@ const createWebpackServer = (config, opts = {}) => {
         ? require(getAbsolutePath(setupMiddlewares))
         : setupMiddlewares;
 
+    // Serve with the Valet certificate of the proxied site, when it exists, so the browser
+    // trusts the dev server on the same .test domain as the site.
+    const valetCertificate =
+        serverType === 'https' && isString(proxy)
+            ? getValetCertificate(url.parse(proxy).hostname)
+            : null;
+    const server =
+        valetCertificate !== null
+            ? {
+                  type: 'https',
+                  options: {
+                      cert: fs.readFileSync(valetCertificate.cert),
+                      key: fs.readFileSync(valetCertificate.key),
+                  },
+              }
+            : serverType;
+
     const options = {
         allowedHosts: 'all',
-        server: 'https',
+        server,
         hot: true,
         client: {
             overlay: true,
@@ -74,8 +94,7 @@ const createWebpackServer = (config, opts = {}) => {
             : {}),
         ...otherOpts,
     };
-    const server = new WebpackDevServer(options, compiler);
-    return server;
+    return new WebpackDevServer(options, compiler);
 };
 
 export default createWebpackServer;

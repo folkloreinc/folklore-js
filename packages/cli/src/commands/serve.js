@@ -17,6 +17,8 @@ setupWebpackCommand(command)
     .option('-p, --proxy <host>', 'Host to proxy')
     .option('--setup-middlewares <path>', 'Setup middlewares in webpack dev server')
     .option('-o, --open <url>', 'Url to open')
+    .option('--no-open', 'Do not open a browser')
+    .option('--server <type>', 'Server type: https (default) or http')
     .action(async (entryArgs) => {
         // Get options
         const {
@@ -39,10 +41,17 @@ setupWebpackCommand(command)
         // Get options
         const packageOptions = getOptionsFromPackage(packageJson);
         const envOptions = getOptionsFromEnv();
-        const { proxy, open, host, headers, ...finalOptions } = {
-            ...commandOptions,
-            ...envOptions,
+        const {
+            proxy,
+            open,
+            host,
+            headers,
+            server: serverType,
+            ...finalOptions
+        } = {
             ...packageOptions,
+            ...envOptions,
+            ...commandOptions,
         };
 
         // Set environment
@@ -61,6 +70,7 @@ setupWebpackCommand(command)
             host,
             setupMiddlewares,
             headers,
+            serverType,
         });
 
         // Start server
