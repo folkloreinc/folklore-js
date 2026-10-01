@@ -1,6 +1,7 @@
 import { Command } from 'commander';
 
 import buildCommand from './commands/build';
+import certificatesCommand from './commands/certificates';
 import intlCommand from './commands/intl';
 // import imagesCommand from './commands/images';
 import serveCommand from './commands/serve';
@@ -13,6 +14,7 @@ program
     .version(version)
     .description('CLI to build and serve javascript projects')
     .addCommand(buildCommand)
+    .addCommand(certificatesCommand)
     .addCommand(intlCommand)
     // .addCommand(imagesCommand)
     .addCommand(serveCommand, {
