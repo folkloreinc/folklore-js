@@ -25,7 +25,9 @@
             "Bash(gh pr checks*)",
             "Bash(gh pr create *)",
             "Bash(gh pr edit *)",
-            "Bash(gh pr comment *)"
+            "Bash(gh pr comment *)",
+            "mcp__Claude_Browser",
+            "mcp__Claude_Code_iOS_Simulator"
         ],
         "ask": [
             "Bash(npx flklr certificates*--fix*)",
