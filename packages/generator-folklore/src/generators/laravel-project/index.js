@@ -320,6 +320,11 @@ export default class LaravelProjectGenerator extends Generator {
                 quiet: true,
             });
         }
+
+        // Composed last so its writing runs once composer.json and package.json exist
+        this.composeWith('folklore:agents', {
+            quiet: true,
+        });
     }
 
     get writing() {
