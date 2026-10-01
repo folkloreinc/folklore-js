@@ -24,6 +24,7 @@ export default class AgentsGenerator extends Generator {
         const separator = '\n\n---\n\n';
         const parts = [
             this.fs.read(this.templatePath('general.md')),
+            this.fs.read(this.templatePath('workflow.md')),
             hasComposerJson ? this.fs.read(this.templatePath('laravel.md')) : null,
             hasPackageJson ? this.fs.read(this.templatePath('frontend.md')) : null,
             hasComposerJson ? this.fs.read(this.templatePath('serve-laravel.md')) : null,
