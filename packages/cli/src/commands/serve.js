@@ -15,6 +15,7 @@ const command = new Command('serve');
 setupWebpackCommand(command)
     .description('Start development server')
     .option('-p, --proxy <host>', 'Host to proxy')
+    .option('--host <host>', 'Host to serve on, also used to find its certificate')
     .option('--setup-middlewares <path>', 'Setup middlewares in webpack dev server')
     .option('-o, --open <url>', 'Url to open')
     .option('--no-open', 'Do not open a browser')

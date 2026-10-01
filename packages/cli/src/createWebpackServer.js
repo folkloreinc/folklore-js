@@ -32,12 +32,16 @@ const createWebpackServer = (config, opts = {}) => {
         ? require(getAbsolutePath(setupMiddlewares))
         : setupMiddlewares;
 
-    // Serve with the Valet certificate of the proxied site, when it exists, so the browser
-    // trusts the dev server on the same .test domain as the site.
+    // Serve with the Valet certificate of the proxied site, or of the host when there is no proxy,
+    // when it exists, so the browser trusts the dev server on the same domain as the site.
+    let certificateHostname = null;
+    if (isString(proxy)) {
+        certificateHostname = url.parse(proxy).hostname;
+    } else if (isString(host)) {
+        certificateHostname = host;
+    }
     const valetCertificate =
-        serverType === 'https' && isString(proxy)
-            ? getValetCertificate(url.parse(proxy).hostname)
-            : null;
+        serverType === 'https' ? getValetCertificate(certificateHostname) : null;
     const server =
         valetCertificate !== null
             ? {

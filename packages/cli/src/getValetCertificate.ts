@@ -1,3 +1,4 @@
+import { X509Certificate } from 'crypto';
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
@@ -15,6 +16,10 @@ export const herdConfigDirectory = path.join(
     'Library/Application Support/Herd/config/valet',
 );
 
+// Certificates signed by the Valet CA for hostnames outside the Valet TLD (local.site.com),
+// created by `flklr certificates --fix`.
+export const localCertificatesDirectory = path.join(os.homedir(), '.config/flklr/certificates');
+
 const certificatesDirectories = [
     path.join(valetConfigDirectory, 'Certificates'),
     path.join(herdConfigDirectory, 'Certificates'),
@@ -25,6 +30,41 @@ const certificatesDirectories = [
 function getCandidateHostnames(hostname: string): string[] {
     const parts = hostname.split('.');
     return parts.slice(0, -1).map((_, index) => parts.slice(index).join('.'));
+}
+
+// Local certificates cover several hostnames (local.site.com and local.site.fr), so they are
+// matched on their subject alternative names instead of their file name.
+export function getLocalCertificates(): ValetCertificate[] {
+    if (!fs.existsSync(localCertificatesDirectory)) {
+        return [];
+    }
+    return fs
+        .readdirSync(localCertificatesDirectory)
+        .filter((file) => file.endsWith('.crt'))
+        .sort()
+        .map((file) => {
+            const name = file.slice(0, -'.crt'.length);
+            return {
+                name,
+                directory: localCertificatesDirectory,
+                cert: path.join(localCertificatesDirectory, file),
+                key: path.join(localCertificatesDirectory, `${name}.key`),
+            };
+        })
+        .filter(({ key }) => fs.existsSync(key));
+}
+
+export function getCertificateHostnames(certPath: string): string[] {
+    try {
+        const { subjectAltName = '' } = new X509Certificate(fs.readFileSync(certPath));
+        return (subjectAltName || '')
+            .split(',')
+            .map((it) => it.trim())
+            .filter((it) => it.startsWith('DNS:'))
+            .map((it) => it.slice('DNS:'.length));
+    } catch {
+        return [];
+    }
 }
 
 function getValetCertificate(hostname: string | null = null): ValetCertificate | null {
@@ -41,7 +81,11 @@ function getValetCertificate(hostname: string | null = null): ValetCertificate |
             }
         }
     }
-    return null;
+    return (
+        getLocalCertificates().find(({ cert }) =>
+            getCertificateHostnames(cert).includes(hostname),
+        ) || null
+    );
 }
 
 export default getValetCertificate;
