@@ -177,10 +177,6 @@ export default class HTMLProjectGenerator extends Generator {
 
         this.composeWith('folklore:agents', {
             'src-path': srcPath,
-            quiet: true,
-        });
-
-        this.composeWith('folklore:claude', {
             type: 'html',
             quiet: true,
         });
