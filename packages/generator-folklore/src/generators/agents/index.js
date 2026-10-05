@@ -69,5 +69,21 @@ export default class AgentsGenerator extends Generator {
             existingContent.length > 0 ? `${existingContent}${separator}${parts}` : parts;
 
         this.fs.write(destPath, newContent);
+
+        // Claude Code reads CLAUDE.md, not AGENTS.md: import AGENTS.md from it
+        const claudePath = this.destinationPath('CLAUDE.md');
+        const claudeImport = '@AGENTS.md';
+        const existingClaudeContent = this.fs.exists(claudePath) ? this.fs.read(claudePath) : '';
+        const hasClaudeImport = existingClaudeContent
+            .split('\n')
+            .some((line) => line.trim() === claudeImport);
+        if (!hasClaudeImport) {
+            this.fs.write(
+                claudePath,
+                existingClaudeContent.length > 0
+                    ? `${claudeImport}\n\n${existingClaudeContent}`
+                    : `${claudeImport}\n`,
+            );
+        }
     }
 }
