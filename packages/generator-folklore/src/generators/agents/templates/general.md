@@ -8,7 +8,7 @@ This file defines how coding agents should work in this repository.
 
 ## Language Rules
 
-- Everything written for people is in French: conversations, GitHub issues and their comments, pull request titles, bodies and review comments.
+- Everything written for people is in French: conversations, issues and their comments, pull or merge request titles, descriptions and review comments.
 - Code is always in English: identifiers, comments, file names, and commit messages.
 
 ## Editing Guidelines

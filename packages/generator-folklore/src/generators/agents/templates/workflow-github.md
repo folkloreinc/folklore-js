@@ -8,7 +8,7 @@ On GitHub, `develop` is the default branch (so PRs target it and `Closes #<numbe
 
 - Small changes asked for directly in conversation: fixes, style or copy tweaks, translations, content.
 - Documentation, comments and config with no runtime effect.
-- Run the checks , then stop and leave the changes uncommitted: the maintainer reviews them before they land. Commit only when explicitly asked to. Never push unless asked.
+- Run the checks, then stop and leave the changes uncommitted: the maintainer reviews them before they land. Commit only when explicitly asked to. Never push unless asked.
 
 ### Use an issue and a PR
 

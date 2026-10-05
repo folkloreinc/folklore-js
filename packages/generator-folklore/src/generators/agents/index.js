@@ -1,8 +1,37 @@
 import chalk from 'chalk';
+import { execFileSync } from 'child_process';
 
 import Generator from '../../lib/generator';
 
 export default class AgentsGenerator extends Generator {
+    constructor(...args) {
+        super(...args);
+
+        this.option('git-host', {
+            type: String,
+            desc: 'Git host of the repository: github or gitlab (defaults to the host of the origin remote, or github)',
+        });
+    }
+
+    getGitHost() {
+        const { 'git-host': gitHost = null } = this.options;
+        if (gitHost !== null) {
+            return gitHost === 'gitlab' ? 'gitlab' : 'github';
+        }
+
+        try {
+            const remoteUrl = execFileSync('git', ['remote', 'get-url', 'origin'], {
+                cwd: this.destinationRoot(),
+                encoding: 'utf8',
+                stdio: ['ignore', 'pipe', 'ignore'],
+            });
+            return remoteUrl.includes('gitlab') ? 'gitlab' : 'github';
+        } catch {
+            // No git repository or no origin remote yet
+            return 'github';
+        }
+    }
+
     prompting() {
         if (this.options.quiet) {
             return;
@@ -24,7 +53,7 @@ export default class AgentsGenerator extends Generator {
         const separator = '\n\n---\n\n';
         const parts = [
             this.fs.read(this.templatePath('general.md')),
-            this.fs.read(this.templatePath('workflow.md')),
+            this.fs.read(this.templatePath(`workflow-${this.getGitHost()}.md`)),
             hasComposerJson ? this.fs.read(this.templatePath('laravel.md')) : null,
             hasPackageJson ? this.fs.read(this.templatePath('frontend.md')) : null,
             hasComposerJson ? this.fs.read(this.templatePath('serve-laravel.md')) : null,
