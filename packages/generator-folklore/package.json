@@ -37,7 +37,7 @@
         "is-utf8": "^0.2.1",
         "lodash-es": "^4.17.21",
         "password-generator": "^2.3.2",
-        "yeoman-generator": "5.9.0",
+        "yeoman-generator": "10.0.1",
         "yeoman-remote": "^1.0.1"
     },
     "gitHead": "44ab1469755a9cfca1784dca4f11101dfab55731"
