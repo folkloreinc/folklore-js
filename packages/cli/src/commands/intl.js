@@ -12,6 +12,26 @@ import getPathsFromGlob from '../getPathsFromGlob';
 
 const command = new Command('intl');
 
+function getSourceFiles(srcPaths) {
+    // Declaration files hold no messages, and @formatjs fails to parse some of them
+    return getPathsFromGlob(srcPaths).filter((file) => !/\.d\.[cm]?ts$/.test(file));
+}
+
+// Exit without writing anything when a file fails, instead of writing
+// incomplete (or empty) messages
+async function extractOrExit(extractFunction, files, options) {
+    try {
+        return await extractFunction(files, {
+            ...options,
+            throws: true,
+        });
+    } catch (e) {
+        console.error(`Messages extraction failed, no file was written.\n${e}`);
+        process.exit(1);
+    }
+    return null;
+}
+
 const generateCommand = new Command('generate');
 generateCommand
     .description('Generate translations files')
@@ -48,10 +68,9 @@ generateCommand
         const generatedIdPrefixRegExp = new RegExp(`^${generatedIdPrefix}(.*)$`);
 
         // Get extracted messages
-        const files = getPathsFromGlob(srcPaths);
+        const files = getSourceFiles(srcPaths);
         let extractedMessages = JSON.parse(
-            await extract(files, {
-                throws: false,
+            await extractOrExit(extract, files, {
                 idInterpolationPattern: withoutIdOnly
                     ? `${generatedIdPrefix}${idInterpolationPattern}`
                     : idInterpolationPattern,
@@ -129,18 +148,16 @@ extractCommand
     .action(async (srcPaths) => {
         const { outputPath = null, idInterpolationPattern } = extractCommand.opts();
         const absOutputPath = getAbsolutePath(outputPath);
-        const files = getPathsFromGlob(srcPaths);
+        const files = getSourceFiles(srcPaths);
 
         if (outputPath !== null) {
-            await extractAndWrite(files, {
-                throws: false,
+            await extractOrExit(extractAndWrite, files, {
                 idInterpolationPattern,
                 outFile: absOutputPath,
                 extractFromFormatMessageCall: true,
             });
         } else {
-            const messages = await extract(files, {
-                throws: false,
+            const messages = await extractOrExit(extract, files, {
                 idInterpolationPattern,
                 extractFromFormatMessageCall: true,
             });
