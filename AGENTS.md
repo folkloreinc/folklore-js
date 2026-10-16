@@ -33,6 +33,12 @@ This file defines repository-specific instructions for coding agents working in 
 2. Run prettier
 1. Run linter
 
+## Releases
+
+- When a change affects a published package, add a changeset (`npx changeset`) in the same pull request. See "Releases" in `Readme.md`.
+- Never publish from a local machine (`lerna publish`, `npm publish`): the Release workflow publishes with npm trusted publishing.
+- Running `scripts/trust-packages.sh` changes npm package settings and needs the maintainer's 2FA: leave it to the maintainer.
+
 ## File and Safety Rules
 
 - Never remove or rewrite unrelated user changes.
