@@ -37,6 +37,11 @@ const setupWebpackCommand = (command) => {
         )
         .option('--babel-config-file <value>', 'Set configFile option for babel loader')
         .option('--babel-rc <value>', 'Set babelrc option for babel loader')
+        .option('--react-compiler', 'Enable the React Compiler (needs babel-plugin-react-compiler)')
+        .option(
+            '--react-compiler-target <target>',
+            'React version targeted by the React Compiler (17, 18 or 19)',
+        )
         .option('--postcss-config-file [value]', 'Set postcss config file option')
         .option('--get-local-indent [value]', 'getLocalIdent function for css-loader')
         // Images

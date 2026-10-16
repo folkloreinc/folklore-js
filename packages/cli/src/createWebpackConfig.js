@@ -3,6 +3,7 @@ import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
 import isArray from 'lodash/isArray';
+import isPlainObject from 'lodash/isPlainObject';
 import isString from 'lodash/isString';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
@@ -44,6 +45,8 @@ export default (entry, opts = {}) => {
         typescript = false,
         babelConfigFile = null,
         withoutFormatjs = false,
+        reactCompiler = false,
+        reactCompilerTarget = null,
         defineEnv: extraDefineEnv = null,
         overrideEnv: overrideEnvPath = undefined,
 
@@ -142,6 +145,25 @@ export default (entry, opts = {}) => {
     const customGetLocalIndent = loadExtend(getLocalIndent);
     const customImageOptimizationOptions = loadExtend(imageOptimizationOptionsPath);
     const customImageminPresets = loadExtend(imageminPresetsPath);
+
+    const getReactCompilerPlugin = () => {
+        let pluginPath;
+        try {
+            pluginPath = require.resolve('babel-plugin-react-compiler');
+        } catch (e) {
+            throw new Error(
+                'The React Compiler needs babel-plugin-react-compiler: npm install --save-dev babel-plugin-react-compiler',
+                { cause: e },
+            );
+        }
+        return [
+            pluginPath,
+            {
+                ...(isPlainObject(reactCompiler) ? reactCompiler : null),
+                ...(reactCompilerTarget !== null ? { target: reactCompilerTarget } : null),
+            },
+        ];
+    };
 
     const overrideEnv = loadExtend(overrideEnvPath);
     const defineEnv = getAppEnv({
@@ -334,6 +356,8 @@ export default (entry, opts = {}) => {
                                     typescript && [require.resolve('@babel/preset-typescript'), {}],
                                 ].filter(Boolean),
                                 plugins: [
+                                    // The React Compiler must run first
+                                    reactCompiler && getReactCompilerPlugin(),
                                     isDevelopment && require.resolve('react-refresh/babel'),
                                     !withoutFormatjs && [
                                         require.resolve('babel-plugin-formatjs'),
