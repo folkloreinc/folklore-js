@@ -4,7 +4,7 @@
     "packages": ["packages/*"],
     "command": {
         "publish": {
-            "allowBranch": ["master", "develop"]
+            "allowBranch": "main"
         }
     },
     "publishConfig": {
