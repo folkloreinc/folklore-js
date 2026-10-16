@@ -22,7 +22,7 @@ This package is splitted in multiple packages that can be used independently.
 
 Packages are versioned independently with [Changesets](https://changesets.dev) and published to npm by GitHub Actions, with [trusted publishing](https://docs.npmjs.com/trusted-publishers): no npm token, and each version gets a provenance attestation.
 
-1. In the pull request that changes a published package, run `npx changeset`: pick the packages, the bump (patch, minor or major) and write the line for their `CHANGELOG.md`. Commit the file it creates in `.changeset/`. A change that doesn't need a release (docs, tooling) doesn't need one.
+1. In the pull request that changes a published package, run `npx changeset`: pick the packages, the bump (patch, minor or major) and write the line for their `CHANGELOG.md`. Commit the file it creates in `.changeset/`. Changes outside `packages/` don't need one; a package change that doesn't need a release takes `npx changeset --empty`. The Changeset check fails a pull request that changes a package without one.
 2. On every push to `main`, the [Release workflow](.github/workflows/release.yml) opens or updates the "Version packages" pull request, which bumps the versions and writes the changelogs.
 3. Before merging it, configure trusted publishing for the packages it releases for the first time (see below).
 4. Merging it runs the workflow again: it builds the packages, publishes the new versions, pushes the `<package>@<version>` tags and creates the GitHub releases.

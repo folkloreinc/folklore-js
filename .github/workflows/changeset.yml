@@ -1,0 +1,35 @@
+name: Changeset
+
+# Fails a pull request that changes a package without a changeset, so that the change gets released.
+# A package change that doesn't need a release takes an empty changeset: npx changeset --empty
+on:
+    pull_request:
+
+permissions: {}
+
+jobs:
+    changeset:
+        name: Changeset
+        # The "Version packages" pull request consumes the changesets, and Dependabot can't add one
+        if: github.head_ref != 'changeset-release/main' && github.actor != 'dependabot[bot]'
+        runs-on: ubuntu-24.04
+        permissions:
+            contents: read
+        steps:
+            - uses: actions/checkout@v7
+              with:
+                  fetch-depth: 0
+                  persist-credentials: false
+
+            - uses: actions/setup-node@v7
+              with:
+                  node-version: 24
+                  package-manager-cache: false
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Check for changesets
+              run: npx changeset status --since="origin/${BASE_REF}"
+              env:
+                  BASE_REF: ${{ github.base_ref }}
