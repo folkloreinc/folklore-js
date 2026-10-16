@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
 import isArray from 'lodash/isArray';
@@ -188,7 +189,10 @@ export default (entry, opts = {}) => {
             splitChunks: {
                 chunks: isProduction ? 'all' : 'async',
             },
+            // '...' keeps webpack's default minimizers (TerserPlugin for javascript)
             minimizer: [
+                '...',
+                new CssMinimizerPlugin(),
                 !disableImageOptimization &&
                     isProduction &&
                     new ImageMinimizerPlugin(
@@ -201,7 +205,7 @@ export default (entry, opts = {}) => {
                             },
                         },
                     ),
-            ],
+            ].filter(Boolean),
         },
 
         resolve: {
