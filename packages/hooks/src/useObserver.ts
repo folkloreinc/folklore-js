@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useMemo, useRef, useState } from 'react';
+import { RefObject, useEffect, useMemo, useState } from 'react';
 
 const observersCache = new Map();
 
@@ -129,14 +129,25 @@ export function useObserver<TOptions = UseObserverOptions, TEntry = Record<strin
     } = opts || {};
     const [entry, setEntry] = useState<TEntry>(initialEntry);
     const threshold = useMemo(() => defaultThreshold, [defaultThreshold]);
-    const nodeRef = useRef(null);
-    const currentElementRef = useRef(null);
-    const elementChanged = nodeRef.current !== currentElementRef.current;
+    const [nodeElement, setNodeElement] = useState<HTMLElement | null>(null);
+    // Object ref whose setter tracks the element in state, so the observer follows elements attached
+    // after the first render, replaced or removed (a plain ref changes without re-running the effect)
+    const nodeRef = useMemo<RefObject<HTMLElement>>(() => {
+        let current: HTMLElement | null = null;
+        return {
+            get current() {
+                return current;
+            },
+            set current(element: HTMLElement | null) {
+                current = element;
+                setNodeElement(element);
+            },
+        };
+    }, []);
     useEffect(() => {
         if (disabled) {
             return () => {};
         }
-        const { current: nodeElement } = nodeRef;
         const callback = (newEntry) => setEntry(newEntry);
         let unsubscribe = null;
         if (nodeElement !== null) {
@@ -154,13 +165,12 @@ export function useObserver<TOptions = UseObserverOptions, TEntry = Record<strin
             unsubscribe = localUnsubscribe;
             subscribe(nodeElement, callback);
         }
-        currentElementRef.current = nodeElement;
         return () => {
             if (unsubscribe !== null) {
                 unsubscribe(nodeElement, callback);
             }
         };
-    }, [Observer, elementChanged, disabled, root, rootMargin, threshold]);
+    }, [Observer, nodeElement, disabled, root, rootMargin, threshold]);
 
     return {
         ref: nodeRef,
