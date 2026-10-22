@@ -2,6 +2,10 @@
 last 20 versions
 > 1%
 not dead
+ios_saf >= 15
+safari >= 15
+chrome >= 109
+firefox >= 115
 
 [development]
 last 10 versions
