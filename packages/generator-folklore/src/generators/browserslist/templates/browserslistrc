@@ -1,9 +1,9 @@
 [production]
 last 20 versions
 > 1%
-ie >= 10
+not dead
 
 [development]
 last 10 versions
 > 1%
-ie >= 10
+not dead
