@@ -47,7 +47,7 @@
         "@folklore/events": "^0.0.16",
         "@vimeo/player": "^2.16.4",
         "lodash-es": "^4.17.4",
-        "query-string": "^5.0.1"
+        "query-string": "^10.0.0"
     },
     "publishConfig": {
         "access": "public"
