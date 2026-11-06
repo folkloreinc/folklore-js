@@ -146,12 +146,20 @@ describe('the Pingpong adapter', () => {
         socket.on('reset', reset);
 
         expect(socket.getSubscriptionCount('comments.article-1')).toBeNull();
-        client.fire('subscriptionCount', { channel: 'comments.article-1', subscriptionCount: 12 });
+        client.subscriptions[0].fire('subscribed', { subscriptionCount: 11 });
+        expect(socket.getSubscriptionCount('comments.article-1')).toBe(11);
+        client.subscriptions[0].fire('subscriptionCount', 12);
         client.fire('reset');
 
         expect(socket.getSubscriptionCount('comments.article-1')).toBe(12);
-        expect(counts).toEqual([{ channel: 'comments.article-1', count: 12 }]);
+        expect(counts).toEqual([
+            { channel: 'comments.article-1', count: 11 },
+            { channel: 'comments.article-1', count: 12 },
+        ]);
         expect(reset).toHaveBeenCalled();
+
+        socket.setChannels(['live']);
+        expect(socket.getSubscriptionCount('comments.article-1')).toBeNull();
     });
 
     it('stops, closes, and refuses to send', async () => {

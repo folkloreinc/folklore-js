@@ -243,6 +243,9 @@ class Socket extends EventEmitter<SocketEvents> {
         debug(`Updating channels: ${sortedChannels.join(', ')}`);
 
         this.channels = [...sortedChannels];
+        this.subscriptionCounts = Object.fromEntries(
+            Object.entries(this.subscriptionCounts).filter(([channel]) => this.hasChannel(channel)),
+        );
 
         if (this.adapter !== null) {
             this.adapter.updateChannels(sortedChannels);

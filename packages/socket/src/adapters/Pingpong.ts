@@ -102,9 +102,6 @@ class PingpongSocket extends EventEmitter<SocketAdapterEvents> implements Socket
                 }
             });
             this.client.on('reset', () => this.emit('reset'));
-            this.client.on('subscriptionCount', ({ channel, subscriptionCount }) =>
-                this.emit('subscriptionCount', { channel, count: subscriptionCount }),
-            );
             this.client.on('error', (error) => debug('[Pingpong] Error %o', error));
             this.updateSubscriptions();
             this.ready = true;
@@ -138,6 +135,13 @@ class PingpongSocket extends EventEmitter<SocketAdapterEvents> implements Socket
                 const subscription = this.client.subscribe(channel);
                 subscription.on('message', ({ event, data }) =>
                     this.onMessage(event, data, channel),
+                );
+                // The count arrives with the acknowledgement, then each time it changes.
+                subscription.on('subscribed', ({ subscriptionCount }) =>
+                    this.emit('subscriptionCount', { channel, count: subscriptionCount }),
+                );
+                subscription.on('subscriptionCount', (count) =>
+                    this.emit('subscriptionCount', { channel, count }),
                 );
                 subscription.on('error', (error) => debug('[Pingpong] %s: %o', channel, error));
                 this.subscriptions[channel] = subscription;
