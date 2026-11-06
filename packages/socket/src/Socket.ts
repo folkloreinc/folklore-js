@@ -15,6 +15,8 @@ type SocketEvents = {
     started: void;
     stop: void;
     message: unknown;
+    reset: void;
+    subscriptionCount: { channel: string; count: number };
 };
 
 class Socket extends EventEmitter<SocketEvents> {
@@ -33,6 +35,7 @@ class Socket extends EventEmitter<SocketEvents> {
     };
     adapter: SocketAdapter | null;
     channels: string[];
+    subscriptionCounts: Record<string, number>;
     shouldStart: boolean;
     started: boolean;
     starting: boolean;
@@ -84,6 +87,8 @@ class Socket extends EventEmitter<SocketEvents> {
         this.onAdapterStarted = this.onAdapterStarted.bind(this);
         this.onAdapterMessage = this.onAdapterMessage.bind(this);
         this.onAdapterStop = this.onAdapterStop.bind(this);
+        this.onAdapterReset = this.onAdapterReset.bind(this);
+        this.onAdapterSubscriptionCount = this.onAdapterSubscriptionCount.bind(this);
 
         this.shouldStart = false;
         this.started = false;
@@ -92,6 +97,7 @@ class Socket extends EventEmitter<SocketEvents> {
 
         this.adapter = null;
         this.channels = [];
+        this.subscriptionCounts = {};
 
         this.init();
 
@@ -139,6 +145,22 @@ class Socket extends EventEmitter<SocketEvents> {
     onAdapterMessage(message: unknown) {
         debug('Adapter message', message);
         this.emit('message', message);
+    }
+
+    onAdapterReset() {
+        debug('Adapter reset: messages may have been missed');
+        this.emit('reset');
+    }
+
+    onAdapterSubscriptionCount({ channel, count }: { channel: string; count: number }) {
+        const name = this.getChannelWithoutNamespace(channel);
+        this.subscriptionCounts = { ...this.subscriptionCounts, [name]: count };
+        this.emit('subscriptionCount', { channel: name, count });
+    }
+
+    /** The number of subscribers of a channel, for adapters that report it (Pingpong). */
+    getSubscriptionCount(channel: string): number | null {
+        return this.subscriptionCounts[channel] ?? null;
     }
 
     getChannelWithoutNamespace(name) {
@@ -262,6 +284,8 @@ class Socket extends EventEmitter<SocketEvents> {
         this.adapter.on('started', this.onAdapterStarted);
         this.adapter.on('message', this.onAdapterMessage);
         this.adapter.on('stop', this.onAdapterStop);
+        this.adapter.on('reset', this.onAdapterReset);
+        this.adapter.on('subscriptionCount', this.onAdapterSubscriptionCount);
 
         this.adapter.updateChannels(this.channels);
     }

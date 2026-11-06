@@ -10,6 +10,10 @@ export type SocketAdapterEvents = {
     started?: void;
     stop?: number;
     message?: unknown;
+    /** The client reconnected without the messages it missed: reload what the page shows. */
+    reset?: void;
+    /** The number of subscribers of a channel changed, for adapters that know it. */
+    subscriptionCount?: { channel: string; count: number };
 };
 
 export interface SocketAdapter extends EventEmitter<SocketAdapterEvents> {
